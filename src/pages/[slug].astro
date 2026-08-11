@@ -1,0 +1,28 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import { tools } from '../data/tools';
+import WeddingAlcoholCalc from '../components/tools/WeddingAlcoholCalc';
+import DilutionCalc from '../components/tools/DilutionCalc';
+import CakePricingCalc from '../components/tools/CakePricingCalc';
+
+export function getStaticPaths() {
+  return tools.map(tool => ({
+    params: { slug: tool.slug },
+    props: { tool },
+  }));
+}
+
+const { tool } = Astro.props;
+---
+
+<ToolLayout
+  title={tool.title}
+  description={tool.description}
+  h1={tool.h1}
+  slug={tool.slug}
+  faqs={tool.faqs}
+>
+  {tool.engineType === 'wedding-alcohol' && <WeddingAlcoholCalc client:load defaultValues={tool.defaultValues} />}
+  {tool.engineType === 'dilution' && <DilutionCalc client:load defaultValues={tool.defaultValues} />}
+  {tool.engineType === 'cake-pricing' && <CakePricingCalc client:load defaultValues={tool.defaultValues} />}
+</ToolLayout>
