@@ -1,0 +1,316 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Event Alcohol Calculator",
+  "url": "https://manage.wedding/liquor-wedding-calculator",
+  "description": "Calculate exact quantities for a full open bar with a strong emphasis on liquor and cocktails for your wedding or event.",
+  "applicationCategory": "CalculatorApplication",
+  "operatingSystem": "Any"
+};
+---
+
+<Layout 
+	title="Free Event Alcohol Calculator (Get Your Exact Shopping List)"
+	description="Planning an event? Use our free calculator to determine exactly how many bottles of liquor, mixers, and ice you need for a full open bar."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<header class="fade-in category-header" style="text-align: center;">
+			<h1 class="font-heading" style="font-size: 3.5rem; margin-bottom: 0.5rem; font-weight: 500;">Event <span class="accent-italic">Alcohol Calculator</span></h1>
+			<p class="font-body" style="color: var(--secondary-ink); max-width: 600px; margin: 0 auto;">Calculate exact bottle quantities of beer, wine, liquor, mixers, and consumables needed for your event.</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 800px;">
+			<div class="hand-card">
+				<form id="calc-form">
+					<!-- Basics -->
+					<h3 class="font-heading" style="font-size: 1.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">Event Details</h3>
+					<div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+						<div>
+							<label class="form-label" for="guests">Number of Guests</label>
+							<input type="number" id="guests" class="form-input" value="100" min="1" required />
+						</div>
+						<div>
+							<label class="form-label" for="hours">Duration (Hours)</label>
+							<input type="number" id="hours" class="form-input" value="4" min="1" required />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="form-label" for="vibe">Drinking Crowd Vibe</label>
+						<select id="vibe" class="form-input">
+							<option value="average">Average (1 drink/hr)</option>
+							<option value="light">Light (-25% drinks)</option>
+							<option value="heavy">Heavy (+25% drinks)</option>
+						</select>
+					</div>
+
+					<!-- Drink Preference -->
+					<h3 class="font-heading" style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">Drink Preference (%)</h3>
+					<p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">We'll automatically normalize these values if they don't exactly equal 100%.</p>
+					
+					<div class="form-group" style="margin-bottom: 1rem;">
+						<label class="form-label" for="pref-beer">Beer Preference (<span id="val-pref-beer">20</span>%)</label>
+						<input type="range" id="pref-beer" class="form-input" min="0" max="100" value="20" oninput="document.getElementById('val-pref-beer').textContent = this.value" />
+					</div>
+					<div class="form-group" style="margin-bottom: 1rem;">
+						<label class="form-label" for="pref-wine">Wine Preference (<span id="val-pref-wine">40</span>%)</label>
+						<input type="range" id="pref-wine" class="form-input" min="0" max="100" value="40" oninput="document.getElementById('val-pref-wine').textContent = this.value" />
+					</div>
+					<div class="form-group">
+						<label class="form-label" for="pref-liquor">Liquor Preference (<span id="val-pref-liquor">40</span>%)</label>
+						<input type="range" id="pref-liquor" class="form-input" min="0" max="100" value="40" oninput="document.getElementById('val-pref-liquor').textContent = this.value" />
+					</div>
+
+					<!-- Liquor Breakdown -->
+					<h3 class="font-heading" style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">Liquor Breakdown (%)</h3>
+					
+					<div class="form-group" style="margin-bottom: 1rem;">
+						<label class="form-label" for="liq-vodka">Vodka (<span id="val-liq-vodka">30</span>%)</label>
+						<input type="range" id="liq-vodka" class="form-input" min="0" max="100" value="30" oninput="document.getElementById('val-liq-vodka').textContent = this.value" />
+					</div>
+					<div class="form-group" style="margin-bottom: 1rem;">
+						<label class="form-label" for="liq-whiskey">Whiskey / Bourbon (<span id="val-liq-whiskey">25</span>%)</label>
+						<input type="range" id="liq-whiskey" class="form-input" min="0" max="100" value="25" oninput="document.getElementById('val-liq-whiskey').textContent = this.value" />
+					</div>
+					<div class="form-group" style="margin-bottom: 1rem;">
+						<label class="form-label" for="liq-tequila">Tequila (<span id="val-liq-tequila">20</span>%)</label>
+						<input type="range" id="liq-tequila" class="form-input" min="0" max="100" value="20" oninput="document.getElementById('val-liq-tequila').textContent = this.value" />
+					</div>
+					<div class="form-group" style="margin-bottom: 1rem;">
+						<label class="form-label" for="liq-rum">Rum (<span id="val-liq-rum">15</span>%)</label>
+						<input type="range" id="liq-rum" class="form-input" min="0" max="100" value="15" oninput="document.getElementById('val-liq-rum').textContent = this.value" />
+					</div>
+					<div class="form-group" style="margin-bottom: 1rem;">
+						<label class="form-label" for="liq-gin">Gin (<span id="val-liq-gin">10</span>%)</label>
+						<input type="range" id="liq-gin" class="form-input" min="0" max="100" value="10" oninput="document.getElementById('val-liq-gin').textContent = this.value" />
+					</div>
+
+					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%; margin-top: 1rem;">Calculate Needs</button>
+				</form>
+			</div>
+
+			<div class="hand-card result-box" id="result-container">
+				<h3 class="font-heading" style="margin-bottom: 2rem;">Your Comprehensive Shopping List</h3>
+				
+				<!-- Dynamic Chart -->
+				<h4 class="font-heading" style="margin-top: 0.5rem; margin-bottom: 0.5rem; color: var(--fg-pencil);">Drink Split Graph</h4>
+				<div style="display: flex; height: 30px; border: 3px solid var(--fg-pencil); border-radius: 2px; margin-bottom: 1.5rem; overflow: hidden; font-family: var(--font-heading); font-size: 1rem; color: #fff; text-align: center; line-height: 24px;">
+					<div id="chart-beer" style="background-color: var(--accent-blue); width: 20%; transition: width 0.3s ease;">Beer</div>
+					<div id="chart-wine" style="background-color: var(--accent-red); width: 40%; transition: width 0.3s ease;">Wine</div>
+					<div id="chart-liquor" style="background-color: var(--fg-pencil); width: 40%; transition: width 0.3s ease;">Liquor</div>
+				</div>
+
+				<!-- Totals -->
+				<div class="result-item" style="border-bottom: 3px dashed var(--fg-pencil); margin-bottom: 1rem; padding-bottom: 0.5rem;">
+					<span class="item-label" style="font-size: 1.2rem;">TOTAL SERVINGS</span>
+					<span class="item-desc">Total drink servings required</span>
+					<span class="item-value" id="res-total" style="font-size: 1.5rem;">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">BEER</span>
+					<span class="item-desc">Cases (24pk)</span>
+					<span class="item-value" id="res-beer">0</span>
+				</div>
+				<div class="result-item">
+					<span class="item-label">WINE</span>
+					<span class="item-desc">Standard 750ml bottles</span>
+					<span class="item-value" id="res-wine">0</span>
+				</div>
+
+				<!-- Liquor Detail -->
+				<h4 class="font-heading" style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--accent-red);">Liquor Breakdown (750ml bottles)</h4>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Vodka</span><span class="item-value" id="res-vodka">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Whiskey / Bourbon</span><span class="item-value" id="res-whiskey">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Tequila</span><span class="item-value" id="res-tequila">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Rum</span><span class="item-value" id="res-rum">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Gin</span><span class="item-value" id="res-gin">0</span></div>
+
+				<!-- Mixers -->
+				<h4 class="font-heading" style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--accent-blue);">Mixers (2 Liter Bottles or equiv.)</h4>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Club Soda / Seltzer</span><span class="item-value" id="mix-soda">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Tonic Water</span><span class="item-value" id="mix-tonic">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Cola</span><span class="item-value" id="mix-cola">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Lemon-Lime Soda</span><span class="item-value" id="mix-sprite">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Cranberry Juice</span><span class="item-value" id="mix-cran">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Orange Juice</span><span class="item-value" id="mix-oj">0</span></div>
+
+				<!-- Garnishes -->
+				<h4 class="font-heading" style="margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--accent-yellow);">Garnishes (Count)</h4>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Limes</span><span class="item-value" id="gar-limes">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Lemons</span><span class="item-value" id="gar-lemons">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Oranges</span><span class="item-value" id="gar-oranges">0</span></div>
+
+				<!-- Consumables -->
+				<h4 class="font-heading" style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Consumables</h4>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Ice (Lbs)</span><span class="item-value" id="con-ice">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Cups (Count)</span><span class="item-value" id="con-cups">0</span></div>
+				<div class="result-item" style="margin-bottom: 0.5rem;"><span class="item-label">Napkins (Count)</span><span class="item-value" id="con-napkins">0</span></div>
+
+			</div>
+		</div>
+	</main>
+
+	<script>
+		document.getElementById('calc-form')?.addEventListener('submit', function(e) {
+			e.preventDefault();
+			
+			const guests = parseInt((document.getElementById('guests') as HTMLInputElement).value) || 0;
+			const hours = parseInt((document.getElementById('hours') as HTMLInputElement).value) || 0;
+			const vibe = (document.getElementById('vibe') as HTMLSelectElement).value;
+
+			// Get Preferences & Normalize
+			let pBeer = parseInt((document.getElementById('pref-beer') as HTMLInputElement).value) || 0;
+			let pWine = parseInt((document.getElementById('pref-wine') as HTMLInputElement).value) || 0;
+			let pLiq = parseInt((document.getElementById('pref-liquor') as HTMLInputElement).value) || 0;
+			
+			const prefTotal = pBeer + pWine + pLiq;
+			if (prefTotal > 0) {
+				pBeer = pBeer / prefTotal;
+				pWine = pWine / prefTotal;
+				pLiq = pLiq / prefTotal;
+			} else {
+				pBeer = 0.33; pWine = 0.33; pLiq = 0.34;
+			}
+
+			// Get Liquor Breakdown & Normalize
+			let lVodka = parseInt((document.getElementById('liq-vodka') as HTMLInputElement).value) || 0;
+			let lWhiskey = parseInt((document.getElementById('liq-whiskey') as HTMLInputElement).value) || 0;
+			let lTequila = parseInt((document.getElementById('liq-tequila') as HTMLInputElement).value) || 0;
+			let lRum = parseInt((document.getElementById('liq-rum') as HTMLInputElement).value) || 0;
+			let lGin = parseInt((document.getElementById('liq-gin') as HTMLInputElement).value) || 0;
+
+			const liqTotal = lVodka + lWhiskey + lTequila + lRum + lGin;
+			if (liqTotal > 0) {
+				lVodka /= liqTotal;
+				lWhiskey /= liqTotal;
+				lTequila /= liqTotal;
+				lRum /= liqTotal;
+				lGin /= liqTotal;
+			} else {
+				lVodka = 0.2; lWhiskey = 0.2; lTequila = 0.2; lRum = 0.2; lGin = 0.2;
+			}
+
+			// Base Servings
+			let multiplier = 1.0;
+			if (vibe === 'light') multiplier = 0.75;
+			else if (vibe === 'heavy') multiplier = 1.25;
+
+			const totalServings = Math.ceil(guests * hours * multiplier);
+
+			// Core Allocations
+			const beerServings = totalServings * pBeer;
+			const wineServings = totalServings * pWine;
+			const liquorServings = totalServings * pLiq;
+
+			const beerCases = Math.ceil(beerServings / 24);
+			const wineBottles = Math.ceil(wineServings / 5);
+			const liquorBottles = Math.ceil(liquorServings / 16);
+
+			// Spirit Bottles
+			const vodkaBottles = Math.ceil(liquorBottles * lVodka);
+			const whiskeyBottles = Math.ceil(liquorBottles * lWhiskey);
+			const tequilaBottles = Math.ceil(liquorBottles * lTequila);
+			const rumBottles = Math.ceil(liquorBottles * lRum);
+			const ginBottles = Math.ceil(liquorBottles * lGin);
+
+			// Mixers (Assuming 1 liter per 4 liquor servings = 0.25 L per serving -> mapped to 2L bottles)
+			const totalMixerLiters = liquorServings * 0.25;
+			const mixSoda = Math.ceil((totalMixerLiters * 0.3) / 2); // 2L bottles
+			const mixTonic = Math.ceil((totalMixerLiters * 0.2) / 2);
+			const mixCola = Math.ceil((totalMixerLiters * 0.2) / 2);
+			const mixSprite = Math.ceil((totalMixerLiters * 0.1) / 2);
+			const mixCran = Math.ceil((totalMixerLiters * 0.1) / 2);
+			const mixOj = Math.ceil((totalMixerLiters * 0.1) / 2);
+
+			// Garnishes (1 fruit = ~8 wedges)
+			const garLimes = Math.ceil((liquorServings * 0.5) / 8); 
+			const garLemons = Math.ceil((liquorServings * 0.3) / 8);
+			const garOranges = Math.ceil((liquorServings * 0.2) / 8);
+
+			// Consumables
+			const iceLbs = Math.ceil(guests * 2.0); // 2lbs per person
+			const cups = Math.ceil(totalServings * 1.2); // 1.2 cups per serving (loss)
+			const napkins = Math.ceil(guests * 4); // 4 per guest
+
+			// Update DOM
+			document.getElementById('chart-beer')!.style.width = `${pBeer * 100}%`;
+			document.getElementById('chart-wine')!.style.width = `${pWine * 100}%`;
+			document.getElementById('chart-liquor')!.style.width = `${pLiq * 100}%`;
+
+			document.getElementById('res-total')!.textContent = totalServings.toString();
+			document.getElementById('res-beer')!.textContent = beerCases.toString();
+			document.getElementById('res-wine')!.textContent = wineBottles.toString();
+			
+			document.getElementById('res-vodka')!.textContent = vodkaBottles.toString();
+			document.getElementById('res-whiskey')!.textContent = whiskeyBottles.toString();
+			document.getElementById('res-tequila')!.textContent = tequilaBottles.toString();
+			document.getElementById('res-rum')!.textContent = rumBottles.toString();
+			document.getElementById('res-gin')!.textContent = ginBottles.toString();
+
+			document.getElementById('mix-soda')!.textContent = mixSoda.toString();
+			document.getElementById('mix-tonic')!.textContent = mixTonic.toString();
+			document.getElementById('mix-cola')!.textContent = mixCola.toString();
+			document.getElementById('mix-sprite')!.textContent = mixSprite.toString();
+			document.getElementById('mix-cran')!.textContent = mixCran.toString();
+			document.getElementById('mix-oj')!.textContent = mixOj.toString();
+
+			document.getElementById('gar-limes')!.textContent = garLimes.toString();
+			document.getElementById('gar-lemons')!.textContent = garLemons.toString();
+			document.getElementById('gar-oranges')!.textContent = garOranges.toString();
+
+			document.getElementById('con-ice')!.textContent = iceLbs.toString();
+			document.getElementById('con-cups')!.textContent = cups.toString();
+			document.getElementById('con-napkins')!.textContent = napkins.toString();
+		});
+	</script>
+
+	<article class="hand-card" style="margin: 4rem auto; max-width: 800px; padding: 3rem;">
+		<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Planning a Full Open Bar: The Ultimate Guide</h2>
+		
+		<div style="text-align: center; margin: 2rem 0;">
+			<img src="/images/wedding_bar_sketch.jpg" alt="hand drawn wedding drink and liquor calculator chart breakdown sketch" style="max-width: 100%; border: 3px solid var(--fg-pencil); border-radius: 2px; box-shadow: 4px 4px 0px 0px rgba(45, 45, 45, 0.15); transform: rotate(1deg);" />
+		</div>
+
+		<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+			Figuring out exactly how much alcohol to buy for a wedding or large event can be incredibly stressful. No one wants the bar to run dry halfway through the reception, but overbuying by hundreds of dollars isn't fun either. That's why we built this interactive <strong>Event Alcohol Calculator</strong>—to give you a precise, stress-free shopping list. (Be sure to check out the real-time dynamic graph that adjusts as you move the sliders!)
+		</p>
+		<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+			Whether you're stocking up for a massive wedding reception, a corporate holiday party, or a backyard blowout, the math remains largely the same. Our tool takes the guesswork out of the process, letting you adjust exactly what your crowd actually likes to drink.
+		</p>
+
+		<h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-red);">Why Use a Custom Drink Calculator?</h3>
+		<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+			A lot of basic wedding alcohol calculators just spit out a generic number of "bottles." But if you're serving two signature cocktails that require tequila and vodka, a generic liquor estimate won't help your bartenders at all. By tweaking the interactive sliders above, you get a custom breakdown of every specific spirit, mixer, and garnish you'll need.
+		</p>
+		<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+			For example, if you know your family prefers whiskey over wine, just slide the liquor preference up and bump the whiskey slider to match. You'll instantly see your shopping list update with the exact number of 750ml bottles required, preventing annoying shortages mid-party.
+		</p>
+
+		<h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-blue);">The Golden Rule of Event Bartending</h3>
+		<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+			The standard industry rule of thumb is remarkably simple: assume <strong>one drink per guest, per hour</strong>. While Uncle Bob might crush four beers in an hour, Aunt Sally might nurse a single glass of wine all night. Across a large crowd, it averages out perfectly.
+		</p>
+		<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+			If you're offering a full open bar, the classic breakdown is roughly 40% wine, 40% liquor, and 20% beer. However, younger crowds tend to skew heavily toward spirits and cocktails, while afternoon or outdoor events might lean heavily toward beer and seltzers. Trust your gut and adjust the sliders to match your specific guest list!
+		</p>
+
+		<h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-yellow);">Frequently Asked Questions</h3>
+		<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+			<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">Do I need to buy exactly what the calculator says?</summary>
+			<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">No! The calculator is a baseline. If you know your family prefers whiskey over vodka, adjust the sliders. It's always a good idea to add a buffer to your final shopping list.</p>
+		</details>
+		<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+			<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">How much ice do I really need?</summary>
+			<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">For a full open bar serving mixed drinks, 2 lbs of ice per guest is recommended. Cocktails require ice for both mixing/shaking and serving in the glass.</p>
+		</details>
+		<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+			<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">Can I return unopened alcohol?</summary>
+			<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">This depends entirely on your state laws and the retailer. Many large liquor stores allow you to return unopened bottles with labels intact, making it safer to over-buy.</p>
+		</details>
+
+	</article>
+</Layout>

@@ -1,0 +1,269 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Wedding Drink Calculator",
+  "url": "https://manage.wedding/wedding-drink-calculator",
+  "description": "Use our free wedding drink calculator to determine exactly how much beer, wine, liquor, and mixers you need for your wedding reception.",
+  "applicationCategory": "CalculatorApplication",
+  "operatingSystem": "Any"
+};
+---
+
+<Layout 
+	title="Wedding Drink Calculator (Free & Instant Results)"
+	description="Use our free wedding drink calculator to determine exactly how much beer, wine, liquor, and mixers you need for your wedding reception."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<header class="fade-in category-header" style="text-align: center;">
+			<h1 class="font-heading" style="font-size: 3.5rem; margin-bottom: 0.5rem; font-weight: 500;">Wedding <span class="accent-italic">Drink Calculator</span></h1>
+			<p class="font-body" style="color: var(--secondary-ink); max-width: 600px; margin: 0 auto;">Enter your wedding details to find out exactly how much alcohol, ice, and mixers you need to buy for your bar.</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 800px;">
+			<div class="hand-card">
+				<form id="calc-form">
+					<div class="form-group">
+						<label class="form-label" for="guests">Number of Guests</label>
+						<input type="number" id="guests" class="form-input" value="100" min="1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="hours">Event Duration (Hours)</label>
+						<input type="number" id="hours" class="form-input" value="4" min="1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="barType">Bar Type</label>
+						<select id="barType" class="form-input">
+							<option value="open">Full Open Bar (Beer, Wine & Liquor)</option>
+							<option value="soft">Soft Bar (Beer & Wine Only)</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="vibe">Drinking Crowd Vibe</label>
+						<select id="vibe" class="form-input">
+							<option value="average">Average (1 drink/hr)</option>
+							<option value="light">Light (-25% drinks)</option>
+							<option value="heavy">Heavy (+25% drinks)</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="champagne">Champagne Toast?</label>
+						<select id="champagne" class="form-input">
+							<option value="no">No</option>
+							<option value="yes">Yes (1 glass per guest)</option>
+						</select>
+					</div>
+
+					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%;">Calculate Drinks</button>
+				</form>
+			</div>
+
+			<div class="hand-card result-box" id="result-container">
+				<h3 class="font-heading" style="margin-bottom: 2rem;">Your Shopping List</h3>
+				
+				<div class="result-item">
+					<span class="item-label">TOTAL</span>
+					<span class="item-desc">Total drink servings required</span>
+					<span class="item-value" id="res-total">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">BEER</span>
+					<span class="item-desc">Cases (24pk)</span>
+					<span class="item-value" id="res-beer">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">WINE</span>
+					<span class="item-desc">Standard 750ml bottles</span>
+					<span class="item-value" id="res-wine">0</span>
+				</div>
+
+				<div class="result-item" id="liquor-box">
+					<span class="item-label">LIQUOR</span>
+					<span class="item-desc">Standard 750ml bottles</span>
+					<span class="item-value" id="res-liquor">0</span>
+				</div>
+
+				<div class="result-item" id="mixer-box">
+					<span class="item-label">MIXERS</span>
+					<span class="item-desc">Liters of soda, tonic, & juice</span>
+					<span class="item-value" id="res-mixers">0</span>
+				</div>
+
+				<div class="result-item" id="champagne-box" style="display: none;">
+					<span class="item-label">CHAMPAGNE</span>
+					<span class="item-desc">Standard 750ml bottles</span>
+					<span class="item-value" id="res-champagne">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">ICE</span>
+					<span class="item-desc">Pounds of ice</span>
+					<span class="item-value" id="res-ice">0</span>
+				</div>
+
+				<div id="explanation-box" style="background-color: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 2px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.1); margin-top: 2rem; padding: 1.5rem; text-align: left;">
+					<strong class="font-heading" style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem; color: var(--accent-red);">How we calculated this:</strong>
+					<p id="explanation-text" class="font-body" style="font-size: 1.1rem; margin: 0; line-height: 1.5;">Calculated based on 1 drink per guest per hour.</p>
+				</div>
+			</div>
+		</div>
+		<article class="hand-card" style="margin: 4rem auto; max-width: 800px; padding: 3rem;">
+			<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">How to Stock Your Bar With a Wedding Drink Calculator</h2>
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				Let's be honest: doing the math for a wedding bar can feel like a nightmare. You don't want your guests staring at an empty bar two hours into the reception, but you also don't want to blow your entire budget on cases of wine that no one drinks. 
+			</p>
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				That's exactly why we ditched the complicated spreadsheets and built this visual <strong>wedding drink calculator</strong>. Just punch in your guest count and let us handle the heavy lifting.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-red);">The "One Drink" Rule</h3>
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				Bartenders and wedding planners rely on a very simple formula: expect each guest to have <strong>one drink per hour</strong>. While your college buddies might throw back three beers an hour, your grandparents might nurse a single glass of wine all night. It all averages out. Our wedding drink calculator uses this golden rule as a baseline, but gives you the power to bump the numbers up or down depending on your crowd.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-blue);">Pro-Tips for a Better Bar</h3>
+			<ul class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.6;">
+				<li style="margin-bottom: 0.5rem;"><strong>Keep Signature Cocktails Simple:</strong> Limit yourself to two signature drinks. If your bartenders are muddling fresh mint and shaking egg whites for every order, the line will stretch out the door.</li>
+				<li style="margin-bottom: 0.5rem;"><strong>Know Your Crowd:</strong> The standard open bar splits the alcohol 40% wine, 30% liquor, and 30% beer. If you know your friends are craft beer snobs, buy extra kegs and skip the top-shelf tequila.</li>
+				<li style="margin-bottom: 0.5rem;"><strong>Think About the Weather:</strong> Having a daytime summer wedding? Expect to burn through white wine and light beer. Hosting a winter evening reception? Stock up on heavy reds and whiskey.</li>
+			</ul>
+
+			<h3 class="font-heading" style="font-size: 2rem; margin-top: 3rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Wedding Drink Calculator FAQs</h3>
+			
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">How does a wedding drink calculator work?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">A wedding drink calculator uses your guest count, the duration of your reception, and the drinking habits of your crowd to generate an exact shopping list of beer, wine, and liquor.</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">Do I really need a wedding drink calculator?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Yes! Using a wedding drink calculator prevents you from running out of alcohol early in the night, and stops you from overspending hundreds of dollars on excess bottles you don't need.</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">How many drinks are in a standard bottle of wine?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">When using a wedding drink calculator, assume a standard 750ml wine bottle gets you exactly <strong>5 glasses</strong> (using a standard 5 oz pour).</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">How many drinks are in a bottle of liquor?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">A standard 750ml bottle of spirits (vodka, whiskey, gin) yields about <strong>16 drinks</strong> (using a standard 1.5 oz pour).</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">How many glasses do you get from a bottle of champagne?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Champagne flutes use smaller pours. Expect to get <strong>6 glasses</strong> out of every bottle for your wedding toasts.</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">How many beers are in a case?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">A standard case of beer holds exactly <strong>24 bottles or cans</strong>.</p>
+			</details>
+		</article>
+	</main>
+
+	<script>
+		document.getElementById('calc-form')?.addEventListener('submit', function(e) {
+			e.preventDefault();
+			
+			const guests = parseInt((document.getElementById('guests') as HTMLInputElement).value) || 0;
+			const hours = parseInt((document.getElementById('hours') as HTMLInputElement).value) || 0;
+			const barType = (document.getElementById('barType') as HTMLSelectElement).value;
+			const vibe = (document.getElementById('vibe') as HTMLSelectElement).value;
+			const champagne = (document.getElementById('champagne') as HTMLSelectElement).value;
+
+			// Base: 1 drink per person per hour
+			let multiplier = 1.0;
+			let vibeText = "average drinking crowd";
+			if (vibe === 'light') {
+				multiplier = 0.75;
+				vibeText = "lighter drinking crowd (-25%)";
+			} else if (vibe === 'heavy') {
+				multiplier = 1.25;
+				vibeText = "heavy drinking crowd (+25%)";
+			}
+
+			const totalServings = Math.ceil(guests * hours * multiplier);
+
+			let beerRatio = 0.3;
+			let wineRatio = 0.4;
+			let liquorRatio = 0.3;
+
+			if (barType === 'soft') {
+				beerRatio = 0.5;
+				wineRatio = 0.5;
+				liquorRatio = 0;
+			}
+
+			const beerServings = totalServings * beerRatio;
+			const wineServings = totalServings * wineRatio;
+			const liquorServings = totalServings * liquorRatio;
+
+			// 1 case of beer = 24 servings
+			const beerCases = Math.ceil(beerServings / 24);
+			// 1 bottle of wine = 5 servings
+			const wineBottles = Math.ceil(wineServings / 5);
+			// 1 bottle of liquor (750ml) = 16 servings
+			const liquorBottles = Math.ceil(liquorServings / 16);
+
+			// Champagne: 1 glass per guest, 6 glasses per bottle
+			const champagneBottles = Math.ceil(guests / 6);
+
+			// Ice: ~1.5 lbs per guest total
+			const iceLbs = Math.ceil(guests * 1.5);
+			// Mixers: 1 Liter per 3 guests for full bar
+			const mixersLiters = barType === 'open' ? Math.ceil(guests / 3) : 0;
+
+			// Update DOM
+			document.getElementById('res-total')!.textContent = totalServings.toString();
+			document.getElementById('res-beer')!.textContent = beerCases.toString();
+			document.getElementById('res-wine')!.textContent = wineBottles.toString();
+			
+			const liquorBox = document.getElementById('liquor-box')!;
+			const mixerBox = document.getElementById('mixer-box')!;
+			const champagneBox = document.getElementById('champagne-box')!;
+			
+			if (barType === 'soft') {
+				liquorBox.style.display = 'none';
+				mixerBox.style.display = 'none';
+			} else {
+				liquorBox.style.display = 'block';
+				mixerBox.style.display = 'block';
+				document.getElementById('res-liquor')!.textContent = liquorBottles.toString();
+				document.getElementById('res-mixers')!.textContent = mixersLiters.toString();
+			}
+
+			if (champagne === 'yes') {
+				champagneBox.style.display = 'block';
+				document.getElementById('res-champagne')!.textContent = champagneBottles.toString();
+			} else {
+				champagneBox.style.display = 'none';
+			}
+
+			document.getElementById('res-ice')!.textContent = iceLbs.toString();
+
+			// Update explanation text
+			let expl = `We calculated a baseline of 1 drink per guest per hour, then adjusted it for your ${vibeText}.`;
+			if (barType === 'soft') {
+				expl += ` We split the servings 50/50 between beer and wine.`;
+			} else {
+				expl += ` We split the servings roughly 40% wine, 30% beer, and 30% liquor.`;
+			}
+			if (champagne === 'yes') {
+				expl += ` We also added ${champagneBottles} bottles of champagne for a 1-glass-per-guest toast (6 glasses/bottle).`;
+			}
+			expl += ` We recommend ${iceLbs} lbs of ice (about 1.5 lbs per guest) to keep everything chilled.`;
+			
+			document.getElementById('explanation-text')!.textContent = expl;
+		});
+	</script>
+</Layout>

@@ -1,0 +1,234 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://manage.wedding/alcohol-dilution-calculator/#webapp",
+      "name": "Alcohol Dilution Calculator",
+      "url": "https://manage.wedding/alcohol-dilution-calculator",
+      "description": "Calculate exact water required to dilute high-proof alcohol to a target ABV.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any"
+    },
+    {
+      "@type": "CalculatorApplication",
+      "@id": "https://manage.wedding/alcohol-dilution-calculator/#calculator",
+      "name": "Alcohol Dilution Calculator",
+      "url": "https://manage.wedding/alcohol-dilution-calculator"
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Alcohol Dilution Calculator (Free & Instant Results) | ABV Proof Down Utility"
+	description="Our free Alcohol Dilution Calculator helps you accurately dilute high-proof alcohol down to a target ABV. Perfect for caterers, bartenders, and homebrewers."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<header class="fade-in category-header">
+			<h1 class="font-heading" style="font-size: 3.5rem; margin-bottom: 0.5rem; font-weight: 500;">Alcohol <span class="accent-italic">Dilution Calculator</span></h1>
+			<p class="font-body" style="color: var(--secondary-ink); max-width: 600px; margin: 0 auto;">Need to lower the ABV of your signature cocktails? Calculate exactly how much water or mixer to add to hit your target strength instantly.</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 900px; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 0 auto;">
+			<div class="hand-card">
+				<form id="calc-form">
+					<div class="form-group">
+						<label class="form-label" for="initialVolume">Initial Volume (ml)</label>
+						<input type="number" id="initialVolume" class="form-input" value="1000" min="1" step="0.1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="initialABV">Initial ABV (%)</label>
+						<input type="number" id="initialABV" class="form-input" value="95" min="1" max="100" step="0.1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="targetABV">Target ABV (%)</label>
+						<input type="number" id="targetABV" class="form-input" value="40" min="1" max="100" step="0.1" required />
+					</div>
+
+					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%;">Calculate Dilution</button>
+				</form>
+			</div>
+
+			<div class="hand-card result-box" id="result-container">
+				<h3 class="font-heading" style="margin-bottom: 1.5rem;">Dilution Results</h3>
+				
+				<div class="result-item" style="margin-bottom: 1rem;">
+					<span class="item-label">WATER/MIXER</span>
+					<span class="item-desc">Amount to add (ml)</span>
+					<span class="item-value" id="res-water" style="color: var(--accent-blue); font-size: 2.5rem; display: block; margin-top: 0.5rem;">1375.00</span>
+				</div>
+
+				<div class="result-item" style="margin-bottom: 2rem;">
+					<span class="item-label">FINAL VOL</span>
+					<span class="item-desc">Total resulting volume (ml)</span>
+					<span class="item-value" id="res-final" style="font-size: 1.5rem; display: block; margin-top: 0.5rem;">2375.00</span>
+				</div>
+
+				<div class="chart-container" style="border: 2px solid var(--fg-pencil); padding: 1rem; border-radius: 8px;">
+					<p class="font-body" style="font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: bold;">Volume Breakdown</p>
+					<div style="display: flex; height: 30px; border: 1px solid var(--fg-pencil); border-radius: 4px; overflow: hidden;">
+						<div id="chart-alcohol" style="width: 42.1%; background-color: var(--fg-pencil); color: var(--bg-paper); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; transition: width 0.3s ease;">Base</div>
+						<div id="chart-water" style="width: 57.9%; background-color: transparent; background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, var(--fg-pencil) 5px, var(--fg-pencil) 6px); color: var(--fg-pencil); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; transition: width 0.3s ease;">Water</div>
+					</div>
+					<div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem; color: var(--secondary-ink);">
+						<span>Base: <span id="lbl-alcohol">42.1%</span></span>
+						<span>Water: <span id="lbl-water">57.9%</span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<article class="hand-card" style="margin: 4rem auto; max-width: 800px;">
+			<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem;">Mastering the Alcohol Dilution Calculator</h2>
+			
+			<img src="/images/bartender_jigger_sketch.jpg" alt="A minimalist black and white hand-drawn sketch of a bartender's measuring cup, jigger, and a spirits bottle used for diluting high-proof alcohol accurately." style="width: 100%; max-width: 400px; display: block; margin: 2rem auto; border: 2px solid var(--fg-pencil); border-radius: 8px;" />
+
+			<p class="font-body" style="margin-bottom: 1.5rem; line-height: 1.6;">
+				Whether you are a professional wedding caterer scaling up a signature cocktail, a bartender crafting house-made tinctures, or a homebrewer proofing down spirits, precision is everything. An extra splash of water can ruin a perfectly balanced drink, while too little can leave it harsh and overpowering. That's exactly why we built the <strong>Alcohol Dilution Calculator</strong>.
+			</p>
+			<p class="font-body" style="margin-bottom: 1.5rem; line-height: 1.6;">
+				Using this calculator takes the guesswork out of proofing down your spirits. By inputting your initial volume and current Alcohol By Volume (ABV), along with your target strength, you'll instantly see exactly how much water (or non-alcoholic mixer) you need to add to achieve the perfect blend. No messy math required.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 1.8rem; margin-top: 2.5rem; margin-bottom: 1rem;">Why Accurate Dilution Matters for Event Catering</h3>
+			<p class="font-body" style="margin-bottom: 1.5rem; line-height: 1.6;">
+				When catering a large event like a wedding, consistency across hundreds of drinks is critical. If you are batching cocktails in large dispensers, guessing the dilution ratio simply isn't an option. Our Alcohol Dilution Calculator ensures that the first pour tastes exactly the same as the last. 
+			</p>
+
+			<h3 class="font-heading" style="font-size: 1.8rem; margin-top: 2.5rem; margin-bottom: 1rem;">Safety and Proofing Best Practices</h3>
+			<p class="font-body" style="margin-bottom: 1.5rem; line-height: 1.6;">
+				Working with high-proof neutral spirits (like Everclear) requires care. Always measure liquids at room temperature, as alcohol volume can fluctuate slightly with temperature changes. Furthermore, always add alcohol to water when possible, rather than water to alcohol, to ensure a smooth, integrated mix and prevent any cloudiness (often referred to as 'louching' when dealing with botanical spirits).
+			</p>
+		</article>
+
+		<section class="hand-card" style="margin: 4rem auto; max-width: 800px;">
+			<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 2rem; text-align: center;">Frequently Asked Questions</h2>
+			
+			<div class="faq-container">
+				<details class="faq-item" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1rem;">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; list-style-type: none; display: flex; justify-content: space-between; align-items: center;">
+						How does the Alcohol Dilution Calculator work?
+						<span style="font-size: 1.5rem;">+</span>
+					</summary>
+					<p class="font-body" style="margin-top: 1rem; color: var(--secondary-ink); line-height: 1.5;">
+						The Alcohol Dilution Calculator uses a simple algebraic formula (C1V1 = C2V2) to determine how much water is needed to reach your target ABV. You simply provide the starting volume, the starting alcohol percentage, and your desired final percentage. The calculator instantly outputs the exact amount of water to add.
+					</p>
+				</details>
+
+				<details class="faq-item" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1rem;">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; list-style-type: none; display: flex; justify-content: space-between; align-items: center;">
+						Can I use this calculator for proofing down moonshine or homebrew?
+						<span style="font-size: 1.5rem;">+</span>
+					</summary>
+					<p class="font-body" style="margin-top: 1rem; color: var(--secondary-ink); line-height: 1.5;">
+						Absolutely! This tool is perfect for homebrewers and distillers who need to proof down high-proof spirits or moonshine safely and accurately to a drinkable target ABV before bottling.
+					</p>
+				</details>
+
+				<details class="faq-item" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1rem;">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; list-style-type: none; display: flex; justify-content: space-between; align-items: center;">
+						Why did my spirit turn cloudy after dilution?
+						<span style="font-size: 1.5rem;">+</span>
+					</summary>
+					<p class="font-body" style="margin-top: 1rem; color: var(--secondary-ink); line-height: 1.5;">
+						Cloudiness, or "louching", often happens when diluting spirits with high essential oil content (like gin or absinthe). To minimize this, use distilled water, ensure both liquids are at room temperature, and add the spirit to the water slowly.
+					</p>
+				</details>
+
+				<details class="faq-item" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1rem;">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; list-style-type: none; display: flex; justify-content: space-between; align-items: center;">
+						Does it matter what kind of water I use for dilution?
+						<span style="font-size: 1.5rem;">+</span>
+					</summary>
+					<p class="font-body" style="margin-top: 1rem; color: var(--secondary-ink); line-height: 1.5;">
+						Yes. We highly recommend using distilled or reverse osmosis water when using the Alcohol Dilution Calculator for batching cocktails or proofing spirits. Tap water contains minerals and chlorine that can alter the flavor profile of your drink.
+					</p>
+				</details>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		const form = document.getElementById('calc-form') as HTMLFormElement;
+		const resWater = document.getElementById('res-water');
+		const resFinal = document.getElementById('res-final');
+		
+		const chartAlcohol = document.getElementById('chart-alcohol');
+		const chartWater = document.getElementById('chart-water');
+		const lblAlcohol = document.getElementById('lbl-alcohol');
+		const lblWater = document.getElementById('lbl-water');
+
+		function calculate() {
+			const initialVolume = parseFloat((document.getElementById('initialVolume') as HTMLInputElement).value);
+			const initialABV = parseFloat((document.getElementById('initialABV') as HTMLInputElement).value) / 100;
+			const targetABV = parseFloat((document.getElementById('targetABV') as HTMLInputElement).value) / 100;
+
+			if (targetABV >= initialABV) {
+				alert("Target ABV must be strictly less than Initial ABV to dilute.");
+				return;
+			}
+			
+			if (isNaN(initialVolume) || isNaN(initialABV) || isNaN(targetABV) || initialVolume <= 0 || initialABV <= 0 || targetABV <= 0) {
+				return;
+			}
+
+			// C1V1 = C2V2 => V2 = (C1V1) / C2
+			const finalVolume = (initialABV * initialVolume) / targetABV;
+			const waterToAdd = finalVolume - initialVolume;
+
+			// Update DOM
+			if (resWater && resFinal) {
+				resWater.textContent = waterToAdd.toFixed(2);
+				resFinal.textContent = finalVolume.toFixed(2);
+			}
+
+			// Update Chart
+			if (chartAlcohol && chartWater && lblAlcohol && lblWater) {
+				const alcoholPct = (initialVolume / finalVolume) * 100;
+				const waterPct = (waterToAdd / finalVolume) * 100;
+
+				chartAlcohol.style.width = `${alcoholPct}%`;
+				chartWater.style.width = `${waterPct}%`;
+				lblAlcohol.textContent = `${alcoholPct.toFixed(1)}%`;
+				lblWater.textContent = `${waterPct.toFixed(1)}%`;
+			}
+		}
+
+		form?.addEventListener('submit', (e) => {
+			e.preventDefault();
+			calculate();
+		});
+
+		// Trigger initial calculation
+		calculate();
+	</script>
+	
+	<style>
+		@media (max-width: 768px) {
+			.home-grid {
+				grid-template-columns: 1fr !important;
+			}
+		}
+		
+		details.faq-item summary::-webkit-details-marker {
+			display: none;
+		}
+		
+		details.faq-item[open] summary span {
+			transform: rotate(45deg);
+			transition: transform 0.2s ease;
+		}
+		
+		details.faq-item summary span {
+			display: inline-block;
+			transition: transform 0.2s ease;
+		}
+	</style>
+</Layout>

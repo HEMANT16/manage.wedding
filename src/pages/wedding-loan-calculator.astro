@@ -1,0 +1,870 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Wedding Loan Calculator & Amortization Schedule Maker",
+      "url": "https://manage.wedding/wedding-loan-calculator",
+      "description": "Free wedding loan calculator. Calculate monthly payments, total interest, origination fees, and full amortization schedules. Simulate extra payments and export to Word, PDF, or Excel.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the average interest rate (APR) for a wedding loan?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Wedding loan interest rates typically range from 7% to 12% for borrowers with excellent credit scores (720+). For average credit scores (640-719), rates generally range between 13% and 18%, while lower credit scores may face rates of 20% to 28%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should you take out a personal loan for a wedding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Financial planners generally advise against taking on high-interest debt for a one-day celebration. However, a small, fixed-rate personal loan with comfortable monthly payments can be useful to bridge cash flow gaps for deposits if paid off within 12 to 24 months."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does making extra monthly payments affect a wedding loan?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Paying just $50 to $100 extra toward your principal each month directly reduces the compounding interest balance, helping you shave several months or years off your loan term and saving hundreds in finance charges."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I export my wedding loan amortization schedule?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Click the 'Export Word (.doc)', 'Export PDF / Print', or 'Export Excel (.csv)' button at the top of the calculator. You will receive an itemized monthly repayment schedule ready for your personal finance records."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Wedding Loan Calculator (Free Monthly Payment & Amortization Schedule) | Manage.Wedding"
+	description="Calculate monthly payments, total interest, and amortization schedules for wedding loans. Simulate extra payments and export your repayment plan to Word, PDF, or Excel."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Wedding Loan Calculator
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Calculate your monthly payments, total interest cost, and payoff timeline. Simulate extra monthly payments, origination fees, and export your <strong>Amortization Schedule</strong> to <strong>Word (.doc)</strong> or <strong>PDF</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> How to Use This Loan Calculator in 3 Easy Steps
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Choose Loan Amount & APR
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Enter your needed borrowing amount and lender's interest rate (APR %), or select a quick popular tier preset.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Simulate Term & Extra Payments
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Select your term (12 to 60 months) and slide the extra monthly payment to see how much interest and time you save.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Export Amortization Table
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Click <strong>"📝 Export Word (.doc)"</strong> or <strong>"🖨️ Export PDF"</strong> to download your complete month-by-month repayment schedule.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="loan-calc-grid">
+			
+			<!-- Left Column: Input Form & Presets -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div style="width: 100%;">
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							🏦 Loan Terms & Rates
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							Configure principal, interest rate, term length, and fees
+						</span>
+					</div>
+				</div>
+
+				<!-- Quick Presets -->
+				<div style="margin-bottom: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; text-align: center;">
+					<span class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.4rem; text-align: center;">
+						⚡ Popular Loan Presets:
+					</span>
+					<div style="display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center;">
+						<button type="button" class="loan-preset-btn" data-amt="5000" data-apr="8.5" data-term="24">💵 $5k (24 Mo • 8.5%)</button>
+						<button type="button" class="loan-preset-btn active-preset" data-amt="15000" data-apr="10.5" data-term="36">💳 $15k (36 Mo • 10.5%)</button>
+						<button type="button" class="loan-preset-btn" data-amt="25000" data-apr="12.0" data-term="48">💎 $25k (48 Mo • 12%)</button>
+						<button type="button" class="loan-preset-btn" data-amt="40000" data-apr="14.5" data-term="60">👑 $40k (60 Mo • 14.5%)</button>
+					</div>
+				</div>
+
+				<form id="loan-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+					
+					<!-- Loan Amount & Currency -->
+					<div style="display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 0.75rem;">
+						<div>
+							<label for="input-loan-amount" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Loan Amount Borrowed *
+							</label>
+							<div style="display: flex; align-items: center; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; overflow: hidden;">
+								<span id="currency-symbol-display" style="padding: 0.55rem 0.75rem; background: var(--bg-paper); border-right: 1px solid var(--fg-pencil); font-weight: bold; font-family: var(--font-heading);">$</span>
+								<input type="number" id="input-loan-amount" value="15000" min="500" max="150000" step="500" required style="flex: 1; border: none; padding: 0.55rem; font-family: var(--font-body); font-size: 1.1rem; font-weight: bold; outline: none; background: transparent;">
+							</div>
+						</div>
+
+						<div>
+							<label for="currency-select" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Currency
+							</label>
+							<select id="currency-select" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+								<option value="$" selected>$ (USD/CAD/AUD)</option>
+								<option value="£">£ (GBP)</option>
+								<option value="€">€ (EUR)</option>
+								<option value="₹">₹ (INR)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- APR % & Term Months -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-apr" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Interest Rate (APR %) *
+							</label>
+							<div style="display: flex; align-items: center; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; overflow: hidden;">
+								<input type="number" id="input-apr" value="10.5" min="0" max="36" step="0.25" required style="flex: 1; border: none; padding: 0.55rem; font-family: var(--font-body); font-size: 1.1rem; outline: none; background: transparent;">
+								<span style="padding: 0.55rem 0.75rem; background: var(--bg-paper); border-left: 1px solid var(--fg-pencil); font-weight: bold;">%</span>
+							</div>
+						</div>
+
+						<div>
+							<label for="select-loan-term" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Loan Term (Months)
+							</label>
+							<select id="select-loan-term" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+								<option value="12">12 Months (1 Year)</option>
+								<option value="24">24 Months (2 Years)</option>
+								<option value="36" selected>36 Months (3 Years)</option>
+								<option value="48">48 Months (4 Years)</option>
+								<option value="60">60 Months (5 Years)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Origination Fee & Extra Monthly Payment -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.75rem;">
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-origination-pct" class="font-heading" style="font-size: 0.85rem; color: var(--fg-pencil);">
+									Upfront Origination Fee (%)
+								</label>
+								<span id="origination-fee-display" style="font-size: 0.8rem; color: var(--accent-red); font-weight: bold;">$0</span>
+							</div>
+							<div style="display: flex; align-items: center; gap: 0.5rem;">
+								<input type="range" id="input-origination-pct" min="0" max="8" step="0.5" value="0" style="flex: 1; accent-color: var(--fg-pencil);">
+								<span id="origination-pct-label" style="font-size: 0.85rem; font-weight: bold; width: 35px;">0%</span>
+							</div>
+						</div>
+
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-extra-payment" class="font-heading" style="font-size: 0.85rem; color: var(--fg-pencil);">
+									Extra Monthly Payment (Principal)
+								</label>
+								<span id="extra-payment-display" style="font-size: 0.85rem; color: var(--accent-blue); font-weight: bold;">+$0/mo</span>
+							</div>
+							<div style="display: flex; align-items: center; gap: 0.5rem;">
+								<input type="range" id="input-extra-payment" min="0" max="500" step="25" value="0" style="flex: 1; accent-color: var(--accent-blue);">
+								<span id="extra-payment-label" style="font-size: 0.85rem; font-weight: bold; width: 45px;">$0</span>
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Financial Results & Surcharge Comparison -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Monthly Payment Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								💳 Estimated Monthly Repayment
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Principal + Interest per month
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Export PDF / Print
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Monthly Payment Highlight -->
+					<div style="background: #eff6ff; border: 2.5px solid var(--accent-blue); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: var(--accent-blue); display: block; font-weight: bold;">Estimated Monthly Payment</span>
+						<strong id="res-monthly-payment" class="font-heading" style="font-size: 2.6rem; color: var(--accent-blue); display: block; line-height: 1.2;">$487.52</strong>
+						<span id="res-term-note" style="font-size: 0.8rem; color: var(--accent-blue);">For 36 Months at 10.5% APR</span>
+					</div>
+
+					<!-- Line-Item Totals Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Total Cost of Borrowing
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.95rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">💵 Total Principal Borrowed:</td>
+									<td id="res-principal-amount" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">$15,000.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb; color: var(--accent-red);">
+									<td style="padding: 0.4rem 0;">📈 Total Interest Charges:</td>
+									<td id="res-interest-amount" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">$2,550.72</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🏷️ Upfront Origination Fee:</td>
+									<td id="res-origination-fee" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">$0.00</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #fafafa; font-size: 1.05rem;">
+									<td style="padding: 0.45rem 0; font-weight: bold;">Grand Total Out-of-Pocket:</td>
+									<td id="res-grand-total-paid" style="padding: 0.45rem 0; text-align: right; font-weight: bold; color: var(--accent-red);">$17,550.72</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Principal vs Interest Visual Proportion Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span style="color: var(--accent-blue);">Principal (<span id="bar-principal-pct">85%</span>)</span>
+							<span style="color: var(--accent-red);">Interest (<span id="bar-interest-pct">15%</span>)</span>
+						</div>
+						<div style="display: flex; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="bar-principal" style="width: 85%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+							<div id="bar-interest" style="width: 15%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Extra Payment Interest Savings Alert Card -->
+				<div id="extra-savings-card" class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil); display: none;">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						🎉 Extra Payment Savings Impact!
+					</strong>
+					<p id="extra-savings-text" class="font-body" style="font-size: 0.9rem; line-height: 1.5; margin: 0; color: var(--fg-pencil); text-align: center;">
+						By paying extra each month, you save $420 in interest and pay off your wedding loan 5 months early!
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Official Wedding Loan Repayment Schedule</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exported on: <span id="print-date"></span> | Principal: <span id="print-principal"></span> | Monthly Payment: <span id="print-monthly"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: center;">Month</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Payment</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Principal</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Interest</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Remaining Balance</th>
+					</tr>
+				</thead>
+				<tbody id="print-schedule-body"></tbody>
+			</table>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Wedding Debt & Financing Playbook</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					The Complete Wedding Loan & Financing Guide
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Understanding personal loan interest rates, repayment terms, origination fees, and smart debt-free alternatives.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/bank_vault_sketch.jpg" 
+					alt="Hand drawn line art sketch of a secure bank vault and money bag for wedding financial planning" 
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Visualizing principal versus interest prevents long-term wedding debt regret.
+				</p>
+			</div>
+
+			<!-- Section 1: Detailed Step-by-Step Guide on How to Use This Tool Flawlessly -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Step-by-Step Guide: How to Use This Loan Calculator Flawlessly
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Financing a wedding requires careful calculation so you don't enter marriage burdened by overwhelming monthly payments. Follow this step-by-step roadmap to use this calculator strategically:
+				</p>
+
+				<div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.4rem;">
+							Step 1: Calculate Your Exact "Funding Gap" (Never Over-Borrow)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Do not finance your entire wedding budget. Take your total projected costs (e.g. $35,000) and subtract your confirmed cash savings and family contributions (e.g. $25,000). The remaining difference ($10,000) is your <strong>true funding gap</strong>. Enter this exact number into <strong>Loan Amount Borrowed</strong>.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.4rem;">
+							Step 2: Enter Your Pre-Qualified APR & Origination Fee
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Check your rate with 2-3 online personal loan lenders (using soft credit checks). Input the offered <strong>APR %</strong>. If the lender charges an upfront processing fee (usually 1% to 6%), adjust the <strong>Upfront Origination Fee</strong> slider so you can see how much net cash you will actually receive in hand versus what you owe.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.4rem;">
+							Step 3: Test 24 vs. 36 vs. 48-Month Terms for Monthly Affordability
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Toggle between loan terms. A 24-month term has higher monthly payments but minimizes total interest. A 36 or 48-month term lowers your required monthly bill, providing breathing room in case unexpected moving or honeymoon expenses arise.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #d97706; margin-bottom: 0.4rem;">
+							Step 4: Simulate Extra Monthly Payments to Save Hundreds in Interest
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Use the <strong>Extra Monthly Payment</strong> slider (e.g. +$50 or +$100/mo). The calculator instantly demonstrates how extra principal payments slash compounding interest and accelerate your debt-free date by several months.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+							Step 5: Export Your Amortization Schedule to Word or PDF
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Click <strong>"📝 Export Word (.doc)"</strong> or <strong>"🖨️ Export PDF / Print"</strong> to save your complete month-by-month payment roadmap. You can review this together as a couple to ensure the monthly payment seamlessly fits into your post-wedding household budget.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Term Comparison Table -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					2. How Loan Terms Impact Monthly Payments vs. Total Interest
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Consider a standard <strong>$15,000 wedding loan at 11% APR</strong>. Notice how spreading payments across 5 years lowers monthly strain, but almost triples the total interest paid:
+				</p>
+
+				<div style="overflow-x: auto; margin-bottom: 1.5rem;">
+					<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.95rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Loan Term</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Monthly Payment</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Total Interest Paid</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Total Cost of Loan</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">12 Months (1 Year)</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$1,325.80 / mo</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a;">$909.60</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$15,909.60</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">24 Months (2 Years)</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$699.20 / mo</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a;">$1,780.80</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$16,780.80</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">36 Months (3 Years)</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$491.10 / mo</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">$2,679.60</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$17,679.60</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">60 Months (5 Years)</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$326.15 / mo</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">$4,569.00</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$19,569.00</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Section 2: Personal Loans vs Credit Cards -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					2. Wedding Loan vs. Credit Card vs. Trimming Guest Count
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin: 1.5rem 0;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.5rem; text-align: center;">
+							Fixed Personal Loan
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Fixed APR (8% - 15%), predictable monthly payments, set payoff date. However, missed payments severely harm credit scores and add emotional stress during your first years of marriage.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.5rem; text-align: center;">
+							0% Intro APR Credit Cards
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Zero interest for 12 to 18 months. Great if you can pay the full balance off before the promotional window closes. If not, interest skyrockets to 24% - 29% retroactively.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.5rem; text-align: center;">
+							Trimming the Guest List
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							The #1 debt-free alternative. Cutting 25 guests saves $6,000 to $8,000 in food, drinks, rentals, and invitations with zero interest and zero debt.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 3: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem; text-align: center;">
+					🔗 Integrated Wedding Budget Planning Tools
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/master-budget-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Master Budget Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Allocate your total funds across all categories without debt.</span>
+					</a>
+					<a href="/catering-cost-estimator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Catering Cost Estimator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calculate per-head food, bar, and service fees accurately.</span>
+					</a>
+					<a href="/gift-cash-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Gift & Cash Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Estimate expected registry cash gifts to offset wedding expenses.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 4: FAQs (Centered Heading) -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						What credit score is needed for a wedding loan?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Most lenders require a minimum credit score of <strong>620 to 660</strong> for unsecured personal loans. However, to qualify for competitive single-digit interest rates (6% to 9%), you will need a credit score of <strong>720 or higher</strong>.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Are there prepayment penalties on personal wedding loans?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Most reputable lenders (such as Discover, SoFi, Marcus, and LightStream) do not charge prepayment penalties. This means you can use cash gifts received after the wedding to pay off the entire balance immediately and eliminate all future interest charges.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						How do I export my loan amortization schedule?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Click the <strong>"📝 Export Word (.doc)"</strong> or <strong>"🖨️ Export PDF / Print"</strong> button in the dashboard. The tool exports a clean month-by-month table detailing every monthly payment, principal allocation, interest charge, and remaining balance.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.loan-preset-btn {
+		background: #fff;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.35rem 0.65rem;
+		font-family: var(--font-heading);
+		font-size: 0.82rem;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+	.loan-preset-btn:hover {
+		background: var(--muted-paper);
+	}
+	.loan-preset-btn.active-preset {
+		background: var(--accent-blue) !important;
+		color: #fff !important;
+		border-color: #1e40af !important;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '$';
+
+	const loanAmountInput = document.getElementById('input-loan-amount');
+	const aprInput = document.getElementById('input-apr');
+	const loanTermSelect = document.getElementById('select-loan-term');
+	const originationPctInput = document.getElementById('input-origination-pct');
+	const extraPaymentInput = document.getElementById('input-extra-payment');
+	const currencySelect = document.getElementById('currency-select');
+	const currencySymbolDisplay = document.getElementById('currency-symbol-display');
+
+	const originationFeeDisplay = document.getElementById('origination-fee-display');
+	const originationPctLabel = document.getElementById('origination-pct-label');
+	const extraPaymentDisplay = document.getElementById('extra-payment-display');
+	const extraPaymentLabel = document.getElementById('extra-payment-label');
+
+	const resMonthlyPayment = document.getElementById('res-monthly-payment');
+	const resTermNote = document.getElementById('res-term-note');
+	const resPrincipalAmount = document.getElementById('res-principal-amount');
+	const resInterestAmount = document.getElementById('res-interest-amount');
+	const resOriginationFee = document.getElementById('res-origination-fee');
+	const resGrandTotalPaid = document.getElementById('res-grand-total-paid');
+
+	const barPrincipal = document.getElementById('bar-principal');
+	const barInterest = document.getElementById('bar-interest');
+	const barPrincipalPct = document.getElementById('bar-principal-pct');
+	const barInterestPct = document.getElementById('bar-interest-pct');
+
+	const extraSavingsCard = document.getElementById('extra-savings-card');
+	const extraSavingsText = document.getElementById('extra-savings-text');
+
+	let amortizationSchedule = [];
+
+	function formatMoney(amount) {
+		return `${currencySymbol}${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+	}
+
+	function calculateLoan() {
+		currencySymbol = currencySelect.value;
+		currencySymbolDisplay.textContent = currencySymbol;
+
+		const P = parseFloat(loanAmountInput.value) || 0;
+		const annualRate = parseFloat(aprInput.value) || 0;
+		const n = parseInt(loanTermSelect.value) || 12;
+		const origPct = parseFloat(originationPctInput.value) || 0;
+		const extraPay = parseFloat(extraPaymentInput.value) || 0;
+
+		originationPctLabel.textContent = `${origPct}%`;
+		const originationFee = P * (origPct / 100);
+		originationFeeDisplay.textContent = formatMoney(originationFee);
+
+		extraPaymentLabel.textContent = `${currencySymbol}${extraPay}`;
+		extraPaymentDisplay.textContent = `+${currencySymbol}${extraPay}/mo`;
+
+		let monthlyBase = 0;
+		const i = annualRate / 100 / 12;
+
+		if (P > 0 && n > 0) {
+			if (i > 0) {
+				monthlyBase = P * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+			} else {
+				monthlyBase = P / n;
+			}
+		}
+
+		// Calculate Amortization Schedule
+		amortizationSchedule = [];
+		let balance = P;
+		let totalInterestPaid = 0;
+		let totalPaid = 0;
+		let monthsElapsed = 0;
+
+		const standardTotalInterest = (monthlyBase * n) - P;
+
+		while (balance > 0.01 && monthsElapsed < 360) {
+			monthsElapsed++;
+			const monthlyInterest = balance * i;
+			let actualMonthlyPayment = monthlyBase + extraPay;
+
+			if (balance + monthlyInterest < actualMonthlyPayment) {
+				actualMonthlyPayment = balance + monthlyInterest;
+			}
+
+			const principalPortion = actualMonthlyPayment - monthlyInterest;
+			balance -= principalPortion;
+			if (balance < 0) balance = 0;
+
+			totalInterestPaid += monthlyInterest;
+			totalPaid += actualMonthlyPayment;
+
+			amortizationSchedule.push({
+				month: monthsElapsed,
+				payment: actualMonthlyPayment,
+				principal: principalPortion,
+				interest: monthlyInterest,
+				balance: balance
+			});
+		}
+
+		const grandTotal = totalPaid + originationFee;
+
+		// Update UI
+		resMonthlyPayment.textContent = formatMoney(monthlyBase + extraPay);
+		resTermNote.textContent = `For ${monthsElapsed} Months at ${annualRate}% APR`;
+		resPrincipalAmount.textContent = formatMoney(P);
+		resInterestAmount.textContent = formatMoney(totalInterestPaid);
+		resOriginationFee.textContent = formatMoney(originationFee);
+		resGrandTotalPaid.textContent = formatMoney(grandTotal);
+
+		// Proportions
+		if (grandTotal > 0) {
+			const pPct = Math.round((P / grandTotal) * 100);
+			const iPct = 100 - pPct;
+			barPrincipal.style.width = `${pPct}%`;
+			barInterest.style.width = `${iPct}%`;
+			barPrincipalPct.textContent = `${pPct}%`;
+			barInterestPct.textContent = `${iPct}%`;
+		}
+
+		// Extra payment alert
+		if (extraPay > 0 && monthsElapsed < n) {
+			const interestSaved = standardTotalInterest - totalInterestPaid;
+			const monthsSaved = n - monthsElapsed;
+			extraSavingsCard.style.display = 'block';
+			extraSavingsText.innerHTML = `
+				By paying <strong>+${currencySymbol}${extraPay}/mo</strong>, you will save <strong>${formatMoney(interestSaved)} in interest</strong> and become debt-free <strong>${monthsSaved} months early</strong>!
+			`;
+		} else {
+			extraSavingsCard.style.display = 'none';
+		}
+	}
+
+	// Listeners
+	[loanAmountInput, aprInput, originationPctInput, extraPaymentInput].forEach(el => {
+		el.addEventListener('input', calculateLoan);
+	});
+	[loanTermSelect, currencySelect].forEach(el => {
+		el.addEventListener('change', calculateLoan);
+	});
+
+	// Presets
+	document.querySelectorAll('.loan-preset-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			document.querySelectorAll('.loan-preset-btn').forEach(b => b.classList.remove('active-preset'));
+			btn.classList.add('active-preset');
+
+			loanAmountInput.value = btn.getAttribute('data-amt');
+			aprInput.value = btn.getAttribute('data-apr');
+			loanTermSelect.value = btn.getAttribute('data-term');
+			extraPaymentInput.value = 0;
+			originationPctInput.value = 0;
+
+			calculateLoan();
+		});
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		let rows = '';
+		amortizationSchedule.forEach(row => {
+			rows += `
+				<tr>
+					<td style="border:1px solid #ccc; padding:6px; text-align:center;">Month ${row.month}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right;">${formatMoney(row.payment)}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right;">${formatMoney(row.principal)}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right; color:#b91c1c;">${formatMoney(row.interest)}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${formatMoney(row.balance)}</td>
+				</tr>
+			`;
+		});
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Wedding Loan Amortization Schedule</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 6px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Official Wedding Loan Repayment Schedule</h1>
+				<p>Generated on ${new Date().toLocaleDateString()} | Principal: <strong>${resPrincipalAmount.textContent}</strong> | APR: <strong>${aprInput.value}%</strong> | Total Interest: <strong>${resInterestAmount.textContent}</strong></p>
+				
+				<h3>Month-by-Month Amortization Schedule:</h3>
+				<table>
+					<thead>
+						<tr>
+							<th style="text-align:center;">Month</th>
+							<th style="text-align:right;">Monthly Payment</th>
+							<th style="text-align:right;">Principal Applied</th>
+							<th style="text-align:right;">Interest Charge</th>
+							<th style="text-align:right;">Remaining Balance</th>
+						</tr>
+					</thead>
+					<tbody>
+						${rows}
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding_Loan_Amortization_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString();
+		document.getElementById('print-principal').textContent = resPrincipalAmount.textContent;
+		document.getElementById('print-monthly').textContent = resMonthlyPayment.textContent;
+
+		const tbody = document.getElementById('print-schedule-body');
+		tbody.innerHTML = '';
+
+		amortizationSchedule.forEach(row => {
+			const tr = document.createElement('tr');
+			tr.innerHTML = `
+				<td style="border:1px solid #ccc; padding:5px; text-align:center;">Month ${row.month}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right;">${formatMoney(row.payment)}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right;">${formatMoney(row.principal)}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right; color:#b91c1c;">${formatMoney(row.interest)}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right; font-weight:bold;">${formatMoney(row.balance)}</td>
+			`;
+			tbody.appendChild(tr);
+		});
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Month,Monthly Payment,Principal Applied,Interest Charge,Remaining Balance\n";
+		amortizationSchedule.forEach(row => {
+			csv += `Month ${row.month},${row.payment.toFixed(2)},${row.principal.toFixed(2)},${row.interest.toFixed(2)},${row.balance.toFixed(2)}\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding_Loan_Amortization_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateLoan();
+</script>

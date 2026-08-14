@@ -1,0 +1,303 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Wedding Guest Count Estimator",
+      "url": "https://manage.wedding/guest-count-estimator",
+      "description": "Calculate how many wedding guests you can afford based on your total budget, venue costs, and per-head catering estimates.",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "Any"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does the wedding guest count estimator work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The estimator subtracts your fixed costs (like the venue fee) from your total budget. The remaining budget is then divided by the total per-person costs (catering and bar) to give you the maximum number of guests you can afford to invite."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What should I include in my venue/fixed costs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fixed costs typically include the venue rental fee, planner fees, photography, DJ or band, and decor. Basically, any expense that doesn't significantly change whether you have 50 or 150 guests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does catering usually cost per head?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Catering costs vary wildly by location and style. On average, a plated dinner might range from $75 to $150+ per head, while a buffet could be $50 to $100. Our guest count estimator lets you plug in your own quotes for accurate results."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should I include the bridal party in the guest count?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, your bridal party and yourselves must eat and drink, so always include yourselves in the final guest count estimation when calculating catering and bar expenses."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Wedding Guest Count Estimator (Free & Instant Results)"
+	description="Use our free wedding guest count estimator to figure out exactly how many people you can afford to invite based on your total budget and venue costs."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<section class="section-paper" style="padding: 4rem 2rem; min-height: 100vh;">
+			<div style="max-width: 1000px; margin: 0 auto;">
+				
+				<div style="text-align: center; margin-bottom: 3rem;">
+					<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 60px); color: var(--fg-pencil); transform: rotate(-1deg);">
+						Guest Count Estimator
+					</h1>
+					<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 600px; margin: 0 auto; margin-top: 1rem;">
+						Wondering how many friends and family you can afford to invite? Enter your budget details below and let our tool do the math.
+					</p>
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; align-items: start;">
+					
+					<!-- Form Column -->
+					<div class="hand-card">
+						<h2 class="font-heading" style="font-size: 1.5rem; margin-bottom: 1.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">Your Budget Data</h2>
+						<form id="guest-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
+							
+							<div class="input-group">
+								<label for="total-budget" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Total Budget ($)</label>
+								<input type="number" id="total-budget" value="25000" min="0" step="100" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Everything you have to spend.</small>
+							</div>
+
+							<div class="input-group">
+								<label for="fixed-costs" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Venue & Fixed Costs ($)</label>
+								<input type="number" id="fixed-costs" value="10000" min="0" step="100" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Venue rental, photographer, DJ, etc.</small>
+							</div>
+
+							<div class="input-group">
+								<label for="catering-ph" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Catering Per Head ($)</label>
+								<input type="number" id="catering-ph" value="100" min="0" step="1" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Food cost per person.</small>
+							</div>
+
+							<div class="input-group">
+								<label for="bar-ph" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Bar Per Head ($)</label>
+								<input type="number" id="bar-ph" value="30" min="0" step="1" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Drinks cost per person.</small>
+							</div>
+
+							<button type="submit" class="hand-btn" style="width: 100%; font-size: 1.25rem; margin-top: 1rem;">Calculate Guests</button>
+						</form>
+					</div>
+
+					<!-- Results Column -->
+					<div class="hand-card" id="results-container">
+						<h2 class="font-heading" style="font-size: 1.5rem; margin-bottom: 1.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">Your Estimate</h2>
+						
+						<div style="text-align: center; margin-bottom: 2rem;">
+							<div style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Maximum Affordable Guests</div>
+							<div id="max-guests" class="font-heading" style="font-size: 4rem; color: var(--accent-red); line-height: 1;">115</div>
+							<div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">people</div>
+						</div>
+
+						<div style="margin-bottom: 1.5rem;">
+							<h3 class="font-heading" style="font-size: 1.2rem; margin-bottom: 1rem;">Budget Breakdown</h3>
+							
+							<!-- Dynamic CSS Chart -->
+							<div style="width: 100%; height: 40px; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; overflow: hidden; margin-bottom: 0.5rem;">
+								<div id="chart-fixed" style="width: 40%; background-color: var(--fg-pencil); display: flex; align-items: center; justify-content: center; color: var(--bg-paper); font-weight: bold; font-size: 0.8rem; transition: width 0.3s ease;">40%</div>
+								<div id="chart-variable" style="width: 60%; background-color: var(--accent-blue); display: flex; align-items: center; justify-content: center; color: var(--bg-paper); font-weight: bold; font-size: 0.8rem; transition: width 0.3s ease;">60%</div>
+							</div>
+							
+							<div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+								<div style="display: flex; align-items: center; gap: 0.5rem;">
+									<div style="width: 12px; height: 12px; background-color: var(--fg-pencil);"></div>
+									<span>Fixed Costs</span>
+								</div>
+								<div style="display: flex; align-items: center; gap: 0.5rem;">
+									<div style="width: 12px; height: 12px; background-color: var(--accent-blue);"></div>
+									<span>Guest Costs</span>
+								</div>
+							</div>
+						</div>
+
+						<div style="background-color: rgba(0,0,0,0.03); padding: 1rem; border: 1px dashed var(--fg-pencil);">
+							<div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+								<span>Total Budget:</span>
+								<strong id="display-total">$25,000</strong>
+							</div>
+							<div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+								<span>Fixed Costs:</span>
+								<strong id="display-fixed">-$10,000</strong>
+							</div>
+							<div style="display: flex; justify-content: space-between; border-top: 1px solid var(--fg-pencil); padding-top: 0.5rem;">
+								<span>Remaining for Guests:</span>
+								<strong id="display-remaining">$15,000</strong>
+							</div>
+							<div style="display: flex; justify-content: space-between; margin-top: 0.5rem; color: var(--accent-red);">
+								<span>Per Head Cost:</span>
+								<strong id="display-perhead">$130</strong>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+		<!-- SEO Article Section -->
+		<section class="section-muted" style="padding: 4rem 2rem;">
+			<div style="max-width: 800px; margin: 0 auto;">
+				<article class="hand-card" style="padding: 3rem;">
+					<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem;">How to Use the Wedding Guest Count Estimator</h2>
+					
+					<p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+						Planning a wedding can feel like a massive math problem where the numbers keep moving. You’ve got a budget in mind, but every time you look at a venue or a catering menu, you wonder, "How many people can we actually afford to invite?" That's exactly why we built this <strong>Guest Count Estimator</strong>. It takes the guesswork out of your guest list.
+					</p>
+
+					<figure style="margin: 2rem 0; text-align: center;">
+						<img src="/images/wedding_budget_book.jpg" alt="A messy hand-drawn sketch of a wedding budget book and planner with a pen resting on it, symbolizing the rough work of wedding guest count estimation" style="max-width: 100%; border: 3px solid var(--fg-pencil); border-radius: 8px; transform: rotate(1deg);" />
+						<figcaption style="font-style: italic; margin-top: 0.5rem; color: var(--text-secondary);">Sketching out the numbers makes the reality much clearer.</figcaption>
+					</figure>
+
+					<h3 class="font-heading" style="font-size: 1.8rem; margin-bottom: 1rem; margin-top: 2rem;">The Math Behind the Magic</h3>
+					<p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+						The formula is incredibly simple. First, you take your total wedding budget. Then, you subtract all the fixed costs. Fixed costs are things like your venue fee, photographer, DJ, and dress—these items cost the same whether you have 20 guests or 200 guests. 
+					</p>
+					<p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+						What you are left with is your "variable budget." This is the money dedicated solely to feeding and entertaining your guests. You divide this remaining amount by your per-head cost (the combined price of catering and the bar per person). The result? The absolute maximum number of guests you can afford.
+					</p>
+
+					<h3 class="font-heading" style="font-size: 1.8rem; margin-bottom: 1rem; margin-top: 2rem;">Why This Tool Saves Relationships</h3>
+					<p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+						Let's be honest: creating the guest list is usually the most stressful part of wedding planning. You want to invite everyone, but your wallet is screaming no. By using our guest count estimator, you have hard, objective numbers to show your partner (or your parents). You aren't cutting people because you don't like them; you're cutting people because the math literally does not allow it. It takes the emotion out of the budget.
+					</p>
+
+					<hr style="border: none; border-top: 2px dashed var(--fg-pencil); margin: 3rem 0;" />
+
+					<h2 class="font-heading" style="font-size: 2rem; margin-bottom: 2rem;">Frequently Asked Questions</h2>
+					
+					<div class="faq-container" style="display: flex; flex-direction: column; gap: 1rem;">
+						<details class="faq-item" style="border: 2px solid var(--fg-pencil); padding: 1rem; background: var(--bg-paper);">
+							<summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; list-style-position: inside;">How does the wedding guest count estimator work?</summary>
+							<p style="margin-top: 1rem; line-height: 1.5;">The estimator subtracts your fixed costs (like the venue fee) from your total budget. The remaining budget is then divided by the total per-person costs (catering and bar) to give you the maximum number of guests you can afford to invite.</p>
+						</details>
+
+						<details class="faq-item" style="border: 2px solid var(--fg-pencil); padding: 1rem; background: var(--bg-paper);">
+							<summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; list-style-position: inside;">What should I include in my venue/fixed costs?</summary>
+							<p style="margin-top: 1rem; line-height: 1.5;">Fixed costs typically include the venue rental fee, planner fees, photography, DJ or band, and decor. Basically, any expense that doesn't significantly change whether you have 50 or 150 guests.</p>
+						</details>
+
+						<details class="faq-item" style="border: 2px solid var(--fg-pencil); padding: 1rem; background: var(--bg-paper);">
+							<summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; list-style-position: inside;">How much does catering usually cost per head?</summary>
+							<p style="margin-top: 1rem; line-height: 1.5;">Catering costs vary wildly by location and style. On average, a plated dinner might range from $75 to $150+ per head, while a buffet could be $50 to $100. Our guest count estimator lets you plug in your own quotes for accurate results.</p>
+						</details>
+
+						<details class="faq-item" style="border: 2px solid var(--fg-pencil); padding: 1rem; background: var(--bg-paper);">
+							<summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; list-style-position: inside;">Should I include the bridal party in the guest count?</summary>
+							<p style="margin-top: 1rem; line-height: 1.5;">Yes, your bridal party and yourselves must eat and drink, so always include yourselves in the final guest count estimation when calculating catering and bar expenses.</p>
+						</details>
+					</div>
+
+				</article>
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<script>
+	function calculateGuests() {
+		const budget = parseFloat((document.getElementById('total-budget') as HTMLInputElement).value) || 0;
+		const fixed = parseFloat((document.getElementById('fixed-costs') as HTMLInputElement).value) || 0;
+		const catering = parseFloat((document.getElementById('catering-ph') as HTMLInputElement).value) || 0;
+		const bar = parseFloat((document.getElementById('bar-ph') as HTMLInputElement).value) || 0;
+		
+		const perHead = catering + bar;
+		const remaining = budget - fixed;
+		
+		let maxGuests = 0;
+		if (perHead > 0 && remaining > 0) {
+			maxGuests = Math.floor(remaining / perHead);
+		} else if (remaining < 0) {
+			maxGuests = 0;
+		} else if (perHead === 0 && remaining >= 0) {
+			maxGuests = 999; // effectively unlimited
+		}
+
+		// Update UI
+		document.getElementById('max-guests')!.innerText = maxGuests.toString();
+		document.getElementById('display-total')!.innerText = `$${budget.toLocaleString()}`;
+		document.getElementById('display-fixed')!.innerText = `-$${fixed.toLocaleString()}`;
+		document.getElementById('display-remaining')!.innerText = `$${remaining.toLocaleString()}`;
+		document.getElementById('display-perhead')!.innerText = `$${perHead.toLocaleString()}`;
+
+		// Update Chart
+		let fixedPct = 0;
+		let varPct = 0;
+		
+		if (budget > 0) {
+			if (fixed >= budget) {
+				fixedPct = 100;
+				varPct = 0;
+			} else {
+				fixedPct = (fixed / budget) * 100;
+				varPct = 100 - fixedPct;
+			}
+		}
+
+		document.getElementById('chart-fixed')!.style.width = `${fixedPct}%`;
+		document.getElementById('chart-fixed')!.innerText = `${Math.round(fixedPct)}%`;
+		document.getElementById('chart-variable')!.style.width = `${varPct}%`;
+		document.getElementById('chart-variable')!.innerText = `${Math.round(varPct)}%`;
+	}
+
+	// Listen for form submission
+	document.getElementById('guest-form')?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		calculateGuests();
+	});
+
+	// Also calculate on input change for instant feedback
+	document.getElementById('guest-form')?.addEventListener('input', calculateGuests);
+
+	// Initial calculation
+	calculateGuests();
+</script>
+
+<style>
+	details > summary::-webkit-details-marker {
+		display: none;
+	}
+	details > summary {
+		list-style: none;
+		position: relative;
+		padding-left: 1.5rem;
+	}
+	details > summary::before {
+		content: '▶';
+		position: absolute;
+		left: 0;
+		top: 2px;
+		font-size: 0.8rem;
+		transition: transform 0.2s;
+	}
+	details[open] > summary::before {
+		transform: rotate(90deg);
+	}
+</style>

@@ -1,0 +1,811 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Honeymoon Budget Estimator by Country Tier",
+      "url": "https://manage.wedding/honeymoon-budget-estimator",
+      "description": "Free honeymoon budget estimator by destination country tiers. Calculate exact travel costs for flights, hotels, overwater bungalows, romantic dining, excursions, and travel insurance. Export to Word, PDF, or Excel.",
+      "applicationCategory": "TravelApplication",
+      "operatingSystem": "All"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How much does the average honeymoon cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The average honeymoon costs between $4,500 and $8,500 for a 7 to 10-day trip. However, costs depend heavily on the country tier: an affordable trip to Bali or Mexico averages $3,000 to $5,000, a classic European or Caribbean vacation ranges from $6,000 to $10,000, while ultra-luxury overwater bungalow escapes in the Maldives or Bora Bora range from $12,000 to $25,000+."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does the destination country tier impact the honeymoon budget so drastically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Local purchasing power and daily cost of living index vary wildly between destinations. In Tier 1 countries (like Thailand, Vietnam, or Costa Rica), a 5-star beachfront villa and Michelin-caliber romantic dinners cost a fraction ($150-$250/day) of what the same luxury standards cost in Tier 3 destinations like the Amalfi Coast, Switzerland, or the Maldives ($800-$1,800/day)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How far in advance should couples book their honeymoon?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For international flights and popular luxury resorts (especially in high season), book 6 to 9 months in advance to secure optimal flight routes and early-bird resort rates. For domestic trips or all-inclusive Caribbean packages, 4 to 6 months is generally sufficient."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can we fund our honeymoon using a wedding cash registry?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Modern couples frequently set up a Honeymoon Registry fund where guests can sponsor specific experiences—such as round-trip flights, a sunset catamaran cruise, couple's spa massages, or a romantic wine tasting dinner. This can offset 40% to 70% of your total trip cost."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Honeymoon Budget Estimator by Country Tier (Free Travel Calculator & Word Export) | Manage.Wedding"
+	description="Calculate exact honeymoon costs based on destination country tiers. Estimate flights, overwater bungalows, dining, excursions, and transit with instant Word and PDF exports."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Honeymoon Budget Estimator
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Calculate realistic getaway expenses based on your <strong>destination country tier</strong>, travel style, flight class, and trip duration. Export your official <strong>Honeymoon Budget & Itinerary</strong> to <strong>Word (.doc)</strong> or <strong>PDF</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> How to Use This Honeymoon Estimator in 3 Easy Steps
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Select Destination Tier & Country
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Choose your destination tier—from affordable tropical spots (Bali, Mexico) to classic European getaways or luxury overwater bungalows (Maldives, Bora Bora).
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Customize Lodging & Dining Style
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Adjust your flight class, resort tier (boutique vs. 5-star vs. overwater villa), daily excursions, and duration (in days) for two travelers.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Export Your Travel Budget Plan
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Click <strong>"📝 Export Word (.doc)"</strong> or <strong>"🖨️ Export PDF"</strong> to save your complete honeymoon cost proposal for budgeting or your honeymoon cash registry!
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="honeymoon-calc-grid">
+			
+			<!-- Left Column: Travel Parameters Form -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							✈️ Destination & Travel Parameters
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							All calculations automatically include costs for two travelers
+						</span>
+					</div>
+
+					<!-- Currency Selector -->
+					<div style="display: flex; align-items: center; gap: 0.3rem;">
+						<span style="font-size: 0.85rem; font-weight: bold;">Currency:</span>
+						<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="$" selected>$ (USD/CAD/AUD)</option>
+							<option value="£">£ (GBP)</option>
+							<option value="€">€ (EUR)</option>
+							<option value="₹">₹ (INR)</option>
+						</select>
+					</div>
+				</div>
+
+				<form id="honeymoon-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+					
+					<!-- 1. Destination Country Tier -->
+					<div>
+						<label for="select-country-tier" class="font-heading" style="display: block; font-size: 1rem; color: var(--accent-red); margin-bottom: 0.3rem;">
+							1. Destination Country Tier & Cost Index *
+						</label>
+						<select id="select-country-tier" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+							<option value="tier1">🌴 Tier 1: Affordable Tropical & Culture (Bali, Thailand, Mexico, Portugal, Costa Rica)</option>
+							<option value="tier2" selected>🏖️ Tier 2: Classic Mid-Range & Resorts (Caribbean, Italy, Spain, Japan, Hawaii, Greece)</option>
+							<option value="tier3">💎 Tier 3: Ultra-Luxury & Overwater (Maldives, Bora Bora/Tahiti, Amalfi, Swiss Alps)</option>
+							<option value="tier4">🦁 Tier 4: Specialty Bucket-List (African Safari, Galapagos, Private Island)</option>
+							<option value="domestic">🚗 Tier 5: Domestic Getaways & Road Trips (Napa Valley, Charleston, National Parks)</option>
+						</select>
+					</div>
+
+					<!-- 2. Trip Duration & Flight Class -->
+					<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem;">
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-trip-days" class="font-heading" style="font-size: 0.9rem; color: var(--fg-pencil);">
+									Trip Duration (Days / Nights)
+								</label>
+								<span id="trip-days-display" style="font-size: 0.95rem; font-weight: bold; color: var(--accent-blue);">8 Days</span>
+							</div>
+							<div style="display: flex; align-items: center; gap: 0.5rem;">
+								<input type="range" id="input-trip-days" min="3" max="28" value="8" step="1" style="flex: 1; accent-color: var(--accent-blue);">
+								<input type="number" id="input-trip-days-num" value="8" min="3" max="28" style="width: 50px; padding: 0.3rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-align: center; font-weight: bold;">
+							</div>
+						</div>
+
+						<div>
+							<label for="select-flight-class" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Flights for Two (Round-Trip)
+							</label>
+							<select id="select-flight-class" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.88rem; background: #fff;">
+								<option value="economy" selected>Main Cabin Economy</option>
+								<option value="premium">Premium Economy (+40%)</option>
+								<option value="business">Business / First Class (2.5x)</option>
+								<option value="points">Credit Card Points / Miles ($150 taxes)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- 3. Resort & Lodging Standard -->
+					<div>
+						<label for="select-lodging-style" class="font-heading" style="display: block; font-size: 1rem; color: var(--accent-blue); margin-bottom: 0.3rem;">
+							2. Accommodation & Resort Style (Per Night)
+						</label>
+						<select id="select-lodging-style" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="boutique">Cozy Boutique Hotel / Airbnb Superhost</option>
+							<option value="resort4" selected>4-Star Beachfront Resort / Historic City Hotel</option>
+							<option value="luxury5">5-Star Luxury Resort / Private Pool Villa</option>
+							<option value="overwater">Overwater Bungalow / Ultra-Luxe Safari Lodge</option>
+						</select>
+					</div>
+
+					<!-- 4. Dining, Excursions & Extras -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.75rem;">
+						<span class="font-heading" style="font-size: 0.95rem; color: #16a34a; display: block;">
+							3. Dining, Excursions & Incidentals (For Couple)
+						</span>
+						
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 0.2rem;">Dining & Cocktail Style</span>
+								<select id="select-dining-style" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+									<option value="moderate">Mix of Casual Cafes & Romantic Dinners</option>
+									<option value="fine_dining" selected>Upscale Dining & Sunset Cocktails Daily</option>
+									<option value="budget">Local Markets & Street Food Exploration</option>
+									<option value="michelin">Michelin-Star Tasting Menus & Private Dinners</option>
+								</select>
+							</div>
+
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 0.2rem;">Daily Excursions & Activities</span>
+								<select id="select-excursions-style" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+									<option value="moderate" selected>Couple's Massage, Catamaran & Tours</option>
+									<option value="light">Relaxed Beach Days & Self-Guided Walks</option>
+									<option value="heavy">Daily Adventure (Helicopters, Scuba, Private Guides)</option>
+								</select>
+							</div>
+						</div>
+
+						<div style="display: flex; gap: 1rem; flex-wrap: wrap; padding-top: 0.3rem;">
+							<label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+								<input type="checkbox" id="chk-travel-insurance" checked style="accent-color: var(--fg-pencil);">
+								<span>Include Travel Insurance & Airport Transfers ($250)</span>
+							</label>
+							<label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+								<input type="checkbox" id="chk-shopping-buffer" checked style="accent-color: var(--fg-pencil);">
+								<span>Souvenirs & Shopping Buffer ($350)</span>
+							</label>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Financial Results & Cost Breakdown -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Honeymoon Total Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								🏖️ Estimated Honeymoon Budget
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Complete all-inclusive vacation forecast for two
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Export PDF / Print
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Budget Total Highlight -->
+					<div style="background: #f0fdf4; border: 2.5px solid #16a34a; border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: #16a34a; display: block; font-weight: bold;">Estimated Total Trip Budget</span>
+						<strong id="res-grand-total" class="font-heading" style="font-size: 2.6rem; color: #16a34a; display: block; line-height: 1.2;">$7,450</strong>
+						<span id="res-per-day-note" style="font-size: 0.8rem; color: #16a34a;">Approx. $931 / Day for Two Travelers</span>
+					</div>
+
+					<!-- Line-Item Category Breakdown Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Itemized Travel Expense Summary
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.92rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">✈️ Round-Trip Flights (2 Travelers):</td>
+									<td id="res-flight-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$2,400.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🏨 Resort Lodging (<span id="res-nights-count">8</span> Nights):</td>
+									<td id="res-hotel-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$2,800.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🍽️ Food & Romantic Dining:</td>
+									<td id="res-food-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$1,360.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🏄 Excursions & Couple Activities:</td>
+									<td id="res-excursions-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$800.00</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #fafafa;">
+									<td style="padding: 0.35rem 0;">🛡️ Insurance, Transit & Buffer:</td>
+									<td id="res-extras-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$600.00</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Visual Travel Proportion Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span style="color: var(--accent-red);">Flights (<span id="pct-flights">32%</span>)</span>
+							<span style="color: var(--accent-blue);">Resort (<span id="pct-hotel">38%</span>)</span>
+							<span style="color: #16a34a;">Dining (<span id="pct-food">18%</span>)</span>
+							<span style="color: #7c3aed;">Fun (<span id="pct-excursions">12%</span>)</span>
+						</div>
+						<div style="display: flex; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="bar-flights" style="width: 32%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+							<div id="bar-hotel" style="width: 38%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+							<div id="bar-food" style="width: 18%; background: #16a34a; transition: width 0.3s ease;"></div>
+							<div id="bar-excursions" style="width: 12%; background: #7c3aed; transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Registry Cash Fund Tip Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						💡 Honeymoon Registry Pro-Tip:
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; line-height: 1.5; margin: 0; color: var(--fg-pencil); text-align: center;">
+						Turn line items from this calculator into tangible registry gifts! Guests love gifting specific experiences like <em>"Romantic Sunset Dinner in Italy ($150)"</em> or <em>"Couple's Beachside Massage ($200)"</em>.
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Official Honeymoon Travel Budget</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exported on: <span id="print-date"></span> | Total Trip Budget: <span id="print-total"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Travel Budget Category</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 120px; text-align: right;">Estimated Cost</th>
+					</tr>
+				</thead>
+				<tbody id="print-honeymoon-body"></tbody>
+			</table>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Honeymoon Travel & Financing Playbook</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					The Complete Honeymoon Budgeting Guide by Country Tier
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Understanding destination purchasing power, flight vs. resort expenses, shoulder seasons, and honeymoon registry funds.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/wedding_budget_book.jpg" 
+					alt="Hand drawn line art sketch of a honeymoon vacation budget with passports, airplane tickets, and travel itinerary" 
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Choosing the right country tier allows you to experience 5-star luxury at a 3-star price point.
+				</p>
+			</div>
+
+			<!-- Section 1: Detailed Step-by-Step Guide on How to Use This Tool Flawlessly -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Step-by-Step Guide: How to Use This Honeymoon Estimator
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					A dream honeymoon doesn't happen by accident—it requires matching your travel vision with a realistic financial plan. Here is how to use this tool seamlessly:
+				</p>
+
+				<div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.4rem;">
+							Step 1: Compare Country Tiers to Maximize Your Purchasing Power
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Switch between <strong>Tier 1 (Southeast Asia / Latin America)</strong> and <strong>Tier 3 (Maldives / Swiss Alps)</strong>. If your total budget is $6,000, you can stay for 14 nights in a 5-star private pool villa with personal chefs in Bali, whereas that same budget might only cover 4 nights in an overwater bungalow in Bora Bora once international flights are factored in.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.4rem;">
+							Step 2: Balance Flight Cabin Class vs. Resort Upgrades
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Notice how selecting Business Class increases your flight total by 2.5x. For many couples, booking Main Cabin Economy or using credit card points for flights frees up $2,000 to $4,000 to upgrade to a beachfront suite or book luxury helicopter tours.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.4rem;">
+							Step 3: Budget Daily Dining & Excursions for Two
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Select your dining style. Fine dining with champagne and sunset cocktails in Western Europe or resort islands averages $160 to $250/day per couple, while delicious street food and local trattorias can average $60 to $100/day.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #d97706; margin-bottom: 0.4rem;">
+							Step 4: Export Your Travel Budget & Create Your Registry
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Click <strong>"📝 Export Word (.doc)"</strong> or <strong>"🖨️ Export PDF / Print"</strong>. You can use these calculated line items directly on your wedding website registry (e.g. Zola or Honeyfund) to allow family and friends to sponsor specific portions of your trip!
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Country Tier Matrix Table -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					2. 2026 Honeymoon Cost Index by Destination Country Tier
+				</h3>
+				<div style="overflow-x: auto; margin-bottom: 1.5rem;">
+					<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.95rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Country Tier</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Popular Destinations</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Avg. Daily Spend (Couple)</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">7-Night Total Range</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Tier 1: Affordable Tropical</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Bali, Thailand, Vietnam, Mexico, Costa Rica, Portugal</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$140 - $240 / day</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a;">$3,200 - $5,200</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Tier 2: Classic Mid-Range</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Italy, Spain, Jamaica, Dominican Rep, Japan, Hawaii</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$300 - $550 / day</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">$6,000 - $9,500</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed;">Tier 3: Luxury Islands</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Maldives, Bora Bora, Santorini Caldera, Swiss Alps</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$750 - $1,600 / day</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">$12,000 - $22,000+</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #d97706;">Tier 4: Specialty Bucket-List</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">African Safari (Tanzania, Kenya), Galapagos Cruise</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$1,000 - $2,200 / day</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">$14,000 - $28,000+</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Section 3: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem; text-align: center;">
+					🔗 Integrated Wedding & Travel Planning Tools
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/master-budget-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Master Budget Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Allocate 10-15% of your total wedding funds to the honeymoon.</span>
+					</a>
+					<a href="/gift-cash-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Gift & Cash Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Estimate honeymoon cash fund gifts from wedding guests.</span>
+					</a>
+					<a href="/wedding-checklist" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Wedding Master Checklist</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Track passport renewals, travel vaccinations, and flight booking deadlines.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 4: FAQs (Centered Heading) -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						When is the best time to travel for lower honeymoon prices?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Traveling during the <strong>"shoulder season"</strong> (April–May or September–October for Europe and the Caribbean) offers 25% to 40% discounts on luxury resorts and flights compared to peak summer and holiday dates, along with significantly smaller tourist crowds.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Do all-inclusive honeymoon resorts actually save money?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						In the Caribbean and Mexico, all-inclusive resorts can save couples $800 to $1,500 by bundling all meals, premium cocktails, water sports, and airport transfers into one predictable upfront rate. In Europe or Southeast Asia, however, paying as you go at local restaurants is usually cheaper and provides a far richer cultural experience.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						How do I export my honeymoon itinerary budget?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Click the <strong>"📝 Export Word (.doc)"</strong> or <strong>"🖨️ Export PDF / Print"</strong> button in the dashboard. The tool exports a clean cost breakdown formatted for travel binders, budgeting spreadsheets, or your honeymoon gift registry.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '$';
+
+	// Tier Matrix Base Costs (for 2 travelers)
+	const tierRates = {
+		tier1: {
+			flightsBase: 1400,
+			lodging: { boutique: 90, resort4: 170, luxury5: 320, overwater: 650 },
+			dining: { budget: 50, moderate: 90, fine_dining: 160, michelin: 280 },
+			excursions: { light: 30, moderate: 70, heavy: 160 }
+		},
+		tier2: {
+			flightsBase: 2000,
+			lodging: { boutique: 180, resort4: 350, luxury5: 650, overwater: 1100 },
+			dining: { budget: 90, moderate: 170, fine_dining: 260, michelin: 450 },
+			excursions: { light: 50, moderate: 110, heavy: 240 }
+		},
+		tier3: {
+			flightsBase: 3200,
+			lodging: { boutique: 350, resort4: 650, luxury5: 1200, overwater: 1900 },
+			dining: { budget: 140, moderate: 250, fine_dining: 420, michelin: 750 },
+			excursions: { light: 90, moderate: 200, heavy: 450 }
+		},
+		tier4: {
+			flightsBase: 3800,
+			lodging: { boutique: 450, resort4: 850, luxury5: 1500, overwater: 2400 },
+			dining: { budget: 160, moderate: 280, fine_dining: 450, michelin: 800 },
+			excursions: { light: 120, moderate: 280, heavy: 600 }
+		},
+		domestic: {
+			flightsBase: 800,
+			lodging: { boutique: 150, resort4: 280, luxury5: 550, overwater: 900 },
+			dining: { budget: 80, moderate: 150, fine_dining: 240, michelin: 420 },
+			excursions: { light: 40, moderate: 90, heavy: 200 }
+		}
+	};
+
+	const countryTierSelect = document.getElementById('select-country-tier');
+	const tripDaysSlider = document.getElementById('input-trip-days');
+	const tripDaysNum = document.getElementById('input-trip-days-num');
+	const tripDaysDisplay = document.getElementById('trip-days-display');
+
+	const flightClassSelect = document.getElementById('select-flight-class');
+	const lodgingStyleSelect = document.getElementById('select-lodging-style');
+	const diningStyleSelect = document.getElementById('select-dining-style');
+	const excursionsStyleSelect = document.getElementById('select-excursions-style');
+
+	const chkInsurance = document.getElementById('chk-travel-insurance');
+	const chkBuffer = document.getElementById('chk-shopping-buffer');
+	const currencySelect = document.getElementById('currency-select');
+
+	// Result Elements
+	const resGrandTotal = document.getElementById('res-grand-total');
+	const resPerDayNote = document.getElementById('res-per-day-note');
+	const resFlightTotal = document.getElementById('res-flight-total');
+	const resHotelTotal = document.getElementById('res-hotel-total');
+	const resFoodTotal = document.getElementById('res-food-total');
+	const resExcursionsTotal = document.getElementById('res-excursions-total');
+	const resExtrasTotal = document.getElementById('res-extras-total');
+	const resNightsCount = document.getElementById('res-nights-count');
+
+	const barFlights = document.getElementById('bar-flights');
+	const barHotel = document.getElementById('bar-hotel');
+	const barFood = document.getElementById('bar-food');
+	const barExcursions = document.getElementById('bar-excursions');
+
+	const pctFlights = document.getElementById('pct-flights');
+	const pctHotel = document.getElementById('pct-hotel');
+	const pctFood = document.getElementById('pct-food');
+	const pctExcursions = document.getElementById('pct-excursions');
+
+	function formatMoney(amount) {
+		return `${currencySymbol}${Math.round(amount).toLocaleString('en-US')}`;
+	}
+
+	function calculateHoneymoon() {
+		currencySymbol = currencySelect.value;
+		const tierKey = countryTierSelect.value;
+		const tier = tierRates[tierKey] || tierRates.tier2;
+
+		const days = parseInt(tripDaysSlider.value) || 8;
+		tripDaysNum.value = days;
+		tripDaysDisplay.textContent = `${days} Days / ${days} Nights`;
+		resNightsCount.textContent = days;
+
+		// 1. Flights
+		let flightCost = tier.flightsBase;
+		const flightClass = flightClassSelect.value;
+		if (flightClass === 'premium') flightCost *= 1.4;
+		else if (flightClass === 'business') flightCost *= 2.5;
+		else if (flightClass === 'points') flightCost = 150; // Taxes/fees only
+
+		// 2. Lodging
+		const lodgingPerNight = tier.lodging[lodgingStyleSelect.value] || tier.lodging.resort4;
+		const hotelCost = lodgingPerNight * days;
+
+		// 3. Dining
+		const diningPerDay = tier.dining[diningStyleSelect.value] || tier.dining.fine_dining;
+		const foodCost = diningPerDay * days;
+
+		// 4. Excursions
+		const excursionsPerDay = tier.excursions[excursionsStyleSelect.value] || tier.excursions.moderate;
+		const excursionsCost = excursionsPerDay * days;
+
+		// 5. Extras
+		let extrasCost = 0;
+		if (chkInsurance.checked) extrasCost += 250;
+		if (chkBuffer.checked) extrasCost += 350;
+
+		const grandTotal = flightCost + hotelCost + foodCost + excursionsCost + extrasCost;
+		const perDayCost = Math.round(grandTotal / days);
+
+		// Update UI
+		resGrandTotal.textContent = formatMoney(grandTotal);
+		resPerDayNote.textContent = `Approx. ${formatMoney(perDayCost)} / Day for Two Travelers`;
+		resFlightTotal.textContent = formatMoney(flightCost);
+		resHotelTotal.textContent = formatMoney(hotelCost);
+		resFoodTotal.textContent = formatMoney(foodCost);
+		resExcursionsTotal.textContent = formatMoney(excursionsCost);
+		resExtrasTotal.textContent = formatMoney(extrasCost);
+
+		// Bar Chart
+		if (grandTotal > 0) {
+			const pF = Math.round((flightCost / grandTotal) * 100);
+			const pH = Math.round((hotelCost / grandTotal) * 100);
+			const pD = Math.round((foodCost / grandTotal) * 100);
+			const pE = 100 - pF - pH - pD;
+
+			barFlights.style.width = `${pF}%`;
+			barHotel.style.width = `${pH}%`;
+			barFood.style.width = `${pD}%`;
+			barExcursions.style.width = `${Math.max(2, pE)}%`;
+
+			pctFlights.textContent = `${pF}%`;
+			pctHotel.textContent = `${pH}%`;
+			pctFood.textContent = `${pD}%`;
+			pctExcursions.textContent = `${Math.max(2, pE)}%`;
+		}
+	}
+
+	// Listeners
+	tripDaysSlider.addEventListener('input', () => {
+		tripDaysNum.value = tripDaysSlider.value;
+		calculateHoneymoon();
+	});
+	tripDaysNum.addEventListener('input', () => {
+		tripDaysSlider.value = tripDaysNum.value;
+		calculateHoneymoon();
+	});
+
+	[countryTierSelect, flightClassSelect, lodgingStyleSelect, diningStyleSelect, excursionsStyleSelect, chkInsurance, chkBuffer, currencySelect].forEach(el => {
+		el.addEventListener('change', calculateHoneymoon);
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Honeymoon Travel Budget Plan</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Official Honeymoon Travel Budget</h1>
+				<p>Generated on ${new Date().toLocaleDateString()} | Destination: <strong>${countryTierSelect.options[countryTierSelect.selectedIndex].text.split('(')[0]}</strong> | Duration: <strong>${tripDaysSlider.value} Days</strong> | Estimated Total: <strong>${resGrandTotal.textContent}</strong> (${resPerDayNote.textContent})</p>
+				
+				<h3>Itemized Travel Expense Breakdown:</h3>
+				<table>
+					<thead>
+						<tr>
+							<th>Travel Category</th>
+							<th style="text-align:right;">Estimated Budget</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td>Round-Trip Flights for Two (${flightClassSelect.options[flightClassSelect.selectedIndex].text})</td><td style="text-align:right; font-weight:bold;">${resFlightTotal.textContent}</td></tr>
+						<tr><td>Resort Lodging (${tripDaysSlider.value} Nights @ ${lodgingStyleSelect.options[lodgingStyleSelect.selectedIndex].text})</td><td style="text-align:right; font-weight:bold;">${resHotelTotal.textContent}</td></tr>
+						<tr><td>Dining, Cocktails & Food (${diningStyleSelect.options[diningStyleSelect.selectedIndex].text})</td><td style="text-align:right; font-weight:bold;">${resFoodTotal.textContent}</td></tr>
+						<tr><td>Excursions & Couple's Activities (${excursionsStyleSelect.options[excursionsStyleSelect.selectedIndex].text})</td><td style="text-align:right; font-weight:bold;">${resExcursionsTotal.textContent}</td></tr>
+						<tr><td>Travel Insurance, Airport Transfers & Shopping Buffer</td><td style="text-align:right; font-weight:bold;">${resExtrasTotal.textContent}</td></tr>
+						<tr style="background:#f2f2f2; font-weight:bold; font-size:15px;">
+							<td>Total Trip Budget Needed</td>
+							<td style="text-align:right; color:#16a34a;">${resGrandTotal.textContent}</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 style="margin-top:25px;">Honeymoon Travel Reminders:</h3>
+				<p>• Check passport expiration dates (must have at least 6 months validity from departure date).</p>
+				<p>• Notify credit card companies of international travel to avoid blocked transactions.</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Honeymoon_Budget_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString();
+		document.getElementById('print-total').textContent = resGrandTotal.textContent;
+
+		const tbody = document.getElementById('print-honeymoon-body');
+		tbody.innerHTML = `
+			<tr><td style="border:1px solid #ccc; padding:6px;">Round-Trip Flights for Two</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resFlightTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Resort Lodging (${tripDaysSlider.value} Nights)</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resHotelTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Dining & Romantic Meals</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resFoodTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Excursions & Spa Activities</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resExcursionsTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Insurance, Transfers & Buffer</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resExtrasTotal.textContent}</td></tr>
+			<tr style="background:#f2f2f2;"><td style="border:1px solid #ccc; padding:6px; font-weight:bold; font-size:13px;">Estimated Total Trip Budget</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold; font-size:13px; color:#16a34a;">${resGrandTotal.textContent}</td></tr>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Travel Category,Estimated Budget\n";
+		csv += `"Round-Trip Flights (2 Travelers)","${resFlightTotal.textContent}"\n`;
+		csv += `"Resort Lodging (${tripDaysSlider.value} Nights)","${resHotelTotal.textContent}"\n`;
+		csv += `"Food & Romantic Dining","${resFoodTotal.textContent}"\n`;
+		csv += `"Excursions & Activities","${resExcursionsTotal.textContent}"\n`;
+		csv += `"Insurance & Incidentals","${resExtrasTotal.textContent}"\n`;
+		csv += `"Total Honeymoon Budget","${resGrandTotal.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Honeymoon_Budget_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateHoneymoon();
+</script>

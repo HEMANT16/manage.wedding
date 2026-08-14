@@ -1,0 +1,1230 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Wedding Cake Serving Calculator & Tier Guide",
+      "url": "https://manage.wedding/cake-serving-calculator",
+      "description": "Estimate exact wedding cake servings, tier sizes, square vs round cake yields, and sheet cake portions. Includes interactive tier visuals and cutting charts.",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "All"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How big of a wedding cake do I need for 100 guests?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For 100 guests, a standard 3-tier round wedding cake measuring 6\", 9\", and 12\" in diameter yields exactly 100 wedding-sized servings (1\" x 2\" x 4\"). Alternatively, a 6\", 8\", and 10\" 3-tier cake combined with a 9\"x13\" quarter sheet cake in the kitchen comfortably serves 100+ guests while saving on decorating costs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between wedding cake servings and party cake servings?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standard wedding cake servings measure 1 inch by 2 inches by 4 inches tall (~2 sq. in. / 8 cubic in.), designed for formal events where cake is served after a multi-course dinner. Party cake servings measure 2 inches by 2 inches (~4 sq. in. / 16 cubic in.), providing double the volume for casual birthdays or events where cake is the primary dessert."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should you include the top tier in your guest serving count?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If you follow the tradition of freezing and saving the 6-inch top tier for your first wedding anniversary, do not count it toward your guest servings. Subtract approximately 12 servings from your total cake yield or order an additional tier or sheet cake."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many people does a full, half, and quarter sheet cake feed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A full sheet cake (18\" x 24\" or 18\" x 26\") feeds 96 to 117 people with 2\"x2\" party slices, or up to 192 people with 1\"x2\" wedding slices. A half sheet cake (12\" x 18\") feeds 48 to 54 party slices (96 wedding slices). A quarter sheet cake (9\" x 13\") feeds 24 to 28 party slices (48 wedding slices)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do bakers support and stack multi-tiered cakes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each tier sits on a sturdy greaseproof cake board cut to the exact diameter of the tier. Food-safe wooden or plastic support dowels are inserted into the tier below to bear the weight of the tiers above, preventing sinking or leaning."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Cake Serving Calculator | Wedding Tier & Sheet Size Guide [Free]"
+	description="Calculate exact wedding cake servings, tier sizes, round vs square yields, and sheet cake portions. Includes interactive tier visuals, cutting guides, and serving charts."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2.5rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Wedding Cake Serving Calculator
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Estimate how much cake you need for your wedding or party. Choose cake shape, tier style, slice dimensions, and explore visual tier breakdowns and cutting charts.
+				</p>
+			</div>
+		</section>
+
+		<!-- Interactive Calculator & Visual Studio Grid -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; margin-bottom: 3.5rem;" class="calc-container-grid">
+			
+			<!-- Left Column: Controls & Inputs -->
+			<div class="hand-card" style="padding: 2rem;">
+				<h2 class="font-heading" style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--fg-pencil); display: flex; align-items: center; gap: 0.5rem;">
+					<span>🎂</span> Cake Specifications
+				</h2>
+
+				<form id="cake-calc-form">
+					
+					<!-- Calculation Mode -->
+					<div style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Cake Style / Mode:
+						</label>
+						<div class="mode-select-grid">
+							<label class="mode-tab active" id="tab-tiered">
+								<input type="radio" name="cakeMode" value="tiered" checked style="display: none;"> Tiered Display
+							</label>
+							<label class="mode-tab" id="tab-sheet">
+								<input type="radio" name="cakeMode" value="sheet" style="display: none;"> Sheet Cake
+							</label>
+							<label class="mode-tab" id="tab-combo">
+								<input type="radio" name="cakeMode" value="combo" style="display: none;"> Display + Sheet
+							</label>
+						</div>
+					</div>
+
+					<!-- Guest Count -->
+					<div style="margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+							<label class="font-heading" for="guest-count" style="font-size: 1.15rem; color: var(--fg-pencil);">
+								Number of Guests:
+							</label>
+							<span id="guest-badge" class="font-heading" style="background: var(--accent-blue); color: #fff; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.9rem;">100 Guests</span>
+						</div>
+						<input type="range" id="guest-slider" min="10" max="400" step="5" value="100" style="width: 100%; margin-bottom: 0.5rem; accent-color: var(--accent-blue);">
+						<div style="display: flex; align-items: center; gap: 0.5rem;">
+							<input type="number" id="guest-count" class="form-input" min="1" max="1000" value="100" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.15rem;">
+						</div>
+					</div>
+
+					<!-- Cake Shape -->
+					<div id="shape-group" style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Cake Tier Shape:
+						</label>
+						<select id="cake-shape" class="form-input" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.15rem; background: #fff;">
+							<option value="round">Round (Traditional & Elegant)</option>
+							<option value="square">Square (~25% more servings per tier)</option>
+							<option value="heart">Heart Shape (Romantic & Trendy)</option>
+						</select>
+					</div>
+
+					<!-- Slice / Portion Size -->
+					<div style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Portion / Slice Size:
+						</label>
+						<select id="portion-size" class="form-input" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.15rem; background: #fff;">
+							<option value="wedding">Wedding Serving (1" x 2" x 4" tall — Standard 2 sq in)</option>
+							<option value="party">Party / Birthday Serving (2" x 2" x 4" tall — Generous 4 sq in)</option>
+							<option value="dessert">Dessert Serving (1.5" x 2" x 4" tall — Mid 3 sq in)</option>
+						</select>
+						<small class="font-body" style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">
+							*Wedding slices are standard for receptions with a multi-course dinner.
+						</small>
+					</div>
+
+					<!-- Tier Preference (Tiered Mode) -->
+					<div id="tier-pref-group" style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Tier Configuration:
+						</label>
+						<select id="tier-count-pref" class="form-input" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.15rem; background: #fff;">
+							<option value="auto">Auto-Recommend Best Tier Proportions</option>
+							<option value="1">Single Tier (1 Tier)</option>
+							<option value="2">2 Tiers (Intimate 30-65 Guests)</option>
+							<option value="3">3 Tiers (Classic 75-130 Guests)</option>
+							<option value="4">4 Tiers (Grand 130-220 Guests)</option>
+							<option value="5">5 Tiers (Royal 220+ Guests)</option>
+						</select>
+					</div>
+
+					<!-- Anniversary Top Tier Checkbox -->
+					<div style="margin-bottom: 1.5rem; padding: 0.75rem; background: var(--bg-paper); border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+						<label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="save-top-tier" style="margin-top: 0.3rem; transform: scale(1.2);">
+							<span class="font-body" style="font-size: 1.05rem; color: var(--fg-pencil); line-height: 1.4;">
+								<strong>Save Top Tier for 1st Anniversary?</strong><br>
+								<span style="color: var(--text-secondary); font-size: 0.9rem;">Subtracts ~12-16 servings from the top tier so your guests don't run short.</span>
+							</span>
+						</label>
+					</div>
+
+					<!-- Cake Height Preference -->
+					<div style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Tier Height / Layers:
+						</label>
+						<div class="height-select-grid">
+							<label class="height-opt active">
+								<input type="radio" name="cakeHeight" value="4" checked style="display: none;"> 4" Standard (3 layers)
+							</label>
+							<label class="height-opt">
+								<input type="radio" name="cakeHeight" value="5" style="display: none;"> 5" Tall Event
+							</label>
+							<label class="height-opt">
+								<input type="radio" name="cakeHeight" value="6" style="display: none;"> 6" Double Barrel
+							</label>
+						</div>
+					</div>
+
+					<button type="button" id="recalc-btn" class="hand-btn" style="width: 100%; padding: 1rem; font-size: 1.25rem;">
+						✨ Update Cake Calculation
+					</button>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Interactive Visuals & Results -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Results Summary Card -->
+				<div class="hand-card" style="background: #fff;">
+					<div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+						<h2 class="font-heading" style="font-size: 1.8rem; color: var(--accent-red); margin: 0;">
+							Cake Blueprint
+						</h2>
+						<span id="match-status" class="font-heading" style="background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">
+							Exact Match
+						</span>
+					</div>
+
+					<!-- Big Stats -->
+					<div class="cake-stats-grid">
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Total Servings</span>
+							<strong id="res-total-servings" class="font-heading" style="font-size: 1.6rem; color: var(--accent-blue); display: block;">100</strong>
+							<span id="res-servings-diff" style="font-size: 0.75rem; color: var(--text-secondary);">Exact for 100</span>
+						</div>
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Tiers / Layers</span>
+							<strong id="res-tier-count" class="font-heading" style="font-size: 1.6rem; color: var(--fg-pencil); display: block;">3 Tiers</strong>
+							<span id="res-tier-detail" style="font-size: 0.75rem; color: var(--text-secondary);">6", 9", 12"</span>
+						</div>
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Est. Surface Area</span>
+							<strong id="res-cake-area" class="font-heading" style="font-size: 1.6rem; color: var(--fg-pencil); display: block;">205 in²</strong>
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Frosting & Decor</span>
+						</div>
+					</div>
+
+					<!-- Visual Cake Tier Render Container -->
+					<div id="visual-cake-studio" style="border: 2px dashed var(--fg-pencil); border-radius: 4px; padding: 1.5rem 0.5rem 0.5rem; background: var(--bg-paper); min-height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; position: relative; overflow: hidden; max-width: 100%;">
+						<div style="position: absolute; top: 8px; left: 10px; font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-heading);">
+							📐 Scale Tier Blueprint
+						</div>
+						<!-- Tiers dynamically rendered here -->
+						<div id="tiers-render-box" style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 100%;"></div>
+						<!-- Cake Stand -->
+						<div id="cake-stand-plate" style="width: min(240px, 90%); height: 10px; background: #e5e0d8; border: 2px solid var(--fg-pencil); border-radius: 10px; margin-top: -2px;"></div>
+						<div id="cake-stand-stem" style="width: 50px; height: 20px; background: #dcd6cc; border: 2px solid var(--fg-pencil); border-top: none; margin-bottom: 4px;"></div>
+						<div id="cake-stand-foot" style="width: 100px; height: 8px; background: #dcd6cc; border: 2px solid var(--fg-pencil); border-radius: 4px;"></div>
+					</div>
+
+					<!-- Breakdown List per Tier -->
+					<div id="tier-breakdown-list" style="margin-top: 1.5rem; font-family: var(--font-body); font-size: 1rem;">
+						<!-- Populated via JS -->
+					</div>
+
+					<!-- Pro-Tip Callout Box -->
+					<div id="pro-tip-box" style="margin-top: 1.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+						<div class="font-heading" style="font-size: 1.1rem; margin-bottom: 0.25rem; color: var(--fg-pencil);">
+							💡 Smart Money-Saving Strategy:
+						</div>
+						<p id="pro-tip-text" class="font-body" style="font-size: 0.95rem; margin: 0; line-height: 1.4;">
+							Order a smaller 2-tier display cake for photos and ceremonial cutting, paired with a matching kitchen sheet cake kept in the back to feed remaining guests at 50% lower cost!
+						</p>
+					</div>
+
+				</div>
+
+				<!-- Visual Slice Scale Comparison Card -->
+				<div class="hand-card" style="padding: 1.5rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--fg-pencil);">
+						📏 Serving Size Visual Comparison
+					</h3>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+							<div class="font-heading" style="font-size: 1.1rem; color: var(--accent-blue); margin-bottom: 0.5rem;">Wedding Slice</div>
+							<div style="width: 40px; height: 80px; background: #ffeaa7; border: 2px solid var(--fg-pencil); margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold;">
+								1" × 2"
+							</div>
+							<div class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">
+								2 sq in / 8 cu in<br>Standard for 3-course dinners
+							</div>
+						</div>
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+							<div class="font-heading" style="font-size: 1.1rem; color: var(--accent-red); margin-bottom: 0.5rem;">Party Slice</div>
+							<div style="width: 80px; height: 80px; background: #fab1a0; border: 2px solid var(--fg-pencil); margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold;">
+								2" × 2"
+							</div>
+							<div class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">
+								4 sq in / 16 cu in<br>Generous / Birthday standard
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Quick Navigation Anchor Links -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: 1.5rem; background: var(--bg-paper);">
+			<div class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+				📑 In-Depth Cake Planning Guide — Table of Contents:
+			</div>
+			<div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+				<a href="#how-many-feed" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">1. How Many Does a Cake Feed?</a>
+				<a href="#serving-charts" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">2. Round & Square Serving Charts</a>
+				<a href="#popular-combos" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">3. Popular Tier Combinations</a>
+				<a href="#sheet-cake-guide" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">4. Sheet Cake Sizes & Yields</a>
+				<a href="#cutting-guide" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">5. Professional Cutting Guide</a>
+				<a href="#faq-section" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">6. Frequently Asked Questions</a>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Master Cake Guide</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem;">
+					The Complete Wedding Cake Serving & Size Guide
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; margin: 0.5rem auto 0;">
+					Everything you need to know about portion sizes, tier dimensions, sheet cake hacks, and cutting styles to avoid overspending or leaving guests empty-handed.
+				</p>
+			</div>
+
+			<!-- Visual Feature Illustration -->
+			<div style="margin-bottom: 2.5rem;">
+				<img 
+					src="/cake_cutting_sketch.jpg" 
+					alt="Hand drawn line art illustration of bride and groom cutting tiered wedding cake with floral accents on a wooden banquet table" 
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil);"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Tiered wedding cakes balance visual elegance with accurate portion math.
+				</p>
+			</div>
+
+			<!-- Section 1: How Many People Does a Cake Feed? -->
+			<section id="how-many-feed" style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. How Many People Does a Cake Feed? (The 4 Deciding Factors)
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Figuring out how much cake you need isn't as simple as guessing one slice per person. The number of servings a cake yields depends on four critical factors that dictate cutting dimensions, density, and event flow:
+				</p>
+				
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin: 1.5rem 0;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.25rem; color: var(--accent-blue); margin-bottom: 0.5rem;">1. Slice Surface Area</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							A formal wedding slice is <strong>1" × 2" (2 sq. in.)</strong>, while a casual party slice is <strong>2" × 2" (4 sq. in.)</strong>. Choosing party slices cuts your total cake yield in half, requiring double the cake volume.
+						</p>
+					</div>
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.25rem; color: var(--accent-red); margin-bottom: 0.5rem;">2. Cake Height & Layers</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Standard tiered cakes stand <strong>4 inches tall</strong> with 3 sponge layers and 2 filling layers. Modern 5" or 6" double-barrel tiers contain significantly more volume per slice, satisfying guests with narrower cuts.
+						</p>
+					</div>
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">3. Cake Type & Richness</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Decadent chocolate ganache, rich mud cakes, or buttercream tortes are deeply satisfying in small portions. Lighter sponge cakes, angel food, and berry shortcakes generally encourage larger slices.
+						</p>
+					</div>
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.25rem; color: #27ae60; margin-bottom: 0.5rem;">4. Dessert Table Alternatives</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							If your reception features a donut wall, late-night dessert buffet, or plated dessert, industry planners recommend sizing your wedding cake for only <strong>70% to 80%</strong> of your total RSVP count.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Comprehensive Serving Charts (Round vs Square) -->
+			<section id="serving-charts" style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. Wedding Cake Serving Charts (Round vs. Square)
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.5rem;">
+					Because square cakes have corners, they yield approximately <strong>25% to 30% more servings</strong> than a round cake of the exact same diameter. Below is the standard Wilton & confectionery industry serving chart based on 4-inch tall tiers:
+				</p>
+
+				<div style="overflow-x: auto; margin-bottom: 1.5rem;">
+					<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 1.05rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+								<th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Tier Size</th>
+								<th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--accent-blue);">Round Wedding (1"x2")</th>
+								<th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Round Party (2"x2")</th>
+								<th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--accent-red);">Square Wedding (1"x2")</th>
+								<th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Square Party (2"x2")</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">4" Tier (Sm. Top)</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); background: #fdfbf7;">6 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">4 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); background: #fdfbf7;">8 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">4 servings</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">6" Tier (Standard Top)</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); color: var(--accent-blue); font-weight: bold;">12 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">6 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: bold;">18 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">9 servings</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">8" Tier</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); background: #fdfbf7; font-weight: bold;">24 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">12 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); background: #fdfbf7; font-weight: bold;">32 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">16 servings</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">9" Tier</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">32 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">16 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">40 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">20 servings</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">10" Tier</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); background: #fdfbf7; font-weight: bold;">38 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">19 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); background: #fdfbf7; font-weight: bold;">50 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">25 servings</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">12" Tier</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">56 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">28 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">72 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">36 servings</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">14" Tier</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); background: #fdfbf7; font-weight: bold;">78 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">39 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); background: #fdfbf7; font-weight: bold;">98 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">49 servings</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">16" Tier (Grand Base)</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">100 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">50 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-weight: bold;">128 servings</td>
+								<td style="padding: 0.6rem; border: 1px solid var(--fg-pencil);">64 servings</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Section 3: Popular Multi-Tier Combinations -->
+			<section id="popular-combos" style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					3. Most Popular Tier Combinations & Guest Count Matchups
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.5rem;">
+					Cake designers recommend maintaining a <strong>2 to 3-inch diameter step-down</strong> between tiers (e.g., 6"-8"-10" or 6"-9"-12") to ensure proportional visual balance and room for floral cascades or piping.
+				</p>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+					
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<div class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.25rem;">2-Tier Combinations</div>
+						<div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Best for 30 - 65 Guests</div>
+						<ul class="font-body" style="padding-left: 1.2rem; line-height: 1.6; font-size: 1rem;">
+							<li><strong>6" + 8" Round:</strong> 36 wedding servings (18 party)</li>
+							<li><strong>6" + 9" Round:</strong> 44 wedding servings (22 party)</li>
+							<li><strong>8" + 10" Round:</strong> 62 wedding servings (31 party)</li>
+						</ul>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<div class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.25rem;">3-Tier Combinations</div>
+						<div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Best for 75 - 130 Guests (Most Popular)</div>
+						<ul class="font-body" style="padding-left: 1.2rem; line-height: 1.6; font-size: 1rem;">
+							<li><strong>6" + 8" + 10" Round:</strong> 74 wedding servings (37 party)</li>
+							<li><strong>6" + 9" + 12" Round:</strong> 100 wedding servings (50 party)</li>
+							<li><strong>8" + 10" + 12" Round:</strong> 118 wedding servings (59 party)</li>
+						</ul>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<div class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">4 & 5-Tier Combinations</div>
+						<div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Best for 130 - 300+ Guests</div>
+						<ul class="font-body" style="padding-left: 1.2rem; line-height: 1.6; font-size: 1rem;">
+							<li><strong>6" + 8" + 10" + 12" Round:</strong> 130 wedding servings</li>
+							<li><strong>6" + 8" + 10" + 14" Round:</strong> 152 wedding servings</li>
+							<li><strong>6" + 8" + 10" + 12" + 14" Round:</strong> 208 wedding servings</li>
+							<li><strong>8" + 10" + 12" + 14" + 16" Round:</strong> 296 wedding servings</li>
+						</ul>
+					</div>
+
+				</div>
+			</section>
+
+			<!-- Section 4: Sheet Cake Sizes Guide -->
+			<section id="sheet-cake-guide" style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					4. Sheet Cake Sizes & The "Kitchen Cake" Secret
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					How many people does a sheet cake feed? Sheet cakes are rectangular single-layer or double-layer cakes baked in commercial sheet pans. Because they are flat and rectangular, they are fast to slice into uniform grids with zero waste.
+				</p>
+
+				<!-- Visual Sheet Cake Breakdown Box -->
+				<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem; margin: 1.5rem 0;">
+					<div class="font-heading" style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--fg-pencil); text-align: center;">
+						📐 Sheet Pan Proportions: Full vs. Half vs. Quarter
+					</div>
+
+					<div style="display: flex; flex-direction: column; md:flex-direction: row; gap: 1rem; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+						<div style="width: 240px; height: 160px; background: #e0f2fe; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0.5rem;">
+							<strong class="font-heading" style="font-size: 1.1rem; color: var(--accent-blue);">Full Sheet</strong>
+							<span style="font-size: 0.85rem;">18" × 24" (or 18" × 26")</span>
+							<span style="font-size: 0.8rem; background: #fff; padding: 0.1rem 0.4rem; border-radius: 4px; border: 1px solid var(--fg-pencil); margin-top: 0.25rem;">
+								96 - 192 Servings
+							</span>
+						</div>
+						<div style="font-size: 1.5rem; font-weight: bold; color: var(--fg-pencil);">= 2 ×</div>
+						<div style="width: 160px; height: 120px; background: #fef08a; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0.5rem;">
+							<strong class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">Half Sheet</strong>
+							<span style="font-size: 0.8rem;">12" × 18" (or 13" × 18")</span>
+							<span style="font-size: 0.75rem; background: #fff; padding: 0.1rem 0.3rem; border-radius: 4px; border: 1px solid var(--fg-pencil); margin-top: 0.25rem;">
+								48 - 96 Servings
+							</span>
+						</div>
+						<div style="font-size: 1.5rem; font-weight: bold; color: var(--fg-pencil);">= 4 ×</div>
+						<div style="width: 120px; height: 90px; background: #fed7aa; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0.5rem;">
+							<strong class="font-heading" style="font-size: 0.95rem; color: var(--accent-red);">Quarter Sheet</strong>
+							<span style="font-size: 0.75rem;">9" × 13"</span>
+							<span style="font-size: 0.7rem; background: #fff; padding: 0.1rem 0.3rem; border-radius: 4px; border: 1px solid var(--fg-pencil); margin-top: 0.25rem;">
+								24 - 48 Servings
+							</span>
+						</div>
+					</div>
+
+					<div style="overflow-x: auto;">
+						<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 1rem;">
+							<thead>
+								<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+									<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Sheet Pan Name</th>
+									<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Standard Dimensions</th>
+									<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--accent-blue);">Wedding Slices (1"x2")</th>
+									<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--accent-red);">Party Slices (2"x2")</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Quarter Sheet</td>
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">9" × 13" (117 sq in)</td>
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">48 - 54 servings</td>
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">24 - 28 servings</td>
+								</tr>
+								<tr style="background: #faf8f3;">
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Half Sheet</td>
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">12" × 18" (216 sq in)</td>
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">96 - 108 servings</td>
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">48 - 54 servings</td>
+								</tr>
+								<tr>
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Full Sheet</td>
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">18" × 24" (432 sq in)</td>
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">192 - 216 servings</td>
+									<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">96 - 108 servings</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div style="background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+					<h4 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+						💰 The "Kitchen Cake" Budget Hack
+					</h4>
+					<p class="font-body" style="font-size: 1rem; line-height: 1.6; margin: 0;">
+						Intricate 4 or 5-tier wedding cakes cost between <strong>$7.00 and $14.00 per slice</strong> due to hours of delicate fondant and sugar-flower work. Savvy couples order a modest 2-tier display cake for photos and ceremonial cutting (feeding ~40 guests), and purchase a matching undecorated sheet cake from the same bakery kept in the catering kitchen (at only <strong>$2.50 to $4.00 per slice</strong>). When sliced in the back and served, guests receive the identical delicious flavor while saving hundreds of dollars!
+					</p>
+				</div>
+			</section>
+
+			<!-- Section 5: Professional Cutting Guide -->
+			<section id="cutting-guide" style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					5. How to Cut a Tiered Wedding Cake (Concentric Circles Method)
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Never cut a large wedding cake like a standard birthday pie into triangular wedges! Cutting pie wedges on cakes larger than 8 inches results in massive, floppy 6-inch-long slices that break apart. Caterers and venues use the <strong>Concentric Ring Method</strong>:
+				</p>
+				
+				<ol class="font-body" style="padding-left: 1.5rem; line-height: 1.8; font-size: 1.05rem;">
+					<li><strong>Remove Top Tier & Dowels:</strong> Gently lift off the 6-inch top tier to be boxed for the couple. Remove internal wooden dowels before slicing each tier.</li>
+					<li><strong>Cut an Inner Circle:</strong> For any tier 10 inches or larger, insert a sharp chef knife 2 inches in from the outer edge and cut a complete circle all the way around.</li>
+					<li><strong>Slice the Outer Ring:</strong> Cut the outer 2-inch wide ring into uniform 1-inch slices (yielding 1" × 2" slices).</li>
+					<li><strong>Repeat for Larger Tiers:</strong> For massive 14" or 16" tiers, cut a second concentric ring 2 inches deeper.</li>
+					<li><strong>Slice the Center:</strong> Once only the 6-inch core cylinder remains, cut it straight across into halves and slice horizontally into uniform portions.</li>
+				</ol>
+			</section>
+
+			<!-- Section 6: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem;">
+					🔗 Related Wedding Planning Calculators
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/cake-pricing-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Cake Pricing Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Estimate total baker quotes, fondant fees, and delivery costs.</span>
+					</a>
+					<a href="/wedding-drink-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Wedding Drink Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calculate exact wine, beer, and liquor bottles for your bar.</span>
+					</a>
+					<a href="/reception-menu-maker" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Reception Menu Maker</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Design and print elegant custom dinner & dessert menus.</span>
+					</a>
+					<a href="/guest-count-estimator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Guest Count Estimator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calculate realistic guest counts based on budget and venue space.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 7: FAQs -->
+			<section id="faq-section">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						How big of a wedding cake do I need for 100 to 110 guests?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						For 100 guests, the most popular choice is a <strong>3-tier round cake measuring 6", 9", and 12"</strong>, which provides exactly 100 wedding slices (1"x2"). If you have 110 guests, an 8", 10", and 12" 3-tier cake provides 118 servings, giving you a comfortable safety cushion without overpaying.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Should we count the top tier in our servings?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						If you are following the tradition of freezing the 6-inch top tier to eat on your 1st anniversary or at your first child's christening, <strong>do not count it</strong> toward guest servings! Subtract 12 servings from your total cake yield, or check the "Save Top Tier" box in our calculator above.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						How many slices do square and heart-shaped cakes yield?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Square cakes yield approximately <strong>25% more servings</strong> than round cakes of the same diameter because corners provide extra volume. For instance, a 10" round cake feeds 38 people, whereas a 10" square cake yields 50 servings. Heart-shaped cakes yield roughly 10% fewer servings than round cakes due to the carved top indentation.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						What is the best way to keep wedding cake fresh?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Keep the tiered cake in a cool, air-conditioned room out of direct sunlight. Buttercream melts above 75°F (24°C). If freezing the top tier for your anniversary, chill it uncovered for 2 hours until the frosting hardens, wrap tightly in 3 layers of plastic wrap followed by 2 layers of heavy aluminum foil, and place inside an airtight freezer container.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Do caterers charge a cake cutting fee?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Yes, many reception venues and caterers charge a <strong>cake cutting fee between $1.50 and $3.50 per guest</strong> if you bring a cake from an outside bakery. This fee covers slicing, plating, providing dessert forks, and serving each guest. Check your catering contract ahead of time!
+					</p>
+				</details>
+
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.calc-container-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		width: 100%;
+		max-width: 100%;
+	}
+	@media (min-width: 900px) {
+		.calc-container-grid {
+			grid-template-columns: 1.15fr 0.85fr;
+		}
+	}
+
+	.mode-select-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.mode-tab {
+		cursor: pointer;
+		text-align: center;
+		padding: 0.6rem 0.3rem;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: var(--bg-paper);
+		font-family: var(--font-heading);
+		font-size: clamp(0.75rem, 2.5vw, 1rem);
+		white-space: normal;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.mode-tab.active {
+		background-color: var(--post-it) !important;
+		font-weight: bold;
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+
+	.height-select-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.height-opt {
+		cursor: pointer;
+		text-align: center;
+		padding: 0.5rem 0.25rem;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: var(--bg-paper);
+		font-size: clamp(0.75rem, 2.2vw, 0.95rem);
+		font-family: var(--font-body);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.height-opt.active {
+		background-color: var(--post-it) !important;
+		font-weight: bold;
+		border-color: var(--accent-blue) !important;
+	}
+
+	.cake-stats-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.tier-slice-item {
+		display: flex;
+		justify-content: space-between;
+		padding: 0.4rem 0.6rem;
+		border-bottom: 1px dashed var(--muted-paper);
+	}
+	.tier-slice-item:last-child {
+		border-bottom: none;
+	}
+
+	@media (max-width: 480px) {
+		.mode-select-grid {
+			grid-template-columns: 1fr;
+		}
+		.height-select-grid {
+			grid-template-columns: 1fr;
+		}
+		.cake-stats-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<script is:inline>
+	// Complete Round & Square Servings Map (Wedding 1x2 vs Party 2x2 vs Dessert 1.5x2)
+	const singleTierYields = {
+		round: {
+			4: { wedding: 6, party: 4, dessert: 5 },
+			6: { wedding: 12, party: 6, dessert: 8 },
+			8: { wedding: 24, party: 12, dessert: 16 },
+			9: { wedding: 32, party: 16, dessert: 21 },
+			10: { wedding: 38, party: 19, dessert: 25 },
+			11: { wedding: 46, party: 23, dessert: 30 },
+			12: { wedding: 56, party: 28, dessert: 37 },
+			13: { wedding: 66, party: 33, dessert: 44 },
+			14: { wedding: 78, party: 39, dessert: 52 },
+			15: { wedding: 88, party: 44, dessert: 58 },
+			16: { wedding: 100, party: 50, dessert: 66 },
+			18: { wedding: 128, party: 64, dessert: 85 }
+		},
+		square: {
+			4: { wedding: 8, party: 4, dessert: 5 },
+			6: { wedding: 18, party: 9, dessert: 12 },
+			8: { wedding: 32, party: 16, dessert: 21 },
+			9: { wedding: 40, party: 20, dessert: 26 },
+			10: { wedding: 50, party: 25, dessert: 33 },
+			11: { wedding: 60, party: 30, dessert: 40 },
+			12: { wedding: 72, party: 36, dessert: 48 },
+			13: { wedding: 84, party: 42, dessert: 56 },
+			14: { wedding: 98, party: 49, dessert: 65 },
+			15: { wedding: 112, party: 56, dessert: 74 },
+			16: { wedding: 128, party: 64, dessert: 85 },
+			18: { wedding: 162, party: 81, dessert: 108 }
+		},
+		heart: {
+			4: { wedding: 5, party: 3, dessert: 4 },
+			6: { wedding: 10, party: 5, dessert: 7 },
+			8: { wedding: 20, party: 10, dessert: 14 },
+			9: { wedding: 28, party: 14, dessert: 18 },
+			10: { wedding: 34, party: 17, dessert: 22 },
+			11: { wedding: 41, party: 20, dessert: 27 },
+			12: { wedding: 50, party: 25, dessert: 33 },
+			13: { wedding: 59, party: 29, dessert: 39 },
+			14: { wedding: 70, party: 35, dessert: 46 },
+			15: { wedding: 79, party: 39, dessert: 52 },
+			16: { wedding: 90, party: 45, dessert: 60 },
+			18: { wedding: 115, party: 57, dessert: 76 }
+		}
+	};
+
+	// Standard Proportional Multi-Tier Combos
+	const standardTierCombos = [
+		{ tiers: 1, sizes: [6] },
+		{ tiers: 1, sizes: [8] },
+		{ tiers: 1, sizes: [10] },
+		{ tiers: 1, sizes: [12] },
+		{ tiers: 2, sizes: [6, 8] },
+		{ tiers: 2, sizes: [6, 9] },
+		{ tiers: 2, sizes: [8, 10] },
+		{ tiers: 2, sizes: [8, 12] },
+		{ tiers: 2, sizes: [10, 12] },
+		{ tiers: 3, sizes: [6, 8, 10] },
+		{ tiers: 3, sizes: [6, 9, 12] },
+		{ tiers: 3, sizes: [8, 10, 12] },
+		{ tiers: 3, sizes: [8, 10, 14] },
+		{ tiers: 4, sizes: [6, 8, 10, 12] },
+		{ tiers: 4, sizes: [6, 8, 10, 14] },
+		{ tiers: 4, sizes: [6, 9, 12, 14] },
+		{ tiers: 4, sizes: [8, 10, 12, 14] },
+		{ tiers: 4, sizes: [8, 10, 12, 16] },
+		{ tiers: 5, sizes: [6, 8, 10, 12, 14] },
+		{ tiers: 5, sizes: [6, 8, 10, 12, 16] },
+		{ tiers: 5, sizes: [6, 9, 12, 14, 16] },
+		{ tiers: 5, sizes: [8, 10, 12, 14, 16] },
+		{ tiers: 5, sizes: [8, 10, 12, 14, 18] }
+	];
+
+	// DOM Elements
+	const guestInput = document.getElementById('guest-count');
+	const guestSlider = document.getElementById('guest-slider');
+	const guestBadge = document.getElementById('guest-badge');
+	const shapeSelect = document.getElementById('cake-shape');
+	const portionSelect = document.getElementById('portion-size');
+	const tierPrefSelect = document.getElementById('tier-count-pref');
+	const saveTopTierCheck = document.getElementById('save-top-tier');
+	const recalcBtn = document.getElementById('recalc-btn');
+
+	const resTotalServings = document.getElementById('res-total-servings');
+	const resServingsDiff = document.getElementById('res-servings-diff');
+	const resTierCount = document.getElementById('res-tier-count');
+	const resTierDetail = document.getElementById('res-tier-detail');
+	const resCakeArea = document.getElementById('res-cake-area');
+	const matchStatus = document.getElementById('match-status');
+	const tiersRenderBox = document.getElementById('tiers-render-box');
+	const tierBreakdownList = document.getElementById('tier-breakdown-list');
+	const proTipText = document.getElementById('pro-tip-text');
+
+	// Sync Slider & Input
+	guestSlider.addEventListener('input', (e) => {
+		guestInput.value = e.target.value;
+		guestBadge.textContent = `${e.target.value} Guests`;
+		calculateAndRender();
+	});
+
+	guestInput.addEventListener('input', (e) => {
+		let val = parseInt(e.target.value) || 10;
+		if (val > 400) val = 400;
+		guestSlider.value = val;
+		guestBadge.textContent = `${val} Guests`;
+		calculateAndRender();
+	});
+
+	// Mode Selector Tabs
+	document.querySelectorAll('.mode-tab').forEach(tab => {
+		tab.addEventListener('click', () => {
+			document.querySelectorAll('.mode-tab').forEach(t => {
+				t.classList.remove('active');
+				t.style.background = 'var(--bg-paper)';
+			});
+			tab.classList.add('active');
+			tab.style.background = 'var(--post-it)';
+			tab.querySelector('input').checked = true;
+			calculateAndRender();
+		});
+	});
+
+	// Height Radios
+	document.querySelectorAll('input[name="cakeHeight"]').forEach(radio => {
+		radio.parentElement.addEventListener('click', () => {
+			document.querySelectorAll('input[name="cakeHeight"]').forEach(r => {
+				r.parentElement.classList.remove('active');
+				r.parentElement.style.background = 'var(--bg-paper)';
+			});
+			radio.parentElement.classList.add('active');
+			radio.parentElement.style.background = 'var(--post-it)';
+			radio.checked = true;
+			calculateAndRender();
+		});
+	});
+
+	// Event Listeners for selects & buttons
+	shapeSelect.addEventListener('change', calculateAndRender);
+	portionSelect.addEventListener('change', calculateAndRender);
+	tierPrefSelect.addEventListener('change', calculateAndRender);
+	saveTopTierCheck.addEventListener('change', calculateAndRender);
+	recalcBtn.addEventListener('click', calculateAndRender);
+
+	function calculateAndRender() {
+		const guests = parseInt(guestInput.value) || 100;
+		const mode = document.querySelector('input[name="cakeMode"]:checked').value;
+		const shape = shapeSelect.value;
+		const portion = portionSelect.value;
+		const tierPref = tierPrefSelect.value;
+		const saveTopTier = saveTopTierCheck.checked;
+		const height = parseInt(document.querySelector('input[name="cakeHeight"]:checked').value) || 4;
+
+		if (mode === 'sheet') {
+			renderSheetCakeMode(guests, portion);
+			return;
+		}
+
+		if (mode === 'combo') {
+			renderComboMode(guests, shape, portion, saveTopTier);
+			return;
+		}
+
+		// Standard Tiered Cake Calculation
+		let bestCombo = null;
+		let bestServings = 0;
+		let minDiff = 9999;
+
+		// Filter combos by tier pref if specified
+		let candidateCombos = standardTierCombos;
+		if (tierPref !== 'auto') {
+			const targetTiers = parseInt(tierPref);
+			candidateCombos = standardTierCombos.filter(c => c.tiers === targetTiers);
+		}
+
+		candidateCombos.forEach(combo => {
+			let total = 0;
+			combo.sizes.forEach((size, idx) => {
+				const tierYield = singleTierYields[shape][size][portion] || 10;
+				// If saving top tier, top tier yields 0 guest servings
+				if (saveTopTier && idx === 0 && combo.sizes.length > 1) {
+					// Top tier saved
+				} else {
+					total += tierYield;
+				}
+			});
+
+			const diff = total - guests;
+			if (diff >= 0 && diff < minDiff) {
+				minDiff = diff;
+				bestCombo = combo;
+				bestServings = total;
+			}
+		});
+
+		// Fallback to largest if guest count is very large
+		if (!bestCombo && candidateCombos.length > 0) {
+			bestCombo = candidateCombos[candidateCombos.length - 1];
+			bestServings = bestCombo.sizes.reduce((acc, s, idx) => {
+				if (saveTopTier && idx === 0 && bestCombo.sizes.length > 1) return acc;
+				return acc + (singleTierYields[shape][s][portion] || 10);
+			}, 0);
+		}
+
+		renderTieredResults(bestCombo, bestServings, guests, shape, portion, saveTopTier, height);
+	}
+
+	function renderTieredResults(combo, totalServings, guests, shape, portion, saveTopTier, height) {
+		resTotalServings.textContent = totalServings;
+		resTierCount.textContent = `${combo.tiers} Tier${combo.tiers > 1 ? 's' : ''}`;
+		resTierDetail.textContent = combo.sizes.map(s => `${s}"`).join(', ');
+
+		const diff = totalServings - guests;
+		if (diff === 0) {
+			matchStatus.textContent = '🎯 Exact Match';
+			matchStatus.style.background = '#dcfce7';
+			resServingsDiff.textContent = `Exact for ${guests} guests`;
+		} else if (diff > 0) {
+			matchStatus.textContent = `+${diff} Slices Surplus`;
+			matchStatus.style.background = 'var(--post-it)';
+			resServingsDiff.textContent = `${diff} buffer slices`;
+		} else {
+			matchStatus.textContent = `${Math.abs(diff)} Slices Short`;
+			matchStatus.style.background = '#fee2e2';
+			resServingsDiff.textContent = `Short by ${Math.abs(diff)} slices`;
+		}
+
+		// Calculate Area
+		let totalArea = 0;
+		combo.sizes.forEach(s => {
+			if (shape === 'round') {
+				totalArea += Math.PI * Math.pow(s / 2, 2);
+			} else if (shape === 'square') {
+				totalArea += s * s;
+			} else {
+				totalArea += 0.9 * Math.PI * Math.pow(s / 2, 2);
+			}
+		});
+		resCakeArea.textContent = `${Math.round(totalArea)} in²`;
+
+		// Render Visual Tiers
+		tiersRenderBox.innerHTML = '';
+		const maxDiameter = 18;
+		const maxRenderWidth = 240;
+		const tierColors = ['#fef08a', '#e0f2fe', '#fed7aa', '#fbcfe8', '#dcfce7'];
+
+		combo.sizes.forEach((size, idx) => {
+			const tierDiv = document.createElement('div');
+			const renderWidth = Math.max(50, (size / maxDiameter) * maxRenderWidth);
+			const tierHeightPx = height === 4 ? 36 : height === 5 ? 44 : 52;
+			const isTopSaved = saveTopTier && idx === 0 && combo.sizes.length > 1;
+
+			tierDiv.style.width = `${renderWidth}px`;
+			tierDiv.style.height = `${tierHeightPx}px`;
+			tierDiv.style.background = isTopSaved ? '#e2e8f0' : tierColors[idx % tierColors.length];
+			tierDiv.style.border = '2px solid var(--fg-pencil)';
+			tierDiv.style.display = 'flex';
+			tierDiv.style.alignItems = 'center';
+			tierDiv.style.justifyContent = 'center';
+			tierDiv.style.position = 'relative';
+			tierDiv.style.fontFamily = 'var(--font-heading)';
+			tierDiv.style.fontSize = '0.95rem';
+			tierDiv.style.color = 'var(--fg-pencil)';
+			tierDiv.style.transition = 'all 0.3s ease';
+
+			if (shape === 'square') {
+				tierDiv.style.borderRadius = '2px';
+			} else if (shape === 'round') {
+				tierDiv.style.borderRadius = idx === 0 ? '6px 6px 0 0' : '0';
+			} else {
+				tierDiv.style.borderRadius = '8px 8px 0 0';
+			}
+
+			if (idx !== combo.sizes.length - 1) {
+				tierDiv.style.borderBottom = 'none';
+			}
+
+			const tierYield = singleTierYields[shape][size][portion] || 10;
+			tierDiv.innerHTML = `<span>${size}" ${shape === 'round' ? '⭕' : shape === 'square' ? '⬛' : '❤️'} (${isTopSaved ? 'Saved Top' : tierYield + ' svgs'})</span>`;
+
+			tiersRenderBox.appendChild(tierDiv);
+		});
+
+		// Render Detailed Breakdown List
+		tierBreakdownList.innerHTML = '<strong class="font-heading" style="display: block; margin-bottom: 0.5rem; color: var(--fg-pencil);">📋 Tier-by-Tier Yield Breakdown:</strong>';
+		combo.sizes.forEach((size, idx) => {
+			const isTopSaved = saveTopTier && idx === 0 && combo.sizes.length > 1;
+			const tierYield = singleTierYields[shape][size][portion] || 10;
+			const item = document.createElement('div');
+			item.className = 'tier-slice-item';
+			item.innerHTML = `
+				<span><strong>Tier ${idx + 1} (${size}" ${shape.charAt(0).toUpperCase() + shape.slice(1)}):</strong> ${height}" tall</span>
+				<span style="font-weight: bold; color: ${isTopSaved ? 'var(--accent-red)' : 'var(--accent-blue)'};">
+					${isTopSaved ? '0 guest svgs (Saved for 1st Anniv)' : tierYield + ' wedding servings'}
+				</span>
+			`;
+			tierBreakdownList.appendChild(item);
+		});
+
+		// Dynamic Pro Tip
+		if (guests > 120) {
+			proTipText.textContent = `For ${guests} guests, high-tier cakes can get costly. Consider a 3-tier display cake (100 servings) combined with a half-sheet kitchen cake to cut decorating fees by ~$250!`;
+		} else if (saveTopTier) {
+			proTipText.textContent = `Because you are saving the 6" top tier, we added enough base tier capacity so all ${guests} guests receive a generous dessert portion!`;
+		} else {
+			proTipText.textContent = `A traditional 1" x 2" slice is standard for weddings with dinner. If your cake is the sole dessert, consider selecting 'Party Serving' for larger 2" x 2" portions!`;
+		}
+	}
+
+	function renderSheetCakeMode(guests, portion) {
+		let sheetType = 'Quarter Sheet (9" x 13")';
+		let totalServings = 48;
+		let dimensions = '9" × 13"';
+
+		if (portion === 'wedding') {
+			if (guests <= 48) {
+				sheetType = '1 × Quarter Sheet (9" × 13")';
+				totalServings = 48;
+				dimensions = '9" × 13"';
+			} else if (guests <= 96) {
+				sheetType = '1 × Half Sheet (12" × 18")';
+				totalServings = 96;
+				dimensions = '12" × 18"';
+			} else if (guests <= 192) {
+				sheetType = '1 × Full Sheet (18" × 24")';
+				totalServings = 192;
+				dimensions = '18" × 24"';
+			} else {
+				const numSheets = Math.ceil(guests / 192);
+				sheetType = `${numSheets} × Full Sheets (18" × 24")`;
+				totalServings = numSheets * 192;
+				dimensions = `${numSheets} Pans`;
+			}
+		} else {
+			// Party Slices (2x2)
+			if (guests <= 24) {
+				sheetType = '1 × Quarter Sheet';
+				totalServings = 24;
+				dimensions = '9" × 13"';
+			} else if (guests <= 48) {
+				sheetType = '1 × Half Sheet';
+				totalServings = 48;
+				dimensions = '12" × 18"';
+			} else if (guests <= 96) {
+				sheetType = '1 × Full Sheet';
+				totalServings = 96;
+				dimensions = '18" × 24"';
+			} else {
+				const numSheets = Math.ceil(guests / 96);
+				sheetType = `${numSheets} × Full Sheets`;
+				totalServings = numSheets * 96;
+				dimensions = `${numSheets} Pans`;
+			}
+		}
+
+		resTotalServings.textContent = totalServings;
+		resTierCount.textContent = 'Sheet Pan';
+		resTierDetail.textContent = sheetType;
+		matchStatus.textContent = 'Sheet Cake Mode';
+		matchStatus.style.background = '#e0f2fe';
+		resServingsDiff.textContent = `${totalServings - guests >= 0 ? '+' + (totalServings - guests) : totalServings - guests} vs ${guests} guests`;
+
+		// Visual Render of Sheet Cake
+		tiersRenderBox.innerHTML = `
+			<div style="width: 220px; height: 110px; background: #fed7aa; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-heading);">
+				<span style="font-size: 1.1rem; color: var(--fg-pencil);">${sheetType}</span>
+				<span style="font-size: 0.85rem; color: var(--text-secondary);">${dimensions} — ${totalServings} Slices</span>
+				<div style="width: 85%; height: 2px; background: var(--fg-pencil); margin: 6px 0; border-style: dashed;"></div>
+				<span style="font-size: 0.75rem; color: var(--accent-blue);">Slices fast in back kitchen</span>
+			</div>
+		`;
+
+		tierBreakdownList.innerHTML = `
+			<div class="tier-slice-item">
+				<span><strong>Pan Size:</strong> ${sheetType}</span>
+				<span style="font-weight: bold; color: var(--accent-blue);">${totalServings} Total Servings</span>
+			</div>
+			<div class="tier-slice-item">
+				<span><strong>Cutting Style:</strong> Uniform Rectangular Grid</span>
+				<span>Zero waste / Easy plating</span>
+			</div>
+		`;
+
+		proTipText.textContent = `Sheet cakes are the most economical way to feed a crowd. They bake evenly, stack easily in commercial fridges, and can be pre-cut by your catering team 15 minutes before dessert service!`;
+	}
+
+	function renderComboMode(guests, shape, portion, saveTopTier) {
+		// 2-tier display + sheet cake in back
+		const displayTierSizes = [6, 8];
+		const displayYield = (saveTopTier ? 0 : (singleTierYields[shape][6][portion] || 12)) + (singleTierYields[shape][8][portion] || 24);
+		const neededFromSheet = Math.max(0, guests - displayYield);
+		
+		let sheetName = '1 × Quarter Sheet (9"x13")';
+		let sheetServings = portion === 'wedding' ? 48 : 24;
+
+		if (neededFromSheet > 48) {
+			sheetName = '1 × Half Sheet (12"x18")';
+			sheetServings = portion === 'wedding' ? 96 : 48;
+		}
+		if (neededFromSheet > 96) {
+			sheetName = '1 × Full Sheet (18"x24")';
+			sheetServings = portion === 'wedding' ? 192 : 96;
+		}
+
+		const totalComboServings = displayYield + sheetServings;
+
+		resTotalServings.textContent = totalComboServings;
+		resTierCount.textContent = 'Display + Sheet';
+		resTierDetail.textContent = `2-Tier (${displayTierSizes.join('",')}") + ${sheetName.split(' ')[2] || 'Sheet'}`;
+		matchStatus.textContent = '💡 Pro Budget Combo';
+		matchStatus.style.background = '#fef08a';
+		resServingsDiff.textContent = `+${totalComboServings - guests} surplus slices`;
+
+		// Render Display Tiers + Kitchen Cake Icon
+		tiersRenderBox.innerHTML = `
+			<div style="display: flex; gap: 1rem; align-items: flex-end; justify-content: center; width: 100%;">
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<div style="width: 70px; height: 30px; background: #fef08a; border: 2px solid var(--fg-pencil); border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-family: var(--font-heading);">6" Top</div>
+					<div style="width: 110px; height: 35px; background: #e0f2fe; border: 2px solid var(--fg-pencil); border-top: none; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-family: var(--font-heading);">8" Base</div>
+					<span style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Display Cake (${displayYield} svgs)</span>
+				</div>
+				<div style="width: 100px; height: 55px; background: #fed7aa; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-heading); text-align: center;">
+					<span style="font-size: 0.8rem; font-weight: bold;">Kitchen Cake</span>
+					<span style="font-size: 0.7rem; color: var(--accent-blue);">+${sheetServings} svgs</span>
+				</div>
+			</div>
+		`;
+
+		tierBreakdownList.innerHTML = `
+			<div class="tier-slice-item">
+				<span><strong>Front Display Cake (6" + 8"):</strong></span>
+				<span style="color: var(--accent-blue); font-weight: bold;">${displayYield} Servings (Photos & Cutting)</span>
+			</div>
+			<div class="tier-slice-item">
+				<span><strong>Kitchen Backroom Cake (${sheetName}):</strong></span>
+				<span style="color: var(--accent-red); font-weight: bold;">${sheetServings} Servings (Sheet Pan)</span>
+			</div>
+		`;
+
+		proTipText.textContent = `This Hybrid Combo gives you the gorgeous aesthetic of a luxury 2-tier centerpiece cake while saving an estimated $200-$400 on bakery labor!`;
+	}
+
+	// Initial Calculation
+	calculateAndRender();
+</script>

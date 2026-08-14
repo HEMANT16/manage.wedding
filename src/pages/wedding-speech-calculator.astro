@@ -1,0 +1,778 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Wedding Speech Timing Calculator & Cue Card Maker",
+      "url": "https://manage.wedding/wedding-speech-calculator",
+      "description": "Free 100% client-side wedding speech calculator. Calculate speaking time, word count, and pacing with Maid of Honor, Best Man, and Parent speech templates, rehearsal stopwatch, and printable cue card exports.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How long should a wedding speech ideally be?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The ideal wedding speech is between 3 and 5 minutes long (roughly 400 to 650 words). Speeches under 2 minutes feel rushed, while speeches over 6 minutes risk losing the audience's attention."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many words per minute do people speak during a wedding toast?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The average public speaking pace is 130 words per minute (WPM). This accounts for natural pauses, laughter from the audience, eye contact, and emotional moments."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this speech calculator use any AI or external APIs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No! This tool runs 100% locally in your browser with zero AI and zero external API calls. Your speech text remains completely private on your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should I read my speech from my phone or printable index cards?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Printable index cards are strongly recommended. Reading from a phone causes awkward screen glare in wedding photos, lock-screen interruptions, and looks unprepared. Use our 1-click 'Export PDF / Print Cue Cards' feature."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Wedding Speech Calculator & Timing Estimator (Free Word & PDF Cards) | Manage.Wedding"
+	description="Calculate exact wedding speech speaking time and word count. 100% free with Maid of Honor and Best Man templates, rehearsal timer, and printable cue card exports."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Wedding Speech Calculator
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Measure exact speaking time, adjust delivery tempo, practice with a live rehearsal stopwatch, and export <strong>Podium Cue Cards</strong> in Word and PDF—<strong>100% private, zero AI, and zero API calls</strong>!
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> How to Time & Perfect Your Speech in 3 Easy Steps
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Paste Speech or Load Template
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Paste your draft or click a structured template (Best Man, Maid of Honor, Father of the Bride, or Couple Vows).
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Adjust Speaking Pace & Rehearse
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Select your speaking pace (110, 130, or 155 WPM) and read out loud using the live interactive practice stopwatch.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Export Printable Podium Cards
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Click <strong>"🖨️ Export PDF Cue Cards"</strong> or <strong>"📝 Export Word"</strong> to generate large 16pt font cards with pause markers.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Editor Form + Live Time Dashboard & Stopwatch -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="speech-calc-grid">
+			
+			<!-- Left Column: Speech Text Editor & Preset Loader -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
+						<div>
+							<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+								📝 Speech Draft & Cue Editor
+							</h2>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">
+								100% private in-browser analysis (no data leaves your device)
+							</span>
+						</div>
+						<button type="button" id="btn-clear-speech" class="hand-btn secondary" style="padding: 0.25rem 0.55rem; font-size: 0.75rem; color: #b91c1c;">
+							🗑️ Clear Text
+						</button>
+					</div>
+				</div>
+
+				<!-- Quick Template Pills -->
+				<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.65rem; margin-bottom: 1rem;">
+					<span class="font-heading" style="font-size: 0.85rem; color: var(--fg-pencil); display: block; margin-bottom: 0.35rem;">
+						⚡ Load Proven Speech Structure Templates:
+					</span>
+					<div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+						<button type="button" class="btn-load-template hand-btn" data-type="bestman" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; background: #eff6ff;">
+							🤵 Best Man Toast
+						</button>
+						<button type="button" class="btn-load-template hand-btn" data-type="moh" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; background: #fdf2f8;">
+							💐 Maid of Honor
+						</button>
+						<button type="button" class="btn-load-template hand-btn" data-type="parent" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; background: #f0fdf4;">
+							🥂 Father / Parent Welcome
+						</button>
+						<button type="button" class="btn-load-template hand-btn" data-type="couple" style="padding: 0.2rem 0.5rem; font-size: 0.75rem; background: #fefce8;">
+							💍 Couple Thank You & Vows
+						</button>
+					</div>
+				</div>
+
+				<!-- Speech Textarea -->
+				<div style="margin-bottom: 1rem;">
+					<label for="speech-editor" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+						Type or Paste Your Speech Text:
+					</label>
+					<textarea id="speech-editor" rows="14" placeholder="Start typing your speech, vows, or toast here..." style="width: 100%; box-sizing: border-box; padding: 0.85rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; line-height: 1.6; background: #faf8f5; resize: vertical;"></textarea>
+				</div>
+
+				<!-- Pacing & Delivery Controls -->
+				<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem; background: var(--bg-paper); border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem;">
+					<div>
+						<label for="select-speaking-pace" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--accent-red); margin-bottom: 0.2rem;">
+							Speaking Tempo / Pace
+						</label>
+						<select id="select-speaking-pace" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+							<option value="110">Slow & Emotional (110 WPM)</option>
+							<option value="130" selected>Conversational / Standard (130 WPM)</option>
+							<option value="155">Fast / High Energy (155 WPM)</option>
+						</select>
+					</div>
+
+					<div>
+						<label for="select-pause-buffer" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--accent-blue); margin-bottom: 0.2rem;">
+							Laughter & Applause Buffer
+						</label>
+						<select id="select-pause-buffer" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+							<option value="0">None (Straight Reading)</option>
+							<option value="30" selected>+30s (Moderate Laughs/Toasts)</option>
+							<option value="60">+60s (Heavy Humor & Cheering)</option>
+						</select>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Live Time Dashboard, Progress Bar & Live Stopwatch -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Live Timing Dashboard Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								⏱️ Speech Timing Dashboard
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Calculated at <span id="display-wpm-rate">130</span> words per minute
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Word Speech (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Export PDF / Print Cards
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Big Estimated Time Display -->
+					<div style="background: #f0fdf4; border: 2.5px solid #16a34a; border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.25rem;">
+						<span style="font-size: 0.88rem; color: #16a34a; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">
+							Estimated Delivery Time
+						</span>
+						<strong id="display-time-result" class="font-heading" style="font-size: 2.8rem; color: #166534; display: block; line-height: 1.15; margin: 0.2rem 0;">
+							3m 45s
+						</strong>
+						<span id="display-speech-zone" style="font-size: 0.85rem; font-weight: bold; color: #15803d;">
+							✅ Sweet Spot (Ideal wedding length)
+						</span>
+					</div>
+
+					<!-- Detailed Metric Numbers -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; text-align: center; margin-bottom: 1.25rem;">
+						<div style="border: 1px solid var(--fg-pencil); border-radius: 4px; padding: 0.5rem; background: var(--bg-paper);">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Word Count</span>
+							<strong id="display-word-count" style="font-size: 1.2rem; color: var(--fg-pencil);">485</strong>
+						</div>
+
+						<div style="border: 1px solid var(--fg-pencil); border-radius: 4px; padding: 0.5rem; background: var(--bg-paper);">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Paragraphs</span>
+							<strong id="display-paragraph-count" style="font-size: 1.2rem; color: var(--fg-pencil);">5</strong>
+						</div>
+
+						<div style="border: 1px solid var(--fg-pencil); border-radius: 4px; padding: 0.5rem; background: var(--bg-paper);">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Cue Cards</span>
+							<strong id="display-cards-count" style="font-size: 1.2rem; color: var(--fg-pencil);">3 Cards</strong>
+						</div>
+					</div>
+
+					<!-- Speech Length Progress Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 0.25rem;">
+							<span>0 min</span>
+							<span style="color: #16a34a;">3 - 5 min (Ideal)</span>
+							<span style="color: var(--accent-red);">7+ min (Too Long)</span>
+						</div>
+						<div style="width: 100%; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee; position: relative;">
+							<div id="speech-gauge-bar" style="width: 50%; height: 100%; background: #16a34a; transition: width 0.3s ease, background-color 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Live Rehearsal Stopwatch Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil); display: block; margin-bottom: 0.3rem; text-align: center;">
+						🎙️ Live Out-Loud Practice Stopwatch
+					</strong>
+					<p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 0.75rem 0; text-align: center;">
+						Read your speech aloud to test your natural speed against the estimate:
+					</p>
+
+					<div style="display: flex; justify-content: center; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+						<span id="stopwatch-display" style="font-family: monospace; font-size: 2rem; font-weight: bold; color: var(--fg-pencil); background: #fff; padding: 0.3rem 0.8rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px;">
+							00:00.0
+						</span>
+					</div>
+
+					<div style="display: flex; justify-content: center; gap: 0.4rem;">
+						<button type="button" id="btn-timer-start" class="hand-btn" style="padding: 0.35rem 0.85rem; font-size: 0.85rem; background: #dcfce7; color: #166534;">
+							▶️ Start Practice
+						</button>
+						<button type="button" id="btn-timer-pause" class="hand-btn" style="padding: 0.35rem 0.85rem; font-size: 0.85rem; background: #fefce8; color: #854d0e; display: none;">
+							⏸️ Pause
+						</button>
+						<button type="button" id="btn-timer-reset" class="hand-btn secondary" style="padding: 0.35rem 0.85rem; font-size: 0.85rem;">
+							🔄 Reset
+						</button>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation (Cue Cards) -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 22px; margin: 0 0 4px 0;">Official Wedding Speech Podium Cards</h1>
+				<p style="margin: 0; font-size: 12px; color: #555;">Estimated Speaking Time: <span id="print-est-time"></span> | Word Count: <span id="print-word-count"></span></p>
+			</div>
+			<div id="print-cue-cards-grid" style="display: flex; flex-direction: column; gap: 20px;"></div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Public Speaking & Toast Playbook</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					The Complete Guide to Timing & Delivering a Wedding Speech
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					The 3-to-5 minute rule, word count limits, humor delivery, and why nobody ever wished a speech was longer.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/clipboard_sketch.jpg" 
+					alt="Hand drawn line art sketch of a wedding speaker notes clipboard with handwritten speech timing notes and cue cards" 
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Timing your speech to exactly 3–5 minutes keeps the audience engaged and ensures the dinner and dancing start on schedule.
+				</p>
+			</div>
+
+			<!-- Section 1: Detailed Step-by-Step Guide on How to Use This Tool Flawlessly -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Step-by-Step Guide: How to Write, Time & Deliver Your Speech
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Follow this simple 4-step framework to write and rehearse a toast that brings laughter and happy tears:
+				</p>
+
+				<div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.4rem;">
+							Step 1: Aim for 450 to 650 Words (The Sweet Spot)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							A 500-word speech takes approximately 3 minutes and 50 seconds to deliver at a relaxed conversational pace. This allows plenty of time for introducing yourself, sharing one great story, praising both partners, and raising a glass.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.4rem;">
+							Step 2: Add Stage Direction Pauses for Laughter
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							When you deliver a funny line or emotional memory, audience laughter and applause take 5 to 10 seconds. Use our <strong>Laughter Buffer</strong> setting (+30s or +60s) to guarantee you don't talk over the room's reaction.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.4rem;">
+							Step 3: Rehearse Out Loud with the Practice Stopwatch
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Silent reading is always 30% faster than speaking out loud. Click <strong>"▶️ Start Practice"</strong> and rehearse into a mirror or in front of a friend to find your natural breathing cadence.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #d97706; margin-bottom: 0.4rem;">
+							Step 4: Print 16pt Cue Cards (Never Read from a Phone)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Click <strong>"🖨️ Export PDF / Print Cards"</strong> to get formatted, bold 16pt index cards with numbered paragraphs. Holding physical cards looks confident and avoids phone screen reflections in the wedding video.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Speech Timing & Word Count Benchmarks Table -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					2. Wedding Speech Length & Timing Benchmarks
+				</h3>
+				<div style="overflow-x: auto; margin-bottom: 1.5rem;">
+					<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.95rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Speech Length</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Word Count Range</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Delivery Feedback</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Recommended Role</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Under 2 Minutes</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Under 260 words</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); color: var(--accent-blue);">Short & punchy; consider adding one heartfelt memory.</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Groomsman toast / Casual welcome</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">3 to 5 Minutes</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a;">390 to 650 words</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a;">🏆 Ideal Sweet Spot! Perfect balance of story and toast.</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Best Man, Maid of Honor, Parents</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">5 to 7 Minutes</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">650 to 900 words</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); color: #d97706;">Getting long; trim inside jokes that only few understand.</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Joint Couple Thank You & Vows</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Over 7 Minutes</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: bold;">900+ words</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: bold;">Too long! Cut 30% to avoid delaying the dinner service.</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Rehearsal dinner speeches only</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Section 3: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem; text-align: center;">
+					🔗 Integrated Wedding Reception Tools
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/day-of-timeline-generator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Day-Of Timeline Generator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Schedule exact toast and speech time blocks in your itinerary.</span>
+					</a>
+					<a href="/table-place-cards" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Table Place Cards Maker</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Seat your speakers near the microphone and head table.</span>
+					</a>
+					<a href="/wedding-hashtag-generator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Wedding Hashtag Generator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Remind guests to tag photos during speeches and toasts.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 4: FAQs (Centered Heading) -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Is my speech private when I paste it into this calculator?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Yes, 100%! All calculations, stopwatch timers, and Word/PDF exports execute strictly inside your local browser using client-side JavaScript. No text is sent to any servers, AI models, or third-party APIs.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						How do I export printable index cards for the podium?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Click <strong>"🖨️ Export PDF / Print Cards"</strong> at the top of the page. The generator splits your paragraphs into large 16pt font cards with cut guidelines, making them effortless to read while speaking under dim reception lighting.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	const sampleTemplates = {
+		bestman: `Good evening, everyone! For those who don't know me, I'm Alex, and I've had the distinct honor (and occasional challenge) of being the groom's best friend since our college days.
+
+When I first met him, he told me his three life goals were to become a successful architect, learn how to cook something other than instant ramen, and find a woman who was smart, beautiful, and had enough patience to deal with his obsession with fantasy football. Well, looking at the stunning bride tonight, I'd say he's 1 for 3! [Pause for laughter]
+
+In all seriousness, seeing the way they look at each other is inspiring. She brings out a warmth, calm, and happiness in him that I've never seen before. You two are truly the perfect match.
+
+Please raise your glasses with me: To a lifetime of laughter, shared adventures, and unconditional love. To the bride and groom! Cheers!`,
+
+		moh: `Hello, everyone! I'm Sarah, the Maid of Honor and the bride's sister. Looking at her tonight, I am completely overwhelmed by how radiant, happy, and truly glowing she is.
+
+Growing up, we shared everything—clothes, late-night secrets, and big dreams about what our future weddings would look like. When she first called me after her second date with the groom, she didn't just say she had a fun time; she said, 'Sarah, I think I just met the man I'm going to marry.' [Pause for smiles]
+
+To the groom: thank you for treating my sister like the queen she is every single day. Seeing her this happy is the greatest gift our family could ever ask for.
+
+Everyone, please raise a glass: May your marriage be filled with endless joy, deep friendship, and magical memories. To the newlyweds!`,
+
+		parent: `Welcome, family and friends! On behalf of our families, we want to thank each and every one of you for traveling near and far to celebrate this unforgettable milestone with us.
+
+Watching our child grow into the remarkable, kind-hearted, and loving person standing before us today has been the greatest joy of our lives. And welcoming our new son-in-law into our family feels like adding the final, perfect piece to the puzzle.
+
+Marriage is a daily choice to love, forgive, support, and laugh together through every season of life. Never forget the promises you made to each other today.
+
+Let us raise our glasses: To love, health, happiness, and a beautiful future together! Cheers!`,
+
+		couple: `We just want to take a quick moment to say a heartfelt thank you to every single person in this room. Looking around and seeing all our favorite people from every chapter of our lives in one place is truly surreal.
+
+To our parents: thank you for your unconditional love, sacrifices, and the incredible example of marriage you have set for us. We wouldn't be here without you.
+
+To our wedding party and vendors: thank you for keeping us calm, laughing, and making tonight seamless.
+
+Now, enough talking from us—the bar is open, the band is ready, so let's hit the dance floor and celebrate! Thank you all! [Raise glasses]`
+	};
+
+	const speechEditor = document.getElementById('speech-editor');
+	const paceSelect = document.getElementById('select-speaking-pace');
+	const bufferSelect = document.getElementById('select-pause-buffer');
+	const displayWpmRate = document.getElementById('display-wpm-rate');
+
+	const displayTimeResult = document.getElementById('display-time-result');
+	const displaySpeechZone = document.getElementById('display-speech-zone');
+	const displayWordCount = document.getElementById('display-word-count');
+	const displayParagraphCount = document.getElementById('display-paragraph-count');
+	const displayCardsCount = document.getElementById('display-cards-count');
+	const speechGaugeBar = document.getElementById('speech-gauge-bar');
+
+	function calculateStats() {
+		const text = speechEditor.value.trim();
+		const wpm = parseInt(paceSelect.value) || 130;
+		const bufferSec = parseInt(bufferSelect.value) || 30;
+
+		displayWpmRate.textContent = wpm;
+
+		let words = 0;
+		let paragraphs = 0;
+
+		if (text.length > 0) {
+			words = text.split(/\s+/).filter(w => w.length > 0).length;
+			paragraphs = text.split(/\n+/).filter(p => p.trim().length > 0).length;
+		}
+
+		displayWordCount.textContent = words;
+		displayParagraphCount.textContent = paragraphs;
+
+		const estimatedCards = Math.max(1, Math.ceil(words / 150));
+		displayCardsCount.textContent = `${estimatedCards} Card${estimatedCards !== 1 ? 's' : ''}`;
+
+		// Math: seconds = (words / wpm * 60) + buffer
+		let totalSeconds = 0;
+		if (words > 0) {
+			totalSeconds = Math.round((words / wpm) * 60) + bufferSec;
+		}
+
+		const mins = Math.floor(totalSeconds / 60);
+		const secs = totalSeconds % 60;
+		displayTimeResult.textContent = `${mins}m ${secs}s`;
+
+		// Gauge progress (scale: 0 to 8 minutes)
+		const totalMins = totalSeconds / 60;
+		const pct = Math.min(100, Math.max(5, (totalMins / 8) * 100));
+		speechGaugeBar.style.width = `${words === 0 ? 0 : pct}%`;
+
+		// Zone classification
+		if (words === 0) {
+			displaySpeechZone.textContent = "Start typing or load a template above";
+			displaySpeechZone.style.color = "var(--text-secondary)";
+			speechGaugeBar.style.backgroundColor = "#ccc";
+		} else if (totalMins < 2.5) {
+			displaySpeechZone.textContent = "⚡ Short & Fast (Consider adding 1 story)";
+			displaySpeechZone.style.color = "var(--accent-blue)";
+			speechGaugeBar.style.backgroundColor = "var(--accent-blue)";
+		} else if (totalMins >= 2.5 && totalMins <= 5.5) {
+			displaySpeechZone.textContent = "✅ Sweet Spot (Ideal wedding length)";
+			displaySpeechZone.style.color = "#15803d";
+			speechGaugeBar.style.backgroundColor = "#16a34a";
+		} else if (totalMins > 5.5 && totalMins <= 7.0) {
+			displaySpeechZone.textContent = "⚠️ Slightly Long (Trim minor details)";
+			displaySpeechZone.style.color = "#ca8a04";
+			speechGaugeBar.style.backgroundColor = "#eab308";
+		} else {
+			displaySpeechZone.textContent = "🛑 Too Long (Cut 30% to prevent dinner delays)";
+			displaySpeechZone.style.color = "var(--accent-red)";
+			speechGaugeBar.style.backgroundColor = "var(--accent-red)";
+		}
+	}
+
+	// Preset Loaders
+	document.querySelectorAll('.btn-load-template').forEach(btn => {
+		btn.addEventListener('click', () => {
+			const type = btn.getAttribute('data-type');
+			if (sampleTemplates[type]) {
+				speechEditor.value = sampleTemplates[type];
+				calculateStats();
+			}
+		});
+	});
+
+	// Clear Button
+	document.getElementById('btn-clear-speech').addEventListener('click', () => {
+		speechEditor.value = '';
+		calculateStats();
+	});
+
+	speechEditor.addEventListener('input', calculateStats);
+	paceSelect.addEventListener('change', calculateStats);
+	bufferSelect.addEventListener('change', calculateStats);
+
+	// Live Stopwatch Logic
+	let timerInterval = null;
+	let startTime = 0;
+	let elapsedTime = 0;
+	let isRunning = false;
+
+	const stopwatchDisplay = document.getElementById('stopwatch-display');
+	const btnTimerStart = document.getElementById('btn-timer-start');
+	const btnTimerPause = document.getElementById('btn-timer-pause');
+	const btnTimerReset = document.getElementById('btn-timer-reset');
+
+	function formatStopwatch(ms) {
+		const totalSec = Math.floor(ms / 1000);
+		const m = Math.floor(totalSec / 60).toString().padStart(2, '0');
+		const s = (totalSec % 60).toString().padStart(2, '0');
+		const tenth = Math.floor((ms % 1000) / 100);
+		return `${m}:${s}.${tenth}`;
+	}
+
+	btnTimerStart.addEventListener('click', () => {
+		if (!isRunning) {
+			isRunning = true;
+			startTime = Date.now() - elapsedTime;
+			timerInterval = setInterval(() => {
+				elapsedTime = Date.now() - startTime;
+				stopwatchDisplay.textContent = formatStopwatch(elapsedTime);
+			}, 100);
+			btnTimerStart.style.display = 'none';
+			btnTimerPause.style.display = 'inline-block';
+		}
+	});
+
+	btnTimerPause.addEventListener('click', () => {
+		if (isRunning) {
+			isRunning = false;
+			clearInterval(timerInterval);
+			btnTimerStart.style.display = 'inline-block';
+			btnTimerStart.textContent = '▶️ Resume';
+			btnTimerPause.style.display = 'none';
+		}
+	});
+
+	btnTimerReset.addEventListener('click', () => {
+		isRunning = false;
+		clearInterval(timerInterval);
+		elapsedTime = 0;
+		stopwatchDisplay.textContent = '00:00.0';
+		btnTimerStart.style.display = 'inline-block';
+		btnTimerStart.textContent = '▶️ Start Practice';
+		btnTimerPause.style.display = 'none';
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const text = speechEditor.value.trim() || 'No speech text entered.';
+		const paragraphs = text.split(/\n+/).filter(p => p.trim().length > 0);
+
+		let pTags = '';
+		paragraphs.forEach((p, idx) => {
+			pTags += `<p style="font-size:16pt; line-height:1.7; margin-bottom:18pt; color:#111;"><strong>[${idx + 1}]</strong> ${p}</p>`;
+		});
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Wedding Speech Podium Notes</title>
+				<style>
+					body { font-family: 'Segoe UI', Calibri, Arial, sans-serif; padding: 30px; font-size: 16pt; }
+					h1 { color: #1e3a8a; font-size: 22pt; margin-bottom: 5pt; }
+					.meta-box { border: 1pt solid #ccc; background: #f8fafc; padding: 10pt; font-size: 11pt; margin-bottom: 25pt; color: #475569; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Speech Podium Draft</h1>
+				<div class="meta-box">
+					<strong>Estimated Time:</strong> ${displayTimeResult.textContent} | 
+					<strong>Word Count:</strong> ${displayWordCount.textContent} words | 
+					<strong>Target Pace:</strong> ${displayWpmRate.textContent} WPM
+				</div>
+				${pTags}
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding_Speech_Notes_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print Cards
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-est-time').textContent = displayTimeResult.textContent;
+		document.getElementById('print-word-count').textContent = `${displayWordCount.textContent} words`;
+
+		const grid = document.getElementById('print-cue-cards-grid');
+		grid.innerHTML = '';
+
+		const text = speechEditor.value.trim() || 'No speech text entered.';
+		const paragraphs = text.split(/\n+/).filter(p => p.trim().length > 0);
+
+		// Group every 2 paragraphs into a physical cue card
+		for (let i = 0; i < paragraphs.length; i += 2) {
+			const cardNum = Math.floor(i / 2) + 1;
+			const totalCards = Math.ceil(paragraphs.length / 2);
+
+			const card = document.createElement('div');
+			card.style.cssText = `border: 2px solid #000; padding: 25px; page-break-inside: avoid; font-family: 'Times New Roman', serif; background: #fff; margin-bottom: 20px;`;
+			
+			let inner = `<div style="display:flex; justify-content:space-between; border-bottom:1px solid #000; padding-bottom:5px; margin-bottom:15px; font-size:12px; font-weight:bold;"><span>CARD ${cardNum} OF ${totalCards}</span><span>EST TIME: ${displayTimeResult.textContent}</span></div>`;
+			
+			inner += `<p style="font-size:16px; line-height:1.6; margin-bottom:12px;"><strong>[${i + 1}]</strong> ${paragraphs[i]}</p>`;
+			if (paragraphs[i + 1]) {
+				inner += `<p style="font-size:16px; line-height:1.6; margin-bottom:0;"><strong>[${i + 2}]</strong> ${paragraphs[i + 1]}</p>`;
+			}
+
+			card.innerHTML = inner;
+			grid.appendChild(card);
+		}
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Metric,Value\n";
+		csv += `"Estimated Speaking Time","${displayTimeResult.textContent}"\n`;
+		csv += `"Word Count","${displayWordCount.textContent}"\n`;
+		csv += `"Paragraph Count","${displayParagraphCount.textContent}"\n`;
+		csv += `"Speaking Pace","${displayWpmRate.textContent} WPM"\n`;
+		csv += `"Status Zone","${displaySpeechZone.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding_Speech_Timing.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Load Best Man template by default on first load
+	speechEditor.value = sampleTemplates.bestman;
+	calculateStats();
+</script>

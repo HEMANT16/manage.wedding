@@ -1,0 +1,212 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": ["WebApplication", "CalculatorApplication"],
+  "name": "Wedding Date Numerology Calculator",
+  "url": "https://manage.wedding/wedding-date-numerology",
+  "description": "Calculate the numerology of your wedding date and discover your marriage date compatibility score.",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Any"
+};
+---
+
+<Layout 
+	title="Wedding Date Numerology Calculator (Free & Instant Results)"
+	description="Discover your wedding date numerology and marriage compatibility score. Calculate life path numbers for you and your partner to find the perfect spiritual wedding date."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<section class="section-paper fade-in" style="min-height: 100vh; padding: 4rem 1rem;">
+			<div style="max-width: 800px; margin: 0 auto;">
+				
+				<div class="hand-card" style="margin-bottom: 2rem;">
+					<h1 class="font-heading" style="text-align: center; color: var(--fg-pencil); font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 1rem;">
+						Wedding Date Numerology Calculator
+					</h1>
+					<p class="font-body" style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
+						Enter your birthdays and your planned wedding date to reveal your cosmic compatibility score and numerology reading!
+					</p>
+					
+					<form id="numerology-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
+						<div>
+							<label for="partner1" class="font-heading" style="display: block; margin-bottom: 0.5rem; color: var(--fg-pencil);">Partner 1 Birthdate</label>
+							<input type="date" id="partner1" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); background: transparent; font-family: inherit; color: var(--fg-pencil); font-size: 1rem; border-radius: 4px;" />
+						</div>
+						<div>
+							<label for="partner2" class="font-heading" style="display: block; margin-bottom: 0.5rem; color: var(--fg-pencil);">Partner 2 Birthdate</label>
+							<input type="date" id="partner2" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); background: transparent; font-family: inherit; color: var(--fg-pencil); font-size: 1rem; border-radius: 4px;" />
+						</div>
+						<div>
+							<label for="wedding-date" class="font-heading" style="display: block; margin-bottom: 0.5rem; color: var(--fg-pencil);">Planned Wedding Date</label>
+							<input type="date" id="wedding-date" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); background: transparent; font-family: inherit; color: var(--fg-pencil); font-size: 1rem; border-radius: 4px;" />
+						</div>
+						<button type="submit" class="hand-btn" style="width: 100%; font-size: 1.25rem; margin-top: 1rem;">Reveal Compatibility</button>
+					</form>
+				</div>
+
+				<div id="result-box" class="hand-card" style="margin-bottom: 3rem;">
+					<h2 class="font-heading" style="color: var(--fg-pencil); margin-bottom: 1rem; font-size: 2rem;">Your Numerology Reading</h2>
+					<div id="initial-message" class="font-body" style="color: var(--text-secondary); font-style: italic;">
+						Fill out the form above to uncover the magical numbers behind your big day!
+					</div>
+					
+					<div id="results-content" style="display: none;">
+						<div style="margin-bottom: 1.5rem;">
+							<h3 class="font-heading" style="color: var(--accent-blue); font-size: 1.25rem;">Partner 1 Life Path: <span id="p1-number"></span></h3>
+							<p id="p1-desc" class="font-body" style="color: var(--fg-pencil); margin-top: 0.5rem;"></p>
+						</div>
+						
+						<div style="margin-bottom: 1.5rem;">
+							<h3 class="font-heading" style="color: var(--accent-red); font-size: 1.25rem;">Partner 2 Life Path: <span id="p2-number"></span></h3>
+							<p id="p2-desc" class="font-body" style="color: var(--fg-pencil); margin-top: 0.5rem;"></p>
+						</div>
+						
+						<div style="margin-bottom: 2rem;">
+							<h3 class="font-heading" style="color: var(--fg-pencil); font-size: 1.25rem;">Wedding Date Number: <span id="wd-number"></span></h3>
+							<p id="wd-desc" class="font-body" style="color: var(--fg-pencil); margin-top: 0.5rem;"></p>
+						</div>
+						
+						<div style="border-top: 2px dashed var(--fg-pencil); padding-top: 1.5rem;">
+							<h3 class="font-heading" style="text-align: center; color: var(--fg-pencil); font-size: 1.5rem;">Compatibility Score: <span id="comp-score"></span>%</h3>
+							
+							<div style="width: 100%; height: 24px; border: 2px solid var(--fg-pencil); border-radius: 12px; overflow: hidden; margin: 1rem 0; position: relative;">
+								<div id="gauge-fill" style="width: 0%; height: 100%; background: repeating-linear-gradient(45deg, transparent, transparent 5px, var(--accent-blue) 5px, var(--accent-blue) 10px); transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+							</div>
+							
+							<p id="comp-desc" class="font-body" style="text-align: center; font-style: italic; color: var(--fg-pencil);"></p>
+						</div>
+					</div>
+				</div>
+
+				<article class="hand-card" style="margin-bottom: 2rem;">
+					<h2 class="font-heading" style="color: var(--fg-pencil); font-size: 2rem; margin-bottom: 1.5rem;">The Magic of Wedding Date Numerology</h2>
+					
+					<img src="/tarot-crystals-sketch.png" alt="A pure black and white ink sketch of mystical tarot cards spread out alongside raw healing crystals, representing the spiritual alignment and deep compatibility scoring of wedding date numerology." style="width: 100%; max-width: 500px; display: block; margin: 2rem auto; border: 2px solid var(--fg-pencil); border-radius: 8px;" />
+					
+					<div class="font-body" style="color: var(--fg-pencil); line-height: 1.6; display: flex; flex-direction: column; gap: 1rem;">
+						<p>Choosing the perfect wedding date is about more than just venue availability, season, or weekend convenience. When you dive into <strong>wedding date numerology</strong>, you unlock the cosmic blueprint and energetic signature of your marriage. Numerology has been used for centuries to reveal hidden patterns in our lives, and your wedding date is one of the most powerful numbers you will ever choose.</p>
+						
+						<p>By calculating your individual Life Path numbers and combining them with the numerological value of your chosen wedding date, you can discover the spiritual theme of your union. Will your marriage be defined by spontaneous adventure, by deep domestic harmony, or by building a powerful legacy together? Understanding these numbers gives you profound insight into your <strong>marriage date compatibility</strong>.</p>
+						
+						<p>Our free, instant calculator does all the heavy lifting for you. Simply input your birth dates and the day you plan to say "I do." We reduce these dates to their core single digits (1 through 9) to give you a personalized, comprehensive reading and a fun, dynamic compatibility score. Let the magic of numbers guide you toward a harmonious, joyful, and spiritually aligned life together.</p>
+					</div>
+
+					<h3 class="font-heading" style="margin-top: 3rem; margin-bottom: 1.5rem; font-size: 1.75rem;">Frequently Asked Questions</h3>
+					
+					<div style="display: flex; flex-direction: column; gap: 1rem;">
+						<details style="border: 2px solid var(--fg-pencil); padding: 1rem; border-radius: 4px;">
+							<summary class="font-heading" style="cursor: pointer; font-size: 1.1rem; outline: none; list-style: none;">What exactly is wedding date numerology?</summary>
+							<p class="font-body" style="margin-top: 1rem; color: var(--text-secondary);">Wedding date numerology is the ancient practice of using the numbers in your chosen wedding date (month, day, and year) to uncover the energetic theme of your marriage. By adding these numbers together and reducing them to a single digit, you can discover the unique cosmic vibe and potential of your big day.</p>
+						</details>
+						
+						<details style="border: 2px solid var(--fg-pencil); padding: 1rem; border-radius: 4px;">
+							<summary class="font-heading" style="cursor: pointer; font-size: 1.1rem; outline: none; list-style: none;">How does the calculator determine our marriage date compatibility score?</summary>
+							<p class="font-body" style="margin-top: 1rem; color: var(--text-secondary);">Our calculator takes both partners' Life Path numbers (derived entirely from your birthdates) and your wedding date number. It uses a fun algorithmic formula that looks at how these distinct energetic vibrations interact, giving you an insightful compatibility score to reflect the harmony of your union.</p>
+						</details>
+						
+						<details style="border: 2px solid var(--fg-pencil); padding: 1rem; border-radius: 4px;">
+							<summary class="font-heading" style="cursor: pointer; font-size: 1.1rem; outline: none; list-style: none;">Which number is luckiest for a wedding date?</summary>
+							<p class="font-body" style="margin-top: 1rem; color: var(--text-secondary);">There isn't one single "luckiest" number, as it depends entirely on what you want out of your marriage! However, numbers like 2 (partnership and harmony) and 6 (love and family) are incredibly popular for weddings. Every number brings its own unique, positive blessings to your marriage date compatibility.</p>
+						</details>
+						
+						<details style="border: 2px solid var(--fg-pencil); padding: 1rem; border-radius: 4px;">
+							<summary class="font-heading" style="cursor: pointer; font-size: 1.1rem; outline: none; list-style: none;">Can we change our wedding date if the numbers don't match?</summary>
+							<p class="font-body" style="margin-top: 1rem; color: var(--text-secondary);">Absolutely! If you're exploring different options and want a date that resonates perfectly with both of your Life Path numbers, you can run as many dates through our calculator as you like. Finding the right wedding date numerology is a fun way to intentionalize your planning process without any stress.</p>
+						</details>
+						
+						<details style="border: 2px solid var(--fg-pencil); padding: 1rem; border-radius: 4px;">
+							<summary class="font-heading" style="cursor: pointer; font-size: 1.1rem; outline: none; list-style: none;">Do I need to be spiritual to use this calculator?</summary>
+							<p class="font-body" style="margin-top: 1rem; color: var(--text-secondary);">Not at all! While wedding date numerology has mystical roots, many couples simply use it as a fun, romantic way to add deeper meaning to their special day. It's a wonderful conversation starter and a sweet way to reflect on the strengths of your relationship.</p>
+						</details>
+					</div>
+				</article>
+
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<script>
+	const descriptions: Record<number, string> = {
+		1: "The Leader: Your energy is defined by independence, originality, and leadership. This path brings a trailblazing journey where you confidently forge your own distinct destiny and create new beginnings.",
+		2: "The Partner: Radiating harmony, teamwork, and diplomacy. This number brings a beautiful balance of energies, emphasizing a deep, cooperative connection, emotional sensitivity, and peaceful resolutions.",
+		3: "The Creator: Bursting with communication, creativity, and joy. Expect an atmosphere full of laughter, vibrant self-expression, social grace, and endless artistic inspiration in your life together.",
+		4: "The Builder: Grounded in stability, hard work, and solid foundations. You possess the incredible ability to build a rock-solid, enduring future together, marked by loyalty and grounded pragmatism.",
+		5: "The Adventurer: Craving freedom, adventure, and exciting change. Your dynamic energy ensures an unpredictable, exhilarating ride full of exploration, travel, and expanding new horizons.",
+		6: "The Nurturer: Centered completely around love, responsibility, and family. This beautiful number is deeply rooted in domestic harmony, emotional support, and unparalleled care for one another.",
+		7: "The Seeker: Drawn to spirituality, analysis, and ultimate truth. This signifies a profound, soulful connection that transcends the ordinary, constantly seeking the deeper, philosophical meaning of life.",
+		8: "The Powerhouse: Driven by ambition, success, and material wealth. Together, you form a true power couple capable of achieving monumental goals, financial security, and leaving a lasting legacy.",
+		9: "The Humanitarian: Overflowing with compassion, universal love, and positive closure. Your union brings immense healing, generosity, and uplifting, philanthropic energy to the world around you."
+	};
+
+	function reduceDate(dateString: string): number {
+		if (!dateString) return 0;
+		// Remove non-digits and sum them up
+		let sum = dateString.replace(/\D/g, '').split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+		// Keep reducing until single digit
+		while (sum > 9) {
+			sum = sum.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+		}
+		return sum || 1; 
+	}
+
+	const form = document.getElementById('numerology-form');
+	if (form) {
+		form.addEventListener('submit', function(e) {
+			e.preventDefault();
+			
+			const p1Input = document.getElementById('partner1') as HTMLInputElement;
+			const p2Input = document.getElementById('partner2') as HTMLInputElement;
+			const wdInput = document.getElementById('wedding-date') as HTMLInputElement;
+			
+			if (!p1Input.value || !p2Input.value || !wdInput.value) return;
+			
+			const p1Num = reduceDate(p1Input.value);
+			const p2Num = reduceDate(p2Input.value);
+			const wdNum = reduceDate(wdInput.value);
+			
+			const initialMsg = document.getElementById('initial-message');
+			const resultsContent = document.getElementById('results-content');
+			
+			if (initialMsg) initialMsg.style.display = 'none';
+			if (resultsContent) resultsContent.style.display = 'block';
+			
+			document.getElementById('p1-number')!.textContent = p1Num.toString();
+			document.getElementById('p1-desc')!.textContent = descriptions[p1Num];
+			
+			document.getElementById('p2-number')!.textContent = p2Num.toString();
+			document.getElementById('p2-desc')!.textContent = descriptions[p2Num];
+			
+			document.getElementById('wd-number')!.textContent = wdNum.toString();
+			document.getElementById('wd-desc')!.textContent = descriptions[wdNum];
+			
+			// Calculate a fun compatibility score between 75 and 100
+			const seed = (p1Num * 3 + p2Num * 7 + wdNum * 5);
+			const score = Math.floor((seed % 26) + 75);
+			
+			document.getElementById('comp-score')!.textContent = score.toString();
+			
+			// Reset gauge for animation
+			const gaugeFill = document.getElementById('gauge-fill');
+			if (gaugeFill) {
+				gaugeFill.style.width = '0%';
+				setTimeout(() => {
+					gaugeFill.style.width = score + '%';
+				}, 50);
+			}
+			
+			const compDesc = document.getElementById('comp-desc');
+			if (compDesc) {
+				if (score >= 95) {
+					compDesc.textContent = "A phenomenal match! Your stars are perfectly aligned for an incredible journey.";
+				} else if (score >= 85) {
+					compDesc.textContent = "A wonderful connection with deep harmony, joy, and profound understanding.";
+				} else {
+					compDesc.textContent = "A strong, resilient bond with unique energies that beautifully complement each other.";
+				}
+			}
+		});
+	}
+</script>

@@ -1,0 +1,207 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Cake Pricing Calculator",
+  "url": "https://manage.wedding/cake-pricing-calculator",
+  "description": "Calculate exact pricing for custom wedding cakes to ensure profitability. Determine price per slice, labor costs, and profit margins instantly.",
+  "applicationCategory": "CalculatorApplication",
+  "operatingSystem": "Any"
+};
+---
+
+<Layout 
+	title="Wedding Cake Pricing Calculator (Price Per Slice & Profit)"
+	description="Bakers and caterers: use our free cake pricing calculator to determine the exact price to charge for custom wedding cakes based on labor and materials."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<header class="fade-in category-header" style="text-align: center;">
+			<h1 class="font-heading" style="font-size: 3.5rem; margin-bottom: 0.5rem; font-weight: 500;">Wedding Cake <span class="accent-italic">Pricing Calculator</span></h1>
+			<p class="font-body" style="color: var(--secondary-ink); max-width: 600px; margin: 0 auto;">Calculate your custom cake price based on tiers, design complexity, labor, and materials.</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 800px;">
+			<div class="hand-card">
+				<form id="calc-form">
+					<div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+						<div>
+							<label class="form-label" for="servings">Total Servings (Guest Count)</label>
+							<input type="number" id="servings" class="form-input" value="100" min="10" required />
+						</div>
+						<div>
+							<label class="form-label" for="tiers">Number of Tiers</label>
+							<input type="number" id="tiers" class="form-input" value="3" min="1" max="10" required />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="materialCost">Estimated Materials Cost ($)</label>
+						<input type="number" id="materialCost" class="form-input" value="150" min="1" required />
+					</div>
+
+					<div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+						<div>
+							<label class="form-label" for="laborHours">Estimated Labor Hours</label>
+							<input type="number" id="laborHours" class="form-input" value="12" min="1" required />
+						</div>
+						<div>
+							<label class="form-label" for="hourlyRate">Your Hourly Rate ($/hr)</label>
+							<input type="number" id="hourlyRate" class="form-input" value="35" min="10" required />
+						</div>
+					</div>
+
+					<div class="form-group" style="margin-bottom: 2rem;">
+						<label class="form-label" for="complexity">Design Markup Multiplier: <span id="complexity-label">1.5x</span></label>
+						<input type="range" id="complexity" class="form-input" min="1.0" max="3.0" step="0.1" value="1.5" oninput="document.getElementById('complexity-label').textContent = this.value + 'x'" />
+						<div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">
+							<span>Simple (1.0x)</span>
+							<span>Standard (1.5x)</span>
+							<span>Intricate (3.0x)</span>
+						</div>
+					</div>
+
+					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%;">Calculate Price</button>
+				</form>
+			</div>
+
+			<div class="hand-card result-box" id="result-container">
+				<h3 class="font-heading" style="margin-bottom: 2rem;">Suggested Pricing</h3>
+				
+				<div class="result-item" style="border-bottom: 3px dashed var(--fg-pencil); margin-bottom: 1rem; padding-bottom: 0.5rem;">
+					<span class="item-label" style="font-size: 1.2rem;">TOTAL PRICE</span>
+					<span class="item-desc">Recommended total charge</span>
+					<span class="item-value" id="res-total" style="font-size: 1.5rem; color: var(--accent-red);">$0.00</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">PER SLICE</span>
+					<span class="item-desc">Price per guest/serving</span>
+					<span class="item-value" id="res-per-slice">$0.00</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">LABOR COST</span>
+					<span class="item-desc">Total hours × rate</span>
+					<span class="item-value" id="res-labor">$0.00</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">PROFIT MARGIN</span>
+					<span class="item-desc">Markup after base costs</span>
+					<span class="item-value" id="res-profit">$0.00</span>
+				</div>
+
+				<div id="chart-container" style="margin-top: 2rem; display: none;">
+					<h4 class="font-heading" style="font-size: 1rem; margin-bottom: 0.5rem; text-align: center;">Cost Breakdown</h4>
+					<div style="display: flex; height: 30px; width: 100%; border: 2px solid var(--fg-pencil); border-radius: 4px; overflow: hidden;">
+						<div id="bar-materials" style="width: 0%; background-color: var(--fg-pencil); opacity: 0.2; transition: width 0.3s ease;" title="Materials"></div>
+						<div id="bar-labor" style="width: 0%; background-color: var(--fg-pencil); opacity: 0.5; transition: width 0.3s ease;" title="Labor"></div>
+						<div id="bar-profit" style="width: 0%; background-color: var(--accent-red); opacity: 0.8; transition: width 0.3s ease;" title="Profit Margin"></div>
+					</div>
+					<div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-top: 0.5rem; color: var(--secondary-ink);">
+						<span style="display: flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background-color: var(--fg-pencil); opacity: 0.2; border: 1px solid var(--fg-pencil); border-radius: 2px;"></span> Materials</span>
+						<span style="display: flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background-color: var(--fg-pencil); opacity: 0.5; border: 1px solid var(--fg-pencil); border-radius: 2px;"></span> Labor</span>
+						<span style="display: flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background-color: var(--accent-red); opacity: 0.8; border: 1px solid var(--fg-pencil); border-radius: 2px;"></span> Profit</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<article class="hand-card" style="margin: 4rem auto; max-width: 800px; padding: 3rem;">
+			<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Mastering Your Margins with a Cake Pricing Calculator</h2>
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				One of the biggest mistakes independent bakers make is undercharging for custom wedding cakes. When you only charge for the flour, butter, and sugar, you are essentially working for free! To run a profitable bakery, you absolutely must factor in your labor hours, structural materials (like dowels and boards), and a healthy profit margin for your artistic expertise.
+			</p>
+			
+			<img src="/images/wedding_cake_sketch.jpg" alt="custom wedding cake pricing calculator cost breakdown sketch" style="width: 100%; max-width: 350px; height: auto; border: 3px solid var(--fg-pencil); border-radius: 8px; margin: 2rem auto; display: block; box-shadow: 4px 4px 0px rgba(0,0,0,0.1);" />
+			
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				That's why we created this visual <strong>cake pricing calculator</strong>. It takes the emotion out of pricing and gives you hard numbers to present to your clients with confidence.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-blue);">The Pricing Formula</h3>
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				Our cake pricing calculator uses the industry-standard formula used by professional cake designers: <strong>(Materials + Labor + Tier Fees) × Design Markup = Final Price</strong>.
+			</p>
+			<ul class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.6;">
+				<li style="margin-bottom: 0.5rem;"><strong>Labor is King:</strong> Never undervalue your time. If baking, stacking, frosting, and decorating takes you 12 hours, you must pay yourself a living hourly wage for all 12 of those hours.</li>
+				<li style="margin-bottom: 0.5rem;"><strong>The Design Markup:</strong> A rustic naked cake (1.0x markup) takes significantly less skill and stress than a 5-tier fondant cake with handmade sugar flowers (3.0x markup). Use the slider to increase your profit margin based on how intricate the design is.</li>
+				<li style="margin-bottom: 0.5rem;"><strong>Per-Slice Pricing:</strong> Most brides budget by the slice. Our calculator automatically divides your final total by the guest count so you can easily quote a "per slice" price.</li>
+			</ul>
+
+			<h3 class="font-heading" style="font-size: 2rem; margin-top: 3rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Cake Pricing Calculator FAQs</h3>
+			
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">How does a cake pricing calculator work?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">A cake pricing calculator adds up your raw ingredient costs and your hourly labor rate to find your base cost. It then applies a profit multiplier based on the complexity of the design to ensure you actually make a profit on the order.</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">What is a good average price per slice for a wedding cake?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">While prices vary wildly by region, standard buttercream wedding cakes usually range from $5 to $7 per slice, while intricate fondant cakes can range from $8 to $15+ per slice.</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">Should I charge extra for delivery and setup?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Absolutely! The cake pricing calculator determines the cost of the cake itself. You should always add a separate line item on your invoice for delivery mileage and on-site setup time.</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">What should I set as my hourly labor rate?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Never set your rate below minimum wage. Many beginner bakers start at $20/hr, while experienced pastry chefs and sugar artists often charge $40-$60/hr for their specialized labor.</p>
+			</details>
+		</article>
+	</main>
+
+	<script>
+		document.getElementById('calc-form')?.addEventListener('submit', function(e) {
+			e.preventDefault();
+			
+			const servings = parseInt((document.getElementById('servings') as HTMLInputElement).value) || 0;
+			const tiers = parseInt((document.getElementById('tiers') as HTMLInputElement).value) || 0;
+			const complexity = parseFloat((document.getElementById('complexity') as HTMLInputElement).value) || 1.0;
+			const laborHours = parseFloat((document.getElementById('laborHours') as HTMLInputElement).value) || 0;
+			const hourlyRate = parseFloat((document.getElementById('hourlyRate') as HTMLInputElement).value) || 0;
+			const materials = parseFloat((document.getElementById('materialCost') as HTMLInputElement).value) || 0;
+
+			// Base costs
+			const laborCost = laborHours * hourlyRate;
+			const baseCost = laborCost + materials;
+			
+			// Tier fee: $25 per tier for structural supports (boards, dowels)
+			const tierFee = tiers * 25;
+			
+			// Apply complexity multiplier to the base cost + tier fee
+			const minPrice = (baseCost + tierFee) * complexity;
+			
+			// Profit margin is what you make *above* your hourly wage and materials
+			const profitMarkup = minPrice - baseCost - tierFee;
+
+			const pricePerSlice = servings > 0 ? (minPrice / servings) : 0;
+
+			// Update DOM
+			document.getElementById('res-total')!.textContent = `$${minPrice.toFixed(2)}`;
+			document.getElementById('res-per-slice')!.textContent = `$${pricePerSlice.toFixed(2)}`;
+			document.getElementById('res-labor')!.textContent = `$${laborCost.toFixed(2)}`;
+			document.getElementById('res-profit')!.textContent = `$${profitMarkup.toFixed(2)}`;
+
+			// Update Chart
+			if (minPrice > 0) {
+				document.getElementById('chart-container')!.style.display = 'block';
+				
+				const materialsPct = ((materials + tierFee) / minPrice) * 100;
+				const laborPct = (laborCost / minPrice) * 100;
+				const profitPct = (profitMarkup / minPrice) * 100;
+
+				document.getElementById('bar-materials')!.style.width = `${materialsPct}%`;
+				document.getElementById('bar-labor')!.style.width = `${laborPct}%`;
+				document.getElementById('bar-profit')!.style.width = `${profitPct}%`;
+			} else {
+				document.getElementById('chart-container')!.style.display = 'none';
+			}
+		});
+	</script>
+</Layout>

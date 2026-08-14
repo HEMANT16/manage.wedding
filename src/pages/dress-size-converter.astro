@@ -1,0 +1,949 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Wedding Dress Size Converter & Bridal Measurement Calculator",
+      "url": "https://manage.wedding/dress-size-converter",
+      "description": "Free wedding dress size converter. Calculate your estimated US, UK, and EU bridal gown size from bust, waist, and hip measurements, discover flattering silhouettes, and export your measurement card.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why is my wedding dress size larger than my everyday street size?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bridal designers still use traditional European sizing charts established in the 1950s that have zero stretch. Over the decades, ready-to-wear everyday brands adopted vanity sizing, while bridal sizing remained fixed. Consequently, bridal gowns typically run 1 to 2 sizes larger than everyday street sizes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which measurement should I use when ordering a wedding dress?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Always order the dress size that corresponds to your largest measurement (between bust, waist, and hips). It is simple and standard for a bridal seamstress to take a dress in, but extremely difficult or impossible to let a dress out due to strict seam allowances."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I measure myself accurately for a wedding dress?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use a flexible fabric measuring tape. 1) Bust: around the fullest point wearing your planned wedding undergarments. 2) Waist: around your natural waist (1-2 inches above navel). 3) Hips: around the fullest part of your buttocks with feet together."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do all bridal designers use the exact same sizing chart?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. European couture houses (like Pronovias) tend to run smaller through the ribcage and hips, while American brands (like David's Bridal) align closer to modern street sizes. Our tool provides standard universal conversions plus designer adjustments."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Wedding Dress Size Converter (Free Bridal & Street Size Chart) | Manage.Wedding"
+	description="Accurately convert your bust, waist, and hip measurements to standard US, UK, and EU bridal dress sizes. Compare designer sizing and export your measurement card."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Wedding Dress Size Converter
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Find your exact bridal gown size across US, UK, and EU standards. Compare street vs. bridal sizing, discover flattering silhouettes, and export your official <strong>Bridal Measurement Fitting Card</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Main Interactive Sizing Studio Workspace Grid -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 380px 1fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="dress-calc-grid">
+			
+			<!-- Left Column: Input Form Card -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+						📏 Body Measurements
+					</h2>
+					
+					<!-- Unit Switcher -->
+					<div style="display: flex; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden;">
+						<button type="button" id="unit-in" class="unit-toggle-btn active-unit">Inches (in)</button>
+						<button type="button" id="unit-cm" class="unit-toggle-btn">cm</button>
+					</div>
+				</div>
+
+				<form id="dress-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+					
+					<!-- Bust -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-bust" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								1. Bust (<span class="unit-label">inches</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Fullest point over bra</span>
+						</div>
+						<input type="number" step="0.5" id="input-bust" value="36" min="20" max="180" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Waist -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-waist" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								2. Natural Waist (<span class="unit-label">inches</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Narrowest torso point</span>
+						</div>
+						<input type="number" step="0.5" id="input-waist" value="28" min="15" max="160" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Hips -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-hips" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								3. Hips (<span class="unit-label">inches</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Widest buttocks point</span>
+						</div>
+						<input type="number" step="0.5" id="input-hips" value="39" min="20" max="200" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Designer Preference -->
+					<div>
+						<label for="input-designer" class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							Bridal Designer Sizing Standard
+						</label>
+						<select id="input-designer" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+							<option value="standard" selected>Standard Industry Bridal (Average)</option>
+							<option value="couture">European Couture (Pronovias / Galia Lahav - Runs Small)</option>
+							<option value="davids">Modern US Ready-To-Wear (David's Bridal / BHLDN)</option>
+							<option value="maggie">Maggie Sottero / Essense of Australia</option>
+						</select>
+					</div>
+
+					<!-- Sample Presets -->
+					<div style="margin-top: 0.5rem; background: var(--bg-paper); border: 1px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem;">
+						<span class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							⚡ Quick Sample Measurements:
+						</span>
+						<div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
+							<button type="button" class="preset-meas-btn" data-b="34" data-w="26" data-h="37">Size 4/6 (34-26-37)</button>
+							<button type="button" class="preset-meas-btn" data-b="37.5" data-w="29.5" data-h="40.5">Size 10/12 (37.5-29.5-40.5)</button>
+							<button type="button" class="preset-meas-btn" data-b="43" data-w="35" data-h="46">Size 16/18 (43-35-46)</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Interactive Results, Sizing Badges, International Matrix & Silhouette Guide -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Sizing Results Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div>
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+								👗 Your Recommended Bridal Size
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">
+								Calculated to fit your largest measurement
+							</span>
+						</div>
+
+						<!-- Exports -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Export PDF / Print
+							</button>
+						</div>
+					</div>
+
+					<!-- Side by Side Sizing Comparison Boxes -->
+					<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+						
+						<!-- Street Size -->
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Everyday Street Size</span>
+							<strong id="res-street-size" class="font-heading" style="font-size: 2.4rem; color: var(--accent-blue); display: block; line-height: 1.2;">US 6</strong>
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Normal clothing</span>
+						</div>
+
+						<!-- Primary Bridal Size -->
+						<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1rem; text-align: center; position: relative;">
+							<span style="position: absolute; top: -10px; right: 10px; background: var(--accent-red); color: #fff; font-size: 0.7rem; font-weight: bold; padding: 2px 6px; border-radius: 10px;">ORDER THIS</span>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--accent-red); display: block; font-weight: bold;">Recommended Bridal Size</span>
+							<strong id="res-bridal-size" class="font-heading" style="font-size: 2.4rem; color: var(--accent-red); display: block; line-height: 1.2;">US 10</strong>
+							<span style="font-size: 0.75rem; color: var(--accent-red); font-weight: bold;">+2 sizes (Standard)</span>
+						</div>
+
+						<!-- Body Shape Archetype -->
+						<div style="background: #f0fdf4; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: #166534; display: block;">Body Silhouette</span>
+							<strong id="res-body-shape" class="font-heading" style="font-size: 1.3rem; color: #15803d; display: block; line-height: 1.3; margin: 0.4rem 0;">Hourglass</strong>
+							<span id="res-shape-desc" style="font-size: 0.75rem; color: #166534; display: block;">Balanced bust & hips</span>
+						</div>
+
+					</div>
+
+					<!-- Visual Comparison Bar -->
+					<div style="margin-bottom: 1.5rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem;">
+							<span class="font-heading" style="font-size: 0.95rem; color: var(--fg-pencil);">Street vs. Bridal Sizing Shift</span>
+							<span id="size-diff-note" class="font-body" style="font-size: 0.85rem; color: var(--accent-red); font-weight: bold;">+2 Sizes Larger</span>
+						</div>
+						<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+							<div style="display: flex; align-items: center; gap: 0.75rem;">
+								<span style="width: 80px; font-size: 0.85rem; font-weight: bold;">Street:</span>
+								<div style="flex: 1; height: 18px; background: #e5e7eb; border-radius: 4px; border: 1px solid var(--fg-pencil); overflow: hidden;">
+									<div id="bar-street" style="height: 100%; width: 30%; background: var(--accent-blue); transition: width 0.4s ease;"></div>
+								</div>
+								<span id="bar-label-street" style="width: 45px; font-size: 0.9rem; font-weight: bold;">US 6</span>
+							</div>
+							<div style="display: flex; align-items: center; gap: 0.75rem;">
+								<span style="width: 80px; font-size: 0.85rem; font-weight: bold; color: var(--accent-red);">Bridal:</span>
+								<div style="flex: 1; height: 18px; background: #e5e7eb; border-radius: 4px; border: 1px solid var(--fg-pencil); overflow: hidden;">
+									<div id="bar-bridal" style="height: 100%; width: 45%; background: var(--accent-red); transition: width 0.4s ease;"></div>
+								</div>
+								<span id="bar-label-bridal" style="width: 45px; font-size: 0.9rem; font-weight: bold; color: var(--accent-red);">US 10</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- International Conversion Matrix Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+							🌐 International Bridal Sizing Matrix
+						</h4>
+						<div style="overflow-x: auto;">
+							<table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.95rem; font-family: var(--font-body);">
+								<thead>
+									<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Region</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">US Bridal</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">UK Bridal</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">EU Bridal</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">AU / NZ</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">IT (Italy)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Your Size</td>
+										<td id="matrix-us" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">10</td>
+										<td id="matrix-uk" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">12</td>
+										<td id="matrix-eu" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">40</td>
+										<td id="matrix-au" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">12</td>
+										<td id="matrix-it" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">44</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- Measurement Anchor Alert & Alteration Guidance -->
+					<div style="background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<strong class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							✂️ Seamstress Ordering & Alteration Advisory:
+						</strong>
+						<p id="alteration-advice-text" class="font-body" style="font-size: 0.95rem; margin: 0; line-height: 1.5; color: var(--fg-pencil);">
+							Your largest measurement is your hips (Size 10). Always order size 10 to ensure the dress zips comfortably. Your seamstress will easily take in the waist and bust during bridal fittings.
+						</p>
+					</div>
+
+				</div>
+
+				<!-- Flattering Gown Silhouette Recommendations Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+					<h3 class="font-heading" style="font-size: 1.3rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+						<span>✨</span> Recommended Gown Silhouettes for Your Shape
+					</h3>
+					<div id="silhouette-cards-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+						<!-- Injected via JS -->
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Official Bridal Fitting & Measurement Card</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exported on: <span id="print-date"></span> | Ready for Salon Stylist & Seamstress</p>
+			</div>
+			
+			<table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Measurement Area</th>
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: center;">Client Measurement</th>
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: center;">Corresponding Size</th>
+					</tr>
+				</thead>
+				<tbody id="print-meas-body"></tbody>
+			</table>
+
+			<div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; background: #fafafa;">
+				<h3 style="margin: 0 0 8px 0; font-size: 15px;">Official Sizing Recommendations:</h3>
+				<p style="margin: 4px 0;">• <strong>Recommended Bridal Size to Order:</strong> <span id="print-rec-size"></span></p>
+				<p style="margin: 4px 0;">• <strong>Everyday Street Size:</strong> <span id="print-street-size"></span></p>
+				<p style="margin: 4px 0;">• <strong>Body Archetype:</strong> <span id="print-body-shape"></span></p>
+				<p style="margin: 4px 0;">• <strong>Alterations Note:</strong> <span id="print-alteration-note"></span></p>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Bridal Fashion & Sizing Masterclass</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem;">
+					The Ultimate Wedding Dress Sizing & Measurement Guide
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0;">
+					Everything you need to know about bridal sizing charts, measuring yourself with 100% accuracy, and choosing the perfect silhouette for your body shape.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem;">
+				<img 
+					src="/images/wedding-dress-sketch.jpg" 
+					alt="Hand drawn line art sketch of an elegant wedding dress displayed on a dressmakers mannequin" 
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil);"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Ordering to your largest measurement prevents unfixable seam allowance disasters.
+				</p>
+			</div>
+
+			<!-- Section 1: Why Bridal Sizing is Different -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Why Is Bridal Sizing 1 to 2 Sizes Larger Than Street Clothes?
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Almost every bride experiences a moment of sticker shock when her bridal stylist takes her measurements and announces a dress size that is two numbers higher than her favorite jeans. Take a deep breath: <strong>this is completely normal and universal across the wedding industry</strong>.
+				</p>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin: 1.5rem 0;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.5rem;">
+							The "Vanity Sizing" Evolution
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Over the past 50 years, ready-to-wear everyday brands (like Zara, J.Crew, and Nordstrom) shifted measurements upward so shoppers feel flattered buying smaller tag sizes. A modern everyday street Size 6 has roughly the same physical dimensions as a 1960s Size 10.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.5rem;">
+							European Haute Couture Standards
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Bridal fashion houses never modernized their sizing charts. They still construct gowns using structured, zero-stretch fabrics (silk mikado, dupioni, organza, boned corsets) based on post-WWII European couture size blocks.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Step-by-Step Measurement Protocol -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. How to Measure Yourself with 100% Precision
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Never use a metal hardware tape measure—always use a flexible fabric or vinyl measuring tape. Stand upright with feet shoulder-width apart, arms relaxed at your sides:
+				</p>
+
+				<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem; margin-bottom: 1.5rem;">
+					<ul class="font-body" style="line-height: 1.8; font-size: 1.05rem; padding-left: 1.2rem; margin: 0;">
+						<li><strong>1. Bust (Fullest Apex):</strong> Wrap the tape horizontally around the fullest part of your bust and straight across your shoulder blades. Wear the exact bra or shapewear you plan to wear beneath your wedding gown.</li>
+						<li><strong>2. Natural Waist (Bend to Side):</strong> Bend to one side to find your natural waist crease. This is the narrowest point of your torso, typically located 1 to 2 inches above your belly button. Do not suck in your stomach; breathe normally.</li>
+						<li><strong>3. Full Hips (Widest Point):</strong> Stand with your feet touching and wrap the tape around the fullest curve of your hips and buttocks (typically 7 to 9 inches below your natural waistline).</li>
+						<li><strong>4. Hollow-to-Hem (Length):</strong> Measure from the hollow depression at the base of your throat down to the floor, wearing the exact bridal heel height you plan to wear on the wedding day.</li>
+					</ul>
+				</div>
+			</section>
+
+			<!-- Section 3: Designer Brand Sizing Comparison Table -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					3. Designer Brand Sizing Variations
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Different design houses cater to distinct regional proportions. Review how top designers compare:
+				</p>
+				
+				<div style="overflow-x: auto; margin-bottom: 1.5rem;">
+					<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.95rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Designer / Brand</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Fit Tendency</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Sizing vs. Street Size</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Key Sizing Advice</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Maggie Sottero / Rebecca Ingram</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Standard US Bridal</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: bold;">+1 to +2 Sizes Up</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Corset lace-up backs allow up to 1 full size of flexibility.</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Pronovias / Rosa Clará (Spain)</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">European Slim Fit</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: bold;">+2 to +3 Sizes Up</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Runs extremely narrow in the ribcage and high hip curve.</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">David's Bridal / BHLDN</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Modern American Fit</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); color: var(--accent-blue); font-weight: bold;">+0 to +1 Size Up</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Closely mirrors modern US high-street department store sizing.</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Essense of Australia / Stella York</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Standard Curve Friendly</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: bold;">+2 Sizes Up</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Generous bust cups; order based strictly on waist measurement.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Section 4: Universal Sizing Chart -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					4. Standard Universal Bridal Sizing Chart (Inches)
+				</h3>
+				<div style="overflow-x: auto; margin-bottom: 1.5rem;">
+					<table style="width: 100%; border-collapse: collapse; text-align: center; font-family: var(--font-body); font-size: 0.95rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+								<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Street Size</th>
+								<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--accent-red);">Bridal Size</th>
+								<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Bust (in)</th>
+								<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Waist (in)</th>
+								<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Hips (in)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr><td>0 / 2</td><td style="font-weight:bold; color:var(--accent-red);">Size 4</td><td>33.5"</td><td>25.5"</td><td>36.5"</td></tr>
+							<tr style="background: #faf8f3;"><td>4</td><td style="font-weight:bold; color:var(--accent-red);">Size 8</td><td>35.5"</td><td>27.5"</td><td>38.5"</td></tr>
+							<tr><td>6</td><td style="font-weight:bold; color:var(--accent-red);">Size 10</td><td>36.5"</td><td>28.5"</td><td>39.5"</td></tr>
+							<tr style="background: #faf8f3;"><td>8</td><td style="font-weight:bold; color:var(--accent-red);">Size 12</td><td>38.0"</td><td>30.0"</td><td>41.0"</td></tr>
+							<tr><td>10 / 12</td><td style="font-weight:bold; color:var(--accent-red);">Size 14</td><td>39.5"</td><td>31.5"</td><td>42.5"</td></tr>
+							<tr style="background: #faf8f3;"><td>14</td><td style="font-weight:bold; color:var(--accent-red);">Size 18</td><td>43.0"</td><td>35.0"</td><td>46.0"</td></tr>
+							<tr><td>16</td><td style="font-weight:bold; color:var(--accent-red);">Size 20</td><td>45.0"</td><td>37.0"</td><td>48.0"</td></tr>
+							<tr style="background: #faf8f3;"><td>18+</td><td style="font-weight:bold; color:var(--accent-red);">Size 22 - 26</td><td>47" - 52"</td><td>39" - 44"</td><td>50" - 55"</td></tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Section 5: The Golden Rules of Ordering -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					5. The Golden Rules of Ordering & Alterations
+				</h3>
+				<div style="background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+					<ul class="font-body" style="padding-left: 1.2rem; line-height: 1.7; font-size: 1rem; margin: 0; color: var(--fg-pencil);">
+						<li><strong>Always Fit the Largest Measurement:</strong> If your bust is a Size 8, waist a Size 10, and hips a Size 14, order a Size 14. A tailor can easily take in the bodice, but adding fabric to tight hips is nearly impossible.</li>
+						<li><strong>Never Order for Anticipated Weight Loss:</strong> Gowns take 4 to 6 months to manufacture. If you lose weight, taking in a dress 1 to 2 sizes is simple. If you don't lose weight and ordered a size down, the dress will not zip on your wedding day.</li>
+						<li><strong>Schedule 3 Fitting Rounds:</strong> Plan your First Fitting 8 weeks out, Second Fitting 4 weeks out, and Final Pick-up 10 days before your wedding.</li>
+					</ul>
+				</div>
+			</section>
+
+			<!-- Section 6: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem;">
+					🔗 Integrated Wedding Workflow Tools
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/dress-alterations-estimator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Dress Alterations Estimator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calculate hemming, bust taking-in, and bustle pricing.</span>
+					</a>
+					<a href="/ring-size-converter" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Ring Size Converter</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Convert engagement and wedding band finger sizes.</span>
+					</a>
+					<a href="/master-budget-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Master Budget Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Allocate 8-10% of total wedding budget to attire and accessories.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 7: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						What if I am between two dress sizes?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						<strong>Always size up!</strong> Standard wedding dresses have minimal seam allowance inside (usually only 0.5 inches max). It is very straightforward for a seamstress to take in a dress by 1 to 2 sizes, but letting a dress out is risky and often requires buying additional lace or fabric panels from the manufacturer.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						How do I export my measurements for my boutique appointment?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Click the <strong>"📝 Export Word (.doc)"</strong> or <strong>"🖨️ Export PDF / Print"</strong> button in the dashboard. The tool exports a clean fitting card with your bust, waist, hips, body silhouette, and designer adjustments ready to hand to your consultant.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Do I need to wear shoes or heels when measuring?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Shoes do not affect your bust, waist, or hip size. However, you will need your exact wedding shoes or identical heel height during your first alteration fitting to establish the floor-length hemline and bustle points.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						What is "Split Sizing" and when should I request it?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Split sizing occurs when a designer agrees to cut the bodice in one size (e.g. Size 6) and the skirt in another (e.g. Size 12) before sewing them together. This typically incurs a $200-$400 custom charge from the manufacturer, but can save significantly on post-delivery alteration costs for dramatic pear or hourglass figures.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						How does fabric type affect how a wedding dress fits?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Stiff fabrics like Mikado, Duchess Satin, and Brocade have zero give—requiring exact millimeter precision in measurements. Lightweight fabrics like Crepe, Chiffon, or Stretch Jersey offer gentle give and drape more forgivingly across the hips and thighs.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.unit-toggle-btn {
+		background: #fff;
+		border: none;
+		padding: 0.3rem 0.6rem;
+		font-family: var(--font-heading);
+		font-size: 0.85rem;
+		cursor: pointer;
+		color: var(--fg-pencil);
+		transition: background 0.15s ease;
+	}
+	.unit-toggle-btn.active-unit {
+		background: var(--fg-pencil);
+		color: #fff;
+	}
+
+	.preset-meas-btn {
+		background: #fff;
+		border: 1px solid var(--fg-pencil);
+		border-radius: 3px;
+		padding: 0.2rem 0.45rem;
+		font-size: 0.75rem;
+		cursor: pointer;
+		font-family: var(--font-body);
+	}
+	.preset-meas-btn:hover {
+		background: var(--muted-paper);
+	}
+
+	.silhouette-card {
+		background: var(--bg-paper);
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.85rem;
+	}
+	.silhouette-card h5 {
+		margin: 0 0 0.25rem 0;
+		font-family: var(--font-heading);
+		font-size: 1rem;
+		color: var(--accent-blue);
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	// Standard Size Chart in Inches
+	const sizeChartInches = [
+		{ street: '00', bridal: 2, bust: 32.0, waist: 24.0, hip: 34.5 },
+		{ street: '0',  bridal: 4, bust: 33.0, waist: 25.0, hip: 35.5 },
+		{ street: '2',  bridal: 6, bust: 34.0, waist: 26.0, hip: 36.5 },
+		{ street: '4',  bridal: 8, bust: 35.5, waist: 27.5, hip: 38.0 },
+		{ street: '6',  bridal: 10, bust: 36.5, waist: 28.5, hip: 39.5 },
+		{ street: '8',  bridal: 12, bust: 38.0, waist: 30.0, hip: 41.0 },
+		{ street: '10', bridal: 14, bust: 39.5, waist: 31.5, hip: 42.5 },
+		{ street: '12', bridal: 16, bust: 41.5, waist: 33.5, hip: 44.5 },
+		{ street: '14', bridal: 18, bust: 43.5, waist: 35.5, hip: 46.5 },
+		{ street: '16', bridal: 20, bust: 45.5, waist: 37.5, hip: 48.5 },
+		{ street: '18', bridal: 22, bust: 47.5, waist: 39.5, hip: 50.5 },
+		{ street: '20', bridal: 24, bust: 49.5, waist: 41.5, hip: 52.5 },
+		{ street: '22', bridal: 26, bust: 52.0, waist: 44.0, hip: 55.0 },
+		{ street: '24', bridal: 28, bust: 54.5, waist: 46.5, hip: 57.5 },
+		{ street: '26', bridal: 30, bust: 57.0, waist: 49.0, hip: 60.0 }
+	];
+
+	let currentUnit = 'in'; // 'in' or 'cm'
+
+	const bustInput = document.getElementById('input-bust');
+	const waistInput = document.getElementById('input-waist');
+	const hipsInput = document.getElementById('input-hips');
+	const designerSelect = document.getElementById('input-designer');
+
+	const resStreet = document.getElementById('res-street-size');
+	const resBridal = document.getElementById('res-bridal-size');
+	const resBodyShape = document.getElementById('res-body-shape');
+	const resShapeDesc = document.getElementById('res-shape-desc');
+
+	const barStreet = document.getElementById('bar-street');
+	const barBridal = document.getElementById('bar-bridal');
+	const barLabelStreet = document.getElementById('bar-label-street');
+	const barLabelBridal = document.getElementById('bar-label-bridal');
+	const sizeDiffNote = document.getElementById('size-diff-note');
+
+	const matrixUs = document.getElementById('matrix-us');
+	const matrixUk = document.getElementById('matrix-uk');
+	const matrixEu = document.getElementById('matrix-eu');
+	const matrixAu = document.getElementById('matrix-au');
+	const matrixIt = document.getElementById('matrix-it');
+
+	const alterationText = document.getElementById('alteration-advice-text');
+	const silhouetteContainer = document.getElementById('silhouette-cards-container');
+
+	function toInches(val) {
+		return currentUnit === 'cm' ? val / 2.54 : val;
+	}
+
+	function calculateSizing() {
+		let rawB = parseFloat(bustInput.value) || 36;
+		let rawW = parseFloat(waistInput.value) || 28;
+		let rawH = parseFloat(hipsInput.value) || 39;
+
+		const bIn = toInches(rawB);
+		const wIn = toInches(rawW);
+		const hIn = toInches(rawH);
+
+		// Find size for each measurement
+		let bustSizeObj = sizeChartInches.find(s => bIn <= s.bust) || sizeChartInches[sizeChartInches.length - 1];
+		let waistSizeObj = sizeChartInches.find(s => wIn <= s.waist) || sizeChartInches[sizeChartInches.length - 1];
+		let hipSizeObj = sizeChartInches.find(s => hIn <= s.hip) || sizeChartInches[sizeChartInches.length - 1];
+
+		// Maximum size needed to fit largest measurement
+		const maxBridalSize = Math.max(bustSizeObj.bridal, waistSizeObj.bridal, hipSizeObj.bridal);
+		const matchedObj = sizeChartInches.find(s => s.bridal === maxBridalSize) || sizeChartInches[sizeChartInches.length - 1];
+
+		// Designer adjustments
+		let adjustedBridal = maxBridalSize;
+		const designer = designerSelect.value;
+		if (designer === 'couture') {
+			adjustedBridal = Math.min(30, maxBridalSize + 2); // runs small
+		} else if (designer === 'davids') {
+			adjustedBridal = Math.max(2, maxBridalSize - 2); // runs true to street
+		}
+
+		const streetSizeVal = matchedObj.street;
+
+		// Determine Body Shape Archetype
+		let shape = 'Hourglass';
+		let shapeDetail = 'Balanced bust & hips with defined waist';
+		let silhouettes = [
+			{ name: 'Mermaid / Trumpet', desc: 'Highlights curves and naturally balanced proportions.' },
+			{ name: 'Classic A-Line', desc: 'Universally flattering cinch at natural waistline.' }
+		];
+
+		if (hIn >= bIn + 2 && (hIn - wIn) >= 8) {
+			shape = 'Pear / Triangle';
+			shapeDetail = 'Hips wider than bust with smaller waist';
+			silhouettes = [
+				{ name: 'Ballgown / Princess', desc: 'Voluminous skirt skims easily over hips while highlighting waist.' },
+				{ name: 'Empire / Flowing A-Line', desc: 'Draws focus upward to neckline and bodice.' }
+			];
+		} else if (bIn >= hIn + 2) {
+			shape = 'Inverted Triangle';
+			shapeDetail = 'Fuller bust / broader shoulders than hips';
+			silhouettes = [
+				{ name: 'A-Line with V-Neck', desc: 'Elongates torso and balances shoulder-to-hip ratio.' },
+				{ name: 'Ballgown with Box Pleats', desc: 'Adds volume to lower half for perfect symmetry.' }
+			];
+		} else if (Math.abs(bIn - hIn) <= 2 && (bIn - wIn) <= 6) {
+			shape = 'Rectangle / Athletic';
+			shapeDetail = 'Uniform measurements with slight waist curve';
+			silhouettes = [
+				{ name: 'Fit-and-Flare', desc: 'Creates the optical illusion of curves at hips and bust.' },
+				{ name: 'Corset Bodice Gown', desc: 'Defines waist structure with built-in boning.' }
+			];
+		}
+
+		// Update UI
+		resStreet.textContent = `US ${streetSizeVal}`;
+		resBridal.textContent = `US ${adjustedBridal}`;
+		resBodyShape.textContent = shape;
+		resShapeDesc.textContent = shapeDetail;
+
+		// Progress Comparison Bars
+		const maxScale = 30;
+		const streetNum = parseInt(streetSizeVal) || 6;
+		const streetPct = Math.min(100, Math.round((streetNum / maxScale) * 100));
+		const bridalPct = Math.min(100, Math.round((adjustedBridal / maxScale) * 100));
+
+		barStreet.style.width = `${streetPct}%`;
+		barBridal.style.width = `${bridalPct}%`;
+		barLabelStreet.textContent = `US ${streetSizeVal}`;
+		barLabelBridal.textContent = `US ${adjustedBridal}`;
+
+		const diff = adjustedBridal - streetNum;
+		sizeDiffNote.textContent = diff > 0 ? `+${diff} Sizes Up from Street` : 'Runs Close to Street Size';
+
+		// International Matrix
+		matrixUs.textContent = `${adjustedBridal}`;
+		matrixUk.textContent = `${adjustedBridal + 2}`; // UK is +2 of US
+		matrixEu.textContent = `${adjustedBridal + 30}`; // EU 40 for US 10
+		matrixAu.textContent = `${adjustedBridal + 2}`; // AU is same as UK
+		matrixIt.textContent = `${adjustedBridal + 34}`; // IT 44 for US 10
+
+		// Alteration Advice Note
+		let anchor = 'hips';
+		if (bustSizeObj.bridal >= waistSizeObj.bridal && bustSizeObj.bridal >= hipSizeObj.bridal) anchor = 'bust';
+		else if (waistSizeObj.bridal >= bustSizeObj.bridal && waistSizeObj.bridal >= hipSizeObj.bridal) anchor = 'waist';
+
+		alterationText.innerHTML = `
+			Your largest measurement is your <strong>${anchor} (Size ${maxBridalSize})</strong>. Order <strong>Size ${adjustedBridal}</strong> so the gown zips with ease. Your bridal seamstress can easily take in the remaining areas during standard fittings.
+		`;
+
+		// Silhouettes
+		silhouetteContainer.innerHTML = '';
+		silhouettes.forEach(s => {
+			const div = document.createElement('div');
+			div.className = 'silhouette-card';
+			div.innerHTML = `
+				<h5>✨ ${s.name}</h5>
+				<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">${s.desc}</p>
+			`;
+			silhouetteContainer.appendChild(div);
+		});
+	}
+
+	// Unit Switcher
+	document.getElementById('unit-in').addEventListener('click', () => {
+		if (currentUnit === 'in') return;
+		currentUnit = 'in';
+		document.getElementById('unit-in').classList.add('active-unit');
+		document.getElementById('unit-cm').classList.remove('active-unit');
+		document.querySelectorAll('.unit-label').forEach(el => el.textContent = 'inches');
+
+		bustInput.value = (parseFloat(bustInput.value) / 2.54).toFixed(1);
+		waistInput.value = (parseFloat(waistInput.value) / 2.54).toFixed(1);
+		hipsInput.value = (parseFloat(hipsInput.value) / 2.54).toFixed(1);
+		calculateSizing();
+	});
+
+	document.getElementById('unit-cm').addEventListener('click', () => {
+		if (currentUnit === 'cm') return;
+		currentUnit = 'cm';
+		document.getElementById('unit-cm').classList.add('active-unit');
+		document.getElementById('unit-in').classList.remove('active-unit');
+		document.querySelectorAll('.unit-label').forEach(el => el.textContent = 'cm');
+
+		bustInput.value = (parseFloat(bustInput.value) * 2.54).toFixed(1);
+		waistInput.value = (parseFloat(waistInput.value) * 2.54).toFixed(1);
+		hipsInput.value = (parseFloat(hipsInput.value) * 2.54).toFixed(1);
+		calculateSizing();
+	});
+
+	// Presets
+	document.querySelectorAll('.preset-meas-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			let b = parseFloat(btn.getAttribute('data-b'));
+			let w = parseFloat(btn.getAttribute('data-w'));
+			let h = parseFloat(btn.getAttribute('data-h'));
+
+			if (currentUnit === 'cm') {
+				b = (b * 2.54).toFixed(1);
+				w = (w * 2.54).toFixed(1);
+				h = (h * 2.54).toFixed(1);
+			}
+
+			bustInput.value = b;
+			waistInput.value = w;
+			hipsInput.value = h;
+			calculateSizing();
+		});
+	});
+
+	// Input listeners
+	bustInput.addEventListener('input', calculateSizing);
+	waistInput.addEventListener('input', calculateSizing);
+	hipsInput.addEventListener('input', calculateSizing);
+	designerSelect.addEventListener('change', calculateSizing);
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const rawB = bustInput.value;
+		const rawW = waistInput.value;
+		const rawH = hipsInput.value;
+		const unit = currentUnit === 'in' ? 'inches' : 'cm';
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Bridal Sizing & Fitting Card</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Official Bridal Sizing & Measurement Card</h1>
+				<p>Generated on ${new Date().toLocaleDateString()} | Ready for Boutique Stylist & Seamstress</p>
+				
+				<h3>Client Body Measurements:</h3>
+				<table>
+					<thead>
+						<tr><th>Measurement Area</th><th>Client Value</th><th>Notes</th></tr>
+					</thead>
+					<tbody>
+						<tr><td><strong>Bust</strong></td><td>${rawB} ${unit}</td><td>Measured over planned bridal undergarments</td></tr>
+						<tr><td><strong>Waist</strong></td><td>${rawW} ${unit}</td><td>Measured at natural narrowest point</td></tr>
+						<tr><td><strong>Hips</strong></td><td>${rawH} ${unit}</td><td>Measured at widest point across buttocks</td></tr>
+					</tbody>
+				</table>
+
+				<h3 style="margin-top:20px;">Recommended Sizing Summary:</h3>
+				<table>
+					<thead>
+						<tr><th>Standard</th><th>Size</th><th>Details</th></tr>
+					</thead>
+					<tbody>
+						<tr><td><strong>Recommended US Bridal</strong></td><td><strong>${resBridal.textContent}</strong></td><td>Ordered to fit largest measurement</td></tr>
+						<tr><td><strong>Everyday Street Size</strong></td><td>${resStreet.textContent}</td><td>Normal ready-to-wear sizing</td></tr>
+						<tr><td><strong>UK Bridal Size</strong></td><td>${matrixUk.textContent}</td><td>UK / Australia Standard</td></tr>
+						<tr><td><strong>EU Bridal Size</strong></td><td>${matrixEu.textContent}</td><td>European Standard</td></tr>
+						<tr><td><strong>Body Silhouette Archetype</strong></td><td>${resBodyShape.textContent}</td><td>${resShapeDesc.textContent}</td></tr>
+					</tbody>
+				</table>
+
+				<p style="margin-top:20px; font-size:12px; color:#666;">Advisory: Always double-check the specific designer's size chart before ordering.</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Bridal_Fitting_Card_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		const printDate = document.getElementById('print-date');
+		const printMeasBody = document.getElementById('print-meas-body');
+		const printRecSize = document.getElementById('print-rec-size');
+		const printStreetSize = document.getElementById('print-street-size');
+		const printBodyShape = document.getElementById('print-body-shape');
+		const printAlterationNote = document.getElementById('print-alteration-note');
+
+		printDate.textContent = new Date().toLocaleDateString();
+		const unit = currentUnit === 'in' ? 'inches' : 'cm';
+
+		printMeasBody.innerHTML = `
+			<tr>
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">1. Bust</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${bustInput.value} ${unit}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Over bra / undergarments</td>
+			</tr>
+			<tr>
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">2. Natural Waist</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${waistInput.value} ${unit}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Narrowest point of torso</td>
+			</tr>
+			<tr>
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">3. Hips</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${hipsInput.value} ${unit}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Widest buttocks curve</td>
+			</tr>
+		`;
+
+		printRecSize.textContent = `${resBridal.textContent} (UK ${matrixUk.textContent} / EU ${matrixEu.textContent})`;
+		printStreetSize.textContent = resStreet.textContent;
+		printBodyShape.textContent = `${resBodyShape.textContent} (${resShapeDesc.textContent})`;
+		printAlterationNote.textContent = alterationText.textContent;
+
+		window.print();
+	});
+
+	// Initialize
+	calculateSizing();
+</script>

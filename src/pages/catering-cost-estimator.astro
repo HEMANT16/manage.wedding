@@ -1,0 +1,765 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Wedding Catering Cost Estimator & Per-Person Price Calculator",
+      "url": "https://manage.wedding/catering-cost-estimator",
+      "description": "Free wedding catering cost estimator. Calculate exact food, bar, rentals, service charges (plus-plus), and taxes across plated, buffet, and cocktail receptions. Export to Word, PDF, or Excel.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the average catering cost per person for a wedding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The average wedding catering cost ranges from $75 to $150 per guest for food and non-alcoholic drinks. When full open bar, 20-24% service charges, and state sales taxes are added, the true all-inclusive cost typically lands between $120 and $220 per guest."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is a buffet cheaper than a plated dinner at a wedding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not always. While buffets require fewer servers (saving on staffing hours), they require 20-30% more food volume because guests serve themselves generous portions. Plated dinners offer exact portion control, so high-end buffets often cost the same as standard plated meals."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does '++' (plus-plus) mean on a wedding catering quote?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "'Plus-plus' (++) indicates that service charges (typically 20-24%) and local sales tax (6-10%) will be added on top of the base per-person menu price. A $100/person base menu usually ends up costing $130-$135 per person after plus-plus fees."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I export my calculated catering estimate?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Click the 'Export Word (.doc)', 'Export PDF / Print', or 'Export Excel (.csv)' button at the top of the estimator. You will receive an itemized proposal comparison sheet ready to send to prospective caterers or banquet halls."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Wedding Catering Cost Estimator (Free Per-Person Price Calculator & Word Export) | Manage.Wedding"
+	description="Instantly calculate full wedding catering costs. Compare plated, buffet, family-style, cocktail stations, and bar packages with hidden fees and Word/PDF exports."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 2rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Wedding Catering Cost Estimator
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Uncover the true all-inclusive cost of wedding food, open bar packages, table rentals, service fees (plus-plus), and taxes. Export to <strong>Word (.doc)</strong>, <strong>PDF</strong>, or <strong>Excel (.csv)</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Main Workspace Grid: Configurator + Real-Time Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="catering-calc-grid">
+			
+			<!-- Left Column: Input Form & Package Controls -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							🍽️ Banquet & Menu Options
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							Configure food, bar, rentals, and service tier
+						</span>
+					</div>
+
+					<!-- Currency Selector -->
+					<div style="display: flex; align-items: center; gap: 0.3rem;">
+						<span style="font-size: 0.85rem; font-weight: bold;">Currency:</span>
+						<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="$" selected>$ (USD/CAD/AUD)</option>
+							<option value="£">£ (GBP)</option>
+							<option value="€">€ (EUR)</option>
+							<option value="₹">₹ (INR)</option>
+						</select>
+					</div>
+				</div>
+
+				<form id="catering-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+					
+					<!-- Guest Count & Vendor Meals -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+						<div>
+							<label for="input-guest-count" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Guest Count *
+							</label>
+							<input type="number" id="input-guest-count" value="100" min="10" max="1000" required style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+						</div>
+
+						<div>
+							<label for="input-vendor-meals" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Vendor Meals (Photo, DJ)
+							</label>
+							<input type="number" id="input-vendor-meals" value="4" min="0" max="30" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+						</div>
+					</div>
+
+					<!-- Meal Service Style -->
+					<div>
+						<label for="select-meal-style" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Meal Service Style
+						</label>
+						<select id="select-meal-style" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; background: #fff;">
+							<option value="65" selected>Plated 3-Course Dinner ($65 / guest base)</option>
+							<option value="50">Buffet Style (2 Entrees & Sides) ($50 / guest base)</option>
+							<option value="58">Family Style Shared Platters ($58 / guest base)</option>
+							<option value="45">Heavy Cocktail & Food Stations ($45 / guest base)</option>
+							<option value="35">Food Truck / Casual Festivity ($35 / guest base)</option>
+							<option value="38">Brunch Buffet & Waffle Bar ($38 / guest base)</option>
+						</select>
+					</div>
+
+					<!-- Passed Appetizers / Cocktail Hour -->
+					<div>
+						<label for="select-appetizers" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Cocktail Hour Appetizers
+						</label>
+						<select id="select-appetizers" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+							<option value="0">None / Included in Venue Package ($0)</option>
+							<option value="14" selected>3 Passed Hors d'Oeuvres ($14 / guest)</option>
+							<option value="22">5 Passed Hors d'Oeuvres + Grazing Table ($22 / guest)</option>
+							<option value="30">Luxury Seafood & Charcuterie Raw Bar ($30 / guest)</option>
+						</select>
+					</div>
+
+					<!-- Bar & Beverage Package -->
+					<div>
+						<label for="select-bar-package" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Bar & Beverage Package (4-5 Hours)
+						</label>
+						<select id="select-bar-package" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+							<option value="0">Dry Reception / Non-Alcoholic Only ($0 / guest)</option>
+							<option value="8">BYO Alcohol (Bar Service & Mixers Only) ($8 / guest)</option>
+							<option value="20">Beer, Wine & Champagne Toast ($20 / guest)</option>
+							<option value="32" selected>Full Standard Open Bar (Liquor, Beer, Wine) ($32 / guest)</option>
+							<option value="46">Premium Top-Shelf Open Bar & Cocktails ($46 / guest)</option>
+						</select>
+					</div>
+
+					<!-- Rentals & Dinnerware -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+						<div>
+							<label for="select-rentals" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Tableware & Linens
+							</label>
+							<select id="select-rentals" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem; background: #fff;">
+								<option value="0">Provided by Venue ($0)</option>
+								<option value="10" selected>Standard China & Linen ($10/p)</option>
+								<option value="20">Upgraded Vintage / Gold ($20/p)</option>
+							</select>
+						</div>
+
+						<div>
+							<label for="select-dessert-fee" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Cake Cutting / Dessert
+							</label>
+							<select id="select-dessert-fee" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem; background: #fff;">
+								<option value="0">No Cake Cutting Fee ($0)</option>
+								<option value="3" selected>Standard Cake Slicing ($3/p)</option>
+								<option value="8">Full Caterer Dessert Bar ($8/p)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Plus-Plus Fees (Service Charge & Tax) -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-service-pct" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								Service Charge (Plus-Plus)
+							</label>
+							<div style="display: flex; align-items: center; gap: 0.2rem;">
+								<input type="number" id="input-service-pct" value="20" min="0" max="35" style="width: 60px; padding: 0.35rem; border: 1px solid var(--fg-pencil); border-radius: 3px; font-size: 0.9rem; text-align: center; background: #fff;">
+								<span style="font-weight: bold; font-size: 0.9rem;">%</span>
+							</div>
+						</div>
+
+						<div>
+							<label for="input-tax-pct" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								Sales Tax Rate
+							</label>
+							<div style="display: flex; align-items: center; gap: 0.2rem;">
+								<input type="number" id="input-tax-pct" value="8" min="0" max="20" step="0.5" style="width: 60px; padding: 0.35rem; border: 1px solid var(--fg-pencil); border-radius: 3px; font-size: 0.9rem; text-align: center; background: #fff;">
+								<span style="font-weight: bold; font-size: 0.9rem;">%</span>
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Financial Results & Surcharge Comparison -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Total Quote Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								📋 Estimated Catering Invoice
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								All-inclusive food, bar, plus-plus & tax
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Export PDF / Print
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Cost Per Head vs Total Grid -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+						
+						<!-- Grand Total Invoice -->
+						<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--accent-red); display: block; font-weight: bold;">Grand Total Invoice</span>
+							<strong id="res-grand-total" class="font-heading" style="font-size: 2.2rem; color: var(--accent-red); display: block; line-height: 1.2;">$15,681</strong>
+							<span id="res-total-guest-note" style="font-size: 0.75rem; color: var(--accent-red);">All fees included</span>
+						</div>
+
+						<!-- All-Inclusive Cost Per Head -->
+						<div style="background: #eff6ff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: #1e40af; display: block; font-weight: bold;">True Cost Per Guest</span>
+							<strong id="res-per-head" class="font-heading" style="font-size: 2.2rem; color: var(--accent-blue); display: block; line-height: 1.2;">$156.81</strong>
+							<span id="res-base-diff-note" style="font-size: 0.75rem; color: #1e40af;">Base was $65.00</span>
+						</div>
+
+					</div>
+
+					<!-- Itemized Invoice Breakdown Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Line-Item Expense Breakdown
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.95rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🥗 Base Food & Appetizers:</td>
+									<td id="res-food-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">$7,900.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🍷 Bar & Beverage Package:</td>
+									<td id="res-bar-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">$3,200.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🍽️ Table Rentals & Cake Fee:</td>
+									<td id="res-rentals-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">$1,300.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🍱 Vendor Crew Meals (50% off):</td>
+									<td id="res-vendor-meals-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">$130.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb; background: #fafafa;">
+									<td style="padding: 0.4rem 0; font-weight: bold;">Subtotal (Food + Bar + Rentals):</td>
+									<td id="res-pretax-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">$12,530.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb; color: var(--accent-red);">
+									<td style="padding: 0.4rem 0;">➕ Service Charge (20%):</td>
+									<td id="res-service-charge" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">$2,506.00</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil);">
+									<td style="padding: 0.4rem 0;">🏛️ State Sales Tax (8%):</td>
+									<td id="res-sales-tax" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">$645.00</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Proportional Cost Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span>Food & Bar (75%)</span>
+							<span style="color: var(--accent-red);">Service & Tax (25%)</span>
+						</div>
+						<div style="display: flex; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="bar-food-portion" style="width: 75%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+							<div id="bar-fees-portion" style="width: 25%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Planner Surcharge Alert Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						⚠️ The 30% "Plus-Plus" Reality Check:
+					</strong>
+					<p class="font-body" style="font-size: 0.9rem; line-height: 1.5; margin: 0; color: var(--fg-pencil);">
+						Notice how a base menu of <strong>$65/head</strong> jumps to <strong>$156.81/head</strong> once cocktail hors d'oeuvres, open bar, 20% service fees, and 8% taxes are factored in. Never evaluate a catering quote on food alone!
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Official Wedding Catering Estimate</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exported on: <span id="print-date"></span> | Guest Count: <span id="print-guests"></span> | All-Inclusive Total: <span id="print-total"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Invoice Item</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 100px; text-align: center;">Per Head</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 120px; text-align: right;">Total Amount</th>
+					</tr>
+				</thead>
+				<tbody id="print-invoice-body"></tbody>
+			</table>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Banquet & Catering Playbook</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					The Complete Wedding Catering Cost & Menu Guide
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					How to budget for reception food, decode hidden "plus-plus" service fees, and choose between plated, buffet, and cocktail dining.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/wedding_bar_sketch.jpg" 
+					alt="Hand drawn line art sketch of a wedding banquet bar and catering setup" 
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Service charges and taxes typically add 28% to 32% on top of every catering invoice.
+				</p>
+			</div>
+
+			<!-- Section 1: Average Cost Per Person -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Average Wedding Catering Cost Per Person Breakdown
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Catering is universally the largest single line-item in any wedding budget, consuming roughly <strong>45% to 50% of total wedding funds</strong>. Here is the realistic 2026 per-person spectrum:
+				</p>
+
+				<div style="overflow-x: auto; margin-bottom: 1.5rem;">
+					<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.95rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Catering Tier</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Food Only (Per Head)</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Food + Bar + Fees</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">100 Guests Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Budget / Food Truck / Drop-Off</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$30 - $45</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$70 - $95</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">$7,000 - $9,500</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Mid-Range Buffet / Family Style</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$50 - $70</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$110 - $155</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">$11,000 - $15,500</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Classic Plated 3-Course Dinner</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$65 - $95</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$145 - $210</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">$14,500 - $21,000</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Luxury Haute Cuisine / Raw Bar</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$110 - $180+</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$240 - $350+</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">$24,000 - $35,000+</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Section 2: Plated vs Buffet vs Family Style -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					2. Plated vs. Buffet vs. Family Style: The True Logistics
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin: 1.5rem 0;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.5rem; text-align: center;">
+							Plated Dinner
+						</h4>
+						<ul class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+							<li><strong>Pros:</strong> Elegant, formal atmosphere; synchronized dining; exact food portion control.</li>
+							<li><strong>Cons:</strong> Requires 1 server per 10-12 guests; complex RSVP entree tracking.</li>
+						</ul>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.5rem; text-align: center;">
+							Buffet Style
+						</h4>
+						<ul class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+							<li><strong>Pros:</strong> Variety of dishes; guests choose portions; lower staffing ratio.</li>
+							<li><strong>Cons:</strong> Table lines take longer; requires 20% extra food buffer to prevent empty chafing dishes.</li>
+						</ul>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #d97706; margin-bottom: 0.5rem; text-align: center;">
+							Family-Style Dining
+						</h4>
+						<ul class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+							<li><strong>Pros:</strong> Warm, communal atmosphere; guests remain seated; no buffet line waits.</li>
+							<li><strong>Cons:</strong> Requires larger rental tables to fit platters; centerpieces must be minimal.</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 3: De-coding the "Plus-Plus" Surcharge -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					3. De-Coding the "Plus-Plus" (++) Surcharge
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					When a venue quotes <strong>"$80++ per person"</strong>, the two plus signs stand for <strong>Service Charge</strong> and <strong>Sales Tax</strong>:
+				</p>
+				<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+					<p class="font-body" style="margin: 0 0 0.5rem 0; font-size: 1.05rem; line-height: 1.6;">
+						1. <strong>Base Price:</strong> $80.00
+					</p>
+					<p class="font-body" style="margin: 0 0 0.5rem 0; font-size: 1.05rem; line-height: 1.6;">
+						2. <strong>22% Service Charge:</strong> +$17.60 (Subtotal = $97.60)
+					</p>
+					<p class="font-body" style="margin: 0 0 0.5rem 0; font-size: 1.05rem; line-height: 1.6;">
+						3. <strong>8.5% Sales Tax:</strong> +$8.30 (Tax is charged on food + service charge)
+					</p>
+					<p class="font-body" style="margin: 0; font-size: 1.15rem; font-weight: bold; color: var(--accent-red);">
+						👉 Real Out-of-Pocket Cost: $105.90 per guest (A 32.4% hidden increase!)
+					</p>
+				</div>
+			</section>
+
+			<!-- Section 4: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem; text-align: center;">
+					🔗 Integrated Reception Planning Tools
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/wedding-drink-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Wedding Drink Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calculate exact wine, beer, and liquor bottles for your open bar.</span>
+					</a>
+					<a href="/cake-serving-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Cake Serving Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Determine cake tiers, sheet cakes, and slice sizes for your guest count.</span>
+					</a>
+					<a href="/rsvp-tracker" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">RSVP & Meal Tracker</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Track beef, chicken, fish, and vegan headcounts for your caterer.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 5: FAQs (Centered Heading) -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Do I need to feed our wedding vendors?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						<strong>Yes.</strong> Vendors working on-site for 6+ hours (Photographer, Videographer, DJ, Wedding Coordinator) should be provided with a hot meal during guest dinner service. Most caterers offer discounted "Vendor Crew Meals" at 40-50% off the standard guest menu price.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Does the catering service charge include a tip for waitstaff?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						<strong>In 90% of cases, NO.</strong> The 18-24% service charge is an administrative overhead fee retained by the company to cover insurance, warehouse costs, and executive coordination. Always ask your caterer directly if gratuity is included; if not, budget $20-$40 per server and bartender in cash tips.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						When is the final guest headcount due to the caterer?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Most caterers require the final locked guest headcount <strong>14 to 21 days before the wedding</strong>. After this date, you cannot decrease your headcount for a refund, though you can usually add last-minute guests up to 5 days prior.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '$';
+
+	const guestCountInput = document.getElementById('input-guest-count');
+	const vendorMealsInput = document.getElementById('input-vendor-meals');
+	const mealStyleSelect = document.getElementById('select-meal-style');
+	const appetizersSelect = document.getElementById('select-appetizers');
+	const barPackageSelect = document.getElementById('select-bar-package');
+	const rentalsSelect = document.getElementById('select-rentals');
+	const dessertFeeSelect = document.getElementById('select-dessert-fee');
+	const servicePctInput = document.getElementById('input-service-pct');
+	const taxPctInput = document.getElementById('input-tax-pct');
+	const currencySelect = document.getElementById('currency-select');
+
+	const resGrandTotal = document.getElementById('res-grand-total');
+	const resPerHead = document.getElementById('res-per-head');
+	const resBaseDiffNote = document.getElementById('res-base-diff-note');
+	const resTotalGuestNote = document.getElementById('res-total-guest-note');
+
+	const resFoodSubtotal = document.getElementById('res-food-subtotal');
+	const resBarSubtotal = document.getElementById('res-bar-subtotal');
+	const resRentalsSubtotal = document.getElementById('res-rentals-subtotal');
+	const resVendorMealsSubtotal = document.getElementById('res-vendor-meals-subtotal');
+	const resPretaxSubtotal = document.getElementById('res-pretax-subtotal');
+	const resServiceCharge = document.getElementById('res-service-charge');
+	const resSalesTax = document.getElementById('res-sales-tax');
+
+	const barFoodPortion = document.getElementById('bar-food-portion');
+	const barFeesPortion = document.getElementById('bar-fees-portion');
+
+	function formatMoney(amount) {
+		return `${currencySymbol}${Math.round(amount).toLocaleString('en-US')}`;
+	}
+
+	function calculateCatering() {
+		currencySymbol = currencySelect.value;
+		const guests = parseInt(guestCountInput.value) || 0;
+		const vendors = parseInt(vendorMealsInput.value) || 0;
+
+		const mealBasePerHead = parseFloat(mealStyleSelect.value) || 0;
+		const appPerHead = parseFloat(appetizersSelect.value) || 0;
+		const barPerHead = parseFloat(barPackageSelect.value) || 0;
+		const rentalPerHead = parseFloat(rentalsSelect.value) || 0;
+		const dessertPerHead = parseFloat(dessertFeeSelect.value) || 0;
+
+		const servicePct = (parseFloat(servicePctInput.value) || 0) / 100;
+		const taxPct = (parseFloat(taxPctInput.value) || 0) / 100;
+
+		// Subtotals
+		const foodSubtotal = guests * (mealBasePerHead + appPerHead);
+		const barSubtotal = guests * barPerHead;
+		const rentalsSubtotal = guests * (rentalPerHead + dessertPerHead);
+		const vendorMealsSubtotal = vendors * (mealBasePerHead * 0.5); // 50% crew discount
+
+		const pretaxSubtotal = foodSubtotal + barSubtotal + rentalsSubtotal + vendorMealsSubtotal;
+		const serviceCharge = pretaxSubtotal * servicePct;
+		const salesTax = (pretaxSubtotal + serviceCharge) * taxPct;
+		const grandTotal = pretaxSubtotal + serviceCharge + salesTax;
+
+		const trueCostPerHead = guests > 0 ? (grandTotal / guests) : 0;
+
+		// Update DOM
+		resGrandTotal.textContent = formatMoney(grandTotal);
+		resPerHead.textContent = `${currencySymbol}${trueCostPerHead.toFixed(2)}`;
+		resTotalGuestNote.textContent = `Based on ${guests} guests`;
+		resBaseDiffNote.textContent = `Base meal was ${currencySymbol}${mealBasePerHead.toFixed(2)}`;
+
+		resFoodSubtotal.textContent = formatMoney(foodSubtotal);
+		resBarSubtotal.textContent = formatMoney(barSubtotal);
+		resRentalsSubtotal.textContent = formatMoney(rentalsSubtotal);
+		resVendorMealsSubtotal.textContent = formatMoney(vendorMealsSubtotal);
+		resPretaxSubtotal.textContent = formatMoney(pretaxSubtotal);
+		resServiceCharge.textContent = formatMoney(serviceCharge);
+		resSalesTax.textContent = formatMoney(salesTax);
+
+		// Proportions
+		if (grandTotal > 0) {
+			const directFoodBarPct = Math.round((pretaxSubtotal / grandTotal) * 100);
+			const feePct = 100 - directFoodBarPct;
+			barFoodPortion.style.width = `${directFoodBarPct}%`;
+			barFeesPortion.style.width = `${feePct}%`;
+		}
+	}
+
+	// Listeners
+	[guestCountInput, vendorMealsInput, servicePctInput, taxPctInput].forEach(el => el.addEventListener('input', calculateCatering));
+	[mealStyleSelect, appetizersSelect, barPackageSelect, rentalsSelect, dessertFeeSelect, currencySelect].forEach(el => el.addEventListener('change', calculateCatering));
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const guests = parseInt(guestCountInput.value) || 0;
+		const mealText = mealStyleSelect.options[mealStyleSelect.selectedIndex].text;
+		const barText = barPackageSelect.options[barPackageSelect.selectedIndex].text;
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Wedding Catering Proposal Estimate</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Official Catering Cost Estimate</h1>
+				<p>Generated on ${new Date().toLocaleDateString()} | Guest Count: <strong>${guests}</strong> | True Cost Per Head: <strong>${resPerHead.textContent}</strong></p>
+				
+				<h3>Selected Catering Services:</h3>
+				<p>• <strong>Meal Service:</strong> ${mealText}</p>
+				<p>• <strong>Bar Package:</strong> ${barText}</p>
+
+				<h3>Itemized Invoice Breakdown:</h3>
+				<table>
+					<thead>
+						<tr><th>Line Item</th><th style="text-align:right;">Subtotal Amount</th></tr>
+					</thead>
+					<tbody>
+						<tr><td>Base Food & Appetizers</td><td style="text-align:right;">${resFoodSubtotal.textContent}</td></tr>
+						<tr><td>Bar & Beverage Package</td><td style="text-align:right;">${resBarSubtotal.textContent}</td></tr>
+						<tr><td>Tableware Rentals & Cake Fee</td><td style="text-align:right;">${resRentalsSubtotal.textContent}</td></tr>
+						<tr><td>Vendor Meals</td><td style="text-align:right;">${resVendorMealsSubtotal.textContent}</td></tr>
+						<tr style="background:#f9f9f9; font-weight:bold;"><td>Direct Subtotal</td><td style="text-align:right;">${resPretaxSubtotal.textContent}</td></tr>
+						<tr><td>Service Charge (${servicePctInput.value}%)</td><td style="text-align:right;">${resServiceCharge.textContent}</td></tr>
+						<tr><td>Sales Tax (${taxPctInput.value}%)</td><td style="text-align:right;">${resSalesTax.textContent}</td></tr>
+						<tr style="background:#f2f2f2; font-weight:bold; font-size:15px;"><td>Grand Total Invoice</td><td style="text-align:right; color:#b91c1c;">${resGrandTotal.textContent}</td></tr>
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding_Catering_Estimate_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		const guests = guestCountInput.value;
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString();
+		document.getElementById('print-guests').textContent = guests;
+		document.getElementById('print-total').textContent = resGrandTotal.textContent;
+
+		const tbody = document.getElementById('print-invoice-body');
+		tbody.innerHTML = `
+			<tr><td style="border:1px solid #ccc; padding:6px;">Base Food & Cocktail Appetizers</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${guests} Guests</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resFoodSubtotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Bar & Beverage Service</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${guests} Guests</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resBarSubtotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Table Rentals & Dessert Service</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${guests} Guests</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resRentalsSubtotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Vendor Crew Meals</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${vendorMealsInput.value} Vendors</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resVendorMealsSubtotal.textContent}</td></tr>
+			<tr style="background:#fafafa;"><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Direct Subtotal</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">-</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resPretaxSubtotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Plus-Plus Service Charge (${servicePctInput.value}%)</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">-</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resServiceCharge.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">State Sales Tax (${taxPctInput.value}%)</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">-</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resSalesTax.textContent}</td></tr>
+			<tr style="background:#f2f2f2;"><td style="border:1px solid #ccc; padding:6px; font-weight:bold; font-size:14px;">Grand Total All-Inclusive</td><td style="border:1px solid #ccc; padding:6px; text-align:center; font-weight:bold;">${resPerHead.textContent} / guest</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold; font-size:14px;">${resGrandTotal.textContent}</td></tr>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Invoice Line Item,Amount\n";
+		csv += `"Base Food & Appetizers","${resFoodSubtotal.textContent}"\n`;
+		csv += `"Bar & Beverage Package","${resBarSubtotal.textContent}"\n`;
+		csv += `"Table Rentals & Cake Cutting","${resRentalsSubtotal.textContent}"\n`;
+		csv += `"Vendor Crew Meals","${resVendorMealsSubtotal.textContent}"\n`;
+		csv += `"Direct Subtotal","${resPretaxSubtotal.textContent}"\n`;
+		csv += `"Service Charge (${servicePctInput.value}%)","${resServiceCharge.textContent}"\n`;
+		csv += `"Sales Tax (${taxPctInput.value}%)","${resSalesTax.textContent}"\n`;
+		csv += `"Grand Total All-Inclusive","${resGrandTotal.textContent}"\n`;
+		csv += `"True Cost Per Guest","${resPerHead.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding_Catering_Estimate_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateCatering();
+</script>

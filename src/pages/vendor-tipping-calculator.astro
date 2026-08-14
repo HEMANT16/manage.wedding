@@ -1,0 +1,941 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Wedding Vendor Tipping Calculator & Cash Envelope Maker",
+      "url": "https://manage.wedding/vendor-tipping-calculator",
+      "description": "Free wedding vendor tipping calculator. Calculate exact gratuities for caterers, DJs, photographers, planners, hair/makeup, drivers, and setup crews. Export cash tip envelopes and distribution schedules to Word, PDF, or Excel.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do you have to tip wedding vendors who own their own business?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Traditional etiquette stated that business owners set their own prices and do not expect a tip. However, modern wedding etiquette has evolved: if a solo owner (like a photographer or planner) goes above and beyond, a tip of $75 to $200 or a thoughtful gift and a 5-star review is warmly appreciated."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between a caterer's service charge and a gratuity?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A 'service charge' (usually 20-24%) is an administrative fee retained by the catering company to cover operational overhead, insurance, and setup costs. It is rarely distributed directly to waitstaff and bartenders. Always ask your venue or caterer: 'Does the service charge go directly to the service staff as gratuity?' If not, tip $25 to $50 per server and bartender in cash."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who should be responsible for handing out tip envelopes on the wedding day?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Never carry cash yourself on your wedding day. Prepare labeled cash envelopes in advance and delegate distribution to your Wedding Planner, Day-Of Coordinator, or Best Man. Most tips are handed out at the end of the vendor's shift or at the close of the reception."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much should I tip hair and makeup artists?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Hair and makeup artists should be tipped 18% to 22% of the total service bill, just as you would at a traditional salon. If the beauty team travelled to your bridal suite on-site, a 20% tip is standard etiquette."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Wedding Vendor Tipping Calculator (Free Gratuity Cheat Sheet & Envelope Export) | Manage.Wedding"
+	description="Calculate exact gratuities for your wedding vendors. Accurate tipping cheat sheet for caterers, DJs, photographers, planners, and hair/makeup with instant Word and PDF envelope exports."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Vendor Tipping Calculator
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Calculate exact gratuities based on modern etiquette guidelines. Itemize tips across 10+ wedding vendor categories and export formatted <strong>Cash Tip Envelopes</strong> to <strong>Word (.doc)</strong> or <strong>PDF</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> How to Use This Tipping Calculator in 3 Easy Steps
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Enter Vendor Contract Costs
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Enter your contract bills and staff counts. Uncheck any vendors you haven't hired or whose contract already includes gratuity.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Review Suggested Gratuities
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						The calculator automatically applies standard percentages (18-20%) or flat-rate benchmarks ($50-$200) for photographers, DJs, and officiants.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Export Printable Tip Envelopes
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Click <strong>"📝 Export Word (.doc)"</strong> or <strong>"🖨️ Export PDF"</strong> to print envelope labels and a day-of hand-out schedule for your coordinator or best man!
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="tipping-calc-grid">
+			
+			<!-- Left Column: 10+ Vendor Categories Form -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							💵 Vendor Contracts & Staff
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							Configure your hired pros and contract amounts
+						</span>
+					</div>
+
+					<!-- Currency Selector -->
+					<div style="display: flex; align-items: center; gap: 0.3rem;">
+						<span style="font-size: 0.85rem; font-weight: bold;">Currency:</span>
+						<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="$" selected>$ (USD/CAD/AUD)</option>
+							<option value="£">£ (GBP)</option>
+							<option value="€">€ (EUR)</option>
+							<option value="₹">₹ (INR)</option>
+						</select>
+					</div>
+				</div>
+
+				<form id="tipping-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+					
+					<!-- 1. Catering & Bartenders -->
+					<div class="vendor-input-group">
+						<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
+							<label class="font-heading" style="font-size: 1rem; color: var(--accent-red);">
+								🍽️ Catering & Waitstaff
+							</label>
+							<label style="font-size: 0.78rem; display: flex; align-items: center; gap: 0.3rem; cursor: pointer; color: var(--text-secondary);">
+								<input type="checkbox" id="chk-caterer-included"> Gratuity already in contract
+							</label>
+						</div>
+						<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Total Food/Beverage Bill</span>
+								<input type="number" id="input-caterer-bill" value="6500" min="0" step="100" class="tip-input">
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Tip Mode</span>
+								<select id="select-caterer-rate" class="tip-select">
+									<option value="0.18" selected>18% of Bill ($1,170)</option>
+									<option value="0.20">20% of Bill ($1,300)</option>
+									<option value="0.15">15% of Bill ($975)</option>
+									<option value="flat">Flat $40 / Server Staff</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2. Hair & Makeup (HMUA) -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: var(--accent-blue); display: block; margin-bottom: 0.3rem;">
+							💄 Hair & Makeup Artists (HMUA)
+						</label>
+						<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Total Beauty Service Bill</span>
+								<input type="number" id="input-beauty-bill" value="850" min="0" step="50" class="tip-input">
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Tip Percentage</span>
+								<select id="select-beauty-rate" class="tip-select">
+									<option value="0.20" selected>20% (Standard Salon Rate)</option>
+									<option value="0.18">18% (Standard)</option>
+									<option value="0.25">25% (Exceptional On-Site)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 3. Photography & Videography -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: #16a34a; display: block; margin-bottom: 0.3rem;">
+							📸 Lead & Second Photographers / Videographers
+						</label>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Lead Shooter Tip</span>
+								<select id="select-photo-lead" class="tip-select">
+									<option value="100" selected>Lead Photographer ($100 flat)</option>
+									<option value="150">Lead Photographer ($150 flat)</option>
+									<option value="75">Lead Photographer ($75 flat)</option>
+									<option value="0">No Tip / Business Owner ($0)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Second Shooter / Assistant</span>
+								<select id="select-photo-second" class="tip-select">
+									<option value="75" selected>Second Shooter ($75 flat)</option>
+									<option value="50">Second Shooter ($50 flat)</option>
+									<option value="100">Second Shooter ($100 flat)</option>
+									<option value="0">No Second Shooter ($0)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 4. DJ & Entertainment -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: #7c3aed; display: block; margin-bottom: 0.3rem;">
+							🎵 Wedding DJ & Live Musicians
+						</label>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Lead DJ / Emcee Tip</span>
+								<select id="select-dj-tip" class="tip-select">
+									<option value="100" selected>Lead DJ ($100 flat)</option>
+									<option value="150">Lead DJ ($150 flat)</option>
+									<option value="75">Lead DJ ($75 flat)</option>
+									<option value="0">No Tip / In Contract ($0)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Live Ceremony Musicians</span>
+								<select id="select-band-tip" class="tip-select">
+									<option value="50" selected>Live Musicians ($50 / member)</option>
+									<option value="35">Live Musicians ($35 / member)</option>
+									<option value="0">No Live Musicians ($0)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 5. Wedding Planner & Coordinator -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: #d97706; display: block; margin-bottom: 0.3rem;">
+							📋 Wedding Planner / Day-Of Coordinator
+						</label>
+						<div>
+							<select id="select-planner-tip" class="tip-select">
+								<option value="150" selected>Day-Of Coordinator ($150 flat)</option>
+								<option value="250">Full-Service Planner ($250 flat)</option>
+								<option value="100">Day-Of Coordinator ($100 flat)</option>
+								<option value="0">No Tip / Business Owner ($0)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- 6. Drivers, Officiant & Delivery Setup Crew -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.6rem;">
+						<span class="font-heading" style="font-size: 0.9rem; color: var(--fg-pencil); display: block; text-align: center;">
+							🚐 Logistics, Officiant & Delivery Crews
+						</span>
+						
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Limo / Shuttle Drivers</span>
+								<select id="select-driver-tip" class="tip-select">
+									<option value="60" selected>Shuttle Driver ($60 flat)</option>
+									<option value="100">Multiple Drivers ($100 total)</option>
+									<option value="0">Included in Rental ($0)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Ceremony Officiant</span>
+								<select id="select-officiant-tip" class="tip-select">
+									<option value="75" selected>Officiant Tip / Donation ($75)</option>
+									<option value="100">Officiant Donation ($100)</option>
+									<option value="50">Officiant Tip ($50)</option>
+									<option value="0">Fee Covered ($0)</option>
+								</select>
+							</div>
+						</div>
+
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Florist & Rental Delivery Crew</span>
+								<select id="select-delivery-tip" class="tip-select">
+									<option value="40" selected>Delivery Crew ($40 total)</option>
+									<option value="60">Heavy Setup Crew ($60 total)</option>
+									<option value="20">Small Setup ($20 total)</option>
+									<option value="0">No Delivery Tip ($0)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Cake Delivery Driver</span>
+								<select id="select-cake-tip" class="tip-select">
+									<option value="20" selected>Cake Driver ($20 flat)</option>
+									<option value="30">Complex Tiered Cake ($30)</option>
+									<option value="0">No Tip ($0)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Gratuity Breakdown & Cash Envelope Planner -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Total Gratuity Quote Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								✉️ Total Gratuity Budget
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Cash needed for wedding day tip envelopes
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Export PDF / Print
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Gratuity Total Highlight -->
+					<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: var(--accent-red); display: block; font-weight: bold;">Total Wedding Tips to Prepare</span>
+						<strong id="res-total-gratuity" class="font-heading" style="font-size: 2.6rem; color: var(--accent-red); display: block; line-height: 1.2;">$1,885</strong>
+						<span id="res-envelope-count" style="font-size: 0.8rem; color: var(--accent-red);">Across 8 Prepared Cash Envelopes</span>
+					</div>
+
+					<!-- Line-Item Category Breakdown Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Itemized Tip Envelope Summary
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.92rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🍽️ Catering & Waitstaff:</td>
+									<td id="res-caterer-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$1,170.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">💄 Hair & Makeup Artists:</td>
+									<td id="res-beauty-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$170.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">📸 Photo & Video Team:</td>
+									<td id="res-photo-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$175.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🎵 DJ & Live Musicians:</td>
+									<td id="res-dj-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$150.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">📋 Planner / Coordinator:</td>
+									<td id="res-planner-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$150.00</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🚐 Drivers & Officiant:</td>
+									<td id="res-logistics-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$135.00</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #fafafa;">
+									<td style="padding: 0.35rem 0;">🌸 Setup & Cake Delivery:</td>
+									<td id="res-delivery-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">$60.00</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Gratuity Distribution Bar Chart -->
+					<div>
+						<span class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.3rem; text-align: center;">
+							Tip Distribution by Category
+						</span>
+						<div style="width: 100%; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; display: flex; background: #eee;">
+							<div id="bar-caterer" style="width: 55%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+							<div id="bar-beauty" style="width: 10%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+							<div id="bar-photo" style="width: 10%; background: #16a34a; transition: width 0.3s ease;"></div>
+							<div id="bar-dj" style="width: 10%; background: #7c3aed; transition: width 0.3s ease;"></div>
+							<div id="bar-planner" style="width: 8%; background: #d97706; transition: width 0.3s ease;"></div>
+							<div id="bar-other" style="width: 7%; background: #64748b; transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Envelope Delegation Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						📌 The Wedding Day Delegation Rule:
+					</strong>
+					<ul class="font-body" style="font-size: 0.85rem; line-height: 1.5; padding-left: 1.1rem; margin: 0; color: var(--fg-pencil);">
+						<li><strong>Do not carry cash:</strong> Give all sealed envelopes to the Best Man or Coordinator at rehearsal.</li>
+						<li><strong>Timing:</strong> HMUA is tipped at suite departure; DJ/photo tipped during the last 30 minutes of reception.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Wedding Vendor Tip Envelope Schedule</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exported on: <span id="print-date"></span> | Total Gratuity: <span id="print-total"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Vendor & Role</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Suggested Distribution Timing</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Delegate Responsible</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 90px; text-align: right;">Cash Amount</th>
+					</tr>
+				</thead>
+				<tbody id="print-tipping-body"></tbody>
+			</table>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Wedding Etiquette & Gratuity Playbook</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					The Complete Wedding Vendor Tipping Guide
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Standard gratuity cheat sheet, service charge vs. tips, business owner rules, and day-of cash envelope management.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/wedding_budget_book.jpg" 
+					alt="Hand drawn line art sketch of a wedding budget book and labeled tip envelopes for wedding vendor gratuities" 
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Preparing labeled cash envelopes a week before the wedding eliminates last-minute stress on the big night.
+				</p>
+			</div>
+
+			<!-- Section 1: Detailed Step-by-Step Guide on How to Use This Tool Flawlessly -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Step-by-Step Guide: How to Use This Tipping Calculator
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Tipping wedding vendors is an art of proper budgeting, clear contracts, and smooth day-of logistics. Follow this step-by-step method to organize your cash gratuities effortlessly:
+				</p>
+
+				<div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.4rem;">
+							Step 1: Check Catering & Venue Contracts for Built-In Gratuity
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Open your catering agreement and read the fine print. If a line item explicitly states <em>"Gratuity: 18%"</em>, check the <strong>Gratuity already in contract</strong> box so you do not double-tip. If it only states <em>"Service Charge: 22%"</em>, ask if this goes directly to staff. If not, budget $25 to $50 per server in cash.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.4rem;">
+							Step 2: Enter Hair & Makeup and Entertainment Details
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Input your total bridal party beauty bill and select 18% to 20%. Select your lead DJ tip ($75 to $150 flat) and ceremony musicians ($35 to $50 per player).
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.4rem;">
+							Step 3: Account for Logistics, Officiants & Delivery Crews
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Don't forget the unsung heroes who work behind the scenes: shuttle bus drivers ($50 to $100 total), ceremony officiants ($50 to $100 donation), floral setup crews ($30 to $60), and cake delivery drivers ($20).
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #d97706; margin-bottom: 0.4rem;">
+							Step 4: Export Printable Tip Envelopes & Hand-Out Sheet
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Click <strong>"📝 Export Word (.doc)"</strong> or <strong>"🖨️ Export PDF / Print"</strong>. The tool automatically creates a neat handout worksheet with designated roles, hand-off timings, and cash amounts ready to give to your Best Man or Wedding Planner.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Master Tipping Cheat Sheet Table -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					2. 2026 Master Wedding Tipping Cheat Sheet
+				</h3>
+				<div style="overflow-x: auto; margin-bottom: 1.5rem;">
+					<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.95rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Vendor Role</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Standard Tip Amount</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Mandatory vs. Optional</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">When to Distribute</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Catering Waitstaff & Bartenders</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">18% - 20% of bill OR $30-$50 per staff</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Mandatory (if not in contract)</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">End of reception</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Hair & Makeup Artists (HMUA)</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">18% - 22% of total service bill</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Mandatory / Expected</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">After services completed in suite</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Lead Photographer & Videographer</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$75 - $200 (Lead), $50 - $100 (Assistant)</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Optional / Discretionary</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">End of reception</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Wedding DJ / Emcee</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$75 - $150 flat</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Customary / Optional</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">End of reception</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Wedding Planner / Coordinator</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">$100 - $300 flat or personal gift</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Discretionary (for great service)</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">End of reception or post-wedding</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Shuttle & Limousine Drivers</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">15% - 20% OR $30 - $50 per driver</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Mandatory (if not in contract)</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">After final drop-off</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Section 3: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem; text-align: center;">
+					🔗 Integrated Wedding Budget Planning Tools
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/master-budget-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Master Budget Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Allocate 2-3% of total budget specifically for vendor tips.</span>
+					</a>
+					<a href="/catering-cost-estimator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Catering Cost Estimator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calculate per-head food, bar, and plus-plus service charges.</span>
+					</a>
+					<a href="/day-of-timeline-generator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Day-Of Timeline Generator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Schedule exact envelope hand-off times in your master timeline.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 4: FAQs (Centered Heading) -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						What if a vendor did not perform well? Do I still have to tip?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						No. Gratuity for non-contractual vendors (like planners, photographers, and DJs) is discretionary. If a vendor was late, unprofessional, or failed to deliver on contractual promises, you are under no moral or etiquette obligation to tip them.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Should tips be given in cash or can I Venmo / check?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						<strong>Cash in crisp envelopes is gold standard</strong>. Servers, bartenders, drivers, and delivery teams share tips immediately that evening. If you run out of cash, asking your lead photographer or DJ for their Venmo or Zelle handle the next morning is acceptable.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						How do I export my envelope checklist?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Click <strong>"📝 Export Word (.doc)"</strong> or <strong>"🖨️ Export PDF / Print"</strong> at the top of the page. The calculator compiles every vendor, their designated cash envelope amount, who will hand it out, and the exact wedding timeline moment to deliver it.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.vendor-input-group {
+		background: var(--bg-paper);
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.75rem;
+	}
+	.tip-input {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.45rem;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: #fff;
+		font-family: var(--font-body);
+		font-size: 0.95rem;
+		font-weight: bold;
+	}
+	.tip-select {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.45rem;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: #fff;
+		font-family: var(--font-body);
+		font-size: 0.85rem;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '$';
+
+	const currencySelect = document.getElementById('currency-select');
+	const chkCatererIncluded = document.getElementById('chk-caterer-included');
+	const inputCatererBill = document.getElementById('input-caterer-bill');
+	const selectCatererRate = document.getElementById('select-caterer-rate');
+
+	const inputBeautyBill = document.getElementById('input-beauty-bill');
+	const selectBeautyRate = document.getElementById('select-beauty-rate');
+
+	const selectPhotoLead = document.getElementById('select-photo-lead');
+	const selectPhotoSecond = document.getElementById('select-photo-second');
+
+	const selectDjTip = document.getElementById('select-dj-tip');
+	const selectBandTip = document.getElementById('select-band-tip');
+
+	const selectPlannerTip = document.getElementById('select-planner-tip');
+	const selectDriverTip = document.getElementById('select-driver-tip');
+	const selectOfficiantTip = document.getElementById('select-officiant-tip');
+	const selectDeliveryTip = document.getElementById('select-delivery-tip');
+	const selectCakeTip = document.getElementById('select-cake-tip');
+
+	// Result Elements
+	const resTotalGratuity = document.getElementById('res-total-gratuity');
+	const resEnvelopeCount = document.getElementById('res-envelope-count');
+	const resCatererTip = document.getElementById('res-caterer-tip');
+	const resBeautyTip = document.getElementById('res-beauty-tip');
+	const resPhotoTip = document.getElementById('res-photo-tip');
+	const resDjTip = document.getElementById('res-dj-tip');
+	const resPlannerTip = document.getElementById('res-planner-tip');
+	const resLogisticsTip = document.getElementById('res-logistics-tip');
+	const resDeliveryTip = document.getElementById('res-delivery-tip');
+
+	const barCaterer = document.getElementById('bar-caterer');
+	const barBeauty = document.getElementById('bar-beauty');
+	const barPhoto = document.getElementById('bar-photo');
+	const barDj = document.getElementById('bar-dj');
+	const barPlanner = document.getElementById('bar-planner');
+	const barOther = document.getElementById('bar-other');
+
+	function formatMoney(amount) {
+		return `${currencySymbol}${Math.round(amount).toLocaleString('en-US')}`;
+	}
+
+	function calculateTips() {
+		currencySymbol = currencySelect.value;
+
+		// 1. Caterer
+		let catererTip = 0;
+		if (!chkCatererIncluded.checked) {
+			const bill = parseFloat(inputCatererBill.value) || 0;
+			const rate = selectCatererRate.value;
+			if (rate === 'flat') {
+				catererTip = 40 * 10; // Approx 10 servers
+			} else {
+				catererTip = bill * parseFloat(rate);
+			}
+		}
+
+		// 2. Beauty
+		const beautyBill = parseFloat(inputBeautyBill.value) || 0;
+		const beautyRate = parseFloat(selectBeautyRate.value) || 0.20;
+		const beautyTip = beautyBill * beautyRate;
+
+		// 3. Photo / Video
+		const photoLead = parseFloat(selectPhotoLead.value) || 0;
+		const photoSecond = parseFloat(selectPhotoSecond.value) || 0;
+		const photoTotal = photoLead + photoSecond;
+
+		// 4. DJ & Band
+		const djTip = parseFloat(selectDjTip.value) || 0;
+		const bandTip = parseFloat(selectBandTip.value) || 0;
+		const musicTotal = djTip + bandTip;
+
+		// 5. Planner
+		const plannerTip = parseFloat(selectPlannerTip.value) || 0;
+
+		// 6. Drivers & Officiant
+		const driverTip = parseFloat(selectDriverTip.value) || 0;
+		const officiantTip = parseFloat(selectOfficiantTip.value) || 0;
+		const logisticsTotal = driverTip + officiantTip;
+
+		// 7. Delivery Crews
+		const deliveryTip = parseFloat(selectDeliveryTip.value) || 0;
+		const cakeTip = parseFloat(selectCakeTip.value) || 0;
+		const deliveryTotal = deliveryTip + cakeTip;
+
+		const grandTotal = catererTip + beautyTip + photoTotal + musicTotal + plannerTip + logisticsTotal + deliveryTotal;
+
+		// Count active envelopes
+		let count = 0;
+		if (catererTip > 0) count++;
+		if (beautyTip > 0) count++;
+		if (photoLead > 0) count++;
+		if (photoSecond > 0) count++;
+		if (djTip > 0) count++;
+		if (bandTip > 0) count++;
+		if (plannerTip > 0) count++;
+		if (driverTip > 0) count++;
+		if (officiantTip > 0) count++;
+		if (deliveryTotal > 0) count++;
+
+		// Update UI
+		resTotalGratuity.textContent = formatMoney(grandTotal);
+		resEnvelopeCount.textContent = `Across ${count} Prepared Cash Envelopes`;
+		resCatererTip.textContent = formatMoney(catererTip);
+		resBeautyTip.textContent = formatMoney(beautyTip);
+		resPhotoTip.textContent = formatMoney(photoTotal);
+		resDjTip.textContent = formatMoney(musicTotal);
+		resPlannerTip.textContent = formatMoney(plannerTip);
+		resLogisticsTip.textContent = formatMoney(logisticsTotal);
+		resDeliveryTip.textContent = formatMoney(deliveryTotal);
+
+		// Bar Chart
+		if (grandTotal > 0) {
+			barCaterer.style.width = `${Math.round((catererTip / grandTotal) * 100)}%`;
+			barBeauty.style.width = `${Math.round((beautyTip / grandTotal) * 100)}%`;
+			barPhoto.style.width = `${Math.round((photoTotal / grandTotal) * 100)}%`;
+			barDj.style.width = `${Math.round((musicTotal / grandTotal) * 100)}%`;
+			barPlanner.style.width = `${Math.round((plannerTip / grandTotal) * 100)}%`;
+			barOther.style.width = `${Math.round(((logisticsTotal + deliveryTotal) / grandTotal) * 100)}%`;
+		}
+	}
+
+	// Listeners
+	document.querySelectorAll('.tip-input, #chk-caterer-included').forEach(el => {
+		el.addEventListener('input', calculateTips);
+		el.addEventListener('change', calculateTips);
+	});
+	document.querySelectorAll('.tip-select, #currency-select').forEach(el => {
+		el.addEventListener('change', calculateTips);
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		let rows = '';
+		if (parseFloat(resCatererTip.textContent.replace(/[^0-9.]/g, '')) > 0) {
+			rows += `<tr><td><strong>Catering & Banquet Staff</strong></td><td>End of Reception</td><td>Best Man / Coordinator</td><td style="text-align:right; font-weight:bold;">${resCatererTip.textContent}</td></tr>`;
+		}
+		if (parseFloat(resBeautyTip.textContent.replace(/[^0-9.]/g, '')) > 0) {
+			rows += `<tr><td><strong>Hair & Makeup Artists</strong></td><td>After Suite Styling</td><td>Maid of Honor / Bride</td><td style="text-align:right; font-weight:bold;">${resBeautyTip.textContent}</td></tr>`;
+		}
+		if (parseFloat(selectPhotoLead.value) > 0) {
+			rows += `<tr><td><strong>Lead Photographer</strong></td><td>End of Reception</td><td>Best Man / Groom</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectPhotoLead.value)}</td></tr>`;
+		}
+		if (parseFloat(selectPhotoSecond.value) > 0) {
+			rows += `<tr><td><strong>Second Shooter / Assistant</strong></td><td>End of Reception</td><td>Best Man</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectPhotoSecond.value)}</td></tr>`;
+		}
+		if (parseFloat(selectDjTip.value) > 0) {
+			rows += `<tr><td><strong>Wedding DJ / Emcee</strong></td><td>End of Reception</td><td>Best Man</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectDjTip.value)}</td></tr>`;
+		}
+		if (parseFloat(selectPlannerTip.value) > 0) {
+			rows += `<tr><td><strong>Wedding Planner / Coordinator</strong></td><td>End of Reception</td><td>Mother of Bride / Groom</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectPlannerTip.value)}</td></tr>`;
+		}
+		if (parseFloat(selectDriverTip.value) > 0) {
+			rows += `<tr><td><strong>Shuttle & Limo Drivers</strong></td><td>After Final Drop-off</td><td>Best Man</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectDriverTip.value)}</td></tr>`;
+		}
+		if (parseFloat(selectOfficiantTip.value) > 0) {
+			rows += `<tr><td><strong>Ceremony Officiant</strong></td><td>Before Ceremony</td><td>Best Man</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectOfficiantTip.value)}</td></tr>`;
+		}
+		if (parseFloat(resDeliveryTip.textContent.replace(/[^0-9.]/g, '')) > 0) {
+			rows += `<tr><td><strong>Floral Setup & Cake Delivery</strong></td><td>Upon Morning Delivery</td><td>Day-Of Coordinator</td><td style="text-align:right; font-weight:bold;">${resDeliveryTip.textContent}</td></tr>`;
+		}
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Wedding Vendor Cash Tip Schedule</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Official Wedding Vendor Cash Tip Schedule</h1>
+				<p>Generated on ${new Date().toLocaleDateString()} | Total Cash Gratuities Needed: <strong>${resTotalGratuity.textContent}</strong> (${resEnvelopeCount.textContent})</p>
+				
+				<h3>Cash Tip Envelope Distribution Schedule:</h3>
+				<table>
+					<thead>
+						<tr>
+							<th>Vendor / Staff Role</th>
+							<th>When to Hand Out</th>
+							<th>Assigned Delegate</th>
+							<th style="text-align:right;">Cash Tip Amount</th>
+						</tr>
+					</thead>
+					<tbody>
+						${rows}
+						<tr style="background:#f2f2f2; font-weight:bold; font-size:15px;">
+							<td colspan="3">Total Gratuity Budget Needed</td>
+							<td style="text-align:right; color:#b91c1c;">${resTotalGratuity.textContent}</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 style="margin-top:25px;">Day-Of Cash Tips Checklist:</h3>
+				<p>• Seal exact cash in labeled envelopes 3-5 days before wedding.</p>
+				<p>• Hand all envelopes to the designated Best Man or Wedding Planner at rehearsal.</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding_Vendor_Tips_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString();
+		document.getElementById('print-total').textContent = resTotalGratuity.textContent;
+
+		const tbody = document.getElementById('print-tipping-body');
+		tbody.innerHTML = `
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Catering & Banquet Staff</td><td style="border:1px solid #ccc; padding:6px;">End of Reception</td><td style="border:1px solid #ccc; padding:6px;">Best Man / Coordinator</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resCatererTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Hair & Makeup Artists</td><td style="border:1px solid #ccc; padding:6px;">After Suite Styling</td><td style="border:1px solid #ccc; padding:6px;">Maid of Honor</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resBeautyTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Photo & Video Team</td><td style="border:1px solid #ccc; padding:6px;">End of Reception</td><td style="border:1px solid #ccc; padding:6px;">Best Man</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resPhotoTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">DJ & Live Musicians</td><td style="border:1px solid #ccc; padding:6px;">End of Reception</td><td style="border:1px solid #ccc; padding:6px;">Best Man</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resDjTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Planner / Coordinator</td><td style="border:1px solid #ccc; padding:6px;">End of Reception</td><td style="border:1px solid #ccc; padding:6px;">Mother of Bride</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resPlannerTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Drivers & Officiant</td><td style="border:1px solid #ccc; padding:6px;">Upon Service Completion</td><td style="border:1px solid #ccc; padding:6px;">Best Man</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resLogisticsTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Delivery & Setup Crews</td><td style="border:1px solid #ccc; padding:6px;">Upon Morning Drop-off</td><td style="border:1px solid #ccc; padding:6px;">Day-Of Coordinator</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resDeliveryTip.textContent}</td></tr>
+			<tr style="background:#f2f2f2;"><td colspan="3" style="border:1px solid #ccc; padding:6px; font-weight:bold; font-size:13px;">Total Gratuities Prepared</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold; font-size:13px; color:#b91c1c;">${resTotalGratuity.textContent}</td></tr>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Vendor Role,Timing,Delegate,Cash Amount\n";
+		csv += `"Catering & Waitstaff","End of Reception","Best Man / Coordinator","${resCatererTip.textContent}"\n`;
+		csv += `"Hair & Makeup Artists","After Suite Styling","Maid of Honor","${resBeautyTip.textContent}"\n`;
+		csv += `"Photo & Video Team","End of Reception","Best Man","${resPhotoTip.textContent}"\n`;
+		csv += `"DJ & Musicians","End of Reception","Best Man","${resDjTip.textContent}"\n`;
+		csv += `"Wedding Planner","End of Reception","Mother of Bride","${resPlannerTip.textContent}"\n`;
+		csv += `"Drivers & Officiant","Upon Service Completion","Best Man","${resLogisticsTip.textContent}"\n`;
+		csv += `"Delivery & Setup Crews","Upon Drop-off","Day-Of Coordinator","${resDeliveryTip.textContent}"\n`;
+		csv += `"Total Gratuities","--","--","${resTotalGratuity.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding_Vendor_Tips_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateTips();
+</script>

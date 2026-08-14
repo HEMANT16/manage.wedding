@@ -1,0 +1,996 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Wedding Day-Of Timeline Generator & Schedule Maker",
+      "url": "https://manage.wedding/day-of-timeline-generator",
+      "description": "Free wedding day timeline generator. Build a stress-free schedule based on your ceremony start time, first look, travel buffer, and export to Word, PDF, or Excel.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does this wedding timeline generator work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Enter your ceremony start time, choose whether you are doing a First Look, and specify your travel buffer. The tool calculates your entire schedule backward and forward—from hair and makeup to the sparkler grand exit—and lets you customize, edit, and export."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does having a First Look affect the wedding timeline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A First Look shifts couple, wedding party, and immediate family portraits before the ceremony (roughly 2 to 2.5 hours prior). This allows the newlyweds to fully enjoy their cocktail hour and mingle with guests immediately after the ceremony."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much buffer time should be added to a wedding schedule?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We recommend adding a 15-minute buffer to hair and makeup, a 15-minute buffer before departing for the ceremony, and a 15-minute cushion before the grand entrance. Delays are inevitable, and buffers keep you on track without feeling rushed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I export this wedding timeline to Word or PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Click the 'Export Word (.doc)' or 'Export PDF / Print' button at the top of your generated timeline. You will get a cleanly formatted schedule with vendor notes and time slots ready to email to your bridal party, coordinator, and photographer."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Wedding Day Timeline Generator (Free Schedule Maker with Word & PDF Export) | Manage.Wedding"
+	description="Create your perfect wedding day timeline in seconds. Customize first look, ceremony, dinner, and photo schedules. Export to Word (.doc), PDF, or CSV instantly."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Wedding Day Timeline Generator
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Plan your perfect, stress-free wedding day down to the minute. Factor in hair & makeup, first looks, travel buffers, and export to <strong>Word (.doc)</strong>, <strong>PDF</strong>, or <strong>Excel (.csv)</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Timeline Builder Controls & Actions Toolbar -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.5rem; background: #fff;">
+			<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+				<div>
+					<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin: 0;">
+						⏱️ Timeline Generator & Master Itinerary
+					</h2>
+					<span class="font-body" style="color: var(--text-secondary); font-size: 0.95rem;">
+						Calculated backward and forward from ceremony time
+					</span>
+				</div>
+
+				<!-- Export & Control Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" class="export-btn-group">
+					<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #eff6ff;">
+						📝 Export Word (.doc)
+					</button>
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #fef2f2;">
+						🖨️ Export PDF / Print
+					</button>
+					<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						📊 Export Excel (.csv)
+					</button>
+					<button type="button" id="btn-copy-summary" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						📋 Copy Text Summary
+					</button>
+				</div>
+			</div>
+
+			<!-- Preset Timeline Quick Switcher -->
+			<div style="margin-bottom: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+				<span class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+					⚡ Choose a Popular Timeline Template:
+				</span>
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" id="preset-buttons-container">
+					<button type="button" class="preset-btn active-preset" data-ceremony="16:00" data-firstlook="yes" data-travel="15" data-reception="4">
+						🌅 Afternoon Classic (4:00 PM • First Look)
+					</button>
+					<button type="button" class="preset-btn" data-ceremony="17:30" data-firstlook="yes" data-travel="10" data-reception="4.5">
+						🌇 Sunset Romance (5:30 PM • Golden Hour)
+					</button>
+					<button type="button" class="preset-btn" data-ceremony="15:30" data-firstlook="no" data-travel="20" data-reception="4">
+						⛪ Traditional Church (No First Look)
+					</button>
+					<button type="button" class="preset-btn" data-ceremony="11:00" data-firstlook="yes" data-travel="10" data-reception="3.5">
+						🥞 Morning Brunch Wedding (11:00 AM)
+					</button>
+				</div>
+			</div>
+
+			<!-- Core Configuration Form Inputs -->
+			<form id="timeline-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end;">
+				<div>
+					<label for="ceremony-time" class="font-heading" style="display: block; font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--fg-pencil);">
+						Ceremony Start Time
+					</label>
+					<input type="time" id="ceremony-time" value="16:00" required style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.05rem; background: var(--bg-paper);">
+				</div>
+
+				<div>
+					<label for="first-look" class="font-heading" style="display: block; font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--fg-pencil);">
+						First Look Photos?
+					</label>
+					<select id="first-look" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; background: #fff;">
+						<option value="yes" selected>Yes (Photos before Ceremony)</option>
+						<option value="no">No (Photos during Cocktail Hour)</option>
+					</select>
+				</div>
+
+				<div>
+					<label for="travel-time" class="font-heading" style="display: block; font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--fg-pencil);">
+						Travel to Venue (Mins)
+					</label>
+					<input type="number" id="travel-time" min="0" max="180" value="15" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; background: var(--bg-paper);">
+				</div>
+
+				<div>
+					<label for="reception-hours" class="font-heading" style="display: block; font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--fg-pencil);">
+						Reception Length (Hours)
+					</label>
+					<select id="reception-hours" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; background: #fff;">
+						<option value="3.5">3.5 Hours</option>
+						<option value="4" selected>4.0 Hours (Standard)</option>
+						<option value="4.5">4.5 Hours</option>
+						<option value="5">5.0 Hours</option>
+						<option value="6">6.0 Hours (Late Party)</option>
+					</select>
+				</div>
+			</form>
+		</div>
+
+		<!-- Main Workspace Grid: Interactive Timeline Stream + Custom Milestone Adder -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1fr 340px; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="timeline-workspace-grid">
+			
+			<!-- Left: Master Visual Vertical Timeline Stream -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<!-- Header & Audience Filter Tabs -->
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+					<div>
+						<h3 class="font-heading" style="font-size: 1.4rem; margin: 0; color: var(--fg-pencil);">
+							📋 Day-Of Master Itinerary
+						</h3>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">
+							Drag, edit, or remove timeline events
+						</span>
+					</div>
+
+					<!-- Role Filter Pills -->
+					<div style="display: flex; gap: 0.3rem; flex-wrap: wrap;" id="role-filter-group">
+						<button type="button" class="role-pill-btn active-role" data-role="all">All Events</button>
+						<button type="button" class="role-pill-btn" data-role="wedding-party">👰 Wedding Party</button>
+						<button type="button" class="role-pill-btn" data-role="photo">📸 Photo & Video</button>
+						<button type="button" class="role-pill-btn" data-role="reception">🍽️ Reception</button>
+					</div>
+				</div>
+
+				<!-- Vertical Timeline Container -->
+				<div id="timeline-stream" class="timeline-stream-box" style="position: relative; padding-left: 2.25rem; border-left: 3px solid var(--fg-pencil); margin-left: 1rem;">
+					<!-- Injected via JS -->
+				</div>
+
+			</div>
+
+			<!-- Right: Custom Milestone Adder & Day-Of Buffer Checklist -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Add Custom Milestone Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: #fff;">
+					<h3 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+						<span>➕</span> Add Custom Milestone
+					</h3>
+					
+					<form id="add-custom-event-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+						<div>
+							<label for="custom-event-name" class="font-heading" style="display: block; font-size: 0.85rem; margin-bottom: 0.2rem;">Event / Moment Name</label>
+							<input type="text" id="custom-event-name" required placeholder="e.g. Sparkler Send-Off, Private Vows" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1px solid var(--fg-pencil); border-radius: 4px; font-size: 0.95rem; background: var(--bg-paper);">
+						</div>
+
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<label for="custom-event-time" class="font-heading" style="display: block; font-size: 0.85rem; margin-bottom: 0.2rem;">Time</label>
+								<input type="time" id="custom-event-time" required value="20:00" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1px solid var(--fg-pencil); border-radius: 4px; font-size: 0.9rem; background: var(--bg-paper);">
+							</div>
+							<div>
+								<label for="custom-event-role" class="font-heading" style="display: block; font-size: 0.85rem; margin-bottom: 0.2rem;">Category</label>
+								<select id="custom-event-role" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+									<option value="reception">Reception</option>
+									<option value="wedding-party">Wedding Party</option>
+									<option value="photo">Photo & Video</option>
+								</select>
+							</div>
+						</div>
+
+						<button type="submit" class="hand-btn" style="padding: 0.5rem; font-size: 0.95rem; margin-top: 0.25rem;">
+							✨ Add to Timeline
+						</button>
+					</form>
+				</div>
+
+				<!-- Essential Day-Of Timing Rules Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.5rem;">
+						📌 The 15-Minute Buffer Rule:
+					</strong>
+					<ul class="font-body" style="font-size: 0.85rem; line-height: 1.5; padding-left: 1.1rem; margin: 0; color: var(--fg-pencil);">
+						<li><strong>Hair & Makeup:</strong> Aim to finish 45 minutes before departure.</li>
+						<li><strong>Travel:</strong> Add +15 mins to Google Maps travel estimates.</li>
+						<li><strong>Ceremony:</strong> Expect a 5-10 min delay for late guests to sit.</li>
+						<li><strong>Sunset:</strong> Schedule couple portraits 45 mins before sunset.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Official Wedding Day-Of Itinerary</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exported on: <span id="print-date"></span> | Ceremony Start: <span id="print-ceremony-time"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; width: 90px; text-align: left;">Time</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Event / Milestone</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 120px; text-align: left;">Category</th>
+					</tr>
+				</thead>
+				<tbody id="print-timeline-body"></tbody>
+			</table>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Timeline Master Guide</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem;">
+					The Complete Wedding Day-Of Timeline Guide
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; margin: 0.5rem auto 0;">
+					How to build a realistic, stress-free schedule that photographers, caterers, and bridal parties will love.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem;">
+				<img 
+					src="/images/pocket-watch-sketch.jpg" 
+					alt="Hand drawn line art pencil sketch of a vintage pocket watch representing perfect timing for a wedding day itinerary" 
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil);"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Clear schedule blocks and built-in travel cushions prevent wedding day stress.
+				</p>
+			</div>
+
+			<!-- Section 1: First Look vs Traditional -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. First Look vs. Traditional Timeline Comparison
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					The decision to do a First Look is the single biggest factor dictating your morning and afternoon flow:
+				</p>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin: 1.5rem 0;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.5rem;">
+							With a First Look (Modern Flow)
+						</h4>
+						<ul class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+							<li>Couple, wedding party, and immediate family photos happen <strong>before the ceremony</strong>.</li>
+							<li>Hair and makeup starts 1 to 2 hours earlier.</li>
+							<li><strong>Huge Advantage:</strong> Couple gets to attend their entire cocktail hour and drink/mingle with guests!</li>
+						</ul>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.5rem;">
+							Without a First Look (Traditional Aisle Reveal)
+						</h4>
+						<ul class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+							<li>First time couple sees each other is walking down the aisle.</li>
+							<li>Morning is more relaxed with a later hair & makeup start.</li>
+							<li><strong>Trade-off:</strong> Entire cocktail hour is dedicated to taking couple, bridal party, and extended family portraits.</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Standard Durations -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. Standard Wedding Milestone Durations
+				</h3>
+				<div style="overflow-x: auto; margin-bottom: 1.5rem;">
+					<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 1rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Event Milestone</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Recommended Duration</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Planner Pro-Tip</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Hair & Makeup (Bridal Party)</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">45-60 mins per bridesmaid</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Bride goes second-to-last, not last, so she's not rushed.</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">First Look & Couple Portraits</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">45 - 60 minutes</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Pick a secluded, shaded location away from arriving guests.</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Secular Ceremony</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">20 - 30 minutes</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Keep under 30 mins to maintain high energy for cocktail hour.</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Cocktail Hour</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">60 minutes</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Never exceed 75 minutes or guests get overly hungry/restless.</td>
+							</tr>
+							<tr>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Dinner & Speeches</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">75 - 90 minutes</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Cap all speeches at 3-4 minutes each between salad and entree courses.</td>
+							</tr>
+							<tr style="background: #faf8f3;">
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Open Dancing & Party</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">2 to 2.5 hours</td>
+								<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil);">Schedule cake cutting 1 hour into dancing for dessert service.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<!-- Section 3: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem;">
+					🔗 Integrated Wedding Workflow Tools
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/wedding-speech-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Wedding Speech Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calculate exact words and minutes for Best Man & Maid of Honor toasts.</span>
+					</a>
+					<a href="/seating-chart-maker" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Seating Chart Maker</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Assign guests to tables for smooth dinner transitions.</span>
+					</a>
+					<a href="/wedding-drink-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Wedding Drink Calculator</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Estimate bar inventory for cocktail hour and open bar dancing.</span>
+					</a>
+					<a href="/wedding-checklist" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Wedding Checklist</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Month-by-month planning tasks to keep you organized before the big day.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 4: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						When should I distribute the day-of timeline to vendors?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Send the preliminary timeline to your photographer, venue coordinator, caterer, and DJ <strong>3 to 4 weeks before the wedding</strong>. Send the finalized version (via our Word/PDF export) <strong>1 week before the wedding</strong> so all vendors have printed copies.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						What time should the wedding party arrive at the venue?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						If doing a First Look at the venue, the wedding party should arrive <strong>3 to 3.5 hours before ceremony start</strong>. If not doing a First Look, arrival <strong>1.5 hours before ceremony start</strong> is standard to allow for boutonnière pinning and relaxing in the bridal suite.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						How do I export this wedding day schedule?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Click the <strong>"📝 Export Word (.doc)"</strong> button to download an editable Microsoft Word table, or click <strong>"🖨️ Export PDF / Print"</strong> to generate a print-ready pocket schedule for your bridal party and coordinator.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.preset-btn {
+		background: #fff;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.35rem 0.65rem;
+		font-family: var(--font-heading);
+		font-size: 0.85rem;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+	.preset-btn:hover {
+		background: var(--muted-paper);
+	}
+	.preset-btn.active-preset {
+		background: var(--accent-blue) !important;
+		color: #fff !important;
+		border-color: #1e40af !important;
+	}
+
+	.role-pill-btn {
+		background: #fff;
+		border: 1px solid var(--fg-pencil);
+		border-radius: 20px;
+		padding: 0.2rem 0.6rem;
+		font-size: 0.8rem;
+		cursor: pointer;
+		font-family: var(--font-body);
+		transition: all 0.15s ease;
+	}
+	.role-pill-btn.active-role {
+		background: var(--fg-pencil) !important;
+		color: #fff !important;
+	}
+
+	.timeline-event-card {
+		position: relative;
+		margin-bottom: 1.75rem;
+		background: var(--bg-paper);
+		border: 2px solid var(--fg-pencil);
+		border-radius: 6px;
+		padding: 0.75rem 1rem;
+		box-shadow: 2px 2px 0 var(--fg-pencil);
+		transition: transform 0.15s ease;
+	}
+	.timeline-event-card:hover {
+		transform: translateX(4px);
+	}
+
+	.timeline-bullet-dot {
+		position: absolute;
+		left: -2.85rem;
+		top: 1rem;
+		width: 14px;
+		height: 14px;
+		background: #fff;
+		border: 2.5px solid var(--fg-pencil);
+		border-radius: 50%;
+		box-shadow: 0 0 0 3px var(--bg-paper);
+	}
+
+	.event-tag {
+		font-size: 0.75rem;
+		padding: 0.1rem 0.45rem;
+		border-radius: 3px;
+		border: 1px solid var(--fg-pencil);
+		font-weight: bold;
+		display: inline-block;
+	}
+	.tag-wedding-party {
+		background: #ffdfba;
+	}
+	.tag-photo {
+		background: #baffc9;
+	}
+	.tag-reception {
+		background: #bae1ff;
+	}
+	.tag-ceremony {
+		background: #fbcfe8;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let timelineEvents = [];
+	let activeRoleFilter = 'all';
+
+	const ceremonyInput = document.getElementById('ceremony-time');
+	const firstLookInput = document.getElementById('first-look');
+	const travelInput = document.getElementById('travel-time');
+	const receptionHoursInput = document.getElementById('reception-hours');
+	const timelineStream = document.getElementById('timeline-stream');
+
+	function parseTimeToMinutes(timeStr) {
+		const [h, m] = timeStr.split(':').map(Number);
+		return h * 60 + m;
+	}
+
+	function minutesToFormattedTime(totalMinutes) {
+		let normalized = (totalMinutes % 1440 + 1440) % 1440;
+		let hours = Math.floor(normalized / 60);
+		let minutes = normalized % 60;
+		const ampm = hours >= 12 ? 'PM' : 'AM';
+		hours = hours % 12;
+		if (hours === 0) hours = 12;
+		const minStr = minutes < 10 ? '0' + minutes : minutes;
+		return `${hours}:${minStr} ${ampm}`;
+	}
+
+	function minutesToTimeInput(totalMinutes) {
+		let normalized = (totalMinutes % 1440 + 1440) % 1440;
+		let hours = Math.floor(normalized / 60);
+		let minutes = normalized % 60;
+		const hStr = hours < 10 ? '0' + hours : hours;
+		const mStr = minutes < 10 ? '0' + minutes : minutes;
+		return `${hStr}:${mStr}`;
+	}
+
+	function calculateTimeline() {
+		const ceremonyMins = parseTimeToMinutes(ceremonyInput.value);
+		const firstLook = firstLookInput.value;
+		const travelMins = parseInt(travelInput.value) || 0;
+		const receptionLengthMins = Math.round(parseFloat(receptionHoursInput.value) * 60);
+
+		timelineEvents = [];
+
+		if (firstLook === 'yes') {
+			// Hair & Makeup (starts 4.5 hours before ceremony)
+			timelineEvents.push({
+				id: 'evt-1',
+				minutes: ceremonyMins - travelMins - 120 - 150,
+				name: 'Hair & Makeup / Bridal Party Getting Ready',
+				role: 'wedding-party',
+				description: 'Bridal prep, robes, and mimosa toast'
+			});
+			// Photographers Arrive
+			timelineEvents.push({
+				id: 'evt-2',
+				minutes: ceremonyMins - travelMins - 120 - 45,
+				name: 'Photographer Arrives for Getting Ready & Detail Shots',
+				role: 'photo',
+				description: 'Dress, rings, shoes, perfume & stationary flat lays'
+			});
+			// Bride into Dress
+			timelineEvents.push({
+				id: 'evt-3',
+				minutes: ceremonyMins - travelMins - 120 - 15,
+				name: 'Bride Steps Into Wedding Dress',
+				role: 'wedding-party',
+				description: 'Mom and bridesmaids assist with veil & buttons'
+			});
+			// First Look
+			timelineEvents.push({
+				id: 'evt-4',
+				minutes: ceremonyMins - travelMins - 120,
+				name: 'First Look & Couple Portraits',
+				role: 'photo',
+				description: 'Private romantic moment between the couple'
+			});
+			// Wedding Party & Family Photos
+			timelineEvents.push({
+				id: 'evt-5',
+				minutes: ceremonyMins - travelMins - 60,
+				name: 'Wedding Party & Immediate Family Photos',
+				role: 'photo',
+				description: 'Bridesmaids, groomsmen, and parents portraits'
+			});
+			// Travel / Hide Away
+			if (travelMins > 0) {
+				timelineEvents.push({
+					id: 'evt-6',
+					minutes: ceremonyMins - travelMins - 15,
+					name: 'Depart & Travel to Ceremony Venue',
+					role: 'wedding-party',
+					description: `${travelMins} minute drive with built-in buffer`
+				});
+			}
+			timelineEvents.push({
+				id: 'evt-7',
+				minutes: ceremonyMins - 20,
+				name: 'Bride & Groom Relax in Suite / Guests Begin Arriving',
+				role: 'wedding-party',
+				description: 'Prelude music begins and ushers seat guests'
+			});
+		} else {
+			// Traditional (No First Look)
+			timelineEvents.push({
+				id: 'evt-1',
+				minutes: ceremonyMins - travelMins - 180,
+				name: 'Hair & Makeup / Bridal Party Getting Ready',
+				role: 'wedding-party',
+				description: 'Bridal prep, robes, and relaxing with party'
+			});
+			timelineEvents.push({
+				id: 'evt-2',
+				minutes: ceremonyMins - travelMins - 75,
+				name: 'Photographer Arrives for Getting Ready & Separate Group Photos',
+				role: 'photo',
+				description: 'Separate bride/bridesmaids & groom/groomsmen portraits'
+			});
+			if (travelMins > 0) {
+				timelineEvents.push({
+					id: 'evt-3',
+					minutes: ceremonyMins - travelMins - 15,
+					name: 'Depart & Travel to Ceremony Venue',
+					role: 'wedding-party',
+					description: `${travelMins} minute drive with buffer`
+				});
+			}
+			timelineEvents.push({
+				id: 'evt-4',
+				minutes: ceremonyMins - 20,
+				name: 'Tucked Away in Bridal Suite / Guests Arrive',
+				role: 'wedding-party',
+				description: 'Prelude music starts and ushers seat guests'
+			});
+		}
+
+		// Ceremony
+		timelineEvents.push({
+			id: 'evt-ceremony',
+			minutes: ceremonyMins,
+			name: 'Wedding Ceremony Processional & Vows',
+			role: 'ceremony',
+			description: 'Processional, vows exchange, ring ceremony & first kiss'
+		});
+
+		// Cocktail Hour
+		const cocktailMins = ceremonyMins + 30;
+		timelineEvents.push({
+			id: 'evt-cocktail',
+			minutes: cocktailMins,
+			name: firstLook === 'yes' ? 'Cocktail Hour (Couple Mingles With Guests)' : 'Cocktail Hour & Post-Ceremony Family Portraits',
+			role: 'reception',
+			description: firstLook === 'yes' ? 'Signature drinks & appetizers with guests' : 'Formal family photo list and newlywed sunset portraits'
+		});
+
+		// Grand Entrance & First Dance
+		const grandEntranceMins = cocktailMins + 60;
+		timelineEvents.push({
+			id: 'evt-entrance',
+			minutes: grandEntranceMins,
+			name: 'Grand Entrance & Newlyweds First Dance',
+			role: 'reception',
+			description: 'DJ introduces newlyweds, followed immediately by first dance'
+		});
+
+		// Welcome Toast & Dinner
+		const dinnerMins = grandEntranceMins + 15;
+		timelineEvents.push({
+			id: 'evt-dinner',
+			minutes: dinnerMins,
+			name: 'Welcome Blessing & Dinner Service Begins',
+			role: 'reception',
+			description: 'Plated dinner, buffet, or family-style dinner service'
+		});
+
+		// Toasts & Speeches
+		const toastsMins = dinnerMins + 45;
+		timelineEvents.push({
+			id: 'evt-toasts',
+			minutes: toastsMins,
+			name: 'Toasts & Speeches (Best Man, Maid of Honor, Parents)',
+			role: 'reception',
+			description: 'Champagne poured and celebratory toasts delivered'
+		});
+
+		// Parent Dances & Cake Cutting
+		const cakeMins = dinnerMins + 75;
+		timelineEvents.push({
+			id: 'evt-cake',
+			minutes: cakeMins,
+			name: 'Parent Dances & Cake Cutting Ceremony',
+			role: 'reception',
+			description: 'Father-daughter / mother-son dances & cake cutting'
+		});
+
+		// Dance Floor Open
+		const dancingMins = dinnerMins + 90;
+		timelineEvents.push({
+			id: 'evt-dance',
+			minutes: dancingMins,
+			name: 'Open Dance Floor Party & Late-Night Snacks',
+			role: 'reception',
+			description: 'High-energy party music and open bar'
+		});
+
+		// Grand Exit
+		const exitMins = ceremonyMins + 30 + receptionLengthMins;
+		timelineEvents.push({
+			id: 'evt-exit',
+			minutes: exitMins,
+			name: 'Grand Sparkler Send-Off / Newlyweds Exit',
+			role: 'reception',
+			description: 'Sparkler tunnel, vintage car getaway, or last dance'
+		});
+
+		// Sort by minutes
+		timelineEvents.sort((a, b) => a.minutes - b.minutes);
+		renderTimeline();
+	}
+
+	function renderTimeline() {
+		timelineStream.innerHTML = '';
+
+		const filtered = timelineEvents.filter(evt => {
+			if (activeRoleFilter === 'all') return true;
+			if (activeRoleFilter === 'wedding-party') return evt.role === 'wedding-party' || evt.role === 'ceremony';
+			if (activeRoleFilter === 'photo') return evt.role === 'photo' || evt.role === 'ceremony';
+			if (activeRoleFilter === 'reception') return evt.role === 'reception';
+			return true;
+		});
+
+		if (filtered.length === 0) {
+			timelineStream.innerHTML = '<p style="color: var(--text-secondary); font-style: italic;">No events found for this filter.</p>';
+			return;
+		}
+
+		filtered.forEach((evt, idx) => {
+			const card = document.createElement('div');
+			card.className = 'timeline-event-card';
+
+			let tagClass = 'tag-wedding-party';
+			let tagLabel = '👰 Wedding Party';
+			if (evt.role === 'photo') { tagClass = 'tag-photo'; tagLabel = '📸 Photo & Video'; }
+			else if (evt.role === 'reception') { tagClass = 'tag-reception'; tagLabel = '🍽️ Reception'; }
+			else if (evt.role === 'ceremony') { tagClass = 'tag-ceremony'; tagLabel = '⛪ Ceremony'; }
+
+			const formattedTime = minutesToFormattedTime(evt.minutes);
+
+			card.innerHTML = `
+				<div class="timeline-bullet-dot"></div>
+				<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.3rem;">
+					<strong class="font-heading" style="font-size: 1.3rem; color: var(--accent-blue);">${formattedTime}</strong>
+					<span class="event-tag ${tagClass}">${tagLabel}</span>
+				</div>
+				<h4 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 0 0 0.3rem 0;">
+					${evt.name}
+				</h4>
+				<p class="font-body" style="font-size: 0.95rem; color: var(--text-secondary); margin: 0; line-height: 1.4;">
+					${evt.description || ''}
+				</p>
+				<div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.4rem;">
+					<button type="button" style="background:none; border:none; color: var(--accent-red); cursor:pointer; font-size: 0.8rem; font-weight:bold;" onclick="removeTimelineEvent('${evt.id}')">Remove</button>
+				</div>
+			`;
+
+			timelineStream.appendChild(card);
+		});
+	}
+
+	window.removeTimelineEvent = function(id) {
+		timelineEvents = timelineEvents.filter(e => e.id !== id);
+		renderTimeline();
+	};
+
+	// Form change listeners
+	ceremonyInput.addEventListener('change', calculateTimeline);
+	firstLookInput.addEventListener('change', calculateTimeline);
+	travelInput.addEventListener('input', calculateTimeline);
+	receptionHoursInput.addEventListener('change', calculateTimeline);
+
+	// Presets
+	document.querySelectorAll('.preset-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+			btn.classList.add('active-preset');
+
+			ceremonyInput.value = btn.getAttribute('data-ceremony');
+			firstLookInput.value = btn.getAttribute('data-firstlook');
+			travelInput.value = btn.getAttribute('data-travel');
+			receptionHoursInput.value = btn.getAttribute('data-reception');
+
+			calculateTimeline();
+		});
+	});
+
+	// Role Filters
+	document.querySelectorAll('.role-pill-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			document.querySelectorAll('.role-pill-btn').forEach(b => b.classList.remove('active-role'));
+			btn.classList.add('active-role');
+			activeRoleFilter = btn.getAttribute('data-role');
+			renderTimeline();
+		});
+	});
+
+	// Add Custom Milestone Form
+	document.getElementById('add-custom-event-form').addEventListener('submit', (e) => {
+		e.preventDefault();
+		const name = document.getElementById('custom-event-name').value.trim();
+		const timeStr = document.getElementById('custom-event-time').value;
+		const role = document.getElementById('custom-event-role').value;
+
+		if (!name || !timeStr) return;
+
+		timelineEvents.push({
+			id: 'custom-' + Date.now(),
+			minutes: parseTimeToMinutes(timeStr),
+			name,
+			role,
+			description: 'Custom added wedding milestone'
+		});
+
+		timelineEvents.sort((a, b) => a.minutes - b.minutes);
+		renderTimeline();
+		document.getElementById('custom-event-name').value = '';
+	});
+
+	// 📋 Copy Text Summary
+	document.getElementById('btn-copy-summary').addEventListener('click', () => {
+		if (timelineEvents.length === 0) return;
+		let text = `💍 WEDDING DAY TIMELINE (${minutesToFormattedTime(parseTimeToMinutes(ceremonyInput.value))} Ceremony)\n\n`;
+		timelineEvents.forEach(evt => {
+			text += `• ${minutesToFormattedTime(evt.minutes)} — ${evt.name}\n`;
+		});
+
+		navigator.clipboard.writeText(text).then(() => {
+			const btn = document.getElementById('btn-copy-summary');
+			btn.textContent = '✅ Copied to Clipboard!';
+			setTimeout(() => { btn.textContent = '📋 Copy Text Summary'; }, 2000);
+		});
+	});
+
+	// 📝 Export to Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		if (timelineEvents.length === 0) return;
+
+		let rows = '';
+		timelineEvents.forEach((evt, idx) => {
+			rows += `
+				<tr>
+					<td style="border:1px solid #ccc; padding:8px; font-weight:bold; width:100px;">${minutesToFormattedTime(evt.minutes)}</td>
+					<td style="border:1px solid #ccc; padding:8px; font-weight:bold;">${evt.name}</td>
+					<td style="border:1px solid #ccc; padding:8px; width:130px;">${evt.role.replace('-', ' ').toUpperCase()}</td>
+					<td style="border:1px solid #ccc; padding:8px; color:#555;">${evt.description || '-'}</td>
+				</tr>
+			`;
+		});
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Wedding Day Itinerary</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Official Wedding Day-Of Itinerary</h1>
+				<p>Generated on ${new Date().toLocaleDateString()} | Ceremony Start: ${minutesToFormattedTime(parseTimeToMinutes(ceremonyInput.value))}</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Time</th>
+							<th>Event / Milestone</th>
+							<th>Category</th>
+							<th>Logistical Notes</th>
+						</tr>
+					</thead>
+					<tbody>
+						${rows}
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding_Day_Timeline_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		const printDate = document.getElementById('print-date');
+		const printCeremony = document.getElementById('print-ceremony-time');
+		const printTbody = document.getElementById('print-timeline-body');
+
+		printDate.textContent = new Date().toLocaleDateString();
+		printCeremony.textContent = minutesToFormattedTime(parseTimeToMinutes(ceremonyInput.value));
+
+		printTbody.innerHTML = '';
+		timelineEvents.forEach(evt => {
+			const tr = document.createElement('tr');
+			tr.innerHTML = `
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight: bold;">${minutesToFormattedTime(evt.minutes)}</td>
+				<td style="border: 1px solid #ccc; padding: 6px;">
+					<strong>${evt.name}</strong>
+					<div style="font-size: 11px; color: #555;">${evt.description || ''}</div>
+				</td>
+				<td style="border: 1px solid #ccc; padding: 6px;">${evt.role.replace('-', ' ').toUpperCase()}</td>
+			`;
+			printTbody.appendChild(tr);
+		});
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Time,Event Milestone,Category,Notes\n";
+		timelineEvents.forEach(evt => {
+			csv += `"${minutesToFormattedTime(evt.minutes)}","${(evt.name||'').replace(/"/g, '""')}","${evt.role}","${(evt.description||'').replace(/"/g, '""')}"\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding_Day_Timeline_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateTimeline();
+</script>

@@ -1,0 +1,529 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "Free Printable Wedding Menu Maker (Instant Generator)";
+const description = "Create beautiful, hand-drawn style wedding reception menus instantly with our free printable wedding menu maker. Customize courses, download a crisp A4 PDF for free.";
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": ["WebApplication", "CalculatorApplication"],
+    "name": "Wedding Reception Menu Maker",
+    "description": description,
+    "url": "https://manage.wedding/reception-menu-maker",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "All"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How to make a menu card for wedding tables?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The easiest way is to use a free tool like our generator above. Just input your dishes, generate the PDF, and print it on high-quality cardstock (100lb+ or 270gsm). You can place one on every plate or one large card in the center of the table."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How to make wedding menu cards look professional?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Paper quality is everything. Use textured cotton or linen paper instead of standard printer paper. Our PDF uses real vector text, meaning it stays razor-sharp and looks identical to professional design software outputs when printed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How large to make food menu sign for wedding?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "If you are printing individual table cards, standard A5 size (half of an A4 page) or 5x7 inches is perfect. If you are creating one large buffet sign for all guests to read from a distance, aim for at least 18x24 inches or 24x36 inches."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How many courses should a wedding menu have?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most weddings feature 3 main courses — starters, mains, and dessert. However, our maker lets you add as many custom sections as you need, including cocktail hour bites, a cheese course, or late-night snacks."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I edit the PDF after downloading?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The most efficient workflow is to edit your text directly on this page and re-download. Because generation is instant, there is no need to use a separate PDF editing tool."
+        }
+      }
+    ]
+  }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+    <header class="fade-in category-header" style="text-align: center;">
+      <h1 class="font-heading" style="font-size: 3.5rem; margin-bottom: 0.5rem; font-weight: 500;">Reception <span class="accent-italic">Menu Maker</span></h1>
+      <p class="font-body" style="color: var(--secondary-ink); max-width: 600px; margin: 0 auto;">Build your wedding dinner menu in seconds. Add courses, type your dishes, and download a crisp A4 PDF — ready to print.</p>
+    </header>
+
+    <div id="app-area" class="fade-in" style="animation-delay: 0.2s; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start;">
+
+      <!-- Hidden images used for jsPDF generation -->
+      <img id="floral-tl" src="/images/floral-tl.png" style="display: none;" crossorigin="anonymous" />
+      <img id="floral-tr" src="/images/floral-tr.png" style="display: none;" crossorigin="anonymous" />
+      <img id="floral-bl" src="/images/floral-bl.png" style="display: none;" crossorigin="anonymous" />
+      <img id="floral-br" src="/images/floral-br.png" style="display: none;" crossorigin="anonymous" />
+
+      <!-- ===== LEFT: EDITOR ===== -->
+      <div class="hand-card" style="padding: 2rem;">
+
+        <!-- Header fields -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+          <div>
+            <label class="form-label" for="coupleNames">Couple's Names</label>
+            <input id="coupleNames" class="form-input" type="text" value="Alex & Jamie" />
+          </div>
+          <div>
+            <label class="form-label" for="weddingDate">Date / Tagline</label>
+            <input id="weddingDate" class="form-input" type="text" value="October 12, 2026" />
+          </div>
+        </div>
+
+        <!-- Dynamic courses -->
+        <div id="course-list"></div>
+
+        <!-- Add course -->
+        <button id="addCourseBtn" type="button" class="menu-add-btn">+ Add Another Course</button>
+
+        <!-- Download -->
+        <div style="border-top: 2px dashed var(--fg-pencil); margin-top: 1.5rem; padding-top: 1.25rem;">
+          <button id="downloadPdfBtn" class="hand-btn" style="width: 100%; font-size: 1.1rem;">
+            Download Menu as PDF
+          </button>
+          <p class="font-body" style="font-size: 0.8rem; color: var(--secondary-ink); text-align: center; margin-top: 0.5rem;">
+            Standard A4 size · Vector text · Print-ready
+          </p>
+        </div>
+      </div>
+
+      <!-- ===== RIGHT: LIVE PREVIEW ===== -->
+      <div style="position: sticky; top: 2rem;">
+        <p class="font-body" style="font-size: 0.85rem; text-align: center; color: var(--secondary-ink); margin-bottom: 0.5rem;">Live Preview</p>
+        <div style="display: flex; justify-content: center;">
+          <div id="menuPreview" style="
+            width: 100%;
+            max-width: 400px;
+            background: #fdfbf7;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+            padding: 36px 32px;
+            position: relative;
+            min-height: 560px;
+          ">
+            <!-- Double border decoration -->
+            <div style="position:absolute; top:8px; bottom:8px; left:8px; right:8px; border:1.5px solid #333; pointer-events:none; z-index:1;"></div>
+            <div style="position:absolute; top:12px; bottom:12px; left:12px; right:12px; border:0.5px solid #bbb; pointer-events:none; z-index:1;"></div>
+
+            <!-- Floral Corners -->
+            <img src="/images/floral-tl.png" style="position:absolute; top:13px; left:13px; width:70px; opacity:0.85; pointer-events:none; z-index:2;" />
+            <img src="/images/floral-tr.png" style="position:absolute; top:13px; right:13px; width:70px; opacity:0.85; pointer-events:none; z-index:2;" />
+            <img src="/images/floral-bl.png" style="position:absolute; bottom:13px; left:13px; width:70px; opacity:0.85; pointer-events:none; z-index:2;" />
+            <img src="/images/floral-br.png" style="position:absolute; bottom:13px; right:13px; width:70px; opacity:0.85; pointer-events:none; z-index:2;" />
+
+            <!-- Content rendered by JS -->
+            <div id="menuContent" style="position: relative; z-index:3; text-align: center;"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== SEO ARTICLE ===== -->
+    <article class="hand-card" style="margin: 4rem auto; max-width: 800px; padding: 3rem;">
+      <h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem;">How to Make a Wedding Menu: The Complete Guide</h2>
+
+      <p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem; line-height: 1.7;">
+        The dining experience is one of the most memorable parts of any reception, and a beautifully designed menu card adds a personal, elegant touch to each table setting. If you are wondering <strong>how to make a wedding menu</strong> without hiring an expensive graphic designer, you are in the right place. Our free generator lets you build, preview, and download a print-ready card in under a minute.
+      </p>
+
+      <img src="/images/menu-maker-sketch.jpg" alt="Minimalist black and white hand-drawn sketch of an elegant wedding table setting featuring a custom printed menu card resting against a floral centerpiece with wine glasses" style="width: 100%; max-width: 500px; margin: 2rem auto; display: block; border: 3px solid var(--fg-pencil); border-radius: 4px; box-shadow: 4px 4px 0px rgba(0,0,0,0.1);" />
+
+      <h3 class="font-heading" style="font-size: 2rem; margin-top: 3rem; margin-bottom: 1rem;">How to Make Menu Cards for Wedding Receptions</h3>
+      <p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem; line-height: 1.7;">
+        Many couples want to <strong>make your own wedding menu</strong> to save money, as professional prints can cost $50–$150. To do it yourself seamlessly:
+        <ol class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.8;">
+          <li><strong>Draft Your Courses:</strong> Finalize the food with your caterer first. Usually, this means an appetizer, a main course (with options), and a dessert.</li>
+          <li><strong>Use Our Generator:</strong> Type your couple's names, the date, and your menu items into the form above. The live preview will show you exactly how it looks.</li>
+          <li><strong>Download and Print:</strong> Click download to get a crisp, vector-based PDF. You can print this at home or send it to a local print shop.</li>
+        </ol>
+      </p>
+
+      <h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-red);">Do's and Don'ts When Crafting Your Menu</h3>
+      <ul class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.8;">
+        <li style="margin-bottom: 0.5rem;"><strong>Do be descriptive:</strong> "Pan-Seared Atlantic Salmon with Lemon Dill Beurre Blanc" sounds much better than simply "Fish."</li>
+        <li style="margin-bottom: 0.5rem;"><strong>Do mark dietary options:</strong> Clearly indicate (V) Vegetarian, (VG) Vegan, or (GF) Gluten-Free options to put guests at ease.</li>
+        <li style="margin-bottom: 0.5rem;"><strong>Don't overcrowd the card:</strong> 2–3 items per course is the sweet spot. If you list every single ingredient, guests will feel overwhelmed.</li>
+        <li style="margin-bottom: 0.5rem;"><strong>Do add a personal touch:</strong> A closing line like "With love, Alex & Jamie" turns a simple menu into a wedding keepsake.</li>
+      </ul>
+
+      <h3 class="font-heading" style="font-size: 2rem; margin-top: 3rem; margin-bottom: 1.5rem; text-align: center;">Frequently Asked Questions</h3>
+
+      <details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+        <summary class="font-heading" style="font-size: 1.2rem; outline: none;">How to make a menu card for wedding tables?</summary>
+        <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">The easiest way is to use a free tool like our generator above. Just input your dishes, generate the PDF, and print it on high-quality cardstock (100lb+ or 270gsm). You can place one on every plate or one large card in the center of the table.</p>
+      </details>
+      <details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+        <summary class="font-heading" style="font-size: 1.2rem; outline: none;">How to make wedding menu cards look professional?</summary>
+        <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Paper quality is everything. Use textured cotton or linen paper instead of standard printer paper. Our PDF uses real vector text, meaning it stays razor-sharp and looks identical to professional design software outputs when printed.</p>
+      </details>
+      <details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+        <summary class="font-heading" style="font-size: 1.2rem; outline: none;">How large to make food menu sign for wedding?</summary>
+        <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">If you are printing individual table cards, standard A5 size (half of an A4 page) or 5x7 inches is perfect. If you are creating one large buffet sign for all guests to read from a distance, aim for at least 18x24 inches or 24x36 inches.</p>
+      </details>
+      <details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+        <summary class="font-heading" style="font-size: 1.2rem; outline: none;">How many courses should a wedding menu have?</summary>
+        <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Most weddings feature 3 main courses — starters, mains, and dessert. However, our maker lets you add as many custom sections as you need, including cocktail hour bites, a cheese course, or late-night snacks.</p>
+      </details>
+      <details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+        <summary class="font-heading" style="font-size: 1.2rem; outline: none;">Can I edit the PDF after downloading?</summary>
+        <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">The most efficient workflow is to edit your text directly on this page and re-download. Because generation is instant, there is no need to use a separate PDF editing tool.</p>
+      </details>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .menu-add-btn {
+    width: 100%;
+    padding: 0.7rem;
+    border: 2px dashed var(--fg-pencil);
+    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--fg-pencil);
+    border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .menu-add-btn:hover { background: #f5f1e8; }
+
+  .course-block {
+    border: 1px dashed var(--fg-pencil);
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: #f5f1e8;
+  }
+  .course-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.6rem;
+  }
+  .course-block-label {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0;
+  }
+  .course-rm-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #aaa;
+    line-height: 1;
+    padding: 2px 4px;
+  }
+  .course-rm-btn:hover { color: #c0392b; }
+
+  .course-fields {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 0.6rem;
+  }
+
+  @media (max-width: 600px) {
+    .course-fields { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+<script>
+  // ── State ───────────────────────────────────────────────────────────
+  let courses: {title: string; items: string}[] = [
+    { title: 'Appetizers', items: 'Tomato Bruschetta\nStuffed Mushrooms' },
+    { title: 'Mains',      items: 'Herb-Crusted Salmon\nFilet Mignon\nVegetarian Risotto' },
+    { title: 'Dessert',    items: 'Classic Wedding Cake\nChocolate Lava Cake' },
+  ];
+
+  // ── Editor ──────────────────────────────────────────────────────────
+  function renderEditor() {
+    const list = document.getElementById('course-list');
+    if (!list) return;
+    list.innerHTML = '';
+
+    courses.forEach((c, i) => {
+      const div = document.createElement('div');
+      div.className = 'course-block';
+      div.innerHTML = `
+        <div class="course-block-header">
+          <p class="font-heading course-block-label">Course ${i + 1}</p>
+          ${courses.length > 1 ? `<button class="course-rm-btn" data-rm="${i}" title="Remove">✕</button>` : ''}
+        </div>
+        <div class="course-fields">
+          <div>
+            <label class="form-label">Heading</label>
+            <input class="form-input ci-t" data-i="${i}" type="text" value="${c.title}" />
+          </div>
+          <div>
+            <label class="form-label">Items (one per line)</label>
+            <textarea class="form-input ci-v" data-i="${i}" style="min-height:70px; resize:vertical;">${c.items}</textarea>
+          </div>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+
+    // Bind events
+    list.querySelectorAll('[data-rm]').forEach(b =>
+      b.addEventListener('click', e => {
+        courses.splice(+(e.currentTarget as HTMLElement).getAttribute('data-rm')!, 1);
+        renderEditor();
+        renderPreview();
+      })
+    );
+    list.querySelectorAll('.ci-t').forEach(el =>
+      el.addEventListener('input', e => {
+        courses[+(e.currentTarget as HTMLInputElement).getAttribute('data-i')!].title = (e.currentTarget as HTMLInputElement).value;
+        renderPreview();
+      })
+    );
+    list.querySelectorAll('.ci-v').forEach(el =>
+      el.addEventListener('input', e => {
+        courses[+(e.currentTarget as HTMLTextAreaElement).getAttribute('data-i')!].items = (e.currentTarget as HTMLTextAreaElement).value;
+        renderPreview();
+      })
+    );
+  }
+
+  // ── Live Preview ────────────────────────────────────────────────────
+  const PREVIEW_COLORS = ['#b42d23', '#236eaa', '#3c3c3c', '#b42d23', '#236eaa'];
+
+  function renderPreview() {
+    const el = document.getElementById('menuContent');
+    if (!el) return;
+
+    const names = (document.getElementById('coupleNames') as HTMLInputElement)?.value || '';
+    const date  = (document.getElementById('weddingDate')  as HTMLInputElement)?.value || '';
+
+    let html = `
+      <h2 style="font-size:1.8rem; letter-spacing:4px; text-transform:uppercase; margin:0 0 6px; font-family:Georgia,serif; color:#222;">M E N U</h2>
+      <p style="font-size:1.15rem; font-style:italic; margin:0 0 3px; font-family:Georgia,serif; color:#333;">${names}</p>
+      <p style="font-size:0.8rem; letter-spacing:1px; color:#999; margin:0; font-family:sans-serif;">${date}</p>
+      <div style="width:50px; border-top:1px solid #333; margin:12px auto;"></div>
+    `;
+
+    courses.forEach((c, i) => {
+      if (i > 0) html += `<div style="width:30px; border-top:1px dashed #bbb; margin:10px auto;"></div>`;
+      const color = PREVIEW_COLORS[i % PREVIEW_COLORS.length];
+      const items = c.items.split('\n').filter(l => l.trim()).join('<br>');
+      html += `
+        <div style="margin-bottom:4px;">
+          <p style="font-size:1.05rem; font-style:italic; font-weight:bold; color:${color}; margin:0 0 4px; font-family:Georgia,serif;">${c.title}</p>
+          <p style="font-size:0.85rem; line-height:1.65; margin:0; color:#555; font-family:Georgia,serif;">${items || '<span style="color:#ccc;">Type items…</span>'}</p>
+        </div>
+      `;
+    });
+
+    el.innerHTML = html;
+  }
+
+  // ── PDF Generation (pure vector — no screenshots) ───────────────────
+  async function downloadPDF() {
+    const btn = document.getElementById('downloadPdfBtn') as HTMLButtonElement;
+    if (btn) { btn.textContent = 'Generating…'; btn.disabled = true; }
+
+    try {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+
+      const names = (document.getElementById('coupleNames') as HTMLInputElement)?.value || '';
+      const date  = (document.getElementById('weddingDate')  as HTMLInputElement)?.value || '';
+
+      // A4: 210mm × 297mm
+      const { jsPDF } = (window as any).jspdf;
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const W = 210;
+      const H = 297;
+      const cx = W / 2;
+      const MARGIN_BOTTOM = 26; // don't print below this from bottom
+
+      // ── Helper: draw page frame (background + borders) ──────────────
+      function drawPageFrame() {
+        pdf.setFillColor(253, 251, 247);
+        pdf.rect(0, 0, W, H, 'F');
+        
+        pdf.setDrawColor(50, 50, 50);
+        pdf.setLineWidth(0.6);
+        pdf.rect(12, 12, W - 24, H - 24);
+        
+        pdf.setDrawColor(170, 170, 170);
+        pdf.setLineWidth(0.25);
+        pdf.rect(16, 16, W - 32, H - 32);
+
+        // Draw Floral Corners
+        const fTL = document.getElementById('floral-tl') as HTMLImageElement;
+        const fTR = document.getElementById('floral-tr') as HTMLImageElement;
+        const fBL = document.getElementById('floral-bl') as HTMLImageElement;
+        const fBR = document.getElementById('floral-br') as HTMLImageElement;
+        const size = 32;
+        
+        if (fTL && fTL.complete) pdf.addImage(fTL, 'PNG', 16, 16, size, size);
+        if (fTR && fTR.complete) pdf.addImage(fTR, 'PNG', W - 16 - size, 16, size, size);
+        if (fBL && fBL.complete) pdf.addImage(fBL, 'PNG', 16, H - 16 - size, size, size);
+        if (fBR && fBR.complete) pdf.addImage(fBR, 'PNG', W - 16 - size, H - 16 - size, size, size);
+      }
+
+      // ── Helper: check if we need a new page ─────────────────────────
+      function ensureSpace(needed: number) {
+        if (y + needed > H - MARGIN_BOTTOM) {
+          pdf.addPage();
+          drawPageFrame();
+          y = 30;
+        }
+      }
+
+      drawPageFrame();
+
+      // ── Calculate vertical start to center content on first page ────
+      const headerH = 45;
+      let totalCoursesH = 0;
+      courses.forEach((c, i) => {
+        const itemCount = c.items.split('\n').filter(l => l.trim()).length;
+        totalCoursesH += 9 + (itemCount * 6.5) + 4;
+        if (i > 0) totalCoursesH += 10;
+      });
+      const totalH = headerH + totalCoursesH;
+      let y = totalH < (H - 52) ? Math.max(35, (H - totalH) / 2) : 35;
+
+      // ── "M E N U" title — manually spaced for perfect centering ─────
+      ensureSpace(14);
+      pdf.setFont('times', 'bold');
+      pdf.setFontSize(36);
+      pdf.setTextColor(30, 30, 30);
+      pdf.text('M   E   N   U', cx, y, { align: 'center' });
+      y += 14;
+
+      // ── Couple names ────────────────────────────────────────────────
+      if (names.trim()) {
+        ensureSpace(8);
+        pdf.setFont('times', 'italic');
+        pdf.setFontSize(18);
+        pdf.setTextColor(40, 40, 40);
+        pdf.text(names, cx, y, { align: 'center' });
+        y += 8;
+      }
+
+      // ── Date ────────────────────────────────────────────────────────
+      if (date.trim()) {
+        ensureSpace(7);
+        pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(10);
+        pdf.setTextColor(140, 140, 140);
+        pdf.text(date, cx, y, { align: 'center' });
+        y += 7;
+      }
+
+      // ── Main divider ────────────────────────────────────────────────
+      y += 2;
+      ensureSpace(12);
+      pdf.setDrawColor(80, 80, 80);
+      pdf.setLineWidth(0.4);
+      pdf.line(cx - 25, y, cx + 25, y);
+      y += 12;
+
+      // ── Courses ─────────────────────────────────────────────────────
+      const COLORS: [number, number, number][] = [
+        [180, 45, 35],
+        [35, 110, 170],
+        [60, 60, 60],
+        [180, 45, 35],
+        [35, 110, 170],
+      ];
+
+      courses.forEach((course, i) => {
+        // Dashed divider between courses
+        if (i > 0) {
+          ensureSpace(10);
+          pdf.setDrawColor(190, 190, 190);
+          pdf.setLineWidth(0.2);
+          pdf.setLineDashPattern([1, 1], 0);
+          pdf.line(cx - 12, y, cx + 12, y);
+          pdf.setLineDashPattern([], 0);
+          y += 10;
+        }
+
+        // Course heading
+        ensureSpace(9);
+        const [r, g, b] = COLORS[i % COLORS.length];
+        pdf.setFont('times', 'bolditalic');
+        pdf.setFontSize(16);
+        pdf.setTextColor(r, g, b);
+        pdf.text(course.title, cx, y, { align: 'center' });
+        y += 9;
+
+        // Items
+        pdf.setFont('times', 'normal');
+        pdf.setFontSize(12);
+        pdf.setTextColor(60, 60, 60);
+        const items = course.items.split('\n').filter(l => l.trim());
+        items.forEach(item => {
+          ensureSpace(6.5);
+          pdf.text(item.trim(), cx, y, { align: 'center' });
+          y += 6.5;
+        });
+        y += 4;
+      });
+
+      pdf.save('wedding-menu.pdf');
+
+    } catch (err) {
+      console.error('PDF generation failed:', err);
+      alert('Could not generate PDF. Please try again.');
+    } finally {
+      if (btn) { btn.textContent = 'Download Menu as PDF'; btn.disabled = false; }
+    }
+  }
+
+  // ── Helpers ─────────────────────────────────────────────────────────
+  function loadScript(src: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
+      const s = document.createElement('script');
+      s.src = src; s.onload = () => resolve(); s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  // ── Init ────────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    renderEditor();
+    renderPreview();
+
+    // Live update preview from header fields
+    document.getElementById('coupleNames')?.addEventListener('input', renderPreview);
+    document.getElementById('weddingDate')?.addEventListener('input', renderPreview);
+
+    document.getElementById('addCourseBtn')?.addEventListener('click', () => {
+      courses.push({ title: 'New Course', items: '' });
+      renderEditor();
+      renderPreview();
+      document.getElementById('course-list')?.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('downloadPdfBtn')?.addEventListener('click', downloadPDF);
+  });
+</script>
