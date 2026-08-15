@@ -5,12 +5,45 @@ const schema = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebApplication",
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/guest-count-estimator/#webapp",
       "name": "Wedding Guest Count Estimator",
       "url": "https://manage.wedding/guest-count-estimator",
       "description": "Calculate how many wedding guests you can afford based on your total budget, venue costs, and per-head catering estimates.",
       "applicationCategory": "CalculatorApplication",
-      "operatingSystem": "Any"
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Accurately Estimate Wedding Guest Counts",
+      "description": "Calculate your maximum affordable wedding guest count and safe venue capacity limit.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Step 1: Determine Total Wedding Budget and Fixed Costs",
+          "text": "Identify your total overall budget and subtract non-variable expenses like venue rental fees, photography, DJ, and wedding attire."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 2: Estimate Per-Person Catering and Bar Expenses",
+          "text": "Combine your caterer's per-person food cost with bar packages, service charges (plus-plus), and sales taxes to calculate true cost per head."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 3: Divide Variable Budget by Per-Head Costs",
+          "text": "Divide remaining available funds by the total per-person cost to reveal the maximum number of guests you can financially accommodate."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 4: Apply the 90% Venue Safety Cap",
+          "text": "Multiply your venue's maximum fire code capacity by 0.90 to ensure adequate space for a dance floor, buffet stations, and vendor tables."
+        }
+      ]
     },
     {
       "@type": "FAQPage",
@@ -163,7 +196,97 @@ const schema = {
 
 		<!-- SEO Article Section -->
 		<section class="section-muted" style="padding: 4rem 2rem;">
-			<div style="max-width: 800px; margin: 0 auto;">
+			<div style="max-width: 900px; margin: 0 auto;">
+				<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+				<div class="hand-card" style="margin: 0 auto 3rem auto; max-width: 900px; background: var(--post-it); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+					<div class="tape" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);"></div>
+					<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<h2 class="font-heading" style="font-size: clamp(1.3rem, 2.5vw, 1.7rem); color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+							<span>⚡</span> Quick Rule of Thumb (BLUF)
+						</h2>
+						<span style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(0,0,0,0.06); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid var(--fg-pencil);">
+							1-Minute Capacity & Budget Formula
+						</span>
+					</div>
+					
+					<!-- Core Formula Banner -->
+					<div style="background: rgba(255, 255, 255, 0.9); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+						<p class="font-body" style="font-size: 1.05rem; line-height: 1.6; margin: 0 0 0.5rem 0; color: var(--fg-pencil);">
+							<strong>Venue Safety Cap Rule:</strong> 
+							<span style="display: inline-block; background: #fef3c7; border: 1px solid #d97706; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #92400e; margin: 2px 4px;">Max Seated Guest Cap = Venue Maximum Fire Capacity × 0.90 (90% Cap)</span>
+						</p>
+						<p class="font-body" style="font-size: 0.9rem; margin: 0; color: var(--text-secondary); line-height: 1.5;">
+							<strong>Affordability Formula:</strong> Max Affordable Guests = <code>(Total Budget − Fixed Expenses) ÷ (Catering + Bar Per Head)</code>. The 10% venue buffer reserves critical floor space for the dance floor, DJ booth, photo station, and buffet lines.
+						</p>
+					</div>
+
+					<!-- Semantic Benchmark Table -->
+					<div style="overflow-x: auto;">
+						<table style="width: 100%; border-collapse: collapse; background: #fff; border: 2px solid var(--fg-pencil); font-family: var(--font-body); font-size: 0.92rem; text-align: left;">
+							<thead>
+								<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Total Wedding Budget</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Fixed Costs (Venue, Photo, DJ)</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Remaining Guest Budget</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-blue);">Max Guests @ $100/hd</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: #d97706;">Max Guests @ $150/hd</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-red);">Max Guests @ $200/hd</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$15,000 (Micro / DIY)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">$6,000 (40%)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$9,000</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">90 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">60 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">45 Guests</td>
+								</tr>
+								<tr style="background: #faf8f3;">
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$25,000 (Moderate)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">$10,000 (40%)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$15,000</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">150 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">100 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">75 Guests</td>
+								</tr>
+								<tr>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$35,000 (US Average)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">$14,000 (40%)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$21,000</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">210 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">140 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">105 Guests</td>
+								</tr>
+								<tr style="background: #faf8f3;">
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$50,000 (Full-Service)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">$20,000 (40%)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$30,000</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">300 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">200 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">150 Guests</td>
+								</tr>
+								<tr>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$75,000 (Luxury)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">$30,000 (40%)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$45,000</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">450 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">300 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">225 Guests</td>
+								</tr>
+								<tr style="background: #faf8f3;">
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$100,000+ (Grand Estate)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">$40,000 (40%)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">$60,000</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">600 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">400 Guests</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">300 Guests</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
 				<article class="hand-card" style="padding: 3rem;">
 					<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem;">How to Use the Wedding Guest Count Estimator</h2>
 					

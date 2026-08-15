@@ -5,19 +5,81 @@ const schema = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebApplication",
-      "@id": "https://manage.wedding/alcohol-dilution-calculator/#webapp",
-      "name": "Alcohol Dilution Calculator",
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Alcohol Dilution Calculator & ABV Proofing Utility",
       "url": "https://manage.wedding/alcohol-dilution-calculator",
-      "description": "Calculate exact water required to dilute high-proof alcohol to a target ABV.",
-      "applicationCategory": "UtilityApplication",
-      "operatingSystem": "Any"
+      "description": "Calculate exact water or mixer required to dilute high-proof spirits (Everclear, 80 Proof vodka, moonshine) to target ABV for batch wedding cocktails.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
     },
     {
-      "@type": "CalculatorApplication",
-      "@id": "https://manage.wedding/alcohol-dilution-calculator/#calculator",
-      "name": "Alcohol Dilution Calculator",
-      "url": "https://manage.wedding/alcohol-dilution-calculator"
+      "@type": "HowTo",
+      "name": "How to Dilute Alcohol to a Target ABV",
+      "description": "Step-by-step formula and process for calculating water dilution for batch cocktails and high-proof spirits.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Enter Initial Spirit Volume (ml)",
+          "text": "Input the starting volume of your base alcohol in milliliters (e.g., 750 ml or 1,000 ml)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Enter Starting Alcohol Percentage (ABV %)",
+          "text": "Input the starting ABV percentage of your spirit (e.g., 95% for Everclear/Spirytus or 40% for standard 80-proof vodka)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Set Desired Target ABV (%)",
+          "text": "Specify your final target ABV (e.g., 40% for vodka proof, 20% for batch cocktails, or 15% for light spritzers)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Read Water Addition and Final Volume",
+          "text": "The calculator applies C1 × V1 = C2 × V2 to output the exact volume of distilled water or mixer to blend in."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does the Alcohol Dilution Calculator work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Alcohol Dilution Calculator uses a simple algebraic formula (C1 × V1 = C2 × V2) to determine how much water is needed to reach your target ABV. You simply provide the starting volume, starting alcohol percentage, and desired final percentage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this calculator for proofing down moonshine or homebrew?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely! This tool is perfect for homebrewers and distillers who need to proof down high-proof spirits or moonshine safely and accurately to a drinkable target ABV before bottling."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why did my spirit turn cloudy after dilution?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cloudiness, or 'louching', often happens when diluting spirits with high essential oil content (like gin or absinthe). To minimize this, use distilled water, ensure both liquids are at room temperature, and add the spirit to the water slowly."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it matter what kind of water I use for dilution?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We highly recommend using distilled or reverse osmosis water when using the Alcohol Dilution Calculator for batching cocktails or proofing spirits. Tap water contains minerals and chlorine that can alter the flavor profile of your drink."
+          }
+        }
+      ]
     }
   ]
 };
@@ -83,6 +145,95 @@ const schema = {
 					</div>
 				</div>
 			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 800px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape"></div>
+			
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Quick Rule of Thumb (BLUF)
+				</h3>
+				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
+					1-Minute Proofing Math
+				</span>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
+					📐 The Core Dilution Formula:
+				</div>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
+					<strong>C₁ × V₁ = C₂ × V₂</strong><br />
+					<strong>Water to Add (ml) = [(Initial ABV × Initial Volume) ÷ Target ABV] - Initial Volume</strong><br />
+					<em>Where:</em> C₁ = Starting ABV (%), V₁ = Starting Vol (ml), C₂ = Desired Target ABV (%), V₂ = Final Volume (ml).
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.90rem; min-width: 560px;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Starting Spirit</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Starting Vol</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Target ABV</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue); text-align: center;">Water to Add</th>
+							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--fg-pencil); text-align: right;">Final Batch Volume</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ 95% Everclear (190 Proof)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1,000 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">40% (80 Proof)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+1,375.0 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">2,375.0 ml</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">95% Everclear (190 Proof)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">40% (80 Proof)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+1,031.3 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">1,781.3 ml</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">95% Everclear (190 Proof)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1,000 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">30% (Liqueurs)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+2,166.7 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">3,166.7 ml</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ 40% Vodka (80 Proof)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">20% (Cocktails)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+750.0 ml (1:1)</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">1,500.0 ml</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">40% Vodka (80 Proof)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">15% (Spritz / Punch)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+1,250.0 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">2,000.0 ml</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">50% Bourbon (100 Proof)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">35% (Old Fashioned)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+321.4 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">1,071.4 ml</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p class="font-body" style="font-size: 0.85rem; color: var(--fg-pencil); margin: 0; line-height: 1.4;">
+				💡 <strong>Mixing Best Practice:</strong> Always use distilled or RO water and add spirit to water slowly at room temperature to avoid cloudiness (louching).
+			</p>
 		</div>
 
 		<article class="hand-card" style="margin: 4rem auto; max-width: 800px;">
