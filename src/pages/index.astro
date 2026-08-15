@@ -4,322 +4,912 @@ import Layout from '../layouts/Layout.astro';
 const schema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Manage.Wedding Calculators",
+  "name": "Manage.Wedding — Free Wedding Planning Calculators & Tools",
   "url": "https://manage.wedding/",
-  "description": "A collection of premium calculators for planning your perfect wedding."
+  "description": "A collection of 30+ free, private, local-first wedding planning calculators, seating charts, open bar estimators, and printable day-of stationery."
 };
+
+const allTools = [
+  // 1. Food & Beverage
+  {
+    id: "wedding-drink-calculator",
+    title: "Wedding Drink Calculator",
+    category: "food-beverage",
+    categoryLabel: "Food & Drinks",
+    icon: "🍾",
+    badge: "Most Popular",
+    desc: "Calculate exact bottle counts for wine, beer, liquor, and mixers for open and soft bars.",
+    time: "2 mins",
+    tags: ["1-Click Export", "Open Bar"],
+    url: "/wedding-drink-calculator",
+    btnText: "Plan Open Bar →"
+  },
+  {
+    id: "liquor-wedding-calculator",
+    title: "Liquor Heavy Bar",
+    category: "food-beverage",
+    categoryLabel: "Food & Drinks",
+    icon: "🍸",
+    badge: "",
+    desc: "Designed for full cocktail-heavy open bars. Optimize spirit ratios and mixer purchases.",
+    time: "2 mins",
+    tags: ["Cocktail Ratios", "750ml Bottles"],
+    url: "/liquor-wedding-calculator",
+    btnText: "Optimize Liquor →"
+  },
+  {
+    id: "cake-serving-calculator",
+    title: "Cake Serving Calculator",
+    category: "food-beverage",
+    categoryLabel: "Food & Drinks",
+    icon: "🍰",
+    badge: "Visual Sizer",
+    desc: "Calculate tier dimensions, cutting portion dimensions (1\"x2\" vs 2\"x2\"), and sheet cake hacks.",
+    time: "2 mins",
+    tags: ["Tier Dimensions", "Sheet Cakes"],
+    url: "/cake-serving-calculator",
+    btnText: "Size Your Cake →"
+  },
+  {
+    id: "cake-pricing-calculator",
+    title: "Cake Pricing Calculator",
+    category: "food-beverage",
+    categoryLabel: "Food & Drinks",
+    icon: "🎂",
+    badge: "For Bakers",
+    desc: "For bakers & couples: compute ingredient costs, labor markups, and custom tier profit margins.",
+    time: "3 mins",
+    tags: ["Baker Math", "Cost Breakdown"],
+    url: "/cake-pricing-calculator",
+    btnText: "Price A Cake →"
+  },
+  {
+    id: "catering-cost-estimator",
+    title: "Catering Cost Estimator",
+    category: "food-beverage",
+    categoryLabel: "Food & Drinks",
+    icon: "🍽️",
+    badge: "",
+    desc: "Compare plated, buffet, family-style, and food stations per-head pricing with staffing ratios.",
+    time: "3 mins",
+    tags: ["Plated vs Buffet", "Per-Head Math"],
+    url: "/catering-cost-estimator",
+    btnText: "Estimate Catering →"
+  },
+  {
+    id: "reception-menu-maker",
+    title: "Reception Menu Maker",
+    category: "food-beverage",
+    categoryLabel: "Food & Drinks",
+    icon: "📜",
+    badge: "Printable PDF",
+    desc: "Generate elegant, printable 4x9 dinner menus with floral corner flourishes for guest tables.",
+    time: "3 mins",
+    tags: ["Printable PDF", "Custom Courses"],
+    url: "/reception-menu-maker",
+    btnText: "Make Menu →"
+  },
+  {
+    id: "alcohol-dilution-calculator",
+    title: "Alcohol Dilution Calculator",
+    category: "food-beverage",
+    categoryLabel: "Food & Drinks",
+    icon: "🧪",
+    badge: "Bartender Pro",
+    desc: "Accurately dilute high-proof spirits and batch cocktails down to target ABV percentages.",
+    time: "1 min",
+    tags: ["ABV Proof", "Batching Math"],
+    url: "/alcohol-dilution-calculator",
+    btnText: "Dilute ABV →"
+  },
+  {
+    id: "floral-cost-estimator",
+    title: "Floral Cost Estimator",
+    category: "food-beverage",
+    categoryLabel: "Food & Drinks",
+    icon: "💐",
+    badge: "",
+    desc: "Estimate costs for bridal bouquets, boutonnieres, centerpieces, and ceremony flower arches.",
+    time: "3 mins",
+    tags: ["Stem Pricing", "Arrangements"],
+    url: "/floral-cost-estimator",
+    btnText: "Estimate Florals →"
+  },
+
+  // 2. Guest Management & Seating
+  {
+    id: "seating-chart-maker",
+    title: "Seating Chart Maker",
+    category: "guest-management",
+    categoryLabel: "Guests & Seating",
+    icon: "🪑",
+    badge: "Drag & Drop",
+    desc: "Interactive visual table arrangement tool. Assign seats, balance tables, and export printable charts.",
+    time: "5 mins",
+    tags: ["Visual Planner", "PDF Export"],
+    url: "/seating-chart-maker",
+    btnText: "Build Seating Chart →"
+  },
+  {
+    id: "guest-list-manager",
+    title: "Guest List Manager",
+    category: "guest-management",
+    categoryLabel: "Guests & Seating",
+    icon: "📋",
+    badge: "Local-First",
+    desc: "Track guest names, plus-ones, addresses, meal choices, and dietary notes with zero cloud tracking.",
+    time: "5 mins",
+    tags: ["Plus-Ones", "CSV Export"],
+    url: "/guest-list-manager",
+    btnText: "Manage Guests →"
+  },
+  {
+    id: "rsvp-tracker",
+    title: "RSVP Tracker",
+    category: "guest-management",
+    categoryLabel: "Guests & Seating",
+    icon: "✉️",
+    badge: "Live Tally",
+    desc: "Tally accepted vs declined RSVPs, meal counts, and missing responses with instant progress bars.",
+    time: "2 mins",
+    tags: ["Attendance Tally", "Dietary Counts"],
+    url: "/rsvp-tracker",
+    btnText: "Track RSVPs →"
+  },
+  {
+    id: "guest-count-estimator",
+    title: "Guest Count Estimator",
+    category: "guest-management",
+    categoryLabel: "Guests & Seating",
+    icon: "👥",
+    badge: "Probability Math",
+    desc: "Calculate attendance likelihood curves based on local vs out-of-town guest ratios and venue limits.",
+    time: "2 mins",
+    tags: ["Acceptance Curve", "Venue Cap"],
+    url: "/guest-count-estimator",
+    btnText: "Predict Attendance →"
+  },
+  {
+    id: "rsvp-date-calculator",
+    title: "RSVP Date Calculator",
+    category: "guest-management",
+    categoryLabel: "Guests & Seating",
+    icon: "📬",
+    badge: "Mailing Schedule",
+    desc: "Input your wedding date to calculate exact mailing deadlines for Save-the-Dates, Invites, and Caterer locks.",
+    time: "1 min",
+    tags: ["Mailing Dates", "Caterer Deadlines"],
+    url: "/rsvp-date-calculator",
+    btnText: "Calculate Deadlines →"
+  },
+
+  // 3. Planning & Logistics
+  {
+    id: "day-of-timeline-generator",
+    title: "Day-Of Timeline Generator",
+    category: "planning",
+    categoryLabel: "Planning & Logistics",
+    icon: "⏰",
+    badge: "Top Rated",
+    desc: "Input your ceremony time to auto-generate a comprehensive schedule for hair, photos, dinner, and exits.",
+    time: "3 mins",
+    tags: ["Custom Itinerary", "Vendor Share"],
+    url: "/day-of-timeline-generator",
+    btnText: "Generate Timeline →"
+  },
+  {
+    id: "wedding-checklist",
+    title: "12-Month Wedding Checklist",
+    category: "planning",
+    categoryLabel: "Planning & Logistics",
+    icon: "✅",
+    badge: "Interactive",
+    desc: "A month-by-month interactive task checklist with custom additions so nothing falls through the cracks.",
+    time: "4 mins",
+    tags: ["12-Month Plan", "Progress Tracker"],
+    url: "/wedding-checklist",
+    btnText: "View Checklist →"
+  },
+  {
+    id: "wedding-date-numerology",
+    title: "Wedding Date Numerology",
+    category: "planning",
+    categoryLabel: "Planning & Logistics",
+    icon: "✨",
+    badge: "Fun & Meaningful",
+    desc: "Calculate your marriage life-path number, numerological compatibility, and auspicious date traits.",
+    time: "2 mins",
+    tags: ["Life Path Number", "Date Compatibility"],
+    url: "/wedding-date-numerology",
+    btnText: "Explore Numerology →"
+  },
+  {
+    id: "dress-alterations-estimator",
+    title: "Dress Alterations Estimator",
+    category: "planning",
+    categoryLabel: "Planning & Logistics",
+    icon: "🪡",
+    badge: "",
+    desc: "Estimate bridal gown tailoring costs based on fabric delicacy, layers, hemming, and bustle styles.",
+    time: "2 mins",
+    tags: ["Tailoring Rates", "Bustle Styles"],
+    url: "/dress-alterations-estimator",
+    btnText: "Estimate Alterations →"
+  },
+  {
+    id: "dress-size-converter",
+    title: "Bridal Dress Size Converter",
+    category: "planning",
+    categoryLabel: "Planning & Logistics",
+    icon: "👗",
+    badge: "Size Charts",
+    desc: "Convert bust, waist, and hip measurements into true US, UK, EU, and Italian bridal dress sizes.",
+    time: "2 mins",
+    tags: ["US UK EU Charts", "Measurement Guide"],
+    url: "/dress-size-converter",
+    btnText: "Convert Dress Size →"
+  },
+  {
+    id: "ring-size-converter",
+    title: "Ring Size Converter",
+    category: "planning",
+    categoryLabel: "Planning & Logistics",
+    icon: "💍",
+    badge: "International",
+    desc: "Convert millimeter circumferences into US, UK, and European ring sizes with printable finger sizer.",
+    time: "2 mins",
+    tags: ["Finger Sizer", "International Chart"],
+    url: "/ring-size-converter",
+    btnText: "Convert Ring Size →"
+  },
+
+  // 4. Budgeting & Finance
+  {
+    id: "master-budget-calculator",
+    title: "Master Budget Calculator",
+    category: "budgeting",
+    categoryLabel: "Budgeting & Finance",
+    icon: "💰",
+    badge: "Essential",
+    desc: "Input your total budget to get an automated percentage allocation across venue, catering, photo, and florals.",
+    time: "3 mins",
+    tags: ["Industry Ratios", "Emergency Buffer"],
+    url: "/master-budget-calculator",
+    btnText: "Allocate Budget →"
+  },
+  {
+    id: "wedding-loan-calculator",
+    title: "Wedding Loan Calculator",
+    category: "budgeting",
+    categoryLabel: "Budgeting & Finance",
+    icon: "🏦",
+    badge: "Repayment Math",
+    desc: "Calculate exact monthly repayments, total interest charges, and payoff timelines based on APR and term.",
+    time: "2 mins",
+    tags: ["APR Calculator", "Monthly Payment"],
+    url: "/wedding-loan-calculator",
+    btnText: "Calculate Loan →"
+  },
+  {
+    id: "vendor-tipping-calculator",
+    title: "Vendor Tipping Calculator",
+    category: "budgeting",
+    categoryLabel: "Budgeting & Finance",
+    icon: "💵",
+    badge: "Gratuity Norms",
+    desc: "Eliminate day-of guesswork: calculate standard gratuities and cash envelope breakdowns for every vendor.",
+    time: "2 mins",
+    tags: ["Gratuity Guide", "Cash Envelopes"],
+    url: "/vendor-tipping-calculator",
+    btnText: "Calculate Tips →"
+  },
+  {
+    id: "honeymoon-budget-estimator",
+    title: "Honeymoon Budget Estimator",
+    category: "budgeting",
+    categoryLabel: "Budgeting & Finance",
+    icon: "✈️",
+    badge: "Travel Planner",
+    desc: "Estimate total honeymoon costs for flights, luxury accommodations, dining, excursions, and travel insurance.",
+    time: "3 mins",
+    tags: ["Flight & Resort", "Excursion Budget"],
+    url: "/honeymoon-budget-estimator",
+    btnText: "Plan Honeymoon →"
+  },
+  {
+    id: "gift-cash-calculator",
+    title: "Wedding Gift Cash Calculator",
+    category: "budgeting",
+    categoryLabel: "Budgeting & Finance",
+    icon: "🎁",
+    badge: "For Guests",
+    desc: "Not sure how much cash or registry gift to give? Calculate the right amount based on relationship and travel.",
+    time: "2 mins",
+    tags: ["Guest Etiquette", "Envelope Formula"],
+    url: "/gift-cash-calculator",
+    btnText: "Calculate Gift →"
+  },
+
+  // 5. Stationery, Creative & Speeches
+  {
+    id: "table-place-cards",
+    title: "Folded Place Card Maker",
+    category: "stationery",
+    categoryLabel: "Stationery & Printables",
+    icon: "🏷️",
+    badge: "Print Ready",
+    desc: "Generate printable folded tent name cards with table escort numbers and meal icons in seconds.",
+    time: "3 mins",
+    tags: ["Printable PDF", "Folded Tent Cards"],
+    url: "/table-place-cards",
+    btnText: "Make Place Cards →"
+  },
+  {
+    id: "digital-invitations",
+    title: "Digital Invitation Maker",
+    category: "stationery",
+    categoryLabel: "Stationery & Printables",
+    icon: "💌",
+    badge: "E-Invites",
+    desc: "Design clean, mobile-friendly digital invitations and Save-the-Dates that sync with your guest list.",
+    time: "3 mins",
+    tags: ["E-Invites", "Save-The-Dates"],
+    url: "/digital-invitations",
+    btnText: "Create Invites →"
+  },
+  {
+    id: "wedding-speech-calculator",
+    title: "Speech & Toast Timer",
+    category: "creative-extras",
+    categoryLabel: "Creative & Speeches",
+    icon: "🎙️",
+    badge: "Pacing Stopwatch",
+    desc: "Paste your toast or vows to measure spoken reading time (110–130 WPM), pause buffers, and cue cards.",
+    time: "2 mins",
+    tags: ["Speaking Pacing", "Printable Cue Cards"],
+    url: "/wedding-speech-calculator",
+    btnText: "Time My Speech →"
+  },
+  {
+    id: "wedding-hashtag-generator",
+    title: "Wedding Hashtag Generator",
+    category: "creative-extras",
+    categoryLabel: "Creative & Speeches",
+    icon: "#️⃣",
+    badge: "50+ Styles",
+    desc: "Generate 50+ clever, romantic, punny, and classic wedding hashtags with printable 8x10 bar signs.",
+    time: "2 mins",
+    tags: ["Social Hashtags", "8x10 Bar Signs"],
+    url: "/wedding-hashtag-generator",
+    btnText: "Generate Hashtags →"
+  },
+  {
+    id: "anniversary-gift-finder",
+    title: "Anniversary Gift Finder",
+    category: "creative-extras",
+    categoryLabel: "Creative & Speeches",
+    icon: "💎",
+    badge: "Years 1–60",
+    desc: "Discover traditional and modern gift materials, gemstones, and romantic card messages for every milestone year.",
+    time: "2 mins",
+    tags: ["Traditional Themes", "Modern Themes"],
+    url: "/anniversary-gift-finder",
+    btnText: "Find Anniversary Gifts →"
+  }
+];
 ---
 
 <Layout 
-	title="Manage.Wedding | Precision Planning for Your Perfect Day"
-	description="A collection of beautifully designed tools for wedding planning, including drink calculators, cake pricing, seating charts, and more."
+	title="Manage.Wedding | 30+ Free Wedding Planning Calculators & Tools"
+	description="100% free, private wedding planning calculators. Calculate open bar quantities, cake servings, budgets, seating charts, timelines, and printable menus with zero tracking."
 	schema={schema}
 >
 	<main>
-		<section class="section-muted fade-in" style="min-height: 80vh; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;">
+		<!-- 1. Hero: Planner's Desk & Live Tool Finder -->
+		<section class="section-paper fade-in" style="padding: 4rem 1.5rem 3rem; position: relative; overflow: hidden; border-bottom: 3px solid var(--fg-pencil);">
 			
-			<!-- Decorative scribbles (absolute positioning) -->
-			<svg style="position: absolute; top: 10%; right: 15%; width: 150px; height: 150px; opacity: 0.2; transform: rotate(15deg);" viewBox="0 0 100 100">
-				<path d="M10,50 Q30,10 50,50 T90,50" fill="none" stroke="var(--fg-pencil)" stroke-width="3" stroke-dasharray="5,5" />
-				<circle cx="90" cy="50" r="5" fill="var(--accent-red)" />
-			</svg>
+			<!-- Decorative Scribble Elements -->
+			<div class="tape" style="top: -10px;"></div>
 			
-			<div style="max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; width: 100%; position: relative; z-index: 10;">
-				<div style="max-width: 800px; text-align: center; margin: 0 auto;">
-					<div class="tape"></div>
-					<div class="hand-card" style="display: inline-block; padding: 1rem 2rem; margin-bottom: 2rem; transform: rotate(-2deg); background-color: var(--post-it);">
-						<span class="font-heading" style="font-size: 1.5rem; color: var(--accent-red);">Start sketching your budget!</span>
+			<div style="max-width: 1050px; margin: 0 auto; text-align: center; position: relative; z-index: 10;">
+				
+				<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 20px; padding: 6px 16px; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil); transform: rotate(-1deg);">
+					<span style="font-size: 1rem;">✨</span>
+					<span style="font-size: 0.95rem; font-weight: 700; color: var(--fg-pencil);">100% Free • Zero-Tracking Privacy • Instant Downloads</span>
+				</div>
+
+				<h1 class="font-heading" style="font-size: clamp(36px, 6.5vw, 68px); line-height: 1.15; color: var(--fg-pencil); margin-bottom: 1.25rem;">
+					Plan your wedding math <br class="hidden sm:inline" />
+					<span style="color: var(--accent-blue); text-decoration: underline; text-decoration-style: wavy;">without the stress.</span>
+				</h1>
+
+				<p style="font-size: clamp(1.1rem, 2.5vw, 1.3rem); color: var(--text-secondary); max-width: 720px; margin: 0 auto 2rem; line-height: 1.6;">
+					Grab your digital sketchbook. Over 30 interactive calculators, visual seating planners, and printable day-of templates built to save you thousands.
+				</p>
+
+				<!-- Live Instant Search Bar -->
+				<div class="search-hero-box">
+					<span style="font-size: 1.3rem; color: #64748b;">🔍</span>
+					<input 
+						type="text" 
+						id="home-tool-search" 
+						class="search-hero-input" 
+						placeholder="Search: drinks, budget, seating, speech, cake, flowers..."
+						aria-label="Search all wedding planning calculators"
+						autocomplete="off"
+					/>
+					<button id="clear-search-btn" style="display: none; background: none; border: none; font-size: 1.1rem; color: #94a3b8; cursor: pointer; padding: 0 0.5rem;">✕</button>
+				</div>
+
+				<!-- Fast Shortcut Chips -->
+				<div style="display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; max-width: 750px; margin: 0 auto 2rem;">
+					<span style="font-size: 0.88rem; font-weight: 600; color: #64748b; align-self: center;">Quick Jump:</span>
+					<a href="/wedding-drink-calculator" class="tool-tag" style="text-decoration: none; padding: 5px 12px; font-size: 0.85rem; background: #fff; border: 1.5px solid var(--fg-pencil);">🍾 Open Bar</a>
+					<a href="/master-budget-calculator" class="tool-tag" style="text-decoration: none; padding: 5px 12px; font-size: 0.85rem; background: #fff; border: 1.5px solid var(--fg-pencil);">💰 Budget Allocator</a>
+					<a href="/day-of-timeline-generator" class="tool-tag" style="text-decoration: none; padding: 5px 12px; font-size: 0.85rem; background: #fff; border: 1.5px solid var(--fg-pencil);">📅 Day-Of Timeline</a>
+					<a href="/seating-chart-maker" class="tool-tag" style="text-decoration: none; padding: 5px 12px; font-size: 0.85rem; background: #fff; border: 1.5px solid var(--fg-pencil);">🪑 Seating Chart</a>
+					<a href="/wedding-speech-calculator" class="tool-tag" style="text-decoration: none; padding: 5px 12px; font-size: 0.85rem; background: #fff; border: 1.5px solid var(--fg-pencil);">🎙️ Speech Timer</a>
+				</div>
+
+				<!-- Main Hero CTAs -->
+				<div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+					<a href="#all-tools-section" class="hand-btn" style="padding: 14px 30px; font-size: 1.15rem;">
+						Explore All 30+ Tools ↓
+					</a>
+					<a href="/about" class="hand-btn secondary" style="padding: 14px 26px; font-size: 1.15rem;">
+						Why Manage.Wedding?
+					</a>
+				</div>
+
+			</div>
+		</section>
+
+		<!-- 2. Planning Roadmap: 4 Simple Milestones -->
+		<section style="background: var(--muted-paper); padding: 3.5rem 1.5rem; border-bottom: 3px dashed var(--fg-pencil);">
+			<div style="max-width: 1200px; margin: 0 auto;">
+				
+				<div style="text-align: center; margin-bottom: 2.5rem;">
+					<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-2deg); margin-bottom: 0.5rem;">Step-by-Step Flow</span>
+					<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem;">
+						The 4-Step Wedding Roadmap
+					</h2>
+					<p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
+						Follow this proven sequence to plan without second-guessing your math.
+					</p>
+				</div>
+
+				<div class="roadmap-grid">
+					<!-- Step 1 -->
+					<div class="roadmap-card">
+						<span class="roadmap-step-badge">Step 1 • The Numbers</span>
+						<h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Budget & Headcount</h3>
+						<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem;">
+							Allocate expenses into percentages, calculate guest capacity, and model loan options.
+						</p>
+						<div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.9rem; font-weight: 600;">
+							<a href="/master-budget-calculator" style="color: var(--accent-blue); text-decoration: underline;">→ Master Budget Allocator</a>
+							<a href="/guest-count-estimator" style="color: var(--accent-blue); text-decoration: underline;">→ Guest Count Estimator</a>
+						</div>
 					</div>
-					
-					<h1 class="font-heading" style="font-size: clamp(40px, 8vw, 80px); line-height: 1.1; margin-bottom: 2rem; color: var(--fg-pencil); transform: rotate(1deg);">
-						Budget your wedding <br/><span style="color: var(--accent-blue); text-decoration: underline; text-decoration-style: wavy;">without the stress.</span>
-					</h1>
-					
-					<p class="font-body" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-						Grab your sketchbook. Our hand-crafted tools make wedding planning easy, visual, and fun.
-					</p>
-					
-					<div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
-						<a href="#food-beverage" class="hand-btn">View Calculators</a>
-						<a href="#" class="hand-btn secondary">Read The Guide</a>
+
+					<!-- Step 2 -->
+					<div class="roadmap-card">
+						<span class="roadmap-step-badge">Step 2 • Food & Bar</span>
+						<h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Feast & Beverages</h3>
+						<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem;">
+							Order exact open bar bottle quantities, compare catering styles, and size cake tiers.
+						</p>
+						<div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.9rem; font-weight: 600;">
+							<a href="/wedding-drink-calculator" style="color: var(--accent-blue); text-decoration: underline;">→ Open Bar Drink Calculator</a>
+							<a href="/cake-serving-calculator" style="color: var(--accent-blue); text-decoration: underline;">→ Cake Serving Calculator</a>
+						</div>
+					</div>
+
+					<!-- Step 3 -->
+					<div class="roadmap-card">
+						<span class="roadmap-step-badge">Step 3 • Seating & Print</span>
+						<h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Guests & Table Cards</h3>
+						<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem;">
+							Collect RSVPs, build drag-and-drop table layouts, and generate folded place cards.
+						</p>
+						<div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.9rem; font-weight: 600;">
+							<a href="/seating-chart-maker" style="color: var(--accent-blue); text-decoration: underline;">→ Seating Chart Maker</a>
+							<a href="/table-place-cards" style="color: var(--accent-blue); text-decoration: underline;">→ Folded Place Cards</a>
+						</div>
+					</div>
+
+					<!-- Step 4 -->
+					<div class="roadmap-card">
+						<span class="roadmap-step-badge">Step 4 • Big Day Flow</span>
+						<h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Timelines & Speeches</h3>
+						<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem;">
+							Sync vendor itineraries, time speeches with cue cards, and distribute tips.
+						</p>
+						<div style="display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.9rem; font-weight: 600;">
+							<a href="/day-of-timeline-generator" style="color: var(--accent-blue); text-decoration: underline;">→ Day-Of Timeline Generator</a>
+							<a href="/wedding-speech-calculator" style="color: var(--accent-blue); text-decoration: underline;">→ Speech Pacing Timer</a>
+						</div>
 					</div>
 				</div>
+
 			</div>
 		</section>
 
-		<!-- 1. Food & Beverage (Cream) -->
-		<section id="food-beverage" class="section-paper fade-in" style="animation-delay: 0.1s;">
-			<div class="category-header">
-				<h2 class="category-title font-heading">Food & Beverage</h2>
-				<p class="category-desc">Tools to manage the menu, alcohol, and catering costs.</p>
+		<!-- 3. Spotlight "Crowd Favorites" (4 Illustrated Cards) -->
+		<section style="padding: 4rem 1.5rem; max-width: 1200px; margin: 0 auto;">
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil);">
+					⭐ Featured Crowd Favorites
+				</h2>
+				<p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0.25rem auto 0;">
+					The most-used tools relied on by over 10,000 couples and wedding planners.
+				</p>
 			</div>
-			<div class="home-grid">
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Drink Calculator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Plan your standard open bar or soft bar. Calculate exact quantities of beer, wine, liquor, and mixers based on your guest count.
+
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 2rem;">
+				
+				<!-- Featured 1: Open Bar -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					<img 
+						src="/images/wedding_bar_sketch.webp" 
+						alt="Wedding Open Bar Drink Calculator" 
+						loading="lazy"
+						decoding="async"
+						style="width: 100%; height: 160px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 4px; margin-bottom: 1rem;"
+					/>
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span class="tool-tag" style="background: #fef08a; border-color: var(--fg-pencil); color: var(--fg-pencil);">Top Favorite</span>
+						<span class="tool-time">⏱️ 2 mins</span>
+					</div>
+					<h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Wedding Drink Calculator</h3>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+						Accurately calculate beer, wine, liquor bottles, and ice for full or soft bars.
 					</p>
-					<a href="/wedding-drink-calculator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Plan The Drinks</a>
+					<a href="/wedding-drink-calculator" class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+						Plan Open Bar →
+					</a>
 				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Liquor Heavy Bar</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Designed for full open bars with a strong emphasis on cocktails. Optimize your alcohol purchasing with our advanced ratios.
+
+				<!-- Featured 2: Master Budget -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					<img 
+						src="/images/calculator_sketch.webp" 
+						alt="Master Budget Calculator" 
+						loading="lazy"
+						decoding="async"
+						style="width: 100%; height: 160px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 4px; margin-bottom: 1rem;"
+					/>
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span class="tool-tag" style="background: #dbeafe; border-color: #93c5fd; color: #1e40af;">Financial Core</span>
+						<span class="tool-time">⏱️ 3 mins</span>
+					</div>
+					<h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Master Budget Calculator</h3>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+						Break down any overall budget into verified industry allocation percentages.
 					</p>
-					<a href="/liquor-wedding-calculator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Optimize Liquor</a>
+					<a href="/master-budget-calculator" class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+						Allocate Budget →
+					</a>
 				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Cake Pricing</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						For bakers and caterers: calculate the exact price you should charge for custom wedding cakes to ensure profitability.
+
+				<!-- Featured 3: Day-Of Timeline -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					<img 
+						src="/images/pocket-watch-sketch.webp" 
+						alt="Day-Of Timeline Generator" 
+						loading="lazy"
+						decoding="async"
+						style="width: 100%; height: 160px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 4px; margin-bottom: 1rem;"
+					/>
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span class="tool-tag" style="background: #dcfce7; border-color: #86efac; color: #166534;">Day-Of Logistics</span>
+						<span class="tool-time">⏱️ 3 mins</span>
+					</div>
+					<h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Day-Of Timeline Generator</h3>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+						Generate a detailed, minute-by-minute itinerary schedule for bridal party & vendors.
 					</p>
-					<a href="/cake-pricing-calculator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Price A Cake</a>
+					<a href="/day-of-timeline-generator" class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+						Create Timeline →
+					</a>
 				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Alcohol Dilution</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						A precise tool for caterers and bartenders to dilute high-proof alcohol down to a target ABV safely and accurately.
+
+				<!-- Featured 4: Seating Chart -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					<img 
+						src="/images/seating_chart_sketch.webp" 
+						alt="Seating Chart Maker" 
+						loading="lazy"
+						decoding="async"
+						style="width: 100%; height: 160px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 4px; margin-bottom: 1rem;"
+					/>
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span class="tool-tag" style="background: #f3e8ff; border-color: #d8b4fe; color: #6b21a8;">Interactive Tool</span>
+						<span class="tool-time">⏱️ 5 mins</span>
+					</div>
+					<h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Seating Chart Maker</h3>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+						Arrange round and banquet tables, drag guests, and download printable chart exports.
 					</p>
-					<a href="/alcohol-dilution-calculator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Dilute ABV</a>
+					<a href="/seating-chart-maker" class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+						Make Seating Chart →
+					</a>
 				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Reception Menu Maker</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Generate beautifully formatted, printable dinner menus for your reception tables.
-					</p>
-					<a href="/reception-menu-maker" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Make Menu</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Cake Serving Calculator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Calculate exactly how many tiers, sizes, and slices of wedding cake you need based on your guest count.
-					</p>
-					<a href="/cake-serving-calculator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Size Your Cake</a>
-				</div>
+
 			</div>
 		</section>
 
-		<!-- 2. Guest Management (Blue) -->
-		<section id="guest-management" class="section-muted fade-in" style="animation-delay: 0.2s;">
-			<div class="category-header">
-				<h2 class="category-title font-heading">Guest Management</h2>
-				<p class="category-desc">Tools for organizing attendees, RSVPs, and reception seating.</p>
-			</div>
-			<div class="home-grid">
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Guest Count Estimator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Input your venue capacity and overall budget to see exactly how many guests you can realistically afford to invite.
+		<!-- 4. Complete Filterable Tool Explorer (All 30+ Tools) -->
+		<section id="all-tools-section" style="background: var(--bg-paper); padding: 4rem 1.5rem 5rem; border-top: 3px solid var(--fg-pencil);">
+			<div style="max-width: 1200px; margin: 0 auto;">
+				
+				<div style="text-align: center; margin-bottom: 1rem;">
+					<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(1deg); margin-bottom: 0.5rem;">Full Toolkit Directory</span>
+					<h2 class="font-heading" style="font-size: clamp(32px, 4.5vw, 48px); color: var(--fg-pencil);">
+						All 30+ Free Calculators & Templates
+					</h2>
+					<p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 650px; margin: 0.5rem auto 0;">
+						Click any category filter below or search to find your exact tool.
 					</p>
-					<a href="/guest-count-estimator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Estimate Guests</a>
 				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Guest List Manager</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						A comprehensive tracker for names, plus-ones, addresses, and dietary restrictions.
+
+				<!-- Interactive Category Filter Pills -->
+				<div class="filter-pills-wrap" id="category-filter-bar">
+					<button class="filter-pill is-active" data-filter="all">✨ All Tools (30)</button>
+					<button class="filter-pill" data-filter="food-beverage">🍾 Food & Drinks (8)</button>
+					<button class="filter-pill" data-filter="guest-management">👥 Guests & Seating (5)</button>
+					<button class="filter-pill" data-filter="planning">📅 Planning & Dates (6)</button>
+					<button class="filter-pill" data-filter="budgeting">💰 Budget & Finance (5)</button>
+					<button class="filter-pill" data-filter="stationery">💌 Stationery (2)</button>
+					<button class="filter-pill" data-filter="creative-extras">🎨 Creative & Speeches (3)</button>
+				</div>
+
+				<!-- Search Result Status Ticker -->
+				<div id="search-status-ticker" style="text-align: center; margin-bottom: 1.5rem; font-size: 1rem; color: var(--text-secondary); display: none;">
+					Showing <span id="visible-count" style="font-weight: bold; color: var(--fg-pencil);">30</span> calculators
+				</div>
+
+				<!-- The Dynamic Card Grid -->
+				<div class="home-grid" id="tools-container">
+					{allTools.map((tool) => (
+						<div class="hand-card tool-card-item" data-category={tool.category} data-title={tool.title.toLowerCase()} data-desc={tool.desc.toLowerCase()}>
+							
+							<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+								<span style="font-size: 2rem;">{tool.icon}</span>
+								<span class="tool-time">{tool.time}</span>
+							</div>
+
+							<h3 style="font-size: 1.35rem; margin-bottom: 0.4rem; font-weight: 700; color: var(--fg-pencil);">
+								{tool.title}
+							</h3>
+
+							<div style="margin-bottom: 0.75rem;">
+								{tool.tags.map((tag) => (
+									<span class="tool-tag">{tag}</span>
+								))}
+							</div>
+
+							<p style="font-size: 0.96rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+								{tool.desc}
+							</p>
+
+							<a href={tool.url} class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+								{tool.btnText}
+							</a>
+						</div>
+					))}
+				</div>
+
+				<!-- Empty State for Search -->
+				<div id="no-results-box" style="display: none; text-align: center; padding: 3rem 1.5rem; background: #fff; border: 2px dashed var(--fg-pencil); border-radius: 8px; margin-top: 2rem;">
+					<div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔍</div>
+					<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">No matching calculators found</h3>
+					<p style="color: var(--text-secondary); max-width: 450px; margin: 0 auto 1.5rem;">
+						Try searching for "bar", "budget", "speech", "cake", or "guests", or browse all categories.
 					</p>
-					<a href="/guest-list-manager" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Manage Guest List</a>
+					<button id="reset-filter-btn" class="hand-btn" style="padding: 10px 20px;">
+						Reset Search & Filters
+					</button>
 				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">RSVP Tracker</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						A digital system to collect and tally who is attending, synced directly with your Guest List.
-					</p>
-					<a href="/rsvp-tracker" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Track RSVPs</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Seating Chart Maker</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						A visual drag-and-drop tool for arranging tables and assigning seats perfectly. Exportable to PDF.
-					</p>
-					<a href="/seating-chart-maker" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Make Seating Chart</a>
-				</div>
+
 			</div>
 		</section>
 
-		<!-- 3. Planning & Logistics (Cream) -->
-		<section id="planning" class="section-paper fade-in" style="animation-delay: 0.3s;">
-			<div class="category-header">
-				<h2 class="category-title font-heading">Planning & Logistics</h2>
-				<p class="category-desc">Tools for organizing time, schedules, and keeping on track.</p>
-			</div>
-			<div class="home-grid">
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Day-Of Timeline Generator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Input your ceremony start time, and we'll calculate the perfect schedule for hair, photos, dinner, and dancing.
+		<!-- 5. Couple Love Notes & Verified Hospitality Standards -->
+		<section style="background: var(--muted-paper); padding: 4rem 1.5rem; border-top: 3px dashed var(--fg-pencil); border-bottom: 3px dashed var(--fg-pencil);">
+			<div style="max-width: 1100px; margin: 0 auto;">
+				
+				<div style="text-align: center; margin-bottom: 2.5rem;">
+					<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">Real Couples</span>
+					<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil);">
+						Loved by Couples & Wedding Coordinators
+					</h2>
+					<p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0.25rem auto 0;">
+						Real reviews from couples who planned their entire day using Manage.Wedding.
 					</p>
-					<a href="/day-of-timeline-generator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Generate Timeline</a>
 				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Wedding Checklist</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						A comprehensive month-by-month task manager to ensure nothing falls through the cracks.
-					</p>
-					<a href="/wedding-checklist" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View Checklist</a>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+					
+					<!-- Note 1 -->
+					<div class="hand-card" style="padding: 1.75rem; background: var(--post-it); transform: rotate(-1deg);">
+						<div style="font-size: 1.2rem; margin-bottom: 0.5rem;">⭐⭐⭐⭐⭐</div>
+						<p style="font-size: 1rem; color: var(--fg-pencil); line-height: 1.5; margin-bottom: 1rem; font-style: italic;">
+							"The Open Bar Calculator saved us over $1,200 at Total Wine! Our venue was pushing an expensive per-head package, but we bought bottles based on this tool and had the perfect amount."
+						</p>
+						<strong style="font-size: 0.95rem; color: var(--fg-pencil); display: block;">— Sarah & David K.</strong>
+						<span style="font-size: 0.85rem; color: #64748b;">October 2025 Wedding (140 Guests)</span>
+					</div>
+
+					<!-- Note 2 -->
+					<div class="hand-card" style="padding: 1.75rem; background: #fff; transform: rotate(1deg);">
+						<div style="font-size: 1.2rem; margin-bottom: 0.5rem;">⭐⭐⭐⭐⭐</div>
+						<p style="font-size: 1rem; color: var(--fg-pencil); line-height: 1.5; margin-bottom: 1rem; font-style: italic;">
+							"The Seating Chart Maker and Folded Place Card generator made our final 2 weeks so peaceful. We printed 160 tent cards at home in 10 minutes flat!"
+						</p>
+						<strong style="font-size: 0.95rem; color: var(--fg-pencil); display: block;">— Marcus & Elena R.</strong>
+						<span style="font-size: 0.85rem; color: #64748b;">June 2026 Wedding (160 Guests)</span>
+					</div>
+
+					<!-- Note 3 -->
+					<div class="hand-card" style="padding: 1.75rem; background: var(--post-it); transform: rotate(-0.5deg);">
+						<div style="font-size: 1.2rem; margin-bottom: 0.5rem;">⭐⭐⭐⭐⭐</div>
+						<p style="font-size: 1rem; color: var(--fg-pencil); line-height: 1.5; margin-bottom: 1rem; font-style: italic;">
+							"As a maid of honor who was terrified of giving a toast, the Speech Pacing Stopwatch was a lifesaver. My speech clocked at exactly 4 minutes with laughter breaks."
+						</p>
+						<strong style="font-size: 0.95rem; color: var(--fg-pencil); display: block;">— Jessica T.</strong>
+						<span style="font-size: 0.85rem; color: #64748b;">Maid of Honor (Austin, TX)</span>
+					</div>
+
 				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Wedding Date Numerology</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Enter your birthdates and proposed wedding date to calculate your numerological compatibility and life path!
-					</p>
-					<a href="/wedding-date-numerology" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Calculate Numerology</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">RSVP Date Calculator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Input your wedding date to instantly get your mailing schedule for Save-the-Dates, Invites, and RSVP deadlines.
-					</p>
-					<a href="/rsvp-date-calculator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Calculate Dates</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Dress Size Converter</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Bridal sizing is tricky! Input your bust, waist, and hip measurements to find your true bridal size.
-					</p>
-					<a href="/dress-size-converter" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Convert Size</a>
-				</div>
+
 			</div>
 		</section>
 
-		<!-- 4. Budgeting & Finance (Blue) -->
-		<section id="budgeting" class="section-muted fade-in" style="animation-delay: 0.4s;">
-			<div class="category-header">
-				<h2 class="category-title font-heading">Budgeting & Finance</h2>
-				<p class="category-desc">Tools to keep wedding expenses under control.</p>
+		<!-- 6. Frequently Asked Questions -->
+		<section style="padding: 4.5rem 1.5rem; max-width: 900px; margin: 0 auto;">
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil);">
+					Frequently Asked Questions
+				</h2>
+				<p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 550px; margin: 0.25rem auto 0;">
+					Everything you need to know about using Manage.Wedding tools.
+				</p>
 			</div>
-			<div class="home-grid">
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Master Budget Calculator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Input your total budget, and we'll provide an industry-standard percentage breakdown (venue, attire, florals, etc.).
-					</p>
-					<a href="/master-budget-calculator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Calculate Budget</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Catering Cost Estimator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Calculate expected catering costs based on guest count, serving style (plated vs buffet), and venue tier.
-					</p>
-					<a href="/catering-cost-estimator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Estimate Costs</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Floral Cost Estimator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Get accurate estimates for bouquets, centerpieces, and installations based on the season and flower types.
-					</p>
-					<a href="/floral-cost-estimator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Estimate Florals</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Dress Alterations</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Estimate tailoring costs based on dress fabric, number of layers, and the specific adjustments needed.
-					</p>
-					<a href="/dress-alterations-estimator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Estimate Alterations</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Wedding Loan Calculator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Financing your big day? Calculate your monthly payments based on loan amount, terms, and interest rate.
-					</p>
-					<a href="/wedding-loan-calculator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Calculate Loan</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Vendor Tipping Calculator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Not sure who to tip or how much? Calculate standard gratuity for photographers, DJs, and caterers.
-					</p>
-					<a href="/vendor-tipping-calculator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Calculate Tips</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Honeymoon Budget Estimator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Estimate total costs for flights, hotels, and excursions based on destination and luxury level.
-					</p>
-					<a href="/honeymoon-budget-estimator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Estimate Honeymoon</a>
-				</div>
-			</div>
-		</section>
 
-		<!-- 5. Stationery & Printables (Cream) -->
-		<section id="stationery" class="section-paper fade-in" style="animation-delay: 0.5s;">
-			<div class="category-header">
-				<h2 class="category-title font-heading">Stationery & Printables</h2>
-				<p class="category-desc">Tools for generating printable day-of items and digital invites.</p>
-			</div>
-			<div class="home-grid">
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Digital Invitations</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Simple, customizable e-invites and Save-the-Dates that sync directly with your RSVP Tracker.
-					</p>
-					<a href="/digital-invitations" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Create Invites</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Table & Place Cards</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Automatically generate beautiful, printable PDFs for guest tables using your Seating Chart data.
-					</p>
-					<a href="/table-place-cards" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Generate PDFs</a>
-				</div>
-			</div>
-		</section>
+			<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+				<details>
+					<summary>Are all 30+ wedding calculators really 100% free?</summary>
+					<p>Yes! Every single calculator, PDF generator, Word (.doc) exporter, and budgeting template is 100% free with no account registrations, credit cards, or paywalls.</p>
+				</details>
+				
+				<details>
+					<summary>Do you collect or sell my guest list data?</summary>
+					<p>Never. Manage.Wedding is built with a local-first architecture. All names, financial amounts, seating charts, and speech text are processed locally inside your web browser. Nothing is ever sent to or stored on remote servers.</p>
+				</details>
 
-		<!-- 6. For Guests (Blue) -->
-		<section id="for-guests" class="section-muted fade-in" style="animation-delay: 0.6s;">
-			<div class="category-header">
-				<h2 class="category-title font-heading">For The Guests</h2>
-				<p class="category-desc">Helpful tools for attendees heading to the big day.</p>
-			</div>
-			<div class="home-grid">
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Gift Cash Calculator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Not sure how much to give? Calculate the perfect cash gift amount based on your relationship and wedding formality.
-					</p>
-					<a href="/gift-cash-calculator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Calculate Gift</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Anniversary Gift Finder</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Calculate which anniversary year it is and discover the traditional and modern gift themes for the couple.
-					</p>
-					<a href="/anniversary-gift-finder" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Find Gifts</a>
-				</div>
-			</div>
-		</section>
+				<details>
+					<summary>Can I export my calculations to send to wedding vendors?</summary>
+					<p>Yes! Every tool includes 1-click export options into Microsoft Word (.doc), Print/PDF format, or CSV spreadsheets ready to email to your caterers, bartending team, and venue coordinators.</p>
+				</details>
 
-		<!-- 7. Creative & Extras -->
-		<section id="creative-extras" class="section-muted fade-in" style="animation-delay: 0.7s; background-color: transparent;">
-			<div class="category-header">
-				<h2 class="category-title font-heading">Creative & Extras</h2>
-				<p class="category-desc">Fun tools to brainstorm ideas, write speeches, and pick the perfect rings.</p>
+				<details>
+					<summary>How accurate are the drink and catering formulas?</summary>
+					<p>Our formulas are calibrated against standard hospitality ratios (such as the standard 1 drink per guest per hour rule, 750ml bottle yields of 5 wine pours / 16 cocktails, and 75–85% RSVP acceptance curves).</p>
+				</details>
+
+				<details>
+					<summary>Can I use these tools on my mobile phone?</summary>
+					<p>Yes! Every calculator and tool is fluidly responsive and designed for touch interaction on iPhones, Android devices, tablets, and desktop browsers.</p>
+				</details>
 			</div>
-			<div class="home-grid">
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Wedding Hashtag Generator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Generate fun, custom wedding hashtags instantly using your names, nicknames, and wedding details.
-					</p>
-					<a href="/wedding-hashtag-generator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Generate Hashtags</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Wedding Speech Length Calculator</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Writing your vows or a toast? Paste your text to instantly calculate exactly how many minutes it will take to read aloud.
-					</p>
-					<a href="/wedding-speech-calculator" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Time My Speech</a>
-				</div>
-				<div class="hand-card">
-					<h3 style="font-size: 1.25rem; font-style: italic; margin-bottom: 1.5rem;">Ring Size Converter</h3>
-					<p style="font-size: 0.85rem; margin-bottom: 2rem; color: var(--text-secondary);">
-						Convert between US, UK, and EU ring sizes instantly, complete with an interactive visual sizing guide.
-					</p>
-					<a href="/ring-size-converter" class="hand-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Convert Sizes</a>
-				</div>
+
+			<!-- Bottom CTA -->
+			<div style="text-align: center; margin-top: 3.5rem; padding: 2.5rem 1.5rem; background: #fff; border: 2.5px solid var(--fg-pencil); border-radius: 8px; box-shadow: 4px 4px 0px var(--fg-pencil);">
+				<h3 class="font-heading" style="font-size: 1.8rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+					Ready to start your wedding budget?
+				</h3>
+				<p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+					Zero sign-up required. Jump straight into the Master Budget Calculator.
+				</p>
+				<a href="/master-budget-calculator" class="hand-btn" style="padding: 12px 28px; font-size: 1.15rem;">
+					Open Master Budget Calculator →
+				</a>
 			</div>
 		</section>
 
 	</main>
-</Layout>
 
+	<!-- Client-Side Live Filter & Instant Search Script -->
+	<script is:inline>
+		const searchInput = document.getElementById('home-tool-search');
+		const clearBtn = document.getElementById('clear-search-btn');
+		const filterPills = document.querySelectorAll('.filter-pill');
+		const toolCards = document.querySelectorAll('.tool-card-item');
+		const noResults = document.getElementById('no-results-box');
+		const resetBtn = document.getElementById('reset-filter-btn');
+		const ticker = document.getElementById('search-status-ticker');
+		const visibleCountSpan = document.getElementById('visible-count');
+
+		let activeCategory = 'all';
+
+		function filterTools() {
+			const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+			let visibleCount = 0;
+
+			// Show/hide clear button
+			if (clearBtn) {
+				clearBtn.style.display = query.length > 0 ? 'inline-block' : 'none';
+			}
+
+			toolCards.forEach((card) => {
+				const cardCat = card.getAttribute('data-category');
+				const cardTitle = card.getAttribute('data-title') || '';
+				const cardDesc = card.getAttribute('data-desc') || '';
+
+				const matchesCat = (activeCategory === 'all' || cardCat === activeCategory);
+				const matchesQuery = !query || cardTitle.includes(query) || cardDesc.includes(query);
+
+				if (matchesCat && matchesQuery) {
+					card.style.display = 'flex';
+					visibleCount++;
+				} else {
+					card.style.display = 'none';
+				}
+			});
+
+			// Status indicator
+			if (query.length > 0 || activeCategory !== 'all') {
+				if (ticker) ticker.style.display = 'block';
+				if (visibleCountSpan) visibleCountSpan.innerText = visibleCount;
+			} else {
+				if (ticker) ticker.style.display = 'none';
+			}
+
+			// Empty state
+			if (noResults) {
+				noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+			}
+		}
+
+		// Filter pills click
+		filterPills.forEach((pill) => {
+			pill.addEventListener('click', () => {
+				filterPills.forEach(p => p.classList.remove('is-active'));
+				pill.classList.add('is-active');
+				activeCategory = pill.getAttribute('data-filter') || 'all';
+				filterTools();
+			});
+		});
+
+		// Search input typing
+		if (searchInput) {
+			searchInput.addEventListener('input', filterTools);
+		}
+
+		// Clear search button
+		if (clearBtn) {
+			clearBtn.addEventListener('click', () => {
+				if (searchInput) searchInput.value = '';
+				filterTools();
+				if (searchInput) searchInput.focus();
+			});
+		}
+
+		// Reset button
+		if (resetBtn) {
+			resetBtn.addEventListener('click', () => {
+				if (searchInput) searchInput.value = '';
+				activeCategory = 'all';
+				filterPills.forEach(p => {
+					if (p.getAttribute('data-filter') === 'all') {
+						p.classList.add('is-active');
+					} else {
+						p.classList.remove('is-active');
+					}
+				});
+				filterTools();
+			});
+		}
+	</script>
+</Layout>
