@@ -6,9 +6,10 @@ const schema = {
   "@graph": [
     {
       "@type": ["WebApplication", "CalculatorApplication"],
-      "name": "Wedding Cake Pricing Calculator",
+      "@id": "https://manage.wedding/cake-pricing-calculator/#webapp",
+      "name": "Wedding Cake Pricing & Cost Per Slice Calculator",
       "url": "https://manage.wedding/cake-pricing-calculator",
-      "description": "Calculate custom wedding cake prices based on raw ingredients, labor hours, hourly rates, overhead, and design complexity multipliers.",
+      "description": "Calculate custom wedding cake prices, price per slice, baker labor hours, ingredient costs, structural tier fees, and bakery profit margins. Includes sheet cake money-saving comparisons and printable client invoice quotes.",
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "All",
       "offers": {
@@ -24,23 +25,23 @@ const schema = {
       "step": [
         {
           "@type": "HowToStep",
-          "name": "Enter Servings and Tier Count",
-          "text": "Input total guest portion requirements and the number of stacked tiers to establish base structural scale."
+          "name": "Step 1: Enter Total Servings and Tier Count",
+          "text": "Input guest portion count and stacked tiers (e.g. 3 tiers for 120 guests) to establish base structural scale."
         },
         {
           "@type": "HowToStep",
-          "name": "Calculate Material & Overhead Costs",
-          "text": "Itemize butter, flour, sugar, eggs, fillings, fondant, along with cake boards, dowels, and transport boxes."
+          "name": "Step 2: Itemize Ingredients & Structural Supports",
+          "text": "Calculate butter, flour, eggs, gourmet fillings, fondant, along with cake boards, center dowels, and transport boxes."
         },
         {
           "@type": "HowToStep",
-          "name": "Factor in Baking & Decorating Labor",
-          "text": "Multiply total hands-on labor hours (baking, filling, stacking, decorating) by your professional hourly rate ($25–$60/hr)."
+          "name": "Step 3: Factor in Hands-On Baking & Decorating Labor",
+          "text": "Multiply total labor hours (baking, chilling, filling, stacking, decorating) by your professional hourly rate ($25–$60/hr)."
         },
         {
           "@type": "HowToStep",
-          "name": "Apply Design Complexity Multiplier",
-          "text": "Select a markup multiplier (1.0x simple to 3.0x intricate sugar work) to generate your final price quote and per-slice rate."
+          "name": "Step 4: Apply Design Complexity Markup & Delivery Fee",
+          "text": "Select a design complexity multiplier (1.0x rustic to 3.0x intricate sugar florals) and add delivery mileage to generate your client quote."
         }
       ]
     },
@@ -49,34 +50,34 @@ const schema = {
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "How does a cake pricing calculator work?",
+          "name": "What is the average cost of a wedding cake per slice?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "A cake pricing calculator adds up your raw ingredient costs and your hourly labor rate to find your base cost. It then applies a profit multiplier based on the complexity of the design to ensure you actually make a profit on the order."
+            "text": "In the United States, wedding cakes average $5.50 to $8.50 per slice for buttercream designs and $8.50 to $14.00+ per slice for custom fondant, wafer paper, and handmade sugar floral artistry."
           }
         },
         {
           "@type": "Question",
-          "name": "What is a good average price per slice for a wedding cake?",
+          "name": "How does the 'Cutting Cake + Sheet Cake' strategy save money?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "While prices vary wildly by region, standard buttercream wedding cakes usually range from $5 to $7 per slice, while intricate fondant cakes can range from $8 to $15+ per slice."
+            "text": "Couples order a small 2-tier display cake (30–40 servings) for ceremonial cake cutting photos, and serve undisplayed kitchen sheet cakes ($2.50–$3.50/slice) from the catering kitchen for the remaining guests. This commonly saves $300 to $700 on a 150-person wedding."
           }
         },
         {
           "@type": "Question",
-          "name": "Should I charge extra for delivery and setup?",
+          "name": "How much should bakers charge for wedding cake delivery and setup?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Absolutely! The cake pricing calculator determines the cost of the cake itself. You should always add a separate line item on your invoice for delivery mileage and on-site setup time."
+            "text": "Standard bakery delivery rates are $1.50 to $2.50 per round-trip mile plus a flat $50 to $100 on-site assembly and floral placement fee for tiered cakes."
           }
         },
         {
           "@type": "Question",
-          "name": "What should I set as my hourly labor rate?",
+          "name": "What should a custom cake profit margin be?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Never set your rate below minimum wage. Many beginner bakers start at $20/hr, while experienced pastry chefs and sugar artists often charge $40-$60/hr for their specialized labor."
+            "text": "A healthy bakery profit margin is 25% to 40% AFTER paying yourself a living hourly labor wage. Never treat your labor wage as your profit."
           }
         }
       ]
@@ -86,269 +87,556 @@ const schema = {
 ---
 
 <Layout 
-	title="Wedding Cake Pricing Calculator (Price Per Slice & Profit)"
-	description="Bakers and caterers: use our free cake pricing calculator to determine the exact price to charge for custom wedding cakes based on labor and materials."
+	title="Wedding Cake Pricing Calculator (Price Per Slice & Baker Profit)"
+	description="Calculate custom wedding cake prices, price per slice, baker labor hours, ingredient costs, structural tier fees, and bakery profit margins. Includes sheet cake savings and printable invoice quotes."
 	schema={schema}
 >
-	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
-		<header class="fade-in category-header" style="text-align: center;">
-			<h1 class="font-heading" style="font-size: 3.5rem; margin-bottom: 0.5rem; font-weight: 500;">Wedding Cake <span class="accent-italic">Pricing Calculator</span></h1>
-			<p class="font-body" style="color: var(--secondary-ink); max-width: 600px; margin: 0 auto;">Calculate your custom cake price based on tiers, design complexity, labor, and materials.</p>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Cost Per Slice & Bakery Margins</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Wedding Cake <span class="accent-italic">Pricing Calculator</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Calculate accurate wedding cake quotes based on guest servings, stacked tiers, ingredients, labor hours, design complexity, and delivery fees.
+			</p>
 		</header>
 
-		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 800px;">
-			<div class="hand-card">
-				<form id="calc-form">
-					<div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-						<div>
-							<label class="form-label" for="servings">Total Servings (Guest Count)</label>
-							<input type="number" id="servings" class="form-input" value="100" min="10" required />
-						</div>
-						<div>
-							<label class="form-label" for="tiers">Number of Tiers</label>
-							<input type="number" id="tiers" class="form-input" value="3" min="1" max="10" required />
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="form-label" for="materialCost">Estimated Materials Cost ($)</label>
-						<input type="number" id="materialCost" class="form-input" value="150" min="1" required />
-					</div>
-
-					<div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-						<div>
-							<label class="form-label" for="laborHours">Estimated Labor Hours</label>
-							<input type="number" id="laborHours" class="form-input" value="12" min="1" required />
-						</div>
-						<div>
-							<label class="form-label" for="hourlyRate">Your Hourly Rate ($/hr)</label>
-							<input type="number" id="hourlyRate" class="form-input" value="35" min="10" required />
-						</div>
-					</div>
-
-					<div class="form-group" style="margin-bottom: 2rem;">
-						<label class="form-label" for="complexity">Design Markup Multiplier: <span id="complexity-label">1.5x</span></label>
-						<input type="range" id="complexity" class="form-input" min="1.0" max="3.0" step="0.1" value="1.5" oninput="document.getElementById('complexity-label').textContent = this.value + 'x'" />
-						<div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">
-							<span>Simple (1.0x)</span>
-							<span>Standard (1.5x)</span>
-							<span>Intricate (3.0x)</span>
-						</div>
-					</div>
-
-					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%;">Calculate Price</button>
-				</form>
-			</div>
-
-			<div class="hand-card result-box" id="result-container">
-				<h3 class="font-heading" style="margin-bottom: 2rem;">Suggested Pricing</h3>
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Controls & Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
 				
-				<div class="result-item" style="border-bottom: 3px dashed var(--fg-pencil); margin-bottom: 1rem; padding-bottom: 0.5rem;">
-					<span class="item-label" style="font-size: 1.2rem;">TOTAL PRICE</span>
-					<span class="item-desc">Recommended total charge</span>
-					<span class="item-value" id="res-total" style="font-size: 1.5rem; color: var(--accent-red);">$0.00</span>
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Cake Specifications & Labor
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Live Quote
+					</span>
 				</div>
 
-				<div class="result-item">
-					<span class="item-label">PER SLICE</span>
-					<span class="item-desc">Price per guest/serving</span>
-					<span class="item-value" id="res-per-slice">$0.00</span>
+				<!-- Cake Design Archetype Presets -->
+				<div class="form-group">
+					<label class="form-label" for="cake-preset">Design Archetype Preset</label>
+					<select id="cake-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="textured-buttercream" selected>🌸 Textured Buttercream & Fresh Flowers (Standard 1.4x)</option>
+						<option value="semi-naked">🌿 Semi-Naked Rustic Cake (Simple 1.1x)</option>
+						<option value="smooth-fondant">👑 Smooth Fondant & Monogram (Elaborate 1.8x)</option>
+						<option value="sugar-art">💎 Intricate Sugar Florals & Gold Leaf (Luxury 2.5x)</option>
+						<option value="cutting-sheet">🍰 Cutting Cake + Kitchen Sheet Cakes (Cost Saver 1.2x)</option>
+						<option value="custom">✏️ Custom Settings</option>
+					</select>
 				</div>
 
-				<div class="result-item">
-					<span class="item-label">LABOR COST</span>
-					<span class="item-desc">Total hours × rate</span>
-					<span class="item-value" id="res-labor">$0.00</span>
-				</div>
-
-				<div class="result-item">
-					<span class="item-label">PROFIT MARGIN</span>
-					<span class="item-desc">Markup after base costs</span>
-					<span class="item-value" id="res-profit">$0.00</span>
-				</div>
-
-				<div id="chart-container" style="margin-top: 2rem; display: none;">
-					<h4 class="font-heading" style="font-size: 1rem; margin-bottom: 0.5rem; text-align: center;">Cost Breakdown</h4>
-					<div style="display: flex; height: 30px; width: 100%; border: 2px solid var(--fg-pencil); border-radius: 4px; overflow: hidden;">
-						<div id="bar-materials" style="width: 0%; background-color: var(--fg-pencil); opacity: 0.2; transition: width 0.3s ease;" title="Materials"></div>
-						<div id="bar-labor" style="width: 0%; background-color: var(--fg-pencil); opacity: 0.5; transition: width 0.3s ease;" title="Labor"></div>
-						<div id="bar-profit" style="width: 0%; background-color: var(--accent-red); opacity: 0.8; transition: width 0.3s ease;" title="Profit Margin"></div>
+				<!-- Servings & Tier Count -->
+				<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="servings">Total Guest Servings</label>
+						<input type="number" id="servings" class="form-input" value="120" min="10" max="600" step="5" style="font-size: 1.1rem; font-weight: 700;" />
 					</div>
-					<div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-top: 0.5rem; color: var(--secondary-ink);">
-						<span style="display: flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background-color: var(--fg-pencil); opacity: 0.2; border: 1px solid var(--fg-pencil); border-radius: 2px;"></span> Materials</span>
-						<span style="display: flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background-color: var(--fg-pencil); opacity: 0.5; border: 1px solid var(--fg-pencil); border-radius: 2px;"></span> Labor</span>
-						<span style="display: flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background-color: var(--accent-red); opacity: 0.8; border: 1px solid var(--fg-pencil); border-radius: 2px;"></span> Profit</span>
+					<div>
+						<label class="form-label" for="tiers">Stacked Tiers</label>
+						<select id="tiers" class="form-input" style="cursor: pointer; font-weight: 700;">
+							<option value="1">1 Tier (Cutting Cake)</option>
+							<option value="2">2 Tiers (30–60 Servings)</option>
+							<option value="3" selected>3 Tiers (80–140 Servings)</option>
+							<option value="4">4 Tiers (150–220 Servings)</option>
+							<option value="5">5 Tiers (240+ Servings)</option>
+						</select>
 					</div>
 				</div>
+
+				<!-- Ingredients & Structural Costs -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="ingredientCost">Raw Ingredients ($)</label>
+						<input type="number" id="ingredientCost" class="form-input" value="85" min="10" max="2000" step="5" style="font-weight: 600;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Flour, butter, eggs, fillings</span>
+					</div>
+					<div>
+						<label class="form-label" for="tierSupplyCost">Tier Hardware ($)</label>
+						<input type="number" id="tierSupplyCost" class="form-input" value="45" min="0" max="500" step="5" style="font-weight: 600;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Boards, dowels, boxes</span>
+					</div>
+				</div>
+
+				<!-- Labor Hours & Hourly Wage -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="laborHours">Hands-On Labor (Hours)</label>
+						<input type="number" id="laborHours" class="form-input" value="10" min="1" max="100" step="0.5" style="font-weight: 700;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Bake, frost, stack, decorate</span>
+					</div>
+					<div>
+						<label class="form-label" for="hourlyRate">Baker Hourly Wage ($/hr)</label>
+						<input type="number" id="hourlyRate" class="form-input" value="35" min="15" max="150" step="5" style="font-weight: 700;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Living wage baseline</span>
+					</div>
+				</div>
+
+				<!-- Design Complexity Markup Slider -->
+				<div class="form-group" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+						<label class="form-label" for="complexity" style="margin: 0;">
+							Design & Artistic Markup Multiplier:
+						</label>
+						<span id="val-complexity" style="font-size: 1.05rem; font-weight: 800; color: var(--accent-red); background: #fef2f2; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--accent-red);">
+							1.4x
+						</span>
+					</div>
+					<input type="range" id="complexity" min="1.0" max="3.0" step="0.1" value="1.4" style="width: 100%; cursor: pointer;" />
+					<div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+						<span>Simple Rustic (1.0x)</span>
+						<span>Textured (1.5x)</span>
+						<span>Intricate Sugar Art (3.0x)</span>
+					</div>
+				</div>
+
+				<!-- Delivery & Setup Optional Checkbox -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">
+						<input type="checkbox" id="check-delivery" checked style="width: 18px; height: 18px;" />
+						<span>Include Delivery & On-Site Setup Fee</span>
+					</label>
+
+					<div id="delivery-inputs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; background: #f8fafc; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+						<div>
+							<label class="form-label" for="deliveryMiles" style="font-size: 0.85rem;">Roundtrip Miles</label>
+							<input type="number" id="deliveryMiles" class="form-input" value="25" min="0" max="300" step="5" />
+						</div>
+						<div>
+							<label class="form-label" for="setupFee" style="font-size: 0.85rem;">On-Site Setup Fee ($)</label>
+							<input type="number" id="setupFee" class="form-input" value="50" min="0" max="300" step="10" />
+						</div>
+					</div>
+				</div>
+
 			</div>
+
+			<!-- Right Column: Results, Slices & Profit Breakdown -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Primary Results Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Recommended Cake Price Quote
+						</span>
+						<span id="tier-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							3 Tiers
+						</span>
+					</div>
+
+					<div id="res-total-price" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						$749.00
+					</div>
+					
+					<!-- Price Per Slice Hero Highlight -->
+					<div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem;">
+						<span style="font-size: 1.25rem; font-weight: 800; color: var(--accent-red); background: #fee2e2; border: 1.5px solid var(--accent-red); padding: 4px 10px; border-radius: 6px;">
+							<span id="res-price-per-slice">$6.24</span> / slice
+						</span>
+						<span style="font-size: 0.92rem; color: var(--text-secondary);">
+							for <strong id="res-servings-label" style="color: var(--fg-pencil);">120 guest servings</strong>
+						</span>
+					</div>
+
+					<!-- Visual Cost Split Bar -->
+					<h4 class="font-heading" style="font-size: 0.95rem; margin-bottom: 0.4rem; color: var(--fg-pencil);">
+						Financial Breakdown Graph
+					</h4>
+					<div style="display: flex; height: 26px; border: 2px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; margin-bottom: 0.5rem; font-size: 0.78rem; font-weight: 800; color: #fff; text-align: center; line-height: 26px;">
+						<div id="bar-materials" style="background-color: var(--accent-blue); width: 18%; transition: width 0.2s;" title="Materials">Materials</div>
+						<div id="bar-labor" style="background-color: var(--fg-pencil); width: 48%; transition: width 0.2s;" title="Labor">Labor</div>
+						<div id="bar-profit" style="background-color: var(--accent-red); width: 28%; transition: width 0.2s;" title="Profit">Profit</div>
+						<div id="bar-delivery" style="background-color: #16a34a; width: 6%; transition: width 0.2s;" title="Delivery">Delivery</div>
+					</div>
+
+					<!-- Itemized Cost Breakdown Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin: 1.25rem 0;">
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>🍰 Raw Ingredients + Hardware:</span>
+							<strong id="res-materials-total">$130.00</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>👩‍🍳 Baker Labor Wage (<span id="res-labor-hours-label">10 hrs @ $35/hr</span>):</span>
+							<strong id="res-labor-total">$350.00</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>📈 Net Bakery Profit Margin (<span id="res-profit-margin-pct">29%</span>):</span>
+							<strong id="res-profit-dollars" style="color: var(--accent-red);">$219.00</strong>
+						</div>
+						<div id="row-delivery-fee" style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>🚚 Delivery & On-Site Stacking:</span>
+							<strong id="res-delivery-total">$87.50</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.5rem 0 0 0; font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil);">
+							<span>Total Client Invoice Amount:</span>
+							<span id="res-invoice-total" style="color: var(--accent-red);">$836.50</span>
+						</div>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-cake-quote" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Print Baker Quote (PDF)
+						</button>
+						<button id="btn-export-cake-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Export Word Invoice
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Cutting Cake Strategy Callout -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						💡 The "Cutting Cake + Sheet Cake" Secret:
+					</strong>
+					<p style="margin: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						Save up to <strong>50% ($400–$700)</strong> by ordering a gorgeous 2-tier display cutting cake for photos (35 servings), and serving matching kitchen sheet cakes ($3.00/slice) from behind the scenes!
+					</p>
+				</div>
+
+			</div>
+
 		</div>
 
 		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
-		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 800px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
-			<div class="tape"></div>
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
 			
-			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
-				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-					<span>⚡</span> Quick Rule of Thumb (BLUF)
-				</h3>
-				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
-					1-Minute Pricing Formula
-				</span>
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Bottom Line Up Front (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Wedding Cake Pricing & Slice Cost Matrix
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Reference matrix comparing design styles, complexity markups, average price per slice, and typical cost for 100 to 150 guests.
+				</p>
 			</div>
 
 			<!-- Formula Highlight Box -->
 			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
-				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
-					📐 The Core Cake Pricing Formula:
-				</div>
-				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
-					<strong>Total Price = [Ingredients + (Labor Hours × Hourly Rate) + Overhead] × Design Multiplier (1.2× – 3.0×)</strong><br />
-					<em>Price Per Slice = Total Price ÷ Guest Servings</em> • <em>Target Profit Margin = 20% to 35%+</em>
+				<strong class="font-heading" style="font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; display: block; text-align: center;">
+					📐 The Professional Cake Pricing Formula:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5; text-align: center; font-weight: 600;">
+					Total Cake Price = [Ingredients + Structural Hardware + (Labor Hours × Hourly Wage)] × Design Markup Multiplier (1.1× – 3.0×) + Delivery Fee.
 				</p>
 			</div>
 
 			<!-- Benchmark Table -->
-			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
-				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.90rem; min-width: 580px;">
+			<div style="overflow-x: auto; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.90rem; min-width: 650px;">
 					<thead>
-						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
-							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Cake Style / Complexity</th>
-							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Multiplier</th>
-							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Price Per Slice</th>
-							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue); text-align: center;">100-Guest Total</th>
-							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--fg-pencil); text-align: right;">Target Margin</th>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Cake Style & Decoration Level</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Multiplier</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Price Per Slice</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">100 Guests</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">150 Guests</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr style="border-bottom: 1px solid #e2e8f0;">
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Simple / Semi-Naked Buttercream</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1.0× – 1.2×</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">$4.00 – $5.50</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">$400 – $550</td>
-							<td style="padding: 0.55rem 0.75rem; text-align: right;">20% – 25%</td>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Cutting Cake + Kitchen Sheet Cakes</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1.1× – 1.2×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: #16a34a;">$3.50 – $4.75</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">$350 – $475</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">$525 – $710</td>
 						</tr>
-						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ Textured Buttercream & Fresh Flowers</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">1.3× – 1.5×</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">$5.50 – $7.50</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">$550 – $750</td>
-							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">25% – 30%</td>
-						</tr>
-						<tr style="border-bottom: 1px solid #e2e8f0;">
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Smooth Fondant & Minor Sugar Details</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1.6× – 2.0×</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">$7.50 – $10.00</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">$750 – $1,000</td>
-							<td style="padding: 0.55rem 0.75rem; text-align: right;">30% – 35%</td>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--fg-pencil);">Semi-Naked Rustic Buttercream</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1.2× – 1.3×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">$5.00 – $6.50</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">$500 – $650</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">$750 – $975</td>
 						</tr>
 						<tr>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Intricate Sugar Florals / Gold Leaf</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">2.2× – 3.0×</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">$10.00 – $14.00+</td>
-							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">$1,000 – $1,400+</td>
-							<td style="padding: 0.55rem 0.75rem; text-align: right;">35% – 40%+</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">⭐ Textured Buttercream & Fresh Flowers</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1.4× – 1.6×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: var(--accent-blue);">$6.50 – $8.50</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">$650 – $850</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">$975 – $1,275</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Smooth Fondant & Sugar Pearls</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1.8× – 2.2×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">$8.50 – $11.00</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">$850 – $1,100</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">$1,275 – $1,650</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #b45309;">Intricate Handcrafted Sugar Florals & Gold Leaf</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">2.5× – 3.0×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: var(--accent-red);">$12.00 – $16.00+</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">$1,200 – $1,600+</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">$1,800 – $2,400+</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
-
-			<p class="font-body" style="font-size: 0.85rem; color: var(--fg-pencil); margin: 0; line-height: 1.4;">
-				💡 <strong>Delivery & Setup:</strong> Always bill delivery mileage ($1.50–$2.50/mile) and on-site tiered stacking setup ($50–$100 flat) as separate invoice items.
-			</p>
 		</div>
 
-		<article class="hand-card" style="margin: 4rem auto; max-width: 800px; padding: 3rem;">
-			<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Mastering Your Margins with a Cake Pricing Calculator</h2>
-			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
-				One of the biggest mistakes independent bakers make is undercharging for custom wedding cakes. When you only charge for the flour, butter, and sugar, you are essentially working for free! To run a profitable bakery, you absolutely must factor in your labor hours, structural materials (like dowels and boards), and a healthy profit margin for your artistic expertise.
-			</p>
+		<!-- Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
 			
-			<img src="/images/wedding_cake_sketch.webp" alt="Wedding Cake Pricing Calculator — Custom Tier Cost Breakdown" loading="lazy" decoding="async" style="width: 100%; max-width: 350px; height: auto; border: 3px solid var(--fg-pencil); border-radius: 8px; margin: 2rem auto; display: block; box-shadow: 4px 4px 0px rgba(0,0,0,0.1);" />
-			
-			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
-				That's why we created this visual <strong>cake pricing calculator</strong>. It takes the emotion out of pricing and gives you hard numbers to present to your clients with confidence.
-			</p>
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					How to Price Custom Wedding Cakes for Profit
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					The essential framework for independent bakers, cake designers, and couples budgeting dessert costs.
+				</p>
+			</div>
 
-			<h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-blue);">The Pricing Formula</h3>
-			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
-				Our cake pricing calculator uses the industry-standard formula used by professional cake designers: <strong>(Materials + Labor + Tier Fees) × Design Markup = Final Price</strong>.
-			</p>
-			<ul class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.6;">
-				<li style="margin-bottom: 0.5rem;"><strong>Labor is King:</strong> Never undervalue your time. If baking, stacking, frosting, and decorating takes you 12 hours, you must pay yourself a living hourly wage for all 12 of those hours.</li>
-				<li style="margin-bottom: 0.5rem;"><strong>The Design Markup:</strong> A rustic naked cake (1.0x markup) takes significantly less skill and stress than a 5-tier fondant cake with handmade sugar flowers (3.0x markup). Use the slider to increase your profit margin based on how intricate the design is.</li>
-				<li style="margin-bottom: 0.5rem;"><strong>Per-Slice Pricing:</strong> Most brides budget by the slice. Our calculator automatically divides your final total by the guest count so you can easily quote a "per slice" price.</li>
-			</ul>
+			<!-- Section 1: Pricing Mistake -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. The #1 Pricing Mistake: Working for Free
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Many home bakers and newer custom cake decorators only charge 2x or 3x the cost of raw groceries (butter, flour, sugar). This leads to burnout because it completely ignores the 8 to 15 hours of physical labor required to bake, level, chill, crumb coat, stack, and decorate a multi-tier masterpiece.
+				</p>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil);">
+					<strong>Rule:</strong> Always pay yourself an hourly wage first ($30–$50/hr), and add a 25% to 40% design markup on top as bakery profit to reinvest in equipment and marketing.
+				</p>
+			</section>
 
-			<h3 class="font-heading" style="font-size: 2rem; margin-top: 3rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Cake Pricing Calculator FAQs</h3>
-			
-			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
-				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">How does a cake pricing calculator work?</summary>
-				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">A cake pricing calculator adds up your raw ingredient costs and your hourly labor rate to find your base cost. It then applies a profit multiplier based on the complexity of the design to ensure you actually make a profit on the order.</p>
-			</details>
+			<!-- Section 2: Delivery & Stacking -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. Delivery, Mileage & Venue Stacking Etiquette
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Transporting a 4-tier cake is the most stressful part of the job. Never include delivery for free:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem;">
+					<li><strong>Mileage:</strong> Charge IRS standard mileage or $1.50–$2.50 per round-trip mile.</li>
+					<li><strong>On-Site Assembly:</strong> Bill a $50–$100 setup fee if you must insert fresh flowers, place cake toppers, or stack the final top tier on-site.</li>
+				</ul>
+			</section>
 
-			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
-				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">What is a good average price per slice for a wedding cake?</summary>
-				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">While prices vary wildly by region, standard buttercream wedding cakes usually range from $5 to $7 per slice, while intricate fondant cakes can range from $8 to $15+ per slice.</p>
-			</details>
-
-			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
-				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">Should I charge extra for delivery and setup?</summary>
-				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Absolutely! The cake pricing calculator determines the cost of the cake itself. You should always add a separate line item on your invoice for delivery mileage and on-site setup time.</p>
-			</details>
-
-			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
-				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">What should I set as my hourly labor rate?</summary>
-				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Never set your rate below minimum wage. Many beginner bakers start at $20/hr, while experienced pastry chefs and sugar artists often charge $40-$60/hr for their specialized labor.</p>
-			</details>
 		</article>
+
 	</main>
 
-	<script>
-		document.getElementById('calc-form')?.addEventListener('submit', function(e) {
-			e.preventDefault();
-			
-			const servings = parseInt((document.getElementById('servings') as HTMLInputElement).value) || 0;
-			const tiers = parseInt((document.getElementById('tiers') as HTMLInputElement).value) || 0;
-			const complexity = parseFloat((document.getElementById('complexity') as HTMLInputElement).value) || 1.0;
-			const laborHours = parseFloat((document.getElementById('laborHours') as HTMLInputElement).value) || 0;
-			const hourlyRate = parseFloat((document.getElementById('hourlyRate') as HTMLInputElement).value) || 0;
-			const materials = parseFloat((document.getElementById('materialCost') as HTMLInputElement).value) || 0;
+	<!-- Interactive Calculation Script -->
+	<script is:inline>
+		const presetSelect = document.getElementById('cake-preset');
+		const servingsInput = document.getElementById('servings');
+		const tiersSelect = document.getElementById('tiers');
+		const ingredientInput = document.getElementById('ingredientCost');
+		const tierSupplyInput = document.getElementById('tierSupplyCost');
+		const laborHoursInput = document.getElementById('laborHours');
+		const hourlyRateInput = document.getElementById('hourlyRate');
+		const complexityInput = document.getElementById('complexity');
+		const valComplexity = document.getElementById('val-complexity');
 
-			// Base costs
-			const laborCost = laborHours * hourlyRate;
-			const baseCost = laborCost + materials;
-			
-			// Tier fee: $25 per tier for structural supports (boards, dowels)
-			const tierFee = tiers * 25;
-			
-			// Apply complexity multiplier to the base cost + tier fee
-			const minPrice = (baseCost + tierFee) * complexity;
-			
-			// Profit margin is what you make *above* your hourly wage and materials
-			const profitMarkup = minPrice - baseCost - tierFee;
+		const chkDelivery = document.getElementById('check-delivery');
+		const deliveryBox = document.getElementById('delivery-inputs');
+		const deliveryMilesInput = document.getElementById('deliveryMiles');
+		const setupFeeInput = document.getElementById('setupFee');
 
-			const pricePerSlice = servings > 0 ? (minPrice / servings) : 0;
+		const resTotalPrice = document.getElementById('res-total-price');
+		const resPricePerSlice = document.getElementById('res-price-per-slice');
+		const resServingsLabel = document.getElementById('res-servings-label');
+		const tierBadge = document.getElementById('tier-badge');
 
-			// Update DOM
-			document.getElementById('res-total')!.textContent = `$${minPrice.toFixed(2)}`;
-			document.getElementById('res-per-slice')!.textContent = `$${pricePerSlice.toFixed(2)}`;
-			document.getElementById('res-labor')!.textContent = `$${laborCost.toFixed(2)}`;
-			document.getElementById('res-profit')!.textContent = `$${profitMarkup.toFixed(2)}`;
+		const barMaterials = document.getElementById('bar-materials');
+		const barLabor = document.getElementById('bar-labor');
+		const barProfit = document.getElementById('bar-profit');
+		const barDelivery = document.getElementById('bar-delivery');
 
-			// Update Chart
-			if (minPrice > 0) {
-				document.getElementById('chart-container')!.style.display = 'block';
-				
-				const materialsPct = ((materials + tierFee) / minPrice) * 100;
-				const laborPct = (laborCost / minPrice) * 100;
-				const profitPct = (profitMarkup / minPrice) * 100;
+		const resMaterialsTotal = document.getElementById('res-materials-total');
+		const resLaborHoursLabel = document.getElementById('res-labor-hours-label');
+		const resLaborTotal = document.getElementById('res-labor-total');
+		const resProfitMarginPct = document.getElementById('res-profit-margin-pct');
+		const resProfitDollars = document.getElementById('res-profit-dollars');
+		const rowDeliveryFee = document.getElementById('row-delivery-fee');
+		const resDeliveryTotal = document.getElementById('res-delivery-total');
+		const resInvoiceTotal = document.getElementById('res-invoice-total');
 
-				document.getElementById('bar-materials')!.style.width = `${materialsPct}%`;
-				document.getElementById('bar-labor')!.style.width = `${laborPct}%`;
-				document.getElementById('bar-profit')!.style.width = `${profitPct}%`;
+		const btnPrint = document.getElementById('btn-print-cake-quote');
+		const btnDoc = document.getElementById('btn-export-cake-doc');
+
+		function calculateCakePricing() {
+			const servings = parseInt(servingsInput.value, 10) || 1;
+			const tiers = parseInt(tiersSelect.value, 10) || 1;
+			const ingredients = parseFloat(ingredientInput.value) || 0;
+			const hardware = parseFloat(tierSupplyInput.value) || 0;
+			const laborHours = parseFloat(laborHoursInput.value) || 0;
+			const hourlyRate = parseFloat(hourlyRateInput.value) || 0;
+			const complexity = parseFloat(complexityInput.value) || 1.0;
+
+			valComplexity.textContent = `${complexity.toFixed(1)}x`;
+			tierBadge.textContent = `${tiers} ${tiers === 1 ? 'Tier' : 'Tiers'}`;
+			resServingsLabel.textContent = `${servings} guest servings`;
+
+			// Delivery Math
+			let deliveryFee = 0;
+			if (chkDelivery.checked) {
+				deliveryBox.style.display = 'grid';
+				rowDeliveryFee.style.display = 'flex';
+				const miles = parseFloat(deliveryMilesInput.value) || 0;
+				const setup = parseFloat(setupFeeInput.value) || 0;
+				deliveryFee = (miles * 1.5) + setup;
+				resDeliveryTotal.textContent = `$${deliveryFee.toFixed(2)}`;
 			} else {
-				document.getElementById('chart-container')!.style.display = 'none';
+				deliveryBox.style.display = 'none';
+				rowDeliveryFee.style.display = 'none';
+				deliveryFee = 0;
 			}
+
+			// Core Cost Math
+			const materialsCost = ingredients + hardware;
+			const laborCost = laborHours * hourlyRate;
+			const baseCost = materialsCost + laborCost;
+
+			// Price with complexity markup
+			const cakePrice = baseCost * complexity;
+			const profitDollars = cakePrice - baseCost;
+			const profitPct = cakePrice > 0 ? Math.round((profitDollars / cakePrice) * 100) : 0;
+			const pricePerSlice = servings > 0 ? (cakePrice / servings) : 0;
+			const finalInvoice = cakePrice + deliveryFee;
+
+			// Update Text Displays
+			resTotalPrice.textContent = `$${cakePrice.toFixed(2)}`;
+			resPricePerSlice.textContent = `$${pricePerSlice.toFixed(2)}`;
+			resMaterialsTotal.textContent = `$${materialsCost.toFixed(2)}`;
+			resLaborHoursLabel.textContent = `${laborHours} hrs @ $${hourlyRate}/hr`;
+			resLaborTotal.textContent = `$${laborCost.toFixed(2)}`;
+			resProfitMarginPct.textContent = `${profitPct}%`;
+			resProfitDollars.textContent = `$${profitDollars.toFixed(2)}`;
+			resInvoiceTotal.textContent = `$${finalInvoice.toFixed(2)}`;
+
+			// Update Financial Bar Graph
+			if (finalInvoice > 0) {
+				const matPct = (materialsCost / finalInvoice) * 100;
+				const labPct = (laborCost / finalInvoice) * 100;
+				const proPct = (profitDollars / finalInvoice) * 100;
+				const delPct = (deliveryFee / finalInvoice) * 100;
+
+				barMaterials.style.width = `${matPct}%`;
+				barLabor.style.width = `${labPct}%`;
+				barProfit.style.width = `${proPct}%`;
+				barDelivery.style.width = `${delPct}%`;
+			}
+		}
+
+		// Preset handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'textured-buttercream') {
+				complexityInput.value = 1.4;
+				laborHoursInput.value = 10;
+				ingredientInput.value = 85;
+				tierSupplyInput.value = 45;
+			} else if (p === 'semi-naked') {
+				complexityInput.value = 1.1;
+				laborHoursInput.value = 7;
+				ingredientInput.value = 70;
+				tierSupplyInput.value = 35;
+			} else if (p === 'smooth-fondant') {
+				complexityInput.value = 1.8;
+				laborHoursInput.value = 14;
+				ingredientInput.value = 120;
+				tierSupplyInput.value = 55;
+			} else if (p === 'sugar-art') {
+				complexityInput.value = 2.5;
+				laborHoursInput.value = 20;
+				ingredientInput.value = 160;
+				tierSupplyInput.value = 70;
+			} else if (p === 'cutting-sheet') {
+				complexityInput.value = 1.2;
+				laborHoursInput.value = 8;
+				ingredientInput.value = 75;
+				tierSupplyInput.value = 30;
+			}
+			calculateCakePricing();
 		});
+
+		// Live Listeners
+		[servingsInput, tiersSelect, ingredientInput, tierSupplyInput,
+		 laborHoursInput, hourlyRateInput, complexityInput, chkDelivery,
+		 deliveryMilesInput, setupFeeInput].forEach(elem => {
+			elem.addEventListener('input', calculateCakePricing);
+			elem.addEventListener('change', calculateCakePricing);
+		});
+
+		// Print Quote Handler
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Custom Wedding Cake Quote — Manage.Wedding</title>
+					<style>
+						@page { size: 8.5in 11in; margin: 0.5in; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 20pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Custom Wedding Cake Client Quote</h1>
+					<p>Servings: ${servingsInput.value} | Tiers: ${tiersSelect.value} | Per-Slice: ${resPricePerSlice.textContent}</p>
+					
+					<table>
+						<thead><tr><th>Line Item</th><th>Details</th><th>Amount</th></tr></thead>
+						<tbody>
+							<tr><td><strong>Cake Design & Creation</strong></td><td>${tiersSelect.value}-Tier Custom Decorated Cake (${servingsInput.value} Servings)</td><td>${resTotalPrice.textContent}</td></tr>
+							<tr><td><strong>Raw Ingredients & Hardware</strong></td><td>Ingredients, boards, dowels, transport boxes</td><td>${resMaterialsTotal.textContent}</td></tr>
+							<tr><td><strong>Professional Labor</strong></td><td>${resLaborHoursLabel.textContent}</td><td>${resLaborTotal.textContent}</td></tr>
+							${chkDelivery.checked ? `<tr><td><strong>Delivery & Setup</strong></td><td>Roundtrip mileage + on-site placement</td><td>${resDeliveryTotal.textContent}</td></tr>` : ''}
+							<tr class="total-row"><td>TOTAL CLIENT INVOICE</td><td>Price Per Slice: ${resPricePerSlice.textContent}</td><td>${resInvoiceTotal.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Export Word Doc
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Custom Cake Invoice</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Custom Wedding Cake Invoice Quote</h2>
+					<p>Servings: ${servingsInput.value} | Tiers: ${tiersSelect.value} | Price Per Slice: ${resPricePerSlice.textContent}</p>
+					<table>
+						<thead><tr><th>Line Item</th><th>Amount</th></tr></thead>
+						<tbody>
+							<tr><td>Base Cake (Ingredients + Labor + Margin)</td><td>${resTotalPrice.textContent}</td></tr>
+							<tr><td>Delivery & Setup</td><td>${resDeliveryTotal.textContent}</td></tr>
+							<tr><td><strong>TOTAL INVOICE</strong></td><td><strong>${resInvoiceTotal.textContent}</strong></td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'wedding-cake-quote.doc';
+			link.click();
+		});
+
+		// Initial Run
+		calculateCakePricing();
 	</script>
 </Layout>
