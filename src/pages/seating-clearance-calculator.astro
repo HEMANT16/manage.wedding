@@ -1,0 +1,665 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/seating-clearance-calculator/#webapp",
+      "name": "Wedding Floor Plan, Dance Floor & Table Clearance Sizer",
+      "url": "https://manage.wedding/seating-clearance-calculator",
+      "description": "Calculate exact wedding reception dance floor dimensions, 60\" vs 72\" round table counts, service aisle clearances, and total venue square footage needed for 50 to 300+ guests.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Calculate Wedding Dance Floor Size and Room Square Footage",
+      "description": "Step-by-step sizing formula to determine dance floor square footage and table clearance requirements for wedding receptions.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Step 1: Estimate Simultaneous Dancers (40% Rule)",
+          "text": "Multiply your total guest count by 40% (0.40) to find the average number of guests dancing at peak reception moments."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 2: Calculate Dance Floor Square Footage (4.5 sq ft / dancer)",
+          "text": "Multiply peak dancers by 4.5 square feet per person (e.g. 60 dancers × 4.5 sq ft = 270 sq ft, or a 15' × 18' floor)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 3: Calculate Dining Table Space (12–14 sq ft / guest)",
+          "text": "For 60\" round tables seating 8 guests, allocate 12 to 14 sq ft per guest, including 60\" chair-to-chair server aisle clearances."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 4: Add Production & Service Buffers",
+          "text": "Add square footage for the DJ/Band stage (150–250 sq ft), bar stations (100 sq ft each), buffet lines (150 sq ft), and cake/gift tables (50 sq ft)."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What size dance floor do I need for 100 to 150 wedding guests?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For 100 guests, you need roughly a 12' × 15' to 15' × 15' dance floor (180–225 sq ft, or 20–25 modular 3x3 tiles). For 150 guests, you need a 15' × 18' to 16' × 18' dance floor (270–288 sq ft, or 30–32 tiles)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much space is needed between reception tables?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Maintain a minimum of 60 inches (5 feet) between table edges (measured center-to-center or chair-back to chair-back). This allows 18 inches for seated chairs and a 24-to-30 inch ADA-compliant walkway for catering servers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many guests comfortably fit at a 60-inch round table?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A standard 60-inch (5 ft) round table seats 8 guests comfortably with dinnerware and chargers, with a maximum capacity of 10 guests for casual dining."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much total square footage do you need per wedding guest?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For a full seated dinner with dance floor and bars, plan on 16 to 20 square feet per guest. A 150-guest wedding requires a ballroom or tent between 2,400 and 3,000 square feet."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Wedding Floor Plan, Dance Floor & Table Clearance Sizer"
+	description="Calculate exact wedding reception dance floor dimensions, 60\" vs 72\" round table counts, service aisle clearances, and total venue square footage needed for 50 to 300+ guests."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">6,600+ Monthly Floor Plan Searches</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Reception Floor Plan <span class="accent-italic">& Dance Floor Sizer</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Determine exact dance floor dimensions, 60" vs 72" round table counts, server aisle clearances (60" rule), and total venue square footage before signing a venue contract.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Guest Count, Table Style & Room Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Event Scale & Room Specs
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Aisle Clearance Engine
+					</span>
+				</div>
+
+				<!-- Venue Layout Presets -->
+				<div class="form-group">
+					<label class="form-label" for="layout-preset">Venue / Space Archetype</label>
+					<select id="layout-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="ballroom-150" selected>🏨 Hotel Ballroom (150 Guests / 60" Rounds / DJ Booth)</option>
+						<option value="tent-200">🎪 Outdoor Pole Tent (200 Guests / 40'×80' Tent / Live Band Stage)</option>
+						<option value="barn-120">🌾 Rustic Barn (120 Guests / Mixed Farm Tables + Rounds)</option>
+						<option value="intimate-75">🏛️ Historic Estate / Intimate Dining (75 Guests)</option>
+						<option value="custom">✏️ Custom Guest & Space Inputs</option>
+					</select>
+				</div>
+
+				<!-- Guest Count & Dancing Participation -->
+				<div style="display: grid; grid-template-columns: 1.1fr 1.3fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="input-guests">Guest Count</label>
+						<input type="number" id="input-guests" class="form-input" value="150" min="20" max="600" step="5" style="font-size: 1.1rem; font-weight: 700;" />
+					</div>
+					<div>
+						<label class="form-label" for="dance-participation">Party Energy / Dancer %</label>
+						<select id="dance-participation" class="form-input" style="cursor: pointer; font-size: 0.95rem;">
+							<option value="0.33">Relaxed / Older Crowd (33% Dancers)</option>
+							<option value="0.45" selected>Standard High Energy (45% Dancers)</option>
+							<option value="0.60">Wild Party Crowd (60% Dancers)</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Table Shape & Seating Density -->
+				<div class="form-group">
+					<label class="form-label" for="table-style">Dining Table Format</label>
+					<select id="table-style" class="form-input" style="cursor: pointer;">
+						<option value="round-60" selected>60" Round Tables (Seats 8 Guests Comfortably / 10 Max)</option>
+						<option value="round-72">72" Round Tables (Seats 10 Guests Comfortably / 12 Max)</option>
+						<option value="rect-8ft">8ft × 30" Rectangular Farm Tables (Seats 8 Guests)</option>
+					</select>
+				</div>
+
+				<!-- Venue Dimensions (Optional Check) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Your Venue Room Dimensions (Optional Fit Check)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="room-length" style="font-size: 0.9rem;">Room Length (ft)</label>
+							<input type="number" id="room-length" class="form-input" value="60" min="10" step="5" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="room-width" style="font-size: 0.9rem;">Room Width (ft)</label>
+							<input type="number" id="room-width" class="form-input" value="50" min="10" step="5" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Entertainment & Service Buffers -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Entertainment & Service Stations
+					</strong>
+
+					<div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.92rem;">
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-band" style="width: 18px; height: 18px;" />
+							<span>Live Band Stage (200 sq ft) vs DJ Booth (100 sq ft)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-buffet" checked style="width: 18px; height: 18px;" />
+							<span>Buffet Line Stations (150 sq ft)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-bar-stations" checked style="width: 18px; height: 18px;" />
+							<span>Two Full Bar Drink Stations (200 sq ft)</span>
+						</label>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results, Dance Floor Sizing & Capacity Check -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Clearance & Dance Floor Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Recommended Dance Floor Size
+						</span>
+						<span id="dance-tile-count-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							34 Modular 3×3 Tiles
+						</span>
+					</div>
+
+					<div id="display-dance-dimensions" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						16' × 19' (304 sq ft)
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Sized for <strong id="display-peak-dancers" style="color: var(--fg-pencil);">68 peak dancers</strong> (45% of 150 guests @ 4.5 sq ft/person).
+					</p>
+
+					<!-- Itemized Space Breakdown Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<strong style="display: block; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+							📐 Complete Room Space Allocation:
+						</strong>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span>Dining Seating (<strong id="display-tables-needed">19 Tables</strong>):</span>
+							<strong id="display-dining-sqft">1,800 sq ft</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span>Dance Floor Area:</span>
+							<strong id="display-dance-sqft">304 sq ft</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span>Bars, Buffet & Entertainment Stage:</span>
+							<strong id="display-production-sqft">450 sq ft</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.5rem 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--accent-red);">
+							<span>TOTAL MINIMUM ROOM SIZE:</span>
+							<strong id="display-total-room-needed">2,554 sq ft</strong>
+						</div>
+					</div>
+
+					<!-- Venue Room Fit Evaluation Alert -->
+					<div id="room-capacity-alert" style="background: #f0fdf4; border: 1.5px solid #16a34a; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.9rem; color: #166534; line-height: 1.5;">
+						<strong id="alert-fit-title">✅ Perfect Space Fit (3,000 sq ft Available):</strong><br />
+						<span id="alert-fit-body">Your 60' × 50' room provides ample space for 19 tables, the dance floor, and comfortable 60-inch server aisles.</span>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-floorplan" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Print Floor Plan Specs (PDF)
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Export Word Doc
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Table Clearance & ADA Rules Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						📏 The 60-Inch Table Clearance Rule:
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Table Edge to Table Edge:</strong> Keep <strong>60 inches (5 feet)</strong> between round tables. This accounts for guests sitting back 18" in their chairs and leaves a 24" center aisle for servers carrying hot trays.</li>
+						<li><strong>Perimeter Walls:</strong> Place tables at least <strong>36 to 48 inches</strong> away from walls and windows to allow easy guest movement.</li>
+						<li><strong>Head Table / Sweetheart Table:</strong> Place <strong>10 to 12 feet</strong> in front of the dance floor for unobstructed photography sightlines.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Bottom Line Up Front (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Quick Rule of Thumb: Dance Floor Sizes & Room Square Footage
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Short on time? Here is the reference chart matching guest counts (50 to 300) to dance floor dimensions, modular 3×3 tile counts, and minimum venue square footage.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					🕺 The Universal Wedding Dance Floor Formula:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Dance Floor Area (sq ft) = [Total Guests × 0.45 (Peak Dancers)] × 4.5 sq ft • Total Venue Space Needed = 16 to 20 sq ft per guest for dining, dance floor, bars, and stages.
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Guest Count</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Dance Floor Size</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">3×3 Tile Count</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">60" Rounds Needed</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Min. Venue Room Area</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">50 – 75 Guests</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">12' × 12' (144 sq ft)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">16 Tiles</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">7 – 10 Tables</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">1,200 – 1,500 sq ft</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">100 – 125 Guests</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">15' × 15' (225 sq ft)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">25 Tiles</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">13 – 16 Tables</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">1,800 – 2,200 sq ft</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">150 – 175 Guests</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">16' × 18' (288 sq ft)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">32 Tiles</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">19 – 22 Tables</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">2,500 – 3,000 sq ft</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">200 – 250 Guests</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">18' × 21' (378 sq ft)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">42 Tiles</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">25 – 32 Tables</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">3,400 – 4,200 sq ft</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					The Complete Wedding Floor Plan, Tent & Dance Floor Guide
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					How to optimize table layouts, avoid bottlenecks near the bar, and size dance floors for maximum party energy.
+				</p>
+			</div>
+
+			<!-- Section 1: Dance Floor Psychology -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. The Psychology of Dance Floor Sizing (Bigger is NOT Always Better)
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					A common planning mistake is renting an oversized dance floor. A dance floor that is too large creates empty gaps and makes a party feel dead. A slightly compact, energized dance floor encourages shy guests to join the crowd:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>The 40% Rule:</strong> At any given song, roughly 30% to 50% of your guests will be on the floor (others are grabbing drinks, at the photobooth, or chatting).</li>
+					<li><strong>4.5 sq ft per Dancer:</strong> This provides enough personal space to dance without bumping elbows while keeping high party density.</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: Tent Sizing -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. Outdoor Wedding Tent Sizing Formula
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					When renting a pole or frame tent for a backyard or vineyard reception, calculate total footprint:
+				</p>
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-size: 0.98rem; line-height: 1.6; color: var(--fg-pencil);">
+					<strong>🎪 Standard Tent Dimensions:</strong><br />
+					• <strong>100 Guests:</strong> 40' × 60' Tent (2,400 sq ft)<br />
+					• <strong>150 Guests:</strong> 40' × 80' Tent (3,200 sq ft)<br />
+					• <strong>200 Guests:</strong> 40' × 100' or 60' × 90' Tent (4,000–5,400 sq ft)
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">How many people fit at a 72-inch round table?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						A 72-inch (6 ft) round table seats 10 guests comfortably, with a maximum of 12 guests.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Where should the bar be located in the floor plan?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Position bars away from the main entrance and adjacent to the dance floor to keep the party flowing while preventing entry bottlenecks.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">What is the footprint of a 60-inch round table?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						With chairs pulled out and server access, each 60" round table requires a 10-foot diameter circle (approx. 80–100 square feet per table).
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('layout-preset');
+		const guestsInput = document.getElementById('input-guests');
+		const dancePartSelect = document.getElementById('dance-participation');
+		const tableStyleSelect = document.getElementById('table-style');
+
+		const roomLengthInput = document.getElementById('room-length');
+		const roomWidthInput = document.getElementById('room-width');
+
+		const checkBand = document.getElementById('check-band');
+		const checkBuffet = document.getElementById('check-buffet');
+		const checkBars = document.getElementById('check-bar-stations');
+
+		const danceTileBadge = document.getElementById('dance-tile-count-badge');
+		const displayDanceDimensions = document.getElementById('display-dance-dimensions');
+		const displayPeakDancers = document.getElementById('display-peak-dancers');
+
+		const displayTablesNeeded = document.getElementById('display-tables-needed');
+		const displayDiningSqft = document.getElementById('display-dining-sqft');
+		const displayDanceSqft = document.getElementById('display-dance-sqft');
+		const displayProductionSqft = document.getElementById('display-production-sqft');
+		const displayTotalRoomNeeded = document.getElementById('display-total-room-needed');
+
+		const roomCapacityAlert = document.getElementById('room-capacity-alert');
+		const alertFitTitle = document.getElementById('alert-fit-title');
+		const alertFitBody = document.getElementById('alert-fit-body');
+
+		const btnPrint = document.getElementById('btn-print-floorplan');
+		const btnDoc = document.getElementById('btn-export-doc');
+
+		function calculateFloorPlan() {
+			const guests = parseInt(guestsInput.value, 10) || 1;
+			const dancerPct = parseFloat(dancePartSelect.value) || 0.45;
+			const tableStyle = tableStyleSelect.value;
+
+			// Dance Floor Math
+			const peakDancers = Math.round(guests * dancerPct);
+			const danceSqft = Math.round(peakDancers * 4.5);
+			const side = Math.round(Math.sqrt(danceSqft));
+			const danceL = Math.max(12, side);
+			const danceW = Math.max(12, Math.round(danceSqft / danceL));
+			const actualDanceSqft = danceL * danceW;
+			const tileCount = Math.ceil(actualDanceSqft / 9); // 3x3 tiles
+
+			// Table Math
+			let seatsPerTable = 8;
+			let sqftPerGuest = 12;
+			let tableTypeName = '60" Rounds';
+
+			if (tableStyle === 'round-60') {
+				seatsPerTable = 8;
+				sqftPerGuest = 12;
+				tableTypeName = '60" Rounds (8 guests)';
+			} else if (tableStyle === 'round-72') {
+				seatsPerTable = 10;
+				sqftPerGuest = 14;
+				tableTypeName = '72" Rounds (10 guests)';
+			} else if (tableStyle === 'rect-8ft') {
+				seatsPerTable = 8;
+				sqftPerGuest = 11;
+				tableTypeName = '8ft Farm Tables (8 guests)';
+			}
+
+			const tablesCount = Math.ceil(guests / seatsPerTable);
+			const diningSqft = guests * sqftPerGuest;
+
+			// Production & Buffers
+			let productionSqft = 0;
+			if (checkBand.checked) productionSqft += 200; // Band stage
+			else productionSqft += 100; // DJ Booth
+
+			if (checkBuffet.checked) productionSqft += 150;
+			if (checkBars.checked) productionSqft += 200;
+
+			const totalRoomNeeded = diningSqft + actualDanceSqft + productionSqft;
+
+			// Room Fit Evaluation
+			const rLength = parseFloat(roomLengthInput.value) || 0;
+			const rWidth = parseFloat(roomWidthInput.value) || 0;
+			const roomAvailableSqft = rLength * rWidth;
+
+			// Update UI
+			danceTileBadge.textContent = `${tileCount} Modular 3×3 Tiles`;
+			displayDanceDimensions.textContent = `${danceL}' × ${danceW}' (${actualDanceSqft} sq ft)`;
+			displayPeakDancers.textContent = `${peakDancers} peak dancers`;
+
+			displayTablesNeeded.textContent = `${tablesCount} ${tableTypeName}`;
+			displayDiningSqft.textContent = `${diningSqft.toLocaleString()} sq ft`;
+			displayDanceSqft.textContent = `${actualDanceSqft.toLocaleString()} sq ft`;
+			displayProductionSqft.textContent = `${productionSqft.toLocaleString()} sq ft`;
+			displayTotalRoomNeeded.textContent = `${totalRoomNeeded.toLocaleString()} sq ft`;
+
+			if (roomAvailableSqft > 0) {
+				if (roomAvailableSqft >= totalRoomNeeded) {
+					const surplus = roomAvailableSqft - totalRoomNeeded;
+					roomCapacityAlert.style.display = 'block';
+					roomCapacityAlert.style.background = '#f0fdf4';
+					roomCapacityAlert.style.borderColor = '#16a34a';
+					roomCapacityAlert.style.color = '#166534';
+					alertFitTitle.textContent = `✅ Perfect Space Fit (${roomAvailableSqft.toLocaleString()} sq ft Available):`;
+					alertFitBody.textContent = `Your ${rLength}' × ${rWidth}' space accommodates all ${tablesCount} tables, the dance floor, and leaves a generous ${surplus.toLocaleString()} sq ft buffer for aisles and mingling.`;
+				} else {
+					const deficit = totalRoomNeeded - roomAvailableSqft;
+					roomCapacityAlert.style.display = 'block';
+					roomCapacityAlert.style.background = '#fef2f2';
+					roomCapacityAlert.style.borderColor = '#ef4444';
+					roomCapacityAlert.style.color = '#991b1b';
+					alertFitTitle.textContent = `⚠️ Tight Fit Alert (${deficit.toLocaleString()} sq ft Deficit):`;
+					alertFitBody.textContent = `Your ${rLength}' × ${rWidth}' room (${roomAvailableSqft.toLocaleString()} sq ft) may feel cramped. Consider switching to 72" rounds (10 seats/table) or reducing table counts.`;
+				}
+			} else {
+				roomCapacityAlert.style.display = 'none';
+			}
+		}
+
+		// Preset Selection Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'ballroom-150') {
+				guestsInput.value = 150;
+				dancePartSelect.value = '0.45';
+				tableStyleSelect.value = 'round-60';
+				roomLengthInput.value = 60;
+				roomWidthInput.value = 50;
+				checkBand.checked = false;
+				checkBuffet.checked = true;
+				checkBars.checked = true;
+			} else if (p === 'tent-200') {
+				guestsInput.value = 200;
+				dancePartSelect.value = '0.45';
+				tableStyleSelect.value = 'round-60';
+				roomLengthInput.value = 80;
+				roomWidthInput.value = 40;
+				checkBand.checked = true;
+				checkBuffet.checked = true;
+				checkBars.checked = true;
+			} else if (p === 'barn-120') {
+				guestsInput.value = 120;
+				dancePartSelect.value = '0.45';
+				tableStyleSelect.value = 'rect-8ft';
+				roomLengthInput.value = 60;
+				roomWidthInput.value = 40;
+				checkBand.checked = false;
+				checkBuffet.checked = true;
+				checkBars.checked = true;
+			} else if (p === 'intimate-75') {
+				guestsInput.value = 75;
+				dancePartSelect.value = '0.33';
+				tableStyleSelect.value = 'round-60';
+				roomLengthInput.value = 45;
+				roomWidthInput.value = 35;
+				checkBand.checked = false;
+				checkBuffet.checked = false;
+				checkBars.checked = true;
+			}
+			calculateFloorPlan();
+		});
+
+		// Live Listeners
+		[guestsInput, dancePartSelect, tableStyleSelect, roomLengthInput, roomWidthInput, checkBand, checkBuffet, checkBars].forEach(inp => {
+			inp.addEventListener('input', calculateFloorPlan);
+			inp.addEventListener('change', calculateFloorPlan);
+		});
+
+		// Print Floor Plan Sheet
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Wedding Floor Plan Specs — Manage.Wedding</title>
+					<style>
+						@page { size: 8.5in 11in; margin: 0.5in; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 20pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Wedding Floor Plan & Clearance Specs</h1>
+					<p>Guests: ${guestsInput.value} | Total Room Needed: ${displayTotalRoomNeeded.textContent}</p>
+					
+					<table>
+						<thead><tr><th>Layout Element</th><th>Rental Specs / Quantity</th><th>Space Footprint</th></tr></thead>
+						<tbody>
+							<tr><td><strong>Dance Floor</strong></td><td>${displayDanceDimensions.textContent} (${danceTileBadge.textContent})</td><td>${displayDanceSqft.textContent}</td></tr>
+							<tr><td><strong>Dining Seating</strong></td><td>${displayTablesNeeded.textContent}</td><td>${displayDiningSqft.textContent}</td></tr>
+							<tr><td><strong>Production & Bars</strong></td><td>Band/DJ, Buffet, 2 Bar Stations</td><td>${displayProductionSqft.textContent}</td></tr>
+							<tr class="total-row"><td>TOTAL VENUE FOOTPRINT</td><td>—</td><td>${displayTotalRoomNeeded.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Export Word Doc
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Wedding Floor Plan Specs</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Floor Plan & Clearance Specs</h2>
+					<p>Guests: ${guestsInput.value} | <strong>Total Space: ${displayTotalRoomNeeded.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Component</th><th>Details</th><th>Footprint</th></tr></thead>
+						<tbody>
+							<tr><td>Dance Floor</td><td>${displayDanceDimensions.textContent} (${danceTileBadge.textContent})</td><td>${displayDanceSqft.textContent}</td></tr>
+							<tr><td>Dining Tables</td><td>${displayTablesNeeded.textContent}</td><td>${displayDiningSqft.textContent}</td></tr>
+							<tr><td>Service Stations</td><td>Bars, Buffet, DJ/Band</td><td>${displayProductionSqft.textContent}</td></tr>
+							<tr style="font-weight:bold; background-color:#eee;"><td>TOTAL</td><td>—</td><td>${displayTotalRoomNeeded.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'wedding-floor-plan-specs.doc';
+			link.click();
+		});
+
+		// Initial Calculation
+		calculateFloorPlan();
+	</script>
+</Layout>
