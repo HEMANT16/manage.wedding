@@ -1,0 +1,586 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/rehearsal-dinner-planner/#webapp",
+      "name": "Rehearsal Dinner Guest List & Budget Planner",
+      "url": "https://manage.wedding/rehearsal-dinner-planner",
+      "description": "Free rehearsal dinner budget and guest list calculator. Calculates exact headcounts for wedding party, immediate family, and out-of-town guests. Generates minute-by-minute rehearsal night timelines and printable checklists.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Plan a Rehearsal Dinner Guest List and Budget",
+      "description": "Step-by-step etiquette guide for grooms' parents and couples planning the rehearsal dinner.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Step 1: Count Mandatory Ceremony Participants (Tier 1)",
+          "text": "Include everyone who walks down the aisle during ceremony rehearsal: couple, bridal party, plus-ones/spouses, immediate parents, siblings, officiant, and readers."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 2: Decide on Out-of-Town Guests (Tier 2)",
+          "text": "Choose whether out-of-town travelers receive a seated dinner invite or an open invitation to a post-dinner 'Welcome Drinks & Dessert' mixer to manage budget."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 3: Select Venue Format and Food Style",
+          "text": "Choose between casual pizza/brewery ($35–$50/person), family-style trattoria ($65–$90/person), or private steakhouse dining ($110–$160/person)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 4: Build Rehearsal Night Schedule",
+          "text": "Schedule ceremony rehearsal at the venue at 5:00 PM, followed by dinner at 6:30 PM, speeches and attendant gifts at 7:45 PM, and wrapping up by 9:30 PM."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Who must be invited to the rehearsal dinner?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mandatory attendees include: the couple, immediate parents and siblings, all bridesmaids and groomsmen (plus their spouses/significant others), the officiant and spouse, ceremony readers, ushers, and parents of flower girls/ring bearers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you have to invite all out-of-town guests to the rehearsal dinner?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. In modern wedding etiquette, if a large percentage of guests travel from out of town, you are not obligated to pay for a full seated dinner for everyone. Instead, host an intimate dinner for the bridal party, followed by a 'Welcome Drinks' reception at a hotel bar where out-of-towners can drop in."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who pays for the rehearsal dinner?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Traditionally, the groom's parents host and pay for the rehearsal dinner. However, in modern weddings, many couples pay for it themselves or split the bill with both sets of parents."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When should rehearsal dinner invitations be sent?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mail rehearsal dinner invitations 4 to 6 weeks before the event (or include a separate insert card inside the main wedding invitation suite)."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Rehearsal Dinner Guest List & Budget Planner (Etiquette & Timeline)"
+	description="Free rehearsal dinner budget and guest list calculator. Calculate exact headcounts for wedding party, immediate family, and out-of-town guests. Generates rehearsal night timelines and printable checklists."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Guest List Etiquette & Budget Control</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Rehearsal Dinner <span class="accent-italic">Guest & Budget Planner</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Prevent guest list inflation! Calculate exact headcounts for ceremony participants vs out-of-town guests, estimate catering and private room costs, and generate a minute-by-minute rehearsal night timeline.
+			</p>
+		</header>
+
+		<!-- Main Interactive Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Guest Tiers & Format Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Guest Tiers & Headcount
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Tiered Roster
+					</span>
+				</div>
+
+				<!-- Dining Style Presets -->
+				<div class="form-group">
+					<label class="form-label" for="dinner-style-preset">Rehearsal Dining Format</label>
+					<select id="dinner-style-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="italian" selected>🍝 Family-Style Italian / Trattoria ($75/person + Wine)</option>
+						<option value="brewery">🍕 Casual Brewery / Pizza & Craft Beer ($45/person)</option>
+						<option value="steakhouse">🥩 Private Steakhouse / 3-Course Plated ($125/person)</option>
+						<option value="taco">🌮 Backyard Fiesta / Taco Truck & Margaritas ($35/person)</option>
+						<option value="custom">✏️ Custom Budget Inputs</option>
+					</select>
+				</div>
+
+				<!-- Tier 1: Core Mandatory Ceremony Participants -->
+				<div style="background: #faf8f5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.5rem; color: var(--accent-red);">
+						Tier 1: Mandatory Ceremony Participants (Walk in Aisle)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="count-attendants" style="font-size: 0.88rem;">Bridesmaids & Groomsmen</label>
+							<input type="number" id="count-attendants" class="form-input" value="10" min="2" max="30" />
+						</div>
+						<div>
+							<label class="form-label" for="count-plusones" style="font-size: 0.88rem;">Attendant Partners / Spouses</label>
+							<input type="number" id="count-plusones" class="form-input" value="8" min="0" max="30" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="count-immediate-family" style="font-size: 0.88rem;">Parents & Siblings</label>
+							<input type="number" id="count-immediate-family" class="form-input" value="8" min="2" max="20" />
+						</div>
+						<div>
+							<label class="form-label" for="count-officiant" style="font-size: 0.88rem;">Officiant + Readers</label>
+							<input type="number" id="count-officiant" class="form-input" value="3" min="1" max="10" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Tier 2: Extended Family & Out-of-Town Option -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.5rem; color: var(--accent-blue);">
+						Tier 2: Close Family & Out-of-Town Travelers
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="count-grandparents" style="font-size: 0.88rem;">Grandparents</label>
+							<input type="number" id="count-grandparents" class="form-input" value="4" min="0" max="12" />
+						</div>
+						<div>
+							<label class="form-label" for="count-out-of-town" style="font-size: 0.88rem;">Out-of-Town Guests</label>
+							<input type="number" id="count-out-of-town" class="form-input" value="0" min="0" max="80" />
+						</div>
+					</div>
+
+					<div class="form-group" style="margin-top: 0.5rem;">
+						<label class="form-label" for="out-of-town-mode" style="font-size: 0.88rem;">Out-of-Town Guest Handling</label>
+						<select id="out-of-town-mode" class="form-input" style="cursor: pointer; font-size: 0.9rem;">
+							<option value="drinks-only" selected>🥂 Post-Dinner Welcome Drinks Only ($15/person for drinks)</option>
+							<option value="full-dinner">🍽️ Full Seated Dinner Invite (Full $/person)</option>
+							<option value="none">🚫 No Out-of-Town Guests at Rehearsal</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Pricing per Person & Room Rental -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="cost-per-head">Food & Drink ($/head)</label>
+						<input type="number" id="cost-per-head" class="form-input" value="75" min="15" step="5" />
+					</div>
+					<div>
+						<label class="form-label" for="room-fee">Private Room Fee ($)</label>
+						<input type="number" id="room-fee" class="form-input" value="350" min="0" step="50" />
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Budget Breakdown & Timeline Generator -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Summary Budget Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Total Rehearsal Dinner Budget
+						</span>
+						<span id="display-headcount-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							35 Seated Guests
+						</span>
+					</div>
+
+					<div id="display-grand-total" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.5rem;">
+						$3,696
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Food & Bar: <strong id="display-fb-subtotal" style="color: var(--fg-pencil);">$2,625</strong> • 22% Tip/Tax: <strong id="display-tax-tip" style="color: var(--fg-pencil);">$721</strong> • Room: <strong id="display-room-cost" style="color: var(--fg-pencil);">$350</strong>.
+					</p>
+
+					<!-- Itemized Headcount List -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>The Couple:</span>
+							<strong>2</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Bridal Party + Partners:</span>
+							<strong id="item-attendant-total">18</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Parents, Siblings & Grandparents:</span>
+							<strong id="item-family-total">12</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.95rem;">
+							<span>Officiant & Ceremony Readers:</span>
+							<strong id="item-officiant-total">3</strong>
+						</div>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-timeline" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Print Timeline & Roster (PDF)
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Export Word Doc
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Master Rehearsal Night Timeline Schedule -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.75rem;">
+						🕒 Standard Rehearsal Night Itinerary (5:00 PM – 9:30 PM):
+					</strong>
+					<div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.5;">
+						<div><strong>5:00 PM – 5:45 PM:</strong> Ceremony Walkthrough at Venue (2 run-throughs with officiant).</div>
+						<div><strong>6:00 PM – 6:45 PM:</strong> Travel & Cocktail Mingling Hour at Restaurant.</div>
+						<div><strong>6:45 PM – 7:45 PM:</strong> Seated Dinner & Welcome Toast by Host (Groom's Parents).</div>
+						<div><strong>7:45 PM – 8:30 PM:</strong> Attendant Gifts & Open Microphone Stories.</div>
+						<div><strong>8:30 PM – 9:30 PM:</strong> Dessert & Optional Welcome Drinks for Out-of-Towners.</div>
+						<div><strong>9:30 PM:</strong> Early Wrap Up & Sleep for the Wedding Morning!</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Bottom Line Up Front (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Quick Rule of Thumb: Rehearsal Dinner Budgets & Etiquette
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Short on time? Here is the 1-minute rule for who gets invited and average rehearsal dinner costs.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					🍷 The Universal Rehearsal Dinner Guest Formula:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Mandatory Seated Guests = [Couple (2) + Bridal Party + Partners + Immediate Parents + Siblings + Officiant + Readers] • Average: 25 to 35 people ($1,800 to $4,500 total).
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Dining Format</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Cost Per Person</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Total for 30 Guests</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Best Vibe</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Casual Brewery & Pizza</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$40 – $55/person</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">$1,450 – $2,000</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Relaxed, low stress, high energy</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Family-Style Italian Trattoria</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$70 – $95/person</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">$2,550 – $3,500</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Warm, intimate, shared pasta platters</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Private Steakhouse Dining Room</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$120 – $170/person</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">$4,400 – $6,200</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Formal, elevated, quiet private speeches</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Backyard Taco Truck Fiesta</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$30 – $45/person</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">$1,100 – $1,650</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Outdoor, festive, fits larger crowds</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					The Complete Rehearsal Dinner Planning & Etiquette Guide
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Everything you need to know about seating, speech timing, gift exchanges, and hosting duties.
+				</p>
+			</div>
+
+			<!-- Section 1: Speech Etiquette -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Speeches & Toast Protocol at the Rehearsal Dinner
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Unlike the wedding reception where only the Best Man, Maid of Honor, and Father of the Bride speak, the rehearsal dinner is the designated venue for informal, emotional, and extended toasts:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>The Host Welcome:</strong> The groom's parents (or primary host) welcome everyone as entrees are served.</li>
+					<li><strong>Open Mic Toasts:</strong> Groomsmen, bridesmaids, college roommates, and grandparents who aren't giving formal reception toasts should speak here.</li>
+					<li><strong>The Couple's Thank You:</strong> The couple gives a short toast thanking their parents and bridal party, presenting them with personalized gifts.</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: Out of Town Strategy -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. The "Welcome Drinks" Strategy for Out-of-Towners
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					If 80 out of your 120 guests are traveling from out of town, feeding all 80 a full $80 seated dinner would double your budget. The modern solution:
+				</p>
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-size: 0.98rem; line-height: 1.6; color: var(--fg-pencil);">
+					<strong>🍸 Two-Part Event Structure:</strong><br />
+					• <strong>6:00 PM – 8:00 PM:</strong> Intimate private dinner for the 25 core bridal party members.<br />
+					• <strong>8:30 PM – 10:30 PM:</strong> "Welcome Drinks & Dessert" at the hotel lobby lounge or local beer garden. Out-of-town guests are invited for a cocktail and dessert bar!
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Do plus-ones of bridesmaids/groomsmen attend the rehearsal?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						While plus-ones don't need to walk in the 5:00 PM ceremony practice, proper etiquette requires inviting them to the seated dinner at 6:30 PM.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">What should the bride wear to the rehearsal dinner?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Brides traditionally wear a white cocktail dress, tailored white jumpsuit, or chic midi dress suited to the restaurant's formality.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">When are bridal party gifts given?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						The rehearsal dinner (typically during dessert) is the traditional time for the couple to give thank-you gifts to their bridesmaids, groomsmen, and parents.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('dinner-style-preset');
+		const countAttendants = document.getElementById('count-attendants');
+		const countPlusOnes = document.getElementById('count-plusones');
+		const countImmediateFamily = document.getElementById('count-immediate-family');
+		const countOfficiant = document.getElementById('count-officiant');
+		const countGrandparents = document.getElementById('count-grandparents');
+		const countOutOfTown = document.getElementById('count-out-of-town');
+		const outOfTownMode = document.getElementById('out-of-town-mode');
+
+		const costPerHeadInput = document.getElementById('cost-per-head');
+		const roomFeeInput = document.getElementById('room-fee');
+
+		const displayHeadcountBadge = document.getElementById('display-headcount-badge');
+		const displayGrandTotal = document.getElementById('display-grand-total');
+		const displayFbSubtotal = document.getElementById('display-fb-subtotal');
+		const displayTaxTip = document.getElementById('display-tax-tip');
+		const displayRoomCost = document.getElementById('display-room-cost');
+
+		const itemAttendantTotal = document.getElementById('item-attendant-total');
+		const itemFamilyTotal = document.getElementById('item-family-total');
+		const itemOfficiantTotal = document.getElementById('item-officiant-total');
+
+		const btnPrint = document.getElementById('btn-print-timeline');
+		const btnDoc = document.getElementById('btn-export-doc');
+
+		function calculateRehearsal() {
+			const att = parseInt(countAttendants.value, 10) || 0;
+			const plus = parseInt(countPlusOnes.value, 10) || 0;
+			const fam = parseInt(countImmediateFamily.value, 10) || 0;
+			const off = parseInt(countOfficiant.value, 10) || 0;
+			const grand = parseInt(countGrandparents.value, 10) || 0;
+			const outOfTown = parseInt(countOutOfTown.value, 10) || 0;
+
+			const coreSeated = 2 + att + plus + fam + off + grand;
+			let totalSeated = coreSeated;
+			let drinksOnlyCount = 0;
+
+			if (outOfTownMode.value === 'full-dinner') {
+				totalSeated += outOfTown;
+			} else if (outOfTownMode.value === 'drinks-only') {
+				drinksOnlyCount = outOfTown;
+			}
+
+			const perHead = parseFloat(costPerHeadInput.value) || 0;
+			const roomFee = parseFloat(roomFeeInput.value) || 0;
+
+			const foodBarTotal = (totalSeated * perHead) + (drinksOnlyCount * 15);
+			const taxTip = foodBarTotal * 0.28; // 20% tip + 8% tax
+			const grandTotal = foodBarTotal + taxTip + roomFee;
+
+			// Displays
+			displayHeadcountBadge.textContent = `${totalSeated} Seated Guests`;
+			displayGrandTotal.textContent = `$${Math.round(grandTotal).toLocaleString()}`;
+			displayFbSubtotal.textContent = `$${Math.round(foodBarTotal).toLocaleString()}`;
+			displayTaxTip.textContent = `$${Math.round(taxTip).toLocaleString()}`;
+			displayRoomCost.textContent = `$${Math.round(roomFee).toLocaleString()}`;
+
+			itemAttendantTotal.textContent = (att + plus);
+			itemFamilyTotal.textContent = (fam + grand);
+			itemOfficiantTotal.textContent = off;
+		}
+
+		// Preset Selection Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'italian') {
+				costPerHeadInput.value = 75;
+				roomFeeInput.value = 350;
+			} else if (p === 'brewery') {
+				costPerHeadInput.value = 45;
+				roomFeeInput.value = 150;
+			} else if (p === 'steakhouse') {
+				costPerHeadInput.value = 125;
+				roomFeeInput.value = 600;
+			} else if (p === 'taco') {
+				costPerHeadInput.value = 35;
+				roomFeeInput.value = 0;
+			}
+			calculateRehearsal();
+		});
+
+		// Live Listeners
+		[countAttendants, countPlusOnes, countImmediateFamily, countOfficiant, countGrandparents, countOutOfTown, outOfTownMode, costPerHeadInput, roomFeeInput].forEach(inp => {
+			inp.addEventListener('input', calculateRehearsal);
+			inp.addEventListener('change', calculateRehearsal);
+		});
+
+		// Print Itinerary & Roster
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Rehearsal Dinner Timeline & Roster — Manage.Wedding</title>
+					<style>
+						@page { size: 8.5in 11in; margin: 0.5in; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 20pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 20px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Rehearsal Dinner Plan & Schedule</h1>
+					<p>Total Seated Guests: ${displayHeadcountBadge.textContent} | Total Budget: ${displayGrandTotal.textContent}</p>
+					
+					<h2>Guest Count Breakdown</h2>
+					<table>
+						<thead><tr><th>Category</th><th>Count</th></tr></thead>
+						<tbody>
+							<tr><td>The Couple</td><td>2</td></tr>
+							<tr><td>Bridal Party & Partners</td><td>${itemAttendantTotal.textContent}</td></tr>
+							<tr><td>Parents, Siblings & Grandparents</td><td>${itemFamilyTotal.textContent}</td></tr>
+							<tr><td>Officiant & Readers</td><td>${itemOfficiantTotal.textContent}</td></tr>
+							<tr class="total-row"><td>TOTAL SEATED GUESTS</td><td>${displayHeadcountBadge.textContent}</td></tr>
+						</tbody>
+					</table>
+
+					<h2>Rehearsal Night Itinerary</h2>
+					<ul>
+						<li><strong>5:00 PM:</strong> Ceremony Rehearsal at Venue</li>
+						<li><strong>6:00 PM:</strong> Cocktail Mingling at Restaurant</li>
+						<li><strong>6:45 PM:</strong> Seated Dinner & Welcome Toast</li>
+						<li><strong>7:45 PM:</strong> Speeches & Bridal Party Gifts</li>
+						<li><strong>8:30 PM:</strong> Welcome Drinks & Dessert Mixer</li>
+						<li><strong>9:30 PM:</strong> Event Concludes</li>
+					</ul>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Export Word Doc
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Rehearsal Dinner Plan</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Rehearsal Dinner Plan</h2>
+					<p>Seated Headcount: ${displayHeadcountBadge.textContent} | <strong>Total Budget: ${displayGrandTotal.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Category</th><th>Details</th></tr></thead>
+						<tbody>
+							<tr><td>Food & Bar Spend</td><td>${displayFbSubtotal.textContent}</td></tr>
+							<tr><td>Tax & Gratuity (28%)</td><td>${displayTaxTip.textContent}</td></tr>
+							<tr><td>Private Room Fee</td><td>${displayRoomCost.textContent}</td></tr>
+							<tr style="font-weight:bold; background-color:#eee;"><td>TOTAL</td><td>${displayGrandTotal.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'rehearsal-dinner-plan.doc';
+			link.click();
+		});
+
+		// Initial Calculation
+		calculateRehearsal();
+	</script>
+</Layout>
