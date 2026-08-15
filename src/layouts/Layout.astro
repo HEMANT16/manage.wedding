@@ -8,6 +8,7 @@ export interface Props {
 }
 
 const { title, description, schema } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://manage.wedding');
 ---
 
 <!doctype html>
@@ -16,9 +17,24 @@ const { title, description, schema } = Astro.props;
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="canonical" href={canonicalURL} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+
+		<!-- OpenGraph / Facebook Social Sharing -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content="https://manage.wedding/images/calculator_sketch.webp" />
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={canonicalURL} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content="https://manage.wedding/images/calculator_sketch.webp" />
 		
 		{schema && (
 			<script type="application/ld+json" set:html={JSON.stringify(schema)} />
@@ -35,10 +51,13 @@ const { title, description, schema } = Astro.props;
 			<!-- Desktop Navigation Links -->
 			<div class="nav-links-desktop">
 				<a href="/">All Tools</a>
-				<a href="/#budgeting-finance">Budgeting</a>
-				<a href="/#drinks-bar">Bar & Drinks</a>
+				<a href="/#budgeting">Budgeting</a>
+				<a href="/#food-beverage">Bar & Food</a>
+				<a href="/#guest-management">Guests</a>
 				<a href="/#creative-extras">Creative</a>
-				<a href="/" class="hand-btn" style="padding: 6px 16px; font-size: 1rem;">Explore 25 Tools</a>
+				<a href="/about">About</a>
+				<a href="/contact">Contact</a>
+				<a href="/" class="hand-btn" style="padding: 6px 16px; font-size: 1rem;">Explore 30+ Tools</a>
 			</div>
 
 			<!-- Mobile Hamburger Button -->
@@ -53,9 +72,9 @@ const { title, description, schema } = Astro.props;
 				<div class="mobile-nav-grid">
 					<a href="/" class="mobile-nav-link">
 						<span>🏠</span>
-						<span>All 25 Calculators & Tools</span>
+						<span>All 30+ Calculators & Tools</span>
 					</a>
-					<a href="/#drinks-bar" class="mobile-nav-link" onclick="closeMobileMenu()">
+					<a href="/#food-beverage" class="mobile-nav-link" onclick="closeMobileMenu()">
 						<span>🍾</span>
 						<span>Food, Drinks & Bar</span>
 					</a>
@@ -63,15 +82,15 @@ const { title, description, schema } = Astro.props;
 						<span>👥</span>
 						<span>Guest Management & Seating</span>
 					</a>
-					<a href="/#planning-logistics" class="mobile-nav-link" onclick="closeMobileMenu()">
+					<a href="/#planning" class="mobile-nav-link" onclick="closeMobileMenu()">
 						<span>📅</span>
 						<span>Planning & Day-Of Logistics</span>
 					</a>
-					<a href="/#budgeting-finance" class="mobile-nav-link" onclick="closeMobileMenu()">
+					<a href="/#budgeting" class="mobile-nav-link" onclick="closeMobileMenu()">
 						<span>💰</span>
 						<span>Budgeting & Cost Estimators</span>
 					</a>
-					<a href="/#stationery-printables" class="mobile-nav-link" onclick="closeMobileMenu()">
+					<a href="/#stationery" class="mobile-nav-link" onclick="closeMobileMenu()">
 						<span>💌</span>
 						<span>Stationery & Table Cards</span>
 					</a>
@@ -82,6 +101,14 @@ const { title, description, schema } = Astro.props;
 					<a href="/#creative-extras" class="mobile-nav-link" onclick="closeMobileMenu()">
 						<span>🎨</span>
 						<span>Creative, Hashtags & Speeches</span>
+					</a>
+					<a href="/about" class="mobile-nav-link" onclick="closeMobileMenu()">
+						<span>💍</span>
+						<span>About Manage.Wedding</span>
+					</a>
+					<a href="/contact" class="mobile-nav-link" onclick="closeMobileMenu()">
+						<span>✉️</span>
+						<span>Contact & Feedback</span>
 					</a>
 				</div>
 			</div>
@@ -129,14 +156,23 @@ const { title, description, schema } = Astro.props;
 
 		<slot />
 
-		<footer style="background-color: var(--muted-paper); padding: 3rem 2rem; border-top: 3px dashed var(--fg-pencil); margin-top: 4rem;">
-			<div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
-				<div class="font-body" style="font-size: 1.2rem; color: var(--fg-pencil); font-weight: bold; transform: rotate(1deg);">
-					Manage.Wedding &copy; 2026
+		<footer style="background-color: var(--muted-paper); padding: 3.5rem 2rem; border-top: 3px dashed var(--fg-pencil); margin-top: 4rem;">
+			<div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+				<div>
+					<a href="/" style="text-decoration: none;">
+						<div class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); font-weight: bold; transform: rotate(-1deg); margin-bottom: 0.25rem;">
+							Manage.Wedding
+						</div>
+					</a>
+					<p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+						100% Free, Local-First Wedding Planning Calculators & Printables &copy; 2026
+					</p>
 				</div>
-				<div class="nav-links" style="display: flex; gap: 2rem;">
-					<a href="/privacy" style="text-decoration: underline; text-decoration-style: wavy; color: var(--fg-pencil);">Privacy Policy</a>
-					<a href="/terms" style="text-decoration: underline; text-decoration-style: wavy; color: var(--fg-pencil);">Terms of Service</a>
+				<div class="nav-links" style="display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.95rem;">
+					<a href="/about" style="text-decoration: underline; text-decoration-style: wavy; color: var(--fg-pencil); font-weight: 500;">About Us</a>
+					<a href="/contact" style="text-decoration: underline; text-decoration-style: wavy; color: var(--fg-pencil); font-weight: 500;">Contact</a>
+					<a href="/privacy" style="text-decoration: underline; text-decoration-style: wavy; color: var(--fg-pencil); font-weight: 500;">Privacy Policy</a>
+					<a href="/terms" style="text-decoration: underline; text-decoration-style: wavy; color: var(--fg-pencil); font-weight: 500;">Terms of Service</a>
 				</div>
 			</div>
 		</footer>
