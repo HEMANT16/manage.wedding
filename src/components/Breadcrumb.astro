@@ -1,0 +1,85 @@
+---
+export interface Props {
+  title: string;
+  category?: 'budget-finance' | 'food-dining' | 'guests-logistics' | 'stationery-creative' | string;
+}
+
+const { title, category = 'budget-finance' } = Astro.props;
+
+interface CategoryMeta {
+  name: string;
+  url: string;
+  icon: string;
+}
+
+const categoryMap: Record<string, CategoryMeta> = {
+  'budget-finance': {
+    name: 'Budget & Finance',
+    url: '/#budget-finance',
+    icon: '💰'
+  },
+  'budget': {
+    name: 'Budget & Finance',
+    url: '/#budget-finance',
+    icon: '💰'
+  },
+  'food-dining': {
+    name: 'Food, Bar & Dining',
+    url: '/#food-dining',
+    icon: '🍾'
+  },
+  'food-beverage': {
+    name: 'Food, Bar & Dining',
+    url: '/#food-dining',
+    icon: '🍾'
+  },
+  'guests-logistics': {
+    name: 'Guests & Logistics',
+    url: '/#guests-logistics',
+    icon: '👥'
+  },
+  'logistics': {
+    name: 'Guests & Logistics',
+    url: '/#guests-logistics',
+    icon: '👥'
+  },
+  'stationery-creative': {
+    name: 'Stationery & Creative',
+    url: '/#stationery-creative',
+    icon: '💌'
+  },
+  'stationery': {
+    name: 'Stationery & Creative',
+    url: '/#stationery-creative',
+    icon: '💌'
+  }
+};
+
+const currentCat = categoryMap[category] || {
+  name: 'All Tools',
+  url: '/#all-tools-section',
+  icon: '✨'
+};
+
+const cleanTitle = title ? title.split(" — ")[0].split(" (")[0].split(" | ")[0].trim() : "Planning Tool";
+---
+
+<nav aria-label="Breadcrumb" class="breadcrumb-trail" style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-body); font-size: 0.88rem; color: var(--text-secondary); margin: 0 auto 1.5rem auto; padding: 0.4rem 0.85rem; background: var(--muted-paper); border: 1.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px var(--fg-pencil); width: fit-content; max-width: 100%; overflow-x: auto; white-space: nowrap;">
+  <a href="/" style="color: var(--fg-pencil); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+    <span>🏠</span>
+    <span>Home</span>
+  </a>
+  
+  <span style="opacity: 0.4; font-size: 0.75rem;">›</span>
+  
+  <a href={currentCat.url} style="color: var(--fg-pencil); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+    <span>{currentCat.icon}</span>
+    <span>{currentCat.name}</span>
+  </a>
+  
+  <span style="opacity: 0.4; font-size: 0.75rem;">›</span>
+  
+  <span style="color: var(--accent-red); font-weight: 700; max-width: 260px; overflow: hidden; text-overflow: ellipsis;" aria-current="page">
+    {cleanTitle}
+  </span>
+</nav>
