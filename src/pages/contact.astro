@@ -6,13 +6,13 @@ const schema = {
   "@type": "ContactPage",
   "name": "Contact Us | Manage.Wedding",
   "url": "https://manage.wedding/contact",
-  "description": "Get in touch with the Manage.Wedding team. Send us tool feedback, feature requests, calculator suggestions, or general wedding planning inquiries."
+  "description": "Get in touch with the Manage.Wedding team. Send us tool feedback, feature requests, calculator suggestions, or general wedding planning inquiries directly to manage.weddingall@gmail.com."
 };
 ---
 
 <Layout 
 	title="Contact Us | Manage.Wedding — Get in Touch"
-	description="Contact Manage.Wedding. Have feedback on a calculator, a bug to report, or an idea for a new wedding planning tool? We'd love to hear from you."
+	description="Contact Manage.Wedding directly at manage.weddingall@gmail.com. Have feedback on a calculator, a bug to report, or an idea for a new wedding planning tool?"
 	schema={schema}
 >
 	<main style="max-width: 1000px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box;">
@@ -26,29 +26,33 @@ const schema = {
 					Contact Manage.Wedding
 				</h1>
 				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto; text-align: center;">
-					Have an idea for a new calculator, feedback on an existing tool, or found a glitch? Drop us a note below!
+					Have an idea for a new calculator, feedback on an existing tool, or a question? Send us a direct message below!
 				</p>
 			</div>
 		</section>
 
 		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
 			
-			<!-- Contact Form Card -->
+			<!-- Direct Contact Form Card -->
 			<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fff;">
-				<h2 class="font-heading" style="font-size: 1.8rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
-					Send Us a Message
+				<h2 class="font-heading" style="font-size: 1.8rem; color: var(--fg-pencil); margin-bottom: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					Send Us a Direct Message
 				</h2>
 				<p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1.5rem; text-align: center;">
-					Fill out the quick form below to open an email draft directly to our team.
+					Messages go straight to our inbox at <strong>manage.weddingall@gmail.com</strong>.
 				</p>
 
 				<form id="contact-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+					<!-- Hidden Honeypot Field for Spam Protection -->
+					<input type="text" name="_honey" id="contact-honey" style="display: none;" tabindex="-1" autocomplete="off" />
+
 					<div>
 						<label class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.35rem;">
-							Your Name
+							Your Name <span style="color: #dc2626;">*</span>
 						</label>
 						<input 
 							type="text" 
+							name="name"
 							id="contact-name" 
 							required 
 							placeholder="e.g., Alex & Jordan" 
@@ -59,10 +63,11 @@ const schema = {
 
 					<div>
 						<label class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.35rem;">
-							Your Email Address
+							Your Email Address <span style="color: #dc2626;">*</span>
 						</label>
 						<input 
 							type="email" 
+							name="email"
 							id="contact-email" 
 							required 
 							placeholder="e.g., couple@example.com" 
@@ -75,8 +80,8 @@ const schema = {
 						<label class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.35rem;">
 							Topic
 						</label>
-						<select id="contact-topic" class="hand-input" style="width: 100%; box-sizing: border-box; background: #fff;">
-							<option value="Tool Feedback">💡 Suggest a New Calculator / Feature</option>
+						<select name="topic" id="contact-topic" class="hand-input" style="width: 100%; box-sizing: border-box; background: #fff;">
+							<option value="Suggest a Tool">💡 Suggest a New Calculator / Feature</option>
 							<option value="Bug Report">🐛 Report a Calculation Glitch / Bug</option>
 							<option value="General Question">💬 General Wedding Planning Question</option>
 							<option value="Partnership / Press">🤝 Media, Press, or Partnership</option>
@@ -86,13 +91,14 @@ const schema = {
 
 					<div>
 						<label class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.35rem;">
-							Message
+							Message <span style="color: #dc2626;">*</span>
 						</label>
 						<textarea 
+							name="message"
 							id="contact-message" 
 							rows="5" 
 							required 
-							placeholder="Tell us what's on your mind, which tool you're using, or what new feature would make your planning easier..." 
+							placeholder="Tell us what's on your mind, which tool you're using, or what new feature would make your wedding planning easier..." 
 							class="hand-input" 
 							style="width: 100%; box-sizing: border-box; resize: vertical; font-family: var(--font-body);"
 						></textarea>
@@ -100,15 +106,30 @@ const schema = {
 
 					<button 
 						type="submit" 
+						id="contact-submit-btn"
 						class="hand-btn" 
-						style="width: 100%; padding: 12px 20px; font-size: 1.15rem; cursor: pointer; margin-top: 0.5rem;"
+						style="width: 100%; padding: 12px 20px; font-size: 1.15rem; cursor: pointer; margin-top: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"
 					>
-						✉️ Send Message
+						<span>✉️</span>
+						<span id="btn-text">Send Message Directly</span>
 					</button>
 				</form>
 
-				<div id="contact-toast" style="display: none; background: #dcfce7; border: 2px solid #16a34a; border-radius: 6px; padding: 1rem; margin-top: 1.5rem; text-align: center; color: #166534; font-weight: bold;">
-					✅ Message draft created! If your email app did not open automatically, reach out to us at <a href="mailto:hello@manage.wedding" style="color: #166534; text-decoration: underline;">hello@manage.wedding</a>.
+				<!-- Success Status Box -->
+				<div id="contact-success" style="display: none; background: #dcfce7; border: 2px solid #16a34a; border-radius: 6px; padding: 1.25rem; margin-top: 1.5rem; text-align: center; color: #166534;">
+					<div style="font-size: 1.8rem; margin-bottom: 0.25rem;">🎉</div>
+					<strong style="font-size: 1.1rem; display: block; margin-bottom: 0.35rem;">Thank You! Your message was sent successfully.</strong>
+					<p style="margin: 0; font-size: 0.95rem; line-height: 1.4;">
+						It has been delivered straight to <strong>manage.weddingall@gmail.com</strong>. We will review it and get back to you within 24–48 hours!
+					</p>
+				</div>
+
+				<!-- Error Fallback Box -->
+				<div id="contact-error" style="display: none; background: #fee2e2; border: 2px solid #dc2626; border-radius: 6px; padding: 1.25rem; margin-top: 1.5rem; text-align: center; color: #991b1b;">
+					<strong style="font-size: 1rem; display: block; margin-bottom: 0.35rem;">Could not send message automatically.</strong>
+					<p style="margin: 0; font-size: 0.95rem;">
+						Please email us directly at <a id="error-mailto-link" href="mailto:manage.weddingall@gmail.com" style="color: #991b1b; text-decoration: underline; font-weight: bold;">manage.weddingall@gmail.com</a>.
+					</p>
 				</div>
 			</div>
 
@@ -118,23 +139,31 @@ const schema = {
 				<!-- Direct Channels -->
 				<div class="hand-card" style="padding: 1.75rem; background: var(--bg-paper);">
 					<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin-bottom: 1rem; text-align: center;">
-						Direct Inboxes
+						Direct Inbox & Details
 					</h3>
 					
 					<div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem;">
-						<div style="padding: 0.75rem; background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px;">
-							<strong style="display: block; color: var(--fg-pencil);">💬 General & Support:</strong>
-							<a href="mailto:hello@manage.wedding" style="color: var(--text-color); font-weight: bold; text-decoration: underline;">hello@manage.wedding</a>
+						<div style="padding: 0.85rem; background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px;">
+							<strong style="display: block; color: var(--fg-pencil); margin-bottom: 0.25rem;">📬 Primary Email:</strong>
+							<a href="mailto:manage.weddingall@gmail.com" style="color: var(--fg-pencil); font-weight: bold; text-decoration: underline; font-size: 1.05rem; word-break: break-all;">
+								manage.weddingall@gmail.com
+							</a>
 						</div>
 
-						<div style="padding: 0.75rem; background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px;">
-							<strong style="display: block; color: var(--fg-pencil);">💡 Feature Suggestions:</strong>
-							<a href="mailto:ideas@manage.wedding" style="color: var(--text-color); font-weight: bold; text-decoration: underline;">ideas@manage.wedding</a>
+						<div style="padding: 0.75rem; background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px;">
+							<strong style="display: block; color: var(--fg-pencil);">💡 What to email us for:</strong>
+							<ul style="margin: 0.35rem 0 0 1.25rem; padding: 0; color: #555; font-size: 0.9rem;">
+								<li>Suggestions for new wedding planning calculators</li>
+								<li>Feedback or calculation correction requests</li>
+								<li>Vendor collaboration & partnership inquiries</li>
+							</ul>
 						</div>
 
-						<div style="padding: 0.75rem; background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px;">
-							<strong style="display: block; color: var(--fg-pencil);">🛡️ Privacy & Compliance:</strong>
-							<a href="mailto:privacy@manage.wedding" style="color: var(--text-color); font-weight: bold; text-decoration: underline;">privacy@manage.wedding</a>
+						<div style="padding: 0.75rem; background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px;">
+							<strong style="display: block; color: var(--fg-pencil);">🛡️ Privacy Inquiries:</strong>
+							<p style="margin: 0.25rem 0 0; color: #555; font-size: 0.9rem;">
+								All data rights and privacy requests can also be directed to <a href="mailto:manage.weddingall@gmail.com" style="color: var(--fg-pencil); text-decoration: underline;">manage.weddingall@gmail.com</a>.
+							</p>
 						</div>
 					</div>
 				</div>
@@ -142,10 +171,10 @@ const schema = {
 				<!-- Quick Response Guarantee -->
 				<div class="hand-card" style="padding: 1.5rem; background: #fff;">
 					<h3 class="font-heading" style="font-size: 1.3rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
-						⚡ Response Time
+						⚡ 24–48hr Response Time
 					</h3>
 					<p style="font-size: 0.95rem; color: #555; margin: 0; line-height: 1.5; text-align: center;">
-						We read every message from couples, bridal party members, and wedding coordinators. We typically respond within <strong>24–48 hours</strong>.
+						We personally read every note from couples, bridesmaids, grooms, and wedding professionals.
 					</p>
 				</div>
 
@@ -156,15 +185,15 @@ const schema = {
 					</h3>
 					<details style="margin-bottom: 0.75rem; cursor: pointer;">
 						<summary style="font-weight: bold; color: var(--fg-pencil); font-size: 0.95rem;">Are these tools really 100% free?</summary>
-						<p style="font-size: 0.9rem; color: #555; margin-top: 0.35rem; line-height: 1.4;">Yes! All 30+ calculators and downloadable templates are free for personal wedding planning without hidden fees.</p>
+						<p style="font-size: 0.9rem; color: #555; margin-top: 0.35rem; line-height: 1.4;">Yes! All 30+ calculators and downloadable templates are free for personal wedding planning without paywalls.</p>
 					</details>
 					<details style="margin-bottom: 0.75rem; cursor: pointer;">
-						<summary style="font-weight: bold; color: var(--fg-pencil); font-size: 0.95rem;">Can I request a custom calculator?</summary>
-						<p style="font-size: 0.9rem; color: #555; margin-top: 0.35rem; line-height: 1.4;">Absolutely! Use the form or email <a href="mailto:ideas@manage.wedding">ideas@manage.wedding</a> with what you'd like to see.</p>
+						<summary style="font-weight: bold; color: var(--fg-pencil); font-size: 0.95rem;">Can I request a new calculator?</summary>
+						<p style="font-size: 0.9rem; color: #555; margin-top: 0.35rem; line-height: 1.4;">Yes! Just submit the form above or email <a href="mailto:manage.weddingall@gmail.com">manage.weddingall@gmail.com</a> with the formula or idea you'd like added.</p>
 					</details>
 					<details style="cursor: pointer;">
 						<summary style="font-weight: bold; color: var(--fg-pencil); font-size: 0.95rem;">Do you save my guest list or speeches?</summary>
-						<p style="font-size: 0.9rem; color: #555; margin-top: 0.35rem; line-height: 1.4;">No. Everything runs 100% client-side in your browser storage. We never collect or store your data on remote servers.</p>
+						<p style="font-size: 0.9rem; color: #555; margin-top: 0.35rem; line-height: 1.4;">No. Everything runs 100% client-side in your device's browser memory. We never store your guest list on any remote server.</p>
 					</details>
 				</div>
 
@@ -175,29 +204,83 @@ const schema = {
 	</main>
 
 	<script is:inline>
-		const contactForm = document.getElementById('contact-form');
-		const contactToast = document.getElementById('contact-toast');
+		const form = document.getElementById('contact-form');
+		const submitBtn = document.getElementById('contact-submit-btn');
+		const btnText = document.getElementById('btn-text');
+		const successBox = document.getElementById('contact-success');
+		const errorBox = document.getElementById('contact-error');
+		const errorMailto = document.getElementById('error-mailto-link');
 
-		if (contactForm) {
-			contactForm.addEventListener('submit', (e) => {
+		if (form) {
+			form.addEventListener('submit', async (e) => {
 				e.preventDefault();
-				const name = document.getElementById('contact-name').value;
-				const email = document.getElementById('contact-email').value;
+
+				// Spam honeypot check
+				const honey = document.getElementById('contact-honey').value;
+				if (honey) {
+					console.warn('Bot submission prevented');
+					return;
+				}
+
+				const name = document.getElementById('contact-name').value.trim();
+				const email = document.getElementById('contact-email').value.trim();
 				const topic = document.getElementById('contact-topic').value;
-				const message = document.getElementById('contact-message').value;
+				const message = document.getElementById('contact-message').value.trim();
 
-				const subject = encodeURIComponent(`[Manage.Wedding Contact] ${topic} - from ${name}`);
-				const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nTopic: ${topic}\n\nMessage:\n${message}\n\n---\nSent via Manage.Wedding Contact Form`);
-				
-				const mailtoUrl = `mailto:hello@manage.wedding?subject=${subject}&body=${body}`;
-				
-				// Open user's email client
-				window.location.href = mailtoUrl;
+				if (!name || !email || !message) return;
 
-				// Show visual confirmation toast
-				if (contactToast) {
-					contactToast.style.display = 'block';
-					contactToast.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+				// UI loading state
+				submitBtn.disabled = true;
+				btnText.innerText = 'Sending to manage.weddingall@gmail.com...';
+				if (successBox) successBox.style.display = 'none';
+				if (errorBox) errorBox.style.display = 'none';
+
+				try {
+					// Direct AJAX submission to FormSubmit endpoint configured to your Gmail
+					const response = await fetch('https://formsubmit.co/ajax/manage.weddingall@gmail.com', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Accept': 'application/json'
+						},
+						body: JSON.stringify({
+							name: name,
+							email: email,
+							topic: topic,
+							message: message,
+							_subject: `[Manage.Wedding Contact] ${topic} from ${name}`,
+							_template: 'table'
+						})
+					});
+
+					const result = await response.json();
+
+					if (response.ok || result.success === 'true' || result.message) {
+						// Success!
+						form.reset();
+						submitBtn.style.display = 'none';
+						if (successBox) {
+							successBox.style.display = 'block';
+							successBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+						}
+					} else {
+						throw new Error(result.message || 'Submission failed');
+					}
+				} catch (err) {
+					console.error('Direct submission error:', err);
+					submitBtn.disabled = false;
+					btnText.innerText = 'Send Message Directly';
+					
+					// Setup fallback mailto link
+					const subject = encodeURIComponent(`[Manage.Wedding] ${topic} - from ${name}`);
+					const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nTopic: ${topic}\n\nMessage:\n${message}`);
+					if (errorMailto) {
+						errorMailto.href = `mailto:manage.weddingall@gmail.com?subject=${subject}&body=${body}`;
+					}
+					if (errorBox) {
+						errorBox.style.display = 'block';
+						errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+					}
 				}
 			});
 		}
