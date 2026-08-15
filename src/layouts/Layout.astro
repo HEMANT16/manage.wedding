@@ -9,6 +9,50 @@ export interface Props {
 
 const { title, description, schema } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://manage.wedding');
+
+// Dynamic BreadcrumbList Schema Generation
+const pathname = Astro.url.pathname.replace(/\/$/, "");
+const pageName = title ? title.split(" — ")[0].split(" (")[0].split(" | ")[0].trim() : "Wedding Planning Tool";
+
+const breadcrumbItems = [
+	{
+		"@type": "ListItem",
+		"position": 1,
+		"name": "Home",
+		"item": "https://manage.wedding"
+	}
+];
+
+if (pathname && pathname !== "") {
+	breadcrumbItems.push({
+		"@type": "ListItem",
+		"position": 2,
+		"name": pageName,
+		"item": `https://manage.wedding${pathname}`
+	});
+}
+
+const breadcrumbSchema = {
+	"@type": "BreadcrumbList",
+	"itemListElement": breadcrumbItems
+};
+
+// Merge BreadcrumbList into Schema @graph
+let finalSchema = schema;
+if (finalSchema && (finalSchema as any)["@graph"]) {
+	const hasBreadcrumb = (finalSchema as any)["@graph"].some((item: any) => item["@type"] === "BreadcrumbList");
+	if (!hasBreadcrumb && pathname !== "") {
+		finalSchema = {
+			...finalSchema,
+			"@graph": [...(finalSchema as any)["@graph"], breadcrumbSchema]
+		};
+	}
+} else if (!finalSchema && pathname !== "") {
+	finalSchema = {
+		"@context": "https://schema.org",
+		"@graph": [breadcrumbSchema]
+	};
+}
 ---
 
 <!doctype html>
@@ -16,6 +60,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://manage.w
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -49,8 +94,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://manage.w
 		  gtag('config', 'G-8474QVLWBF');
 		</script>
 		
-		{schema && (
-			<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+		{finalSchema && (
+			<script type="application/ld+json" set:html={JSON.stringify(finalSchema)} />
 		)}
 	</head>
 	<body>

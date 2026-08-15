@@ -1,0 +1,266 @@
+---
+export interface Props {
+  currentPath?: string;
+  category?: 'stationery' | 'food-beverage' | 'budget' | 'logistics' | 'all';
+}
+
+const { currentPath = Astro.url.pathname, category } = Astro.props;
+
+interface ToolItem {
+  title: string;
+  url: string;
+  desc: string;
+  badge: string;
+  icon: string;
+  category: 'stationery' | 'food-beverage' | 'budget' | 'logistics';
+}
+
+const allTools: ToolItem[] = [
+  // Stationery & Print
+  {
+    title: "Envelope Address Formatter",
+    url: "/wedding-envelope-addressing",
+    desc: "Format A7 outer envelopes and A2 RSVP cards with formal doctor and family titles.",
+    badge: "Etiquette & A7",
+    icon: "💌",
+    category: "stationery"
+  },
+  {
+    title: "Invitation Suite Sizer",
+    url: "/wedding-invitation-suite-sizer",
+    desc: "Calculate layered card mat margins, tolerances, and 300 DPI Canva print bleeds.",
+    badge: "300 DPI Specs",
+    icon: "📐",
+    category: "stationery"
+  },
+  {
+    title: "Invitation Postage & Weight",
+    url: "/wedding-invitation-postage-calculator",
+    desc: "Compute paper weight, wax seal fees, square envelopes, and USPS 2026 rates.",
+    badge: "USPS 2026 Rates",
+    icon: "📮",
+    category: "stationery"
+  },
+  {
+    title: "Thank-You Note Generator",
+    url: "/wedding-thank-you-cards",
+    desc: "Generate personalized thank-you wording for cash, honeymoon funds, and registry gifts.",
+    badge: "Cash & Registry",
+    icon: "✍️",
+    category: "stationery"
+  },
+  {
+    title: "Folded Table Place Cards",
+    url: "/table-place-cards",
+    desc: "Generate printable tent place cards with guest names and meal icons.",
+    badge: "Printable PDF",
+    icon: "📇",
+    category: "stationery"
+  },
+  {
+    title: "Reception Menu Maker",
+    url: "/reception-menu-maker",
+    desc: "Design 4x9 DL and 5x7 table menus with luxury fonts, botanical borders, and dietary tags.",
+    badge: "Luxury Fonts",
+    icon: "📜",
+    category: "stationery"
+  },
+
+  // Food, Drinks & Bar
+  {
+    title: "Open Bar Drink Calculator",
+    url: "/wedding-drink-calculator",
+    desc: "Calculate total wine, beer, champagne, and spirit bottles for 50 to 300+ guests.",
+    badge: "Bar Estimator",
+    icon: "🍾",
+    category: "food-beverage"
+  },
+  {
+    title: "Wedding Liquor & Spirits Sizer",
+    url: "/liquor-wedding-calculator",
+    desc: "Exact 750ml vs 1.75L bottle counts for Vodka, Bourbon, Tequila, Gin, and mixers.",
+    badge: "Spirits & Handles",
+    icon: "🍸",
+    category: "food-beverage"
+  },
+  {
+    title: "Wedding Cake Pricing Sizer",
+    url: "/cake-pricing-calculator",
+    desc: "Calculate cost per slice, baker labor hours, ingredient costs, and bakery margins.",
+    badge: "Price Per Slice",
+    icon: "🍰",
+    category: "food-beverage"
+  },
+  {
+    title: "Cake Tier Serving Sizer",
+    url: "/cake-serving-calculator",
+    desc: "Match guest headcounts to stacked round and square cake tier dimensions.",
+    badge: "Tier Sizing",
+    icon: "🎂",
+    category: "food-beverage"
+  },
+  {
+    title: "Catering Cost Estimator",
+    url: "/catering-cost-estimator",
+    desc: "Compare plated dinner vs buffet vs family-style per-head catering budgets.",
+    badge: "Per-Head Budget",
+    icon: "🍽️",
+    category: "food-beverage"
+  },
+
+  // Budget & Finance
+  {
+    title: "Venue True Cost & Fee Sizer",
+    url: "/wedding-venue-cost-calculator",
+    desc: "Uncover $3k–$10k in hidden fees, F&B minimums, and mandatory 22% plus-plus surcharges.",
+    badge: "Plus-Plus (++) Math",
+    icon: "🏰",
+    category: "budget"
+  },
+  {
+    title: "Who Pays for What? Splitter",
+    url: "/who-pays-for-what-wedding",
+    desc: "Compare 1950s traditional etiquette against modern 3-way blended family contributions.",
+    badge: "1950s vs Modern",
+    icon: "👥",
+    category: "budget"
+  },
+  {
+    title: "Bachelorette Party Budget Splitter",
+    url: "/bachelorette-budget-calculator",
+    desc: "Calculate per-bridesmaid costs for Airbnb and dining while covering the bride's share.",
+    badge: "Cover the Bride",
+    icon: "👰",
+    category: "budget"
+  },
+  {
+    title: "Master Budget Allocator",
+    url: "/master-budget-calculator",
+    desc: "Break down your total budget into realistic percentage milestones.",
+    badge: "Percentage Splits",
+    icon: "💰",
+    category: "budget"
+  },
+  {
+    title: "Vendor Gratuity Calculator",
+    url: "/vendor-tipping-calculator",
+    desc: "Standard tipping etiquette and envelopes for DJs, photographers, and hair/makeup.",
+    badge: "Tip Envelopes",
+    icon: "💵",
+    category: "budget"
+  },
+
+  // Logistics & Seating
+  {
+    title: "Floor Plan & Dance Floor Sizer",
+    url: "/seating-clearance-calculator",
+    desc: "Calculate dance floor square footage, 60\" table counts, and 60-inch server clearances.",
+    badge: "Floor Plan Sizer",
+    icon: "🕺",
+    category: "logistics"
+  },
+  {
+    title: "Processional Ceremony Builder",
+    url: "/wedding-processional-order",
+    desc: "Build customized ceremony walking lineups for Christian, Jewish, Catholic, and LGBTQ+ vows.",
+    badge: "Ceremony Lineup",
+    icon: "⛪",
+    category: "logistics"
+  },
+  {
+    title: "Rehearsal Dinner Planner",
+    url: "/rehearsal-dinner-planner",
+    desc: "Manage rehearsal guest headcounts, out-of-towners, and minute-by-minute schedules.",
+    badge: "Rehearsal Timeline",
+    icon: "🍷",
+    category: "logistics"
+  },
+  {
+    title: "Day-of Timeline Generator",
+    url: "/day-of-timeline-generator",
+    desc: "Build a minute-by-minute vendor itinerary from morning hair/makeup to grand sparkler exit.",
+    badge: "Master Itinerary",
+    icon: "⏱️",
+    category: "logistics"
+  },
+  {
+    title: "Seating Chart Maker",
+    url: "/seating-chart-maker",
+    desc: "Drag-and-drop table layouts with instant guest assignment and printable seating cards.",
+    badge: "Drag & Drop",
+    icon: "🪑",
+    category: "logistics"
+  }
+];
+
+// Clean path comparison
+const cleanCurrent = currentPath.replace(/\/$/, "");
+
+// Filter out current tool
+let filtered = allTools.filter(t => t.url !== cleanCurrent);
+
+// If category specified or inferrable
+if (category && category !== 'all') {
+  filtered = filtered.filter(t => t.category === category);
+} else {
+  // Infer category from current path
+  const currentTool = allTools.find(t => t.url === cleanCurrent);
+  if (currentTool) {
+    const sameCat = filtered.filter(t => t.category === currentTool.category);
+    const otherCat = filtered.filter(t => t.category !== currentTool.category);
+    filtered = [...sameCat, ...otherCat];
+  }
+}
+
+// Take top 3 or 4 relevant tools
+const displayedTools = filtered.slice(0, 3);
+---
+
+<section style="margin: 3.5rem auto; padding: 2.5rem 1.5rem; background: var(--bg-paper); border: 2.5px solid var(--fg-pencil); border-radius: 8px; box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+  <div class="tape" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);"></div>
+
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">
+      Keep Planning
+    </span>
+    <h2 class="font-heading" style="font-size: clamp(1.6rem, 3.5vw, 2.3rem); color: var(--fg-pencil); margin: 0.25rem 0 0.4rem 0;">
+      Recommended Next Steps & Related Tools
+    </h2>
+    <p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto;">
+      Every calculation stays 100% free, private in your browser, and instantly exportable to PDF/Word.
+    </p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+    {displayedTools.map(tool => (
+      <a href={tool.url} style="text-decoration: none; color: inherit; display: flex;">
+        <div class="hand-card" style="padding: 1.5rem; width: 100%; display: flex; flex-direction: column; justify-content: space-between; background: #fff; border: 2px solid var(--fg-pencil); transition: transform 0.2s, box-shadow 0.2s;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span style="font-size: 2rem;">{tool.icon}</span>
+              <span style="font-size: 0.78rem; font-weight: 700; background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 2px 7px; border-radius: 4px;">
+                {tool.badge}
+              </span>
+            </div>
+            <h3 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.5rem 0; line-height: 1.25;">
+              {tool.title}
+            </h3>
+            <p class="font-body" style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin: 0 0 1rem 0;">
+              {tool.desc}
+            </p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.92rem; font-weight: 700; color: var(--accent-blue);">
+            <span>Launch Free Tool</span>
+            <span>→</span>
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <div style="text-align: center; margin-top: 1.75rem;">
+    <a href="/new-tools" style="font-size: 0.95rem; font-weight: 700; color: var(--fg-pencil); text-decoration: underline;">
+      ✨ Explore All 10 New 2026 Wedding Planning Tools →
+    </a>
+  </div>
+</section>
