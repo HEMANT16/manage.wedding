@@ -1,0 +1,614 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/bachelorette-budget-calculator/#webapp",
+      "name": "Bachelorette Party Budget & Expense Splitter",
+      "url": "https://manage.wedding/bachelorette-budget-calculator",
+      "description": "Free bachelorette party budget calculator and expense splitter. Calculates exact per-bridesmaid costs for Airbnb, dining, decor, and activities while covering the bride's share. Export WhatsApp Venmo payment requests.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Split Bachelorette Party Expenses Fairly",
+      "description": "Step-by-step etiquette guide for maids of honor to budget and split bachelorette trip costs.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Step 1: Set Total Headcount & Cover the Bride",
+          "text": "Count total attendees and decide whether the bridal party will split the bride's lodging, meals, and activities evenly (standard N-1 split)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 2: Aggregate Fixed Shared Costs",
+          "text": "Calculate non-negotiable shared expenses: Airbnb/hotel total, airport rental cars/shuttles, theme decorations, and grocery haul."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 3: Estimate Variable Dining & Excursions",
+          "text": "Input group dinners, brunch reservations, boat charters, wine tours, and pool day passes."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 4: Collect Upfront Deposit via Venmo",
+          "text": "Send a transparent itemized payment schedule: collect 50% upfront to lock the Airbnb, and the remaining balance 2 weeks before the trip."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Who traditionally pays for the bride's bachelorette expenses?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In modern bachelorette etiquette, the bridesmaids and attendees collectively cover the bride's share of group lodging (Airbnb), decorations, groceries, and celebratory drinks. The bride traditionally pays for her own personal flights/travel and personal wardrobe."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does the average bachelorette party cost per person?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The average domestic destination bachelorette party (e.g. Nashville, Scottsdale, Miami) costs between $750 and $1,400 per bridesmaid, including lodging, food, drinks, activities, and covering the bride. Local staycations average $250 to $450 per person."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When should the Maid of Honor collect bachelorette money?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Collect the first payment (50% deposit for Airbnb and major excursions) 3 to 6 months in advance when booking lodging. Collect the remaining 50% for groceries, decor, and reservations 2 to 3 weeks before the trip."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you handle someone who cannot afford the bachelorette trip?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Present the estimated budget early and privately. Allow bridesmaids who cannot attend the full trip to join for single events (e.g. just the Saturday dinner), or contribute a smaller flat amount toward the bride's champagne toast."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Bachelorette Party Budget & Expense Splitter (Cover the Bride Calculator)"
+	description="Free bachelorette party budget calculator and expense splitter. Calculates exact per-bridesmaid costs for Airbnb, dining, decor, and activities while covering the bride's share. Export Venmo payment requests."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">2,900+ Monthly Trips Planned</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Bachelorette Budget <span class="accent-italic">& Expense Splitter</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Calculate exact per-person costs for lodging, groceries, theme decor, and group excursions. Automatically comp the bride's share and export formatted Venmo & WhatsApp payment requests in 1-click.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Trip Setup & Expense Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Trip Details & Headcount
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						N-1 Split Engine
+					</span>
+				</div>
+
+				<!-- Destination / Preset Picker -->
+				<div class="form-group">
+					<label class="form-label" for="destination-preset">Destination / Vibe Preset</label>
+					<select id="destination-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="nashville" selected>🤠 Nashville, TN (Last Rodeo / Broadway Bars / $850/person)</option>
+						<option value="scottsdale">🌵 Scottsdale, AZ (Last Splash / Pool Cabana / $950/person)</option>
+						<option value="miami">🪩 Miami, FL (Last Disco / Yacht Charter / $1,250/person)</option>
+						<option value="cabo">🏖️ Cabo / Mexico (All-Inclusive Beach / $1,100/person)</option>
+						<option value="local">🏡 Local Staycation / Cabin Weekend ($350/person)</option>
+						<option value="custom">✏️ Custom Trip Inputs</option>
+					</select>
+				</div>
+
+				<!-- Bride Name & Total Attendees -->
+				<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="bride-name">Bride's Name</label>
+						<input type="text" id="bride-name" class="form-input" value="Sarah" placeholder="e.g. Sarah" />
+					</div>
+					<div>
+						<label class="form-label" for="bridesmaid-count">Paying Attendants</label>
+						<input type="number" id="bridesmaid-count" class="form-input" value="7" min="1" max="30" />
+					</div>
+				</div>
+
+				<!-- Cover the Bride Toggle -->
+				<div class="form-group" style="background: #fffcf5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem;">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 700; font-size: 0.98rem; margin: 0;">
+						<input type="checkbox" id="toggle-cover-bride" checked style="width: 18px; height: 18px;" />
+						<span>Cover Bride's Expenses 100% (Bride Pays $0)</span>
+					</label>
+					<span style="font-size: 0.82rem; color: #64748b; display: block; margin-top: 4px; margin-left: 26px;">
+						Standard etiquette: The 7 bridesmaids divide the total bill equally.
+					</span>
+				</div>
+
+				<!-- Shared Fixed Expenses (Lodging / Transport / Decor) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Shared Group Expenses ($)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="airbnb-total" style="font-size: 0.9rem;">Airbnb / Hotel Total</label>
+							<input type="number" id="airbnb-total" class="form-input" value="2800" min="0" step="100" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="transport-total" style="font-size: 0.9rem;">Party Bus / Ubers</label>
+							<input type="number" id="transport-total" class="form-input" value="450" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="decor-total" style="font-size: 0.9rem;">Theme Decor & Swag</label>
+							<input type="number" id="decor-total" class="form-input" value="350" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="grocery-total" style="font-size: 0.9rem;">House Groceries & Booze</label>
+							<input type="number" id="grocery-total" class="form-input" value="600" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Dining & Group Activities -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Group Dining & Activities ($)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="dining-total" style="font-size: 0.9rem;">Dinners & Brunches</label>
+							<input type="number" id="dining-total" class="form-input" value="1200" min="0" step="100" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="activities-total" style="font-size: 0.9rem;">Boat / Spa / Wine Tour</label>
+							<input type="number" id="activities-total" class="form-input" value="800" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results Card & Venmo Exporter -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Cost Breakdown Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Per-Bridesmaid Total
+						</span>
+						<span id="bride-status-badge" style="font-size: 0.85rem; font-weight: 800; background: #16a34a; color: #fff; padding: 3px 8px; border-radius: 4px;">
+							👰 Sarah Pays: $0
+						</span>
+					</div>
+
+					<div id="display-per-person" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.5rem;">
+						$886
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Total group trip spend: <strong id="display-trip-grand-total" style="color: var(--fg-pencil);">$6,200</strong> across <span id="display-headcount-text">7 paying attendees</span>.
+					</p>
+
+					<!-- Itemized Per-Person Split Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Lodging Share (Airbnb):</span>
+							<strong id="item-lodging-share">$400</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Dining & Groceries:</span>
+							<strong id="item-food-share">$257</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Group Activities & Excursions:</span>
+							<strong id="item-activity-share">$114</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Decor, Swag & Ubers:</span>
+							<strong id="item-decor-share">$115</strong>
+						</div>
+					</div>
+
+					<!-- Payment Schedule Recommendation -->
+					<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem; font-size: 0.9rem; line-height: 1.5;">
+						<strong style="display: block; color: var(--fg-pencil); margin-bottom: 4px;">📅 Suggested 2-Part Payment Schedule:</strong>
+						• <strong>Deposit 1 (Now):</strong> <span id="sched-dep-1" style="font-weight: 700; color: var(--accent-red);">$443</span> (to lock Airbnb & boat)<br />
+						• <strong>Deposit 2 (2 Wks Before):</strong> <span id="sched-dep-2" style="font-weight: 700; color: var(--accent-blue);">$443</span> (groceries & reservations)
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-copy-venmo" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📲</span> Copy WhatsApp / Venmo Request
+						</button>
+						<button id="btn-print-itinerary" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Print Budget (PDF)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Trending Themes Cheat Sheet -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						✨ 5 Top Bachelorette Party Themes (2026 Trends):
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Last Rodeo / Coastal Cowgirl:</strong> Cowgirl boots, fringe, disco hats, espresso martinis (Nashville/Austin).</li>
+						<li><strong>Last Disco / Studio 54:</strong> Sparkles, metallic banners, disco balls, champagne towers (Miami/Vegas).</li>
+						<li><strong>Last Splash / Desert Barbie:</strong> Matching pink swimsuits, cabana pool floats (Scottsdale/Palm Springs).</li>
+						<li><strong>Main Squeeze / Amalfi Coast:</strong> Lemon prints, Aperol spritzes, linen outfits (Summer Lake/Beach).</li>
+						<li><strong>Vows & Vino:</strong> Neutral tones, winery tours, charcuterie boards (Napa/Sonoma/Finger Lakes).</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Bottom Line Up Front (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Quick Rule of Thumb: Bachelorette Budget & Expense Etiquette
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Short on time? Here is the standard per-person bachelorette formula and benchmark averages across top US party destinations.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					💵 The Standard Bachelorette (N-1) Split Formula:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Cost Per Bridesmaid = [Total Airbnb + Groceries + Decor + Activities + Group Dinners] ÷ [Total Attendees − 1 (Bride)] • Bride covers own flights/travel; Bridesmaids split group expenses.
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Destination / Trip Style</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Avg. Cost Per Bridesmaid</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Typical Key Expenses</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Vibe & Best Themes</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Nashville, TN</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$750 – $1,050</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">12 South Airbnb, Broadway Bar Crawl, Tractor Tour</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Last Rodeo, Coastal Cowgirl</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Scottsdale, AZ</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$850 – $1,200</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Pool Villa, Day Club Cabana, Desert Jeep Tour</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Last Splash, Desert Disco</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Miami / South Beach, FL</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$1,100 – $1,600</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Oceanfront Condo, 4-Hour Yacht Charter, Club Tables</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Studio 54, Glam Miami Vice</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Local Staycation / Cabin</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$250 – $450</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Mountain/Lake Airbnb, Charcuterie & Wine, Spa Night</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Camp Bach, Cozy Wine Tour</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					The Complete Bachelorette Party Planning & Money Guide
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Planning a bachelorette party should be fun, not financially stressful. Follow modern etiquette rules, collection cadences, and budget transparency.
+				</p>
+			</div>
+
+			<!-- Section 1: Who Pays for What -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Who Pays for What at a Bachelorette Party?
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Money conversations can be awkward among friends from different financial backgrounds. Establish the payment breakdown before booking anything:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>What the Bridesmaids Pay:</strong> Their own flights/travel, equal share of the Airbnb/hotel, group meals, drinks, decor, and dividing the bride's share of lodging and dinners.</li>
+					<li><strong>What the Bride Pays:</strong> Her personal flights/travel, personal outfits, and optionally treating the group to a round of drinks or a welcome lunch.</li>
+					<li><strong>The Golden Rule:</strong> The Maid of Honor should send an anonymous budget survey (e.g. Google Form) with budget ranges ($500, $800, $1,200+) before selecting destinations!</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: Collection Schedule -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. How to Collect Money Without Chasing Friends
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Never front $4,000 on your personal credit card without collecting deposits upfront:
+				</p>
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-size: 0.98rem; line-height: 1.6; color: var(--fg-pencil);">
+					<strong>📲 Venmo / Splitwise Best Practices:</strong><br />
+					• <strong>Phase 1 (Lodging Lock):</strong> Collect the Airbnb deposit 4 to 6 months in advance. Anyone who has not paid the deposit is not counted in the room count.<br />
+					• <strong>Phase 2 (Final Balance):</strong> Collect the remaining balance for groceries, party bus, and reservations 2 weeks prior.<br />
+					• <strong>On-Trip Expenses:</strong> Use the <em>Splitwise</em> app to log spontaneous cocktail rounds and coffee runs without endless Venmo requests.
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Does the bride pay for her own bachelorette party?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						The bride typically covers her own flight/travel and personal clothing. The bridal party collectively covers her share of the Airbnb, meals, drinks, and group activities.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">How much should a bridesmaid expect to spend on a bachelorette trip?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Destination trips average $750 to $1,400 per person. Local weekend trips average $250 to $450.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">What if a bridesmaid cannot afford the bachelorette party?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						It is completely acceptable for a bridesmaid to decline a destination trip due to finances. Offer alternative ways for her to celebrate, such as attending local wedding shower events.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('destination-preset');
+		const brideNameInput = document.getElementById('bride-name');
+		const bridesmaidCountInput = document.getElementById('bridesmaid-count');
+		const toggleCoverBride = document.getElementById('toggle-cover-bride');
+
+		const airbnbInput = document.getElementById('airbnb-total');
+		const transportInput = document.getElementById('transport-total');
+		const decorInput = document.getElementById('decor-total');
+		const groceryInput = document.getElementById('grocery-total');
+		const diningInput = document.getElementById('dining-total');
+		const activitiesInput = document.getElementById('activities-total');
+
+		const displayPerPerson = document.getElementById('display-per-person');
+		const displayGrandTotal = document.getElementById('display-trip-grand-total');
+		const displayHeadcountText = document.getElementById('display-headcount-text');
+		const brideStatusBadge = document.getElementById('bride-status-badge');
+
+		const itemLodgingShare = document.getElementById('item-lodging-share');
+		const itemFoodShare = document.getElementById('item-food-share');
+		const itemActivityShare = document.getElementById('item-activity-share');
+		const itemDecorShare = document.getElementById('item-decor-share');
+		const schedDep1 = document.getElementById('sched-dep-1');
+		const schedDep2 = document.getElementById('sched-dep-2');
+
+		const btnCopyVenmo = document.getElementById('btn-copy-venmo');
+		const btnPrint = document.getElementById('btn-print-itinerary');
+
+		function calculateBachelorette() {
+			const bridesmaids = parseInt(bridesmaidCountInput.value, 10) || 1;
+			const coverBride = toggleCoverBride.checked;
+			const bride = brideNameInput.value.trim() || 'Sarah';
+
+			const lodging = parseFloat(airbnbInput.value) || 0;
+			const transport = parseFloat(transportInput.value) || 0;
+			const decor = parseFloat(decorInput.value) || 0;
+			const groceries = parseFloat(groceryInput.value) || 0;
+			const dining = parseFloat(diningInput.value) || 0;
+			const activities = parseFloat(activitiesInput.value) || 0;
+
+			const grandTotal = lodging + transport + decor + groceries + dining + activities;
+			const payingCount = coverBride ? bridesmaids : (bridesmaids + 1);
+
+			const perPersonTotal = grandTotal / payingCount;
+			const lodgingShare = lodging / payingCount;
+			const foodShare = (groceries + dining) / payingCount;
+			const activityShare = activities / payingCount;
+			const decorShare = (decor + transport) / payingCount;
+
+			displayPerPerson.textContent = `$${Math.round(perPersonTotal).toLocaleString()}`;
+			displayGrandTotal.textContent = `$${Math.round(grandTotal).toLocaleString()}`;
+			displayHeadcountText.textContent = `${payingCount} paying attendee${payingCount === 1 ? '' : 's'}`;
+
+			if (coverBride) {
+				brideStatusBadge.textContent = `👰 ${bride} Pays: $0`;
+				brideStatusBadge.style.background = '#16a34a';
+			} else {
+				brideStatusBadge.textContent = `👰 ${bride} Pays Equal Share: $${Math.round(perPersonTotal)}`;
+				brideStatusBadge.style.background = '#0284c7';
+			}
+
+			itemLodgingShare.textContent = `$${Math.round(lodgingShare).toLocaleString()}`;
+			itemFoodShare.textContent = `$${Math.round(foodShare).toLocaleString()}`;
+			itemActivityShare.textContent = `$${Math.round(activityShare).toLocaleString()}`;
+			itemDecorShare.textContent = `$${Math.round(decorShare).toLocaleString()}`;
+
+			const half = Math.round(perPersonTotal / 2);
+			schedDep1.textContent = `$${half.toLocaleString()}`;
+			schedDep2.textContent = `$${(Math.round(perPersonTotal) - half).toLocaleString()}`;
+		}
+
+		// Preset Selection Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'nashville') {
+				airbnbInput.value = 2800;
+				transportInput.value = 450;
+				decorInput.value = 350;
+				groceryInput.value = 600;
+				diningInput.value = 1200;
+				activitiesInput.value = 800;
+			} else if (p === 'scottsdale') {
+				airbnbInput.value = 3400;
+				transportInput.value = 400;
+				decorInput.value = 350;
+				groceryInput.value = 650;
+				diningInput.value = 1400;
+				activitiesInput.value = 900;
+			} else if (p === 'miami') {
+				airbnbInput.value = 4200;
+				transportInput.value = 600;
+				decorInput.value = 400;
+				groceryInput.value = 700;
+				diningInput.value = 1800;
+				activitiesInput.value = 1400; // Yacht charter
+			} else if (p === 'cabo') {
+				airbnbInput.value = 3800;
+				transportInput.value = 500;
+				decorInput.value = 300;
+				groceryInput.value = 500;
+				diningInput.value = 1500;
+				activitiesInput.value = 1100;
+			} else if (p === 'local') {
+				airbnbInput.value = 1200;
+				transportInput.value = 100;
+				decorInput.value = 200;
+				groceryInput.value = 400;
+				diningInput.value = 600;
+				activitiesInput.value = 300;
+			}
+			calculateBachelorette();
+		});
+
+		// Live Listeners
+		[brideNameInput, bridesmaidCountInput, toggleCoverBride, airbnbInput, transportInput, decorInput, groceryInput, diningInput, activitiesInput].forEach(inp => {
+			inp.addEventListener('input', calculateBachelorette);
+			inp.addEventListener('change', calculateBachelorette);
+		});
+
+		// Copy WhatsApp / Venmo Request
+		btnCopyVenmo.addEventListener('click', () => {
+			const bride = brideNameInput.value.trim() || 'Sarah';
+			const perPerson = displayPerPerson.textContent;
+			const dep1 = schedDep1.textContent;
+			const dep2 = schedDep2.textContent;
+
+			let text = `🎉 *${bride}'s Bachelorette Party Budget & Payment Details*\n\n`;
+			text += `Hey everyone! Here is the cost breakdown for ${bride}'s celebration:\n\n`;
+			text += `💰 *Total Per Person:* ${perPerson} (covers ${bride} so she pays $0!)\n\n`;
+			text += `📋 *What This Includes:*\n`;
+			text += `• Airbnb / Lodging: ${itemLodgingShare.textContent}\n`;
+			text += `• Food & Groceries: ${itemFoodShare.textContent}\n`;
+			text += `• Group Activities & Excursions: ${itemActivityShare.textContent}\n`;
+			text += `• Theme Decor & Ubers: ${itemDecorShare.textContent}\n\n`;
+			text += `📅 *Payment Schedule via Venmo:*\n`;
+			text += `1️⃣ Deposit 1 (To lock Airbnb): *${dep1}*\n`;
+			text += `2️⃣ Deposit 2 (2 weeks before trip): *${dep2}*\n\n`;
+			text += `Can't wait to celebrate ${bride}! 🍾✨`;
+
+			navigator.clipboard.writeText(text).then(() => {
+				const orig = btnCopyVenmo.textContent;
+				btnCopyVenmo.textContent = '✅ Copied to Clipboard!';
+				setTimeout(() => { btnCopyVenmo.textContent = orig; }, 2500);
+			});
+		});
+
+		// Print PDF Summary
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Bachelorette Party Budget — Manage.Wedding</title>
+					<style>
+						@page { size: 8.5in 11in; margin: 0.5in; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 20pt; color: #0f172a; margin-bottom: 4px; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 13pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>${brideNameInput.value || 'Sarah'}'s Bachelorette Party Budget</h1>
+					<p>Total Group Spend: ${displayGrandTotal.textContent} | <strong>Cost Per Attendee: ${displayPerPerson.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Expense Category</th><th>Group Total ($)</th><th>Per-Person Share</th></tr></thead>
+						<tbody>
+							<tr><td>Airbnb / Hotel Lodging</td><td>$${airbnbInput.value}</td><td>${itemLodgingShare.textContent}</td></tr>
+							<tr><td>Dining, Brunches & Groceries</td><td>$${parseFloat(groceryInput.value) + parseFloat(diningInput.value)}</td><td>${itemFoodShare.textContent}</td></tr>
+							<tr><td>Group Excursions & Activities</td><td>$${activitiesInput.value}</td><td>${itemActivityShare.textContent}</td></tr>
+							<tr><td>Theme Decor, Swag & Ubers</td><td>$${parseFloat(decorInput.value) + parseFloat(transportInput.value)}</td><td>${itemDecorShare.textContent}</td></tr>
+							<tr class="total-row"><td>TOTAL COST PER BRIDESMAID</td><td>${displayGrandTotal.textContent}</td><td>${displayPerPerson.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Initial Calculation
+		calculateBachelorette();
+	</script>
+</Layout>
