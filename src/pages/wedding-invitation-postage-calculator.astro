@@ -1,0 +1,661 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/wedding-invitation-postage-calculator/#webapp",
+      "name": "Wedding Invitation Postage & Envelope Weight Calculator",
+      "url": "https://manage.wedding/wedding-invitation-postage-calculator",
+      "description": "Calculate exact USPS postage for wedding invitations. Computes paper weight (gsm/lb), wax seals, ribbon ties, square shapes, 1oz vs 2oz rates, and non-machinable stamp surcharges to prevent returned mail.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Calculate Postage for Wedding Invitations",
+      "description": "Step-by-step guide to weighing your invitation suite and buying the correct USPS stamps without getting mail returned.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Step 1: Assemble Complete Invitation Suite Sample",
+          "text": "Place all elements together: outer envelope, inner envelope, main invitation card, details insert, RSVP card, RSVP envelope, vellum jacket, wax seal, and ribbon."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 2: Check for Non-Machinable Triggers",
+          "text": "Determine if your envelope has a wax seal, ribbon knot, acrylic card, or square dimensions (e.g. 6x6). Any of these trigger the mandatory USPS $0.44 non-machinable surcharge."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 3: Weigh at a Kitchen Scale or Postal Office",
+          "text": "If total weight is under 1.00 oz and flat, use a 1-oz Forever Stamp ($0.73). If between 1.01 oz and 2.00 oz, use a 2-oz Stamp ($1.01). If non-machinable, use a 2-oz or Non-Machinable Stamp ($1.17)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 4: Pre-Stamp RSVP Return Envelopes",
+          "text": "Affix a standard 1-oz Forever Stamp ($0.73) or Postcard Stamp ($0.56) to every pre-addressed RSVP return envelope."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How much postage does a standard wedding invitation require?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A standard 1-ounce rectangular wedding invitation (A7 envelope, single-ply 110lb card, RSVP card & envelope) requires one standard USPS Forever Stamp ($0.73). If the suite exceeds 1.00 oz (very common with heavy cardstock or details cards), it requires a 2-oz Forever Stamp ($1.01)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do wax seals require extra postage on wedding invitations?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Wax seals add physical weight (~0.15 oz) and make the envelope rigid and uneven in thickness. USPS classifies wax-sealed envelopes as 'non-machinable' because they jam automated sorting rollers, requiring a non-machinable surcharge ($0.44 extra, totaling $1.17 for a 1-oz letter)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do square wedding envelopes cost more to mail?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "USPS sorting machines require letters to have an aspect ratio (length divided by height) between 1.3 and 2.5. Because square envelopes have an aspect ratio of 1.0, they cannot run through sorting machines and automatically incur the $0.44 non-machinable surcharge."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is USPS hand-canceling and how do you request it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Hand-canceling is when a postal clerk manually presses a date stamp onto your envelope rather than feeding it through high-speed sorting machines with black tire-tread ink rollers. Request hand-canceling at your local post office counter during slow morning hours."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Wedding Invitation Postage & Envelope Weight Calculator (USPS Rates)"
+	description="Calculate exact USPS postage for wedding invitations. Factors in paper weight (gsm/lb), wax seals, ribbon ties, square envelopes, 1oz vs 2oz rates, and non-machinable stamp fees."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Prevent "Returned for Postage" Stamps</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Wedding Invitation <span class="accent-italic">Postage Calculator</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Avoid yellow return stickers! Calculate your exact suite weight in ounces and grams, check for wax seal / square non-machinable fees, and get your exact USPS stamp shopping list.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Suite Component Builder & Weight Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Invitation Suite Components
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						USPS 2026 Rates
+					</span>
+				</div>
+
+				<!-- Suite Preset Picker -->
+				<div class="form-group">
+					<label class="form-label" for="suite-preset">Suite Style Preset</label>
+					<select id="suite-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="classic" selected>💌 Classic 3-Piece Suite (A7 + 110lb Card + RSVP + A2 Envelope / ~0.95 oz)</option>
+						<option value="luxury-wax">👑 Luxury Suite with Wax Seal & Ribbon (220lb Card + Details + Seal / ~1.45 oz)</option>
+						<option value="square">🔲 Square Modern Suite (6x6 Envelope + Double-Thick Card / Non-Machinable)</option>
+						<option value="minimalist">🌿 Minimalist 2-Piece (QR Code RSVP / No Return Envelope / ~0.65 oz)</option>
+						<option value="custom">✏️ Custom Component Inputs</option>
+					</select>
+				</div>
+
+				<!-- Total Households / Invitations Count -->
+				<div class="form-group">
+					<label class="form-label" for="invitation-count">Total Households / Envelopes to Mail</label>
+					<input type="number" id="invitation-count" class="form-input" value="85" min="10" max="500" style="font-size: 1.1rem; font-weight: 700;" />
+				</div>
+
+				<!-- Outer Envelope Style -->
+				<div class="form-group">
+					<label class="form-label" for="outer-envelope-type">Outer Envelope Shape & Size</label>
+					<select id="outer-envelope-type" class="form-input" style="cursor: pointer;">
+						<option value="a7-rect" selected>A7 Rectangular (5.25" × 7.25") — Standard Ratio (0.24 oz)</option>
+						<option value="square-6">Square (6" × 6" or 6.5" × 6.5") — Non-Machinable Trigger (0.32 oz)</option>
+						<option value="a8-rect">A8 / Outer Mailing Envelope (5.5" × 8.125") (0.30 oz)</option>
+					</select>
+				</div>
+
+				<!-- Cardstock Thickness (Main Invitation) -->
+				<div class="form-group">
+					<label class="form-label" for="cardstock-weight">Main 5×7 Invitation Cardstock Weight</label>
+					<select id="cardstock-weight" class="form-input" style="cursor: pointer;">
+						<option value="110lb" selected>Standard Cardstock (110–120 lb / 300 gsm) — 0.35 oz</option>
+						<option value="220lb">Double-Thick Luxe / Cotton (220–240 lb / 600 gsm) — 0.70 oz</option>
+						<option value="acrylic">Acrylic / Lucite Board (1/8" Rigid) — 1.50 oz (Non-Machinable)</option>
+					</select>
+				</div>
+
+				<!-- Additional Inserts (Checkboxes) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Enclosure Inserts & Stationery Add-ons
+					</strong>
+
+					<div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.92rem;">
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-details-card" checked style="width: 18px; height: 18px;" />
+							<span>Details / Reception Insert Card (+0.18 oz)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-rsvp-card" checked style="width: 18px; height: 18px;" />
+							<span>Physical RSVP Card + A2 Return Envelope (+0.32 oz)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-vellum" style="width: 18px; height: 18px;" />
+							<span>Vellum Jacket / Pocket Folder (+0.20 oz)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--accent-red); font-weight: 700;">
+							<input type="checkbox" id="check-wax-seal" style="width: 18px; height: 18px;" />
+							<span>Wax Seal (+0.15 oz + Non-Machinable Surcharge)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--accent-blue); font-weight: 700;">
+							<input type="checkbox" id="check-ribbon" style="width: 18px; height: 18px;" />
+							<span>Silk Ribbon / Twine Bow (+0.12 oz + Non-Machinable)</span>
+						</label>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results, Stamp Shopping List & Non-Machinable Warnings -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Postage Rate & Stamp Recommendation Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Required Stamp per Envelope
+						</span>
+						<span id="stamp-category-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							1-oz Forever Stamp
+						</span>
+					</div>
+
+					<div id="display-rate-per-envelope" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						$0.73
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Total Suite Weight: <strong id="display-total-weight-oz" style="color: var(--fg-pencil);">0.95 oz</strong> (<span id="display-total-weight-g">26.9 grams</span>).
+					</p>
+
+					<!-- Itemized Stamp Shopping List -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<strong style="display: block; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+							📮 Total Postage Shopping List (<span id="shopping-household-count">85</span> Invitations):
+						</strong>
+						
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span id="outer-stamp-desc">85 × Outer Envelope Stamps:</span>
+							<strong id="outer-stamp-cost">$62.05</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span id="rsvp-stamp-desc">85 × RSVP Return Envelope Stamps:</span>
+							<strong id="rsvp-stamp-cost">$62.05</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.5rem 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--accent-red);">
+							<span>TOTAL USPS POSTAGE BUDGET:</span>
+							<strong id="display-grand-total-postage">$124.10</strong>
+						</div>
+					</div>
+
+					<!-- Non-Machinable Flag Alert Box -->
+					<div id="non-machinable-alert" style="display: none; background: #fef2f2; border: 1.5px solid #ef4444; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.88rem; color: #991b1b; line-height: 1.5;">
+						<strong>⚠️ Non-Machinable Surcharge Triggered (+ $0.44/envelope):</strong><br />
+						<span id="non-machinable-reasons">Your suite has a wax seal or square shape. It cannot run through postal sorting wheels and must be processed manually.</span>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-postage" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Print Post Office Sheet (PDF)
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Export Word Doc
+						</button>
+					</div>
+
+				</div>
+
+				<!-- USPS Hand-Canceling Tip Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						💌 How to Get Invitations Hand-Canceled at USPS:
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Never Drop in Blue Outdoor Mailboxes:</strong> Dropping invitations into street collection boxes guarantees they get tossed into high-speed machine sorters.</li>
+						<li><strong>Go in Person on a Tuesday Morning:</strong> Avoid Mondays and lunch hours. Ask the postal clerk politely: <em>"May I please have these hand-canceled so the custom calligraphy isn't smudged?"</em></li>
+						<li><strong>Bring 1 Complete Test Suite:</strong> Have them weigh your exact suite on their digital official scale before purchasing all stamps in bulk.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Bottom Line Up Front (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Quick Rule of Thumb: USPS Wedding Postage Rates & Surcharges
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Short on time? Here is the cheat sheet for USPS letter weights, square fees, and wax seal postage rules.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📬 The Universal USPS Wedding Postage Rule:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Rectangular ≤ 1.00 oz = $0.73 (1 Forever Stamp) • Rectangular 1.01 to 2.00 oz = $1.01 (2-oz Stamp) • Any Wax Seal, Ribbon Knot, or Square Shape = Base Rate + $0.44 Non-Machinable Surcharge ($1.17 – $1.45).
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Invitation Suite Setup</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Total Weight</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Non-Machinable?</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Required USPS Stamp</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Standard 3-Piece (A7 + 110lb + RSVP)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">0.80 – 0.95 oz</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">No (Standard Flat)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">1-oz Forever Stamp ($0.73)</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Luxe Heavy Card (220lb Cotton + Inserts)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">1.10 – 1.40 oz</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">No (Over 1 oz)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">2-oz Forever Stamp ($1.01)</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Wax Seal or Silk Ribbon Suite</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">0.95 – 1.30 oz</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-red);">YES (Rigid / Uneven)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">Non-Machinable Stamp ($1.17)</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Square Envelope (6" × 6")</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">0.85 – 1.20 oz</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-red);">YES (1:1 Ratio)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">Non-Machinable ($1.17 – $1.45)</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					The Complete Wedding Postage & Envelope Mailing Guide
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Everything you need to know about USPS non-machinable surcharges, vintage stamps, and mailing timelines.
+				</p>
+			</div>
+
+			<!-- Section 1: Non-Machinable Explained -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Understanding the USPS Non-Machinable Surcharge ($0.44)
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					USPS sorting facilities use high-speed automated sorting machines that bend letters around tight conveyor rollers at 30,000 envelopes per hour. An envelope is legally deemed <strong>non-machinable</strong> if it:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li>Has an aspect ratio (length divided by height) of less than 1.3 or more than 2.5 (e.g. square envelopes).</li>
+					<li>Contains rigid items like acrylic, wooden invites, keys, or stiff cardboard inserts.</li>
+					<li>Has an uneven thickness greater than 1/4 inch caused by wax seals or ribbon knots.</li>
+					<li>Has addresses printed parallel to the shorter edge of the envelope.</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: Vintage Stamps & RSVP Protocol -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. How to Use Vintage Postage Stamps Legally
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Unused vintage US postage stamps issued after 1861 remain legal tender at their face value. If your suite requires $1.17 in postage, you can curate a combination of vintage 15¢, 22¢, and 33¢ stamps as long as the <strong>sum of their face values equals or exceeds $1.17</strong>.
+				</p>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Do RSVP envelopes need their own stamps?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Yes. Proper wedding etiquette requires the host to pre-address and affix a 1-oz Forever stamp ($0.73) or Postcard stamp ($0.56) to every RSVP return envelope.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">What happens if an invitation has insufficient postage?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						USPS will return the envelope to your return address with a yellow 'Returned for Postage' sticker, or attempt to deliver it to your guest with a 'Postage Due' fee.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">When should wedding invitations be mailed?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Mail domestic invitations 6 to 8 weeks before the wedding (8 to 12 weeks for destination weddings).
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('suite-preset');
+		const invitationCountInput = document.getElementById('invitation-count');
+		const outerEnvSelect = document.getElementById('outer-envelope-type');
+		const cardstockSelect = document.getElementById('cardstock-weight');
+
+		const checkDetails = document.getElementById('check-details-card');
+		const checkRsvp = document.getElementById('check-rsvp-card');
+		const checkVellum = document.getElementById('check-vellum');
+		const checkWax = document.getElementById('check-wax-seal');
+		const checkRibbon = document.getElementById('check-ribbon');
+
+		const displayRate = document.getElementById('display-rate-per-envelope');
+		const stampCategoryBadge = document.getElementById('stamp-category-badge');
+		const displayWeightOz = document.getElementById('display-total-weight-oz');
+		const displayWeightG = document.getElementById('display-total-weight-g');
+
+		const shoppingHouseholdCount = document.getElementById('shopping-household-count');
+		const outerStampDesc = document.getElementById('outer-stamp-desc');
+		const outerStampCost = document.getElementById('outer-stamp-cost');
+		const rsvpStampDesc = document.getElementById('rsvp-stamp-desc');
+		const rsvpStampCost = document.getElementById('rsvp-stamp-cost');
+		const displayGrandTotalPostage = document.getElementById('display-grand-total-postage');
+
+		const nonMachinableAlert = document.getElementById('non-machinable-alert');
+		const nonMachinableReasons = document.getElementById('non-machinable-reasons');
+
+		const btnPrint = document.getElementById('btn-print-postage');
+		const btnDoc = document.getElementById('btn-export-doc');
+
+		function calculatePostage() {
+			const count = parseInt(invitationCountInput.value, 10) || 1;
+			shoppingHouseholdCount.textContent = count;
+
+			// Weight Component Math (ounces)
+			let weight = 0;
+
+			// Outer Envelope
+			if (outerEnvSelect.value === 'a7-rect') weight += 0.24;
+			else if (outerEnvSelect.value === 'square-6') weight += 0.32;
+			else if (outerEnvSelect.value === 'a8-rect') weight += 0.30;
+
+			// Main Card
+			if (cardstockSelect.value === '110lb') weight += 0.35;
+			else if (cardstockSelect.value === '220lb') weight += 0.70;
+			else if (cardstockSelect.value === 'acrylic') weight += 1.50;
+
+			// Inserts
+			if (checkDetails.checked) weight += 0.18;
+			if (checkRsvp.checked) weight += 0.32;
+			if (checkVellum.checked) weight += 0.20;
+			if (checkWax.checked) weight += 0.15;
+			if (checkRibbon.checked) weight += 0.12;
+
+			// Check Non-Machinable Conditions
+			let isNonMachinable = false;
+			const reasons = [];
+
+			if (outerEnvSelect.value === 'square-6') {
+				isNonMachinable = true;
+				reasons.push('Square dimensions (1:1 aspect ratio)');
+			}
+			if (checkWax.checked) {
+				isNonMachinable = true;
+				reasons.push('Wax seal (rigid / uneven thickness > 1/4")');
+			}
+			if (checkRibbon.checked) {
+				isNonMachinable = true;
+				reasons.push('Ribbon/twine knot (uneven surface)');
+			}
+			if (cardstockSelect.value === 'acrylic') {
+				isNonMachinable = true;
+				reasons.push('Rigid acrylic card (cannot bend)');
+			}
+
+			// USPS Rate Calculations (2026 Rates)
+			let outerRate = 0.73; // 1-oz Forever stamp default
+			let stampName = '1-oz Forever Stamp';
+
+			if (weight <= 1.00) {
+				if (isNonMachinable) {
+					outerRate = 0.73 + 0.44; // $1.17
+					stampName = '1-oz Non-Machinable Stamp';
+				} else {
+					outerRate = 0.73;
+					stampName = '1-oz Forever Stamp';
+				}
+			} else if (weight <= 2.00) {
+				if (isNonMachinable) {
+					outerRate = 1.01 + 0.44; // $1.45
+					stampName = '2-oz Non-Machinable Stamp';
+				} else {
+					outerRate = 1.01;
+					stampName = '2-oz Forever Stamp';
+				}
+			} else {
+				// 3-oz tier
+				if (isNonMachinable) {
+					outerRate = 1.29 + 0.44; // $1.73
+					stampName = '3-oz Non-Machinable Stamp';
+				} else {
+					outerRate = 1.29;
+					stampName = '3-oz Forever Stamp';
+				}
+			}
+
+			const rsvpRate = checkRsvp.checked ? 0.73 : 0; // Pre-stamped A2 RSVP envelope
+
+			const totalOuterPostage = outerRate * count;
+			const totalRsvpPostage = rsvpRate * count;
+			const grandTotal = totalOuterPostage + totalRsvpPostage;
+
+			// Update UI
+			displayRate.textContent = `$${outerRate.toFixed(2)}`;
+			stampCategoryBadge.textContent = stampName;
+			displayWeightOz.textContent = `${weight.toFixed(2)} oz`;
+			displayWeightG.textContent = `${(weight * 28.3495).toFixed(1)} grams`;
+
+			outerStampDesc.textContent = `${count} × Outer Envelope (${stampName}):`;
+			outerStampCost.textContent = `$${totalOuterPostage.toFixed(2)}`;
+
+			if (checkRsvp.checked) {
+				rsvpStampDesc.textContent = `${count} × RSVP Return Envelopes (1-oz Forever Stamp):`;
+				rsvpStampCost.textContent = `$${totalRsvpPostage.toFixed(2)}`;
+			} else {
+				rsvpStampDesc.textContent = `0 × RSVP Stamps (Digital/QR RSVP):`;
+				rsvpStampCost.textContent = `$0.00`;
+			}
+
+			displayGrandTotalPostage.textContent = `$${grandTotal.toFixed(2)}`;
+
+			if (isNonMachinable) {
+				nonMachinableAlert.style.display = 'block';
+				nonMachinableReasons.textContent = `Surcharge triggered by: ${reasons.join(', ')}. Must be hand-canceled or mailed with non-machinable postage.`;
+			} else {
+				nonMachinableAlert.style.display = 'none';
+			}
+		}
+
+		// Preset Selector Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'classic') {
+				outerEnvSelect.value = 'a7-rect';
+				cardstockSelect.value = '110lb';
+				checkDetails.checked = true;
+				checkRsvp.checked = true;
+				checkVellum.checked = false;
+				checkWax.checked = false;
+				checkRibbon.checked = false;
+			} else if (p === 'luxury-wax') {
+				outerEnvSelect.value = 'a7-rect';
+				cardstockSelect.value = '220lb';
+				checkDetails.checked = true;
+				checkRsvp.checked = true;
+				checkVellum.checked = true;
+				checkWax.checked = true;
+				checkRibbon.checked = true;
+			} else if (p === 'square') {
+				outerEnvSelect.value = 'square-6';
+				cardstockSelect.value = '220lb';
+				checkDetails.checked = true;
+				checkRsvp.checked = true;
+				checkVellum.checked = false;
+				checkWax.checked = false;
+				checkRibbon.checked = false;
+			} else if (p === 'minimalist') {
+				outerEnvSelect.value = 'a7-rect';
+				cardstockSelect.value = '110lb';
+				checkDetails.checked = false;
+				checkRsvp.checked = false;
+				checkVellum.checked = false;
+				checkWax.checked = false;
+				checkRibbon.checked = false;
+			}
+			calculatePostage();
+		});
+
+		// Live Listeners
+		[invitationCountInput, outerEnvSelect, cardstockSelect, checkDetails, checkRsvp, checkVellum, checkWax, checkRibbon].forEach(inp => {
+			inp.addEventListener('input', calculatePostage);
+			inp.addEventListener('change', calculatePostage);
+		});
+
+		// Print Post Office Sheet
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>USPS Wedding Postage Checklist — Manage.Wedding</title>
+					<style>
+						@page { size: 8.5in 11in; margin: 0.5in; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 20pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>USPS Wedding Invitation Postage Sheet</h1>
+					<p>Total Households: ${invitationCountInput.value} | Calculated Weight: ${displayWeightOz.textContent} (${displayWeightG.textContent})</p>
+					
+					<table>
+						<thead><tr><th>Postage Requirement</th><th>Rate per Piece</th><th>Quantity Needed</th><th>Total Spend ($)</th></tr></thead>
+						<tbody>
+							<tr><td><strong>Outer Envelope Stamps</strong><br /><small>${stampCategoryBadge.textContent}</small></td><td>${displayRate.textContent}</td><td>${invitationCountInput.value}</td><td>${outerStampCost.textContent}</td></tr>
+							<tr><td><strong>RSVP Return Envelopes</strong><br /><small>1-oz Forever Stamp</small></td><td>${checkRsvp.checked ? '$0.73' : '$0.00'}</td><td>${checkRsvp.checked ? invitationCountInput.value : 0}</td><td>${rsvpStampCost.textContent}</td></tr>
+							<tr class="total-row"><td>TOTAL USPS POSTAGE</td><td>—</td><td>—</td><td>${displayGrandTotalPostage.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Export Word Doc
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>USPS Wedding Postage Checklist</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — USPS Postage Checklist</h2>
+					<p>Invitations: ${invitationCountInput.value} | Total Weight: ${displayWeightOz.textContent} | <strong>Total Postage: ${displayGrandTotalPostage.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Item</th><th>Stamp Type</th><th>Total Cost</th></tr></thead>
+						<tbody>
+							<tr><td>Outer Envelopes</td><td>${stampCategoryBadge.textContent} (${displayRate.textContent})</td><td>${outerStampCost.textContent}</td></tr>
+							<tr><td>RSVP Envelopes</td><td>1-oz Forever Stamp</td><td>${rsvpStampCost.textContent}</td></tr>
+							<tr style="font-weight:bold; background-color:#eee;"><td>TOTAL</td><td>—</td><td>${displayGrandTotalPostage.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'wedding-invitation-postage-checklist.doc';
+			link.click();
+		});
+
+		// Initial Calculation
+		calculatePostage();
+	</script>
+</Layout>
