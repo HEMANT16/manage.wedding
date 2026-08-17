@@ -1,10 +1,16 @@
 ---
-export interface Props {
-  title: string;
-  category?: 'budget-finance' | 'food-dining' | 'guests-logistics' | 'stationery-creative' | string;
+export interface BreadcrumbItem {
+  name: string;
+  url?: string;
 }
 
-const { title, category = 'budget-finance' } = Astro.props;
+export interface Props {
+  title?: string;
+  category?: 'budget-finance' | 'food-dining' | 'guests-logistics' | 'stationery-creative' | string;
+  items?: BreadcrumbItem[];
+}
+
+const { title, category = 'budget-finance', items } = Astro.props;
 
 // Dynamic Path & Language Detection
 const pathname = Astro.url.pathname.replace(/\/$/, "");
@@ -85,21 +91,46 @@ const cleanTitle = title ? title.split(" — ")[0].split(" (")[0].split(" | ")[0
 ---
 
 <nav aria-label="Breadcrumb" class="breadcrumb-trail" style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-body); font-size: 0.88rem; color: var(--text-secondary); margin: 0 auto 1.5rem auto; padding: 0.4rem 0.85rem; background: var(--muted-paper); border: 1.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px var(--fg-pencil); width: fit-content; max-width: 100%; overflow-x: auto; white-space: nowrap;">
-  <a href={langPrefix || '/'} style="color: var(--fg-pencil); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
-    <span>🏠</span>
-    <span>{homeNames[currentLang] || "Home"}</span>
-  </a>
-  
-  <span style="opacity: 0.4; font-size: 0.75rem;">›</span>
-  
-  <a href={`${langPrefix}${catPath}`} style="color: var(--fg-pencil); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
-    <span>{catIcon}</span>
-    <span>{localizedCatName}</span>
-  </a>
-  
-  <span style="opacity: 0.4; font-size: 0.75rem;">›</span>
-  
-  <span style="color: var(--accent-red); font-weight: 700; max-width: 280px; overflow: hidden; text-overflow: ellipsis;" aria-current="page">
-    {cleanTitle}
-  </span>
+  {items && items.length > 0 ? (
+    items.map((item, index) => {
+      const isLast = index === items.length - 1;
+      const itemUrl = item.url ? (item.url === '/' ? (langPrefix || '/') : `${langPrefix}${item.url}`) : null;
+      return (
+        <span style="display: inline-flex; align-items: center; gap: 0.5rem;">
+          {index > 0 && <span style="opacity: 0.4; font-size: 0.75rem;">›</span>}
+          {itemUrl && !isLast ? (
+            <a href={itemUrl} style="color: var(--fg-pencil); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+              {index === 0 && <span>🏠</span>}
+              <span>{item.name}</span>
+            </a>
+          ) : (
+            <span style="color: var(--accent-red); font-weight: 700; max-width: 320px; overflow: hidden; text-overflow: ellipsis;" aria-current={isLast ? "page" : undefined}>
+              {index === 0 && <span style="margin-right: 0.25rem;">🏠</span>}
+              {item.name}
+            </span>
+          )}
+        </span>
+      );
+    })
+  ) : (
+    <span style="display: inline-flex; align-items: center; gap: 0.5rem;">
+      <a href={langPrefix || '/'} style="color: var(--fg-pencil); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+        <span>🏠</span>
+        <span>{homeNames[currentLang] || "Home"}</span>
+      </a>
+      
+      <span style="opacity: 0.4; font-size: 0.75rem;">›</span>
+      
+      <a href={`${langPrefix}${catPath}`} style="color: var(--fg-pencil); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+        <span>{catIcon}</span>
+        <span>{localizedCatName}</span>
+      </a>
+      
+      <span style="opacity: 0.4; font-size: 0.75rem;">›</span>
+      
+      <span style="color: var(--accent-red); font-weight: 700; max-width: 280px; overflow: hidden; text-overflow: ellipsis;" aria-current="page">
+        {cleanTitle}
+      </span>
+    </span>
+  )}
 </nav>
