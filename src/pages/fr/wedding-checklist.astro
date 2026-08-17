@@ -1,0 +1,385 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/wedding-checklist/#webapp",
+      "name": "Rétroplanning et Checklist de Mariage sur 12 Mois",
+      "url": "https://manage.wedding/fr/wedding-checklist",
+      "description": "Checklist de mariage interactive sur 12 mois. Suivez vos tâches mois par mois avec sauvegarde automatique dans votre navigateur pour ne rien oublier.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quand commencer à utiliser une checklist de mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'idéal est de commencer son rétroplanning 12 à 14 mois avant la date souhaitée. Ce délai permet de réserver les lieux de réception et prestataires très demandés sans stress."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cette checklist enregistre-t-elle automatiquement ma progression ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui ! Toutes les cases cochées sont enregistrées localement dans votre navigateur. Vous pouvez fermer la page et retrouver votre progression à tout moment."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelles sont les premières choses à réserver pour un mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Les trois priorités absolues sont : définir votre budget maximum, estimer le nombre d'invités et réserver votre lieu de réception (domaine, château, salle)."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Planifier son Mariage sur 12 Mois",
+      "description": "Guide chronologique par étapes pour organiser son mariage de A à Z.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Phase 1 (12+ Mois) : Budget, Lieu & Date",
+          "text": "Fixez le budget global, pré-estimez le nombre d'invités et réservez le domaine de réception."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Phase 2 (9–10 Mois) : Prestataires Clés & Tenues",
+          "text": "Engagez le photographe, le traiteur, le DJ et commencez les essayages de la robe de mariée et du costume."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Phase 3 (6–7 Mois) : Save-the-Date & Fleurs",
+          "text": "Envoyez les Save-the-Date, réservez le fleuriste et commandez les tenues du cortège."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Phase 4 (3–4 Mois) : Faire-Part, Pièce Montée & Alliances",
+          "text": "Commandez et expédiez les faire-part, choisissez les alliances et callez le menu définitif."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Phase 5 (1–2 Mois) : Mairie, Retouches & Plan de Table",
+          "text": "Déposez le dossier en mairie, réalisez l'essayage final et finalisez le plan de table."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Phase 6 (Semaine du Jour J) : Sérénité & Fête",
+          "text": "Mise en place de la décoration, répétition de cérémonie et célébration du grand jour !"
+        }
+      ]
+    }
+  ]
+};
+
+const tasks = [
+  {
+    month: "12 Mois et plus avant",
+    items: [
+      "Définir le budget global du mariage",
+      "Établir une première estimation de la liste d'invités",
+      "Choisir la date ou la période souhaitée",
+      "Trouver et réserver le lieu de réception / domaine",
+      "Engager un(e) Wedding Planner (optionnel)"
+    ]
+  },
+  {
+    month: "10-11 Mois avant",
+    items: [
+      "Choisir les témoins et le cortège d'honneur",
+      "Réserver le photographe et le vidéaste",
+      "Réserver le traiteur et caler les dégustations tests",
+      "Commencer les essayages de la robe de mariée et du costume"
+    ]
+  },
+  {
+    month: "8-9 Mois avant",
+    items: [
+      "Réserver le DJ / groupe de musique",
+      "Prendre contact avec la mairie et l'officiant (cérémonie)",
+      "Créer la liste de mariage ou la cagnotte voyage de noces",
+      "Pré-réserver les hébergements pour les invités proches"
+    ]
+  },
+  {
+    month: "6-7 Mois avant",
+    items: [
+      "Envoyer les Save-the-Date aux invités",
+      "Choisir et réserver le fleuriste / décorateur",
+      "Commander les tenues des demoiselles et garçons d'honneur",
+      "Planifier le voyage de noces (billets et hôtels)"
+    ]
+  },
+  {
+    month: "4-5 Mois avant",
+    items: [
+      "Commander les faire-part de mariage",
+      "Choisir et commander les alliances",
+      "Réserver la coiffeuse et la maquilleuse (HMUA)",
+      "Affiner le menu du traiteur et le vin d'honneur"
+    ]
+  },
+  {
+    month: "3 Mois avant",
+    items: [
+      "Envoyer les faire-part officiels",
+      "Commander la pièce montée / gâteau de mariage",
+      "Réserver le dîner de répétition / veille du mariage",
+      "Acheter les cadeaux d'invités (dragées, bougies, fioles)"
+    ]
+  },
+  {
+    month: "2 Mois avant",
+    items: [
+      "Faire les essais coiffure et maquillage",
+      "Écrire les vœux de mariage et préparer les musiques",
+      "Organiser l'enterrement de vie de célibataire (EVJF / EVG)",
+      "Acheter les accessoires (chaussures, voile, boutons de manchette)"
+    ]
+  },
+  {
+    month: "1 Mois avant",
+    items: [
+      "Déposer le dossier de mariage à la mairie",
+      "Dernier essayage et retouches finales de la robe",
+      "Clôturer les réponses RSVP et concevoir le plan de table",
+      "Finaliser le déroulé minute par minute avec tous les prestataires"
+    ]
+  },
+  {
+    month: "2 Semaines avant",
+    items: [
+      "Transmettre le nombre définitif de convives au traiteur",
+      "Faire le point sur la liste des photos avec le photographe",
+      "Rendez-vous chez le coiffeur (coupe / couleur)"
+    ]
+  },
+  {
+    month: "1 Semaine avant",
+    items: [
+      "Préparer les valises pour le voyage de noces",
+      "Répéter les discours et les vœux à voix haute",
+      "Préparer les enveloppes de pourboires / solde des prestataires",
+      "Soins de beauté et manucure"
+    ]
+  },
+  {
+    month: "La Veille du Mariage",
+    items: [
+      "Répétition de la cérémonie avec le cortège",
+      "Dépôt et mise en place de la décoration sur le domaine",
+      "Dîner convivial avec les proches et bonne nuit de sommeil"
+    ]
+  },
+  {
+    month: "Le Jour J",
+    items: [
+      "Prendre un bon petit-déjeuner équilibré",
+      "Confier les alliances au témoin",
+      "Dire OUI et profiter de chaque instant !"
+    ]
+  }
+];
+---
+
+<Layout 
+	title="Rétroplanning Mariage & Checklist sur 12 Mois (Gratuit) | Manage.Wedding"
+	description="Checklist de mariage complète sur 12 mois. Rétroplanning interactif mois par mois avec sauvegarde automatique pour préparer votre mariage sereinement."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<Breadcrumb title="Checklist & Rétroplanning" category="stationery" />
+		
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Organisation & Rétroplanning</span>
+			<h1 class="font-heading" style="font-size: clamp(2.2rem, 5vw, 3.5rem); margin-bottom: 0.5rem; font-weight: 500;">
+				Checklist de Mariage <span class="accent-italic">sur 12 Mois</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 650px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Gardez le contrôle de votre organisation grâce à notre rétroplanning interactif catégorisé mois par mois. Vos progrès sont automatiquement sauvegardés !
+			</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 900px; margin: 0 auto;">
+            
+			<div class="hand-card result-box" style="margin-bottom: 2rem; padding: 1.5rem; background: #fff;">
+				<h3 class="font-heading" style="margin-bottom: 1rem; text-align: center; font-size: 1.35rem; color: var(--fg-pencil);">Progression Globale</h3>
+				
+                <div style="width: 100%; border: 2.5px solid var(--fg-pencil); height: 32px; position: relative; overflow: hidden; background: var(--bg-paper); border-radius: 4px;">
+                    <div id="progress-bar-fill" style="width: 0%; height: 100%; background-color: var(--accent-red); transition: width 0.3s ease;"></div>
+                    <div id="progress-text" class="font-heading" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">0%</div>
+                </div>
+			</div>
+
+			<div class="hand-card" style="padding: clamp(1.25rem, 3vw, 2rem); background: #fff;">
+				<form id="checklist-form">
+                    {tasks.map((category, catIndex) => (
+                        <div class="checklist-category" style="margin-bottom: 2.25rem;">
+                            <h3 class="font-heading" style="margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; font-size: 1.25rem; color: var(--accent-blue);">
+								📅 {category.month}
+							</h3>
+                            {category.items.map((item, itemIndex) => (
+                                <label style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.65rem; cursor: pointer; font-family: var(--font-body); font-size: 0.98rem; line-height: 1.4;">
+                                    <input 
+                                        type="checkbox" 
+                                        class="task-checkbox" 
+                                        data-id={`task-${catIndex}-${itemIndex}`}
+                                        style="width: 1.2rem; height: 1.2rem; accent-color: var(--accent-red); cursor: pointer;"
+                                    />
+                                    <span>{item}</span>
+                                </label>
+                            ))}
+                        </div>
+                    ))}
+				</form>
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="result-box" style="max-width: 900px; margin: 3rem auto 2.5rem; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); padding: 1.5rem 1.75rem; position: relative;">
+			<div class="badge-postit" style="top: -12px; right: 15px;">⚡ Repères Rétroplanning</div>
+			<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+				<span>⚡</span> Guide Rapide : Les 6 Grandes Phases du Rétroplanning
+			</h3>
+			<p class="font-body" style="font-size: 1rem; line-height: 1.6; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				<strong>La Règle d'Or :</strong> Divisez vos préparatifs en <strong>6 grandes étapes</strong> : <strong>12+ Mois</strong> (Lieu, Budget & Estimation d'Invités), <strong>9–10 Mois</strong> (Prestataires majeurs & Robe), <strong>6–7 Mois</strong> (Save-the-Date & Fleuriste), <strong>3–4 Mois</strong> (Faire-part & Alliances), <strong>1–2 Mois</strong> (Mairie & Plan de table), et <strong>Semaine J</strong> (Mise en place & Sérénité).
+			</p>
+			
+			<!-- Benchmark Milestone Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Phase Clé</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Échéance</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Tâches Incontournables</th>
+							<th style="padding: 0.65rem 0.8rem; font-family: var(--font-heading); color: var(--fg-pencil);">Risque si Retard</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">1. Les Fondations</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">M-12 et +</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Budget max, liste brute, réservation du domaine</td>
+							<td style="padding: 0.6rem 0.8rem; color: var(--accent-red); font-weight: 600;">Les samedis d'été se réservent 12 à 18 mois à l'avance</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">2. Prestataires Majeurs</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">M-9 à M-10</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Photographe, traiteur, DJ, début essayages robe</td>
+							<td style="padding: 0.6rem 0.8rem;">Une robe de créateur demande 6 à 9 mois de confection</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">3. Annonce & Déco</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">M-6 à M-7</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Envoi Save-the-Date, fleuriste, tenues cortège</td>
+							<td style="padding: 0.6rem 0.8rem;">Les invités bloquent d'autres vacances ou les hôtels s'envolent</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">4. Papeterie & Détails</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">M-3 à M-4</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Impression faire-part, gâteau, alliances, essais beauté</td>
+							<td style="padding: 0.6rem 0.8rem;">Surcoûts pour impression en urgence et mise à taille des bagues</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">5. Compte à Rebours</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">M-1 à M-2</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Dossier mairie, clôture RSVP, plan de table</td>
+							<td style="padding: 0.6rem 0.8rem;">Délais légaux de publication des bans</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">6. Semaine du Jour J</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Semaine J</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Mise en place domaine, répétition, enveloppes prestataires</td>
+							<td style="padding: 0.6rem 0.8rem; color: #16a34a; font-weight: 600;">Journée fluide, magique et sans le moindre stress</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Related Planning Tools -->
+		<RelatedTools currentPath="/fr/wedding-checklist" category="stationery" />
+
+	</main>
+</Layout>
+
+<script is:inline>
+	document.addEventListener('DOMContentLoaded', () => {
+		const checkboxes = document.querySelectorAll('.task-checkbox');
+		const progressBarFill = document.getElementById('progress-bar-fill');
+        const progressText = document.getElementById('progress-text');
+        
+        const STORAGE_KEY = 'wedding_checklist_tasks_fr';
+
+        const loadState = () => {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    checkboxes.forEach((cb) => {
+                        if (parsed.includes(cb.dataset.id)) {
+                            cb.checked = true;
+                        }
+                    });
+                } catch(e) {
+                    console.error("Erreur de chargement de la checklist", e);
+                }
+            }
+            updateProgress();
+        };
+
+        const saveState = () => {
+            const checkedIds = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.dataset.id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedIds));
+        };
+
+        const updateProgress = () => {
+            const total = checkboxes.length;
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            
+            if (total === 0) return;
+
+            const percentage = Math.round((checkedCount / total) * 100);
+            
+            if(progressBarFill) {
+                progressBarFill.style.width = `${percentage}%`;
+            }
+            if(progressText) {
+                progressText.textContent = `${percentage}%`;
+            }
+        };
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                saveState();
+                updateProgress();
+            });
+        });
+
+        loadState();
+	});
+</script>

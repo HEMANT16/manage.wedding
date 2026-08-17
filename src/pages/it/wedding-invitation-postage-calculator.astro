@@ -1,0 +1,460 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/wedding-invitation-postage-calculator/#webapp",
+      "name": "Calcolatore Spese di Spedizione & Affrancatura Partecipazioni Nozze",
+      "url": "https://manage.wedding/it/wedding-invitation-postage-calculator",
+      "inLanguage": "it",
+      "description": "Calcola il peso in grammi e i costi di affrancatura postale per spedire le partecipazioni di matrimonio con Poste Italiane (Posta1, Posta4, ceralacca e sovrapprezzo buste quadrate).",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come calcolare l'affrancatura per spedire le partecipazioni di nozze",
+      "description": "Guida per pesare la partecipazione completa, verificare lo spessore del sigillo in ceralacca e acquistare i francobolli corretti.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Assemblare un campione completo della partecipazione",
+          "text": "Unisci busta, cartoncino principale, invito ristorante, talloncino lista nozze, nastro e sigillo in ceralacca."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Verificare il peso complessivo in grammi",
+          "text": "Pesa il campione con una bilancia da cucina di precisione per individuare lo scaglione di peso (0–20g, 21–50g o 51–100g)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Controllare lo spessore per la ceralacca (Smistamento manuale)",
+          "text": "Se la busta supera i 5 mm di spessore a causa della ceralacca o ha forma quadrata, si applica la tariffa per formato extra/voluminoso."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Acquistare i francobolli o etichette Posta1 / Posta4",
+          "text": "Scegli tra Posta1 (con tracciamento dell'esito di consegna) o Posta4 ordinaria."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quanto costa spedire una partecipazione di matrimonio in Italia?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Una busta standard rettangolare sotto i 20 grammi con Posta4 costa circa 1,30 €, mentre con Posta1 (con codice bidimensionale per verificare la consegna) costa circa 2,90 €. Se la partecipazione contiene cartoncini pesanti o ceralacca e supera i 20g o i 5 mm di spessore, il costo varia tra 2,90 € e 4,30 € a busta."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Il sigillo in ceralacca richiede un'affrancatura extra?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sì. Il sigillo in ceralacca aggiunge 4–5 grammi di peso ma soprattutto crea un rilievo rigido superiore a 5 mm. Le macchine smistatrici automatiche delle poste potrebbero rovinare la ceralacca o strappare la busta, richiedendo la lavorazione manuale a tariffa formato speciale."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calcolatore Spese di Spedizione & Affrancatura Partecipazioni Nozze | Manage.Wedding"
+	description="Calcola i costi di spedizione e affrancatura postale per le partecipazioni di nozze in Italia (Poste Italiane Posta1 / Posta4) in base al peso in grammi, ceralacca, buste quadrate ed extra standard."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Calcolatore Affrancatura Partecipazioni" category="stationery" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Tariffe Postali & Peso in Grammi</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Affrancatura & Spedizione <span class="accent-italic">Partecipazioni Nozze</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Evita buste restituite o francobolli insufficienti! Calcola il peso esatto in grammi, i supplementi per ceralacca o buste quadrate e il budget totale di spedizione.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Suite Component Builder & Weight Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Componenti della Partecipazione
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Tariffe Nazionali
+					</span>
+				</div>
+
+				<!-- Suite Preset Picker -->
+				<div class="form-group">
+					<label class="form-label" for="suite-preset">Composizione Predefinita</label>
+					<select id="suite-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="classic" selected>💌 Classica Rettangolare (Busta + Cartoncino 300g + Invito Ristorante / ~18g)</option>
+						<option value="luxury-wax">👑 Suite di Pregio con Ceralacca & Nastro (Cartoncino pesante + Ceralacca / ~32g)</option>
+						<option value="square">🔲 Busta Quadrata 16×16 cm (Formato speciale / Smistamento manuale)</option>
+						<option value="minimalist">🌿 Partecipazione Singola Leggera (Cartoncino unico con QR Code / ~12g)</option>
+						<option value="custom">✏️ Personalizza Singoli Componenti</option>
+					</select>
+				</div>
+
+				<!-- Total Households / Invitations Count -->
+				<div class="form-group">
+					<label class="form-label" for="invitation-count">Numero di Buste / Famiglie da Spedire</label>
+					<input type="number" id="invitation-count" class="form-input" value="60" min="5" max="300" style="font-size: 1.1rem; font-weight: 700;" />
+				</div>
+
+				<!-- Service Type -->
+				<div class="form-group">
+					<label class="form-label" for="postal-service">Servizio Postale Scelto</label>
+					<select id="postal-service" class="form-input" style="cursor: pointer; font-weight: 600;">
+						<option value="posta1" selected>🚀 Posta1 (Veloce 1 giorno lavorativo + Notifica di consegna)</option>
+						<option value="posta4">📬 Posta4 (Posta ordinaria economica 4-6 giorni)</option>
+					</select>
+				</div>
+
+				<!-- Outer Envelope Style -->
+				<div class="form-group">
+					<label class="form-label" for="outer-envelope-type">Formato della Busta Esterna</label>
+					<select id="outer-envelope-type" class="form-input" style="cursor: pointer;">
+						<option value="rect-standard" selected>Busta Rettangolare Classica (13×19 cm o C5) — 7 g</option>
+						<option value="square-16">Busta Quadrata (16×16 cm) — 10 g (Smistamento manuale)</option>
+						<option value="lined-luxe">Busta Foderata / Cartoncino Spesso — 12 g</option>
+					</select>
+				</div>
+
+				<!-- Cardstock Thickness (Main Invitation) -->
+				<div class="form-group">
+					<label class="form-label" for="cardstock-weight">Grammatura Cartoncino Partecipazione</label>
+					<select id="cardstock-weight" class="form-input" style="cursor: pointer;">
+						<option value="300gsm" selected>Cartoncino Standard (300–350 g/m²) — 10 g</option>
+						<option value="600gsm">Cartoncino Doppio Spessore / Carta Cotone 600 g/m² — 20 g</option>
+					</select>
+				</div>
+
+				<!-- Additional Inserts (Checkboxes) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Elementi Aggiuntivi & Sigilli
+					</strong>
+
+					<div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.92rem;">
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-details-card" checked style="width: 18px; height: 18px;" />
+							<span>Cartoncino Invito Ristorante / Ricevimento (+4 g)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-rsvp-card" checked style="width: 18px; height: 18px;" />
+							<span>Talloncino Lista Nozze / IBAN (+3 g)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--accent-red); font-weight: 700;">
+							<input type="checkbox" id="check-wax-seal" style="width: 18px; height: 18px;" />
+							<span>Sigillo in Ceralacca (+5 g + Spessore > 5 mm)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--accent-blue); font-weight: 700;">
+							<input type="checkbox" id="check-ribbon" style="width: 18px; height: 18px;" />
+							<span>Nastro in Seta / Cordino con Nodo (+3 g)</span>
+						</label>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results, Stamp Shopping List & Warnings -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Postage Rate & Stamp Recommendation Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Costo Affrancatura per Busta
+						</span>
+						<span id="stamp-category-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							Posta1 Standard
+						</span>
+					</div>
+
+					<div id="display-rate-per-envelope" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						2,90 €
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Peso stimato singola partecipazione: <strong id="display-total-weight-g" style="color: var(--fg-pencil);">24,0 g</strong>.
+					</p>
+
+					<!-- Itemized Stamp Shopping List -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<strong style="display: block; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+							📮 Riepilogo Spedizione (<span id="shopping-household-count">60</span> Partecipazioni):
+						</strong>
+						
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span id="outer-stamp-desc">60 × Affrancature Postali:</span>
+							<strong id="outer-stamp-cost">174,00 €</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.5rem 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--accent-red);">
+							<span>SPESA TOTALE AFFRANCATURA:</span>
+							<strong id="display-grand-total-postage">174,00 €</strong>
+						</div>
+					</div>
+
+					<!-- Non-Machinable / Wax Seal Warning Box -->
+					<div id="non-machinable-alert" style="display: none; background: #fef2f2; border: 1.5px solid #ef4444; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.88rem; color: #991b1b; line-height: 1.5;">
+						<strong>⚠️ Attenzione a Ceralacca & Buste Quadrate:</strong><br />
+						<span id="non-machinable-reasons">La ceralacca o il formato quadrato richiedono lo smistamento manuale per evitare che la busta venga rovinata nei rulli automatici.</span>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-postage" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Stampa Promemoria Ufficio Postale (PDF)
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Esporta Documento Word
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Post Office Tip Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						💌 Consigli per la Spedizione all'Ufficio Postale:
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Non imbucare nelle cassette rosse esterne:</strong> Porta le buste direttamente allo sportello postale per evitare che vengano piegate.</li>
+						<li><strong>Porta un campione completo:</strong> Fai pesare una busta pilota sulla bilancia digitale dello sportello prima di acquistare tutti i francobolli.</li>
+						<li><strong>Richiedi l'annullo postale manuale:</strong> Chiedi con gentilezza all'impiegato di timbrare a mano per preservare la calligrafia.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- SEO Article -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guida Completa alla Spedizione delle Partecipazioni di Nozze
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Scaglioni di peso, differenze tra Posta1 e Posta4 e tempi di consegna.
+				</p>
+			</div>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Scaglioni di Peso per le Lettere in Italia
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Le tariffe postali variano in base al peso complessivo e allo spessore della busta:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>Fino a 20 grammi:</strong> Busta leggera con partecipazione singola o cartoncino standard.</li>
+					<li><strong>Da 21 a 50 grammi:</strong> Partecipazioni ricche con più cartoncini, mappa, nastrino o ceralacca.</li>
+					<li><strong>Da 51 a 100 grammi:</strong> Buste doppie, partecipazioni a libro o scatoline regalo.</li>
+				</ul>
+			</section>
+		</article>
+
+		<RelatedTools currentPath="/it/wedding-invitation-postage-calculator" category="stationery" />
+	</main>
+</Layout>
+
+<script is:inline>
+	const presetSelect = document.getElementById('suite-preset');
+	const invitationCountInput = document.getElementById('invitation-count');
+	const postalServiceSelect = document.getElementById('postal-service');
+	const outerEnvSelect = document.getElementById('outer-envelope-type');
+	const cardstockSelect = document.getElementById('cardstock-weight');
+
+	const checkDetails = document.getElementById('check-details-card');
+	const checkRsvp = document.getElementById('check-rsvp-card');
+	const checkWax = document.getElementById('check-wax-seal');
+	const checkRibbon = document.getElementById('check-ribbon');
+
+	const displayRate = document.getElementById('display-rate-per-envelope');
+	const stampCategoryBadge = document.getElementById('stamp-category-badge');
+	const displayWeightG = document.getElementById('display-total-weight-g');
+
+	const shoppingHouseholdCount = document.getElementById('shopping-household-count');
+	const outerStampDesc = document.getElementById('outer-stamp-desc');
+	const outerStampCost = document.getElementById('outer-stamp-cost');
+	const displayGrandTotalPostage = document.getElementById('display-grand-total-postage');
+
+	const nonMachinableAlert = document.getElementById('non-machinable-alert');
+	const nonMachinableReasons = document.getElementById('non-machinable-reasons');
+
+	const btnPrint = document.getElementById('btn-print-postage');
+	const btnDoc = document.getElementById('btn-export-doc');
+
+	function calculatePostage() {
+		const count = parseInt(invitationCountInput.value, 10) || 1;
+		shoppingHouseholdCount.textContent = count;
+
+		let weightG = 0;
+
+		if (outerEnvSelect.value === 'rect-standard') weightG += 7;
+		else if (outerEnvSelect.value === 'square-16') weightG += 10;
+		else if (outerEnvSelect.value === 'lined-luxe') weightG += 12;
+
+		if (cardstockSelect.value === '300gsm') weightG += 10;
+		else if (cardstockSelect.value === '600gsm') weightG += 20;
+
+		if (checkDetails.checked) weightG += 4;
+		if (checkRsvp.checked) weightG += 3;
+		if (checkWax.checked) weightG += 5;
+		if (checkRibbon.checked) weightG += 3;
+
+		let isSpecialFormat = false;
+		const reasons = [];
+
+		if (outerEnvSelect.value === 'square-16') {
+			isSpecialFormat = true;
+			reasons.push('Formato quadrato');
+		}
+		if (checkWax.checked) {
+			isSpecialFormat = true;
+			reasons.push('Sigillo in ceralacca (spessore > 5 mm)');
+		}
+		if (checkRibbon.checked) {
+			isSpecialFormat = true;
+			reasons.push('Nastro / cordoncino con spessore');
+		}
+
+		const service = postalServiceSelect.value;
+		let rate = 2.90;
+		let badgeText = 'Posta1 Standard';
+
+		if (service === 'posta4') {
+			if (weightG <= 20 && !isSpecialFormat) {
+				rate = 1.30;
+				badgeText = 'Posta4 (fino a 20g)';
+			} else if (weightG <= 50) {
+				rate = 2.90;
+				badgeText = 'Posta4 (21–50g / Extra)';
+			} else {
+				rate = 3.30;
+				badgeText = 'Posta4 (51–100g)';
+			}
+		} else {
+			// Posta1
+			if (weightG <= 100 && !isSpecialFormat) {
+				rate = 2.90;
+				badgeText = 'Posta1 Standard (fino a 100g)';
+			} else {
+				rate = 4.30;
+				badgeText = 'Posta1 Formato Extra / Ceralacca';
+			}
+		}
+
+		const grandTotal = rate * count;
+
+		displayRate.textContent = `${rate.toFixed(2).replace('.', ',')} €`;
+		stampCategoryBadge.textContent = badgeText;
+		displayWeightG.textContent = `${weightG.toFixed(1)} g`;
+
+		outerStampDesc.textContent = `${count} × Buste (${badgeText}):`;
+		outerStampCost.textContent = `${grandTotal.toFixed(2).replace('.', ',')} €`;
+		displayGrandTotalPostage.textContent = `${grandTotal.toFixed(2).replace('.', ',')} €`;
+
+		if (isSpecialFormat) {
+			nonMachinableAlert.style.display = 'block';
+			nonMachinableReasons.textContent = `Caratteristiche speciali rilevate: ${reasons.join(', ')}. Raccomandata la consegna a mano allo sportello postale.`;
+		} else {
+			nonMachinableAlert.style.display = 'none';
+		}
+	}
+
+	presetSelect.addEventListener('change', () => {
+		const p = presetSelect.value;
+		if (p === 'classic') {
+			outerEnvSelect.value = 'rect-standard';
+			cardstockSelect.value = '300gsm';
+			checkDetails.checked = true;
+			checkRsvp.checked = true;
+			checkWax.checked = false;
+			checkRibbon.checked = false;
+		} else if (p === 'luxury-wax') {
+			outerEnvSelect.value = 'rect-standard';
+			cardstockSelect.value = '600gsm';
+			checkDetails.checked = true;
+			checkRsvp.checked = true;
+			checkWax.checked = true;
+			checkRibbon.checked = true;
+		} else if (p === 'square') {
+			outerEnvSelect.value = 'square-16';
+			cardstockSelect.value = '300gsm';
+			checkDetails.checked = true;
+			checkRsvp.checked = true;
+			checkWax.checked = false;
+			checkRibbon.checked = false;
+		} else if (p === 'minimalist') {
+			outerEnvSelect.value = 'rect-standard';
+			cardstockSelect.value = '300gsm';
+			checkDetails.checked = false;
+			checkRsvp.checked = false;
+			checkWax.checked = false;
+			checkRibbon.checked = false;
+		}
+		calculatePostage();
+	});
+
+	[invitationCountInput, postalServiceSelect, outerEnvSelect, cardstockSelect, checkDetails, checkRsvp, checkWax, checkRibbon].forEach(inp => {
+		inp.addEventListener('input', calculatePostage);
+		inp.addEventListener('change', calculatePostage);
+	});
+
+	btnPrint.addEventListener('click', () => window.print());
+
+	btnDoc.addEventListener('click', () => {
+		const content = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset="utf-8"><title>Preventivo Affrancatura Nozze</title></head>
+			<body style="font-family: Arial, sans-serif; padding: 20px;">
+				<h2>Manage.Wedding — Preventivo Spedizione Partecipazioni</h2>
+				<p>Numero buste: ${invitationCountInput.value} | Peso stimato: ${displayWeightG.textContent} | <strong>Spesa Totale: ${displayGrandTotalPostage.textContent}</strong></p>
+				<table border="1" style="width:100%; border-collapse:collapse;">
+					<tr><th>Tipologia Servizio</th><th>Costo Unitario</th><th>Totale</th></tr>
+					<tr><td>${stampCategoryBadge.textContent}</td><td>${displayRate.textContent}</td><td>${displayGrandTotalPostage.textContent}</td></tr>
+				</table>
+			</body></html>
+		`;
+		const blob = new Blob(['\ufeff', content], { type: 'application/msword' });
+		const link = document.createElement('a');
+		link.href = URL.createObjectURL(blob);
+		link.download = 'preventivo-affrancatura-nozze.doc';
+		link.click();
+	});
+
+	calculatePostage();
+</script>

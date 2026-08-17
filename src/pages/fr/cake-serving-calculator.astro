@@ -1,0 +1,985 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/cake-serving-calculator/#webapp",
+      "name": "Calculateur de Parts de Gâteau de Mariage et Pièce Montée",
+      "url": "https://manage.wedding/fr/cake-serving-calculator",
+      "description": "Calculateur gratuit de parts de gâteau de mariage (Wedding cake et pièce montée). Calculez le nombre d'étages, les diamètres en cm, les portions rondes vs carrées et l'astuce du gâteau d'office en cuisine. Visuel 3D et guide de découpe.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Calculer les Parts et Dimensions d'un Gâteau de Mariage",
+      "description": "Guide pratique pour dimensionner les étages d'un wedding cake ou d'une pièce montée selon votre nombre d'invités.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Choisir la Forme et le Style du Gâteau",
+          "text": "Sélectionnez des étages ronds (traditionnels) ou carrés (découpe en grille offrant ~25% de parts supplémentaires par étage)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Définir la Taille des Parts",
+          "text": "Choisissez des parts Mariage standard (2,5 × 5 cm sur 10 cm de haut pour un repas complet) ou des parts Fête généreuses (5 × 5 cm)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Ajuster les Étages selon vos Invités",
+          "text": "Explorez les combinaisons 2, 3, 4 ou 5 étages (ex. 15 cm / 23 cm / 30 cm pour 100 invités) ou laissez l'outil recommander la disposition idéale."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Utiliser l'Astuce du Gâteau d'Office (Sheet Cake)",
+          "text": "Commandez une belle pièce montée d'apparat 2 étages pour les photos, complétée d'un gâteau rectangulaire en cuisine à moitié prix."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quelle taille de gâteau de mariage faut-il pour 100 invités ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pour 100 personnes, un gâteau à 3 étages ronds de 15 cm (6\"), 23 cm (9\") et 30 cm (12\") de diamètre fournit exactement 100 parts de mariage standard (2,5 × 5 × 10 cm)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Faut-il compter l'étage supérieur (sommet) dans les parts invités ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Si vous souhaitez conserver et congeler le sommet de 15 cm pour le déguster lors de votre premier anniversaire de mariage (tradition), déduisez 12 parts de votre total et prévoyez un étage de base plus large ou un gâteau d'office."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment découper un gâteau de mariage à étages sans l'abîmer ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pour les étages de 20 cm ou plus, utilisez la méthode des cercles concentriques : découpez un cercle intérieur à 5 cm du bord, tranchez l'anneau extérieur en portions de 2,5 cm, puis découpez le cœur cylindrique restant."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculateur de Parts de Gâteau de Mariage & Pièce Montée | Manage.Wedding"
+	description="Calculez les parts de wedding cake, le nombre et diamètre des étages (cm/pouces), les découpes rondes vs carrées et l'astuce du gâteau d'office."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Parts de Gâteau de Mariage" category="dining" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2.5rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Calculateur de Parts de Gâteau <span class="accent-italic">& Pièce Montée</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 1rem auto 0;">
+					Estimez précisément la quantité de gâteau nécessaire. Choisissez la forme des étages, la taille des parts et visualisez la structure de votre gâteau en temps réel.
+				</p>
+			</div>
+		</section>
+
+		<!-- Interactive Calculator & Visual Studio Grid -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; margin-bottom: 3.5rem;" class="calc-container-grid">
+			
+			<!-- Left Column: Controls & Inputs -->
+			<div class="hand-card" style="padding: 2rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.6rem; margin-bottom: 1.5rem; color: var(--fg-pencil); display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<span>🎂</span> Configuration du Gâteau
+				</h2>
+
+				<form id="cake-calc-form">
+					
+					<!-- Calculation Mode -->
+					<div style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--fg-pencil);">
+							Style / Formule de Présentation :
+						</label>
+						<div class="mode-select-grid">
+							<label class="mode-tab active" id="tab-tiered">
+								<input type="radio" name="cakeMode" value="tiered" checked style="display: none;"> Pièce à Étages
+							</label>
+							<label class="mode-tab" id="tab-sheet">
+								<input type="radio" name="cakeMode" value="sheet" style="display: none;"> Gâteau Plaque
+							</label>
+							<label class="mode-tab" id="tab-combo">
+								<input type="radio" name="cakeMode" value="combo" style="display: none;"> Étage + Plaque
+							</label>
+						</div>
+					</div>
+
+					<!-- Guest Count -->
+					<div style="margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+							<label class="font-heading" for="guest-count" style="font-size: 1.1rem; color: var(--fg-pencil);">
+								Nombre d'Invités :
+							</label>
+							<span id="guest-badge" class="font-heading" style="background: var(--accent-blue); color: #fff; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.9rem;">100 Invités</span>
+						</div>
+						<input type="range" id="guest-slider" min="10" max="400" step="5" value="100" style="width: 100%; margin-bottom: 0.5rem; accent-color: var(--accent-blue);">
+						<div style="display: flex; align-items: center; gap: 0.5rem;">
+							<input type="number" id="guest-count" class="form-input" min="1" max="1000" value="100" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.15rem;">
+						</div>
+					</div>
+
+					<!-- Cake Shape -->
+					<div id="shape-group" style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--fg-pencil);">
+							Forme des Étages :
+						</label>
+						<select id="cake-shape" class="form-input" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.05rem; background: #fff;">
+							<option value="round">Rond (Classique & Raffiné)</option>
+							<option value="square">Carré (~25% de parts supplémentaires)</option>
+							<option value="heart">Cœur (Romantique & Moderne)</option>
+						</select>
+					</div>
+
+					<!-- Slice / Portion Size -->
+					<div style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--fg-pencil);">
+							Format des Parts :
+						</label>
+						<select id="portion-size" class="form-input" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.05rem; background: #fff;">
+							<option value="wedding">Part Mariage (2,5 × 5 × 10 cm — Standard repas 3 plats)</option>
+							<option value="party">Part Généreuse / Fête (5 × 5 × 10 cm — Dessert principal)</option>
+							<option value="dessert">Part Dessert Moyen (3,8 × 5 × 10 cm)</option>
+						</select>
+						<small class="font-body" style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">
+							*Les parts Mariage standard sont idéales après un dîner complet de mariage.
+						</small>
+					</div>
+
+					<!-- Tier Preference (Tiered Mode) -->
+					<div id="tier-pref-group" style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--fg-pencil);">
+							Nombre d'Étages :
+						</label>
+						<select id="tier-count-pref" class="form-input" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.05rem; background: #fff;">
+							<option value="auto">Recommandation Automatique Idéale</option>
+							<option value="1">1 Étage (Simple & Épuré)</option>
+							<option value="2">2 Étages (Intimiste 30 à 65 Invités)</option>
+							<option value="3">3 Étages (Classique 75 à 130 Invités)</option>
+							<option value="4">4 Étages (Grand Mariage 130 à 220 Invités)</option>
+							<option value="5">5 Étages (Mariage Royal 220+ Invités)</option>
+						</select>
+					</div>
+
+					<!-- Anniversary Top Tier Checkbox -->
+					<div style="margin-bottom: 1.5rem; padding: 0.75rem; background: var(--bg-paper); border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+						<label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="save-top-tier" style="margin-top: 0.3rem; transform: scale(1.2);">
+							<span class="font-body" style="font-size: 1rem; color: var(--fg-pencil); line-height: 1.4;">
+								<strong>Conserver le sommet pour le 1er anniversaire ?</strong><br>
+								<span style="color: var(--text-secondary); font-size: 0.85rem;">Déduit ~12 parts du sommet pour que tous vos convives soient servis.</span>
+							</span>
+						</label>
+					</div>
+
+					<!-- Cake Height Preference -->
+					<div style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--fg-pencil);">
+							Hauteur des Étages :
+						</label>
+						<div class="height-select-grid">
+							<label class="height-opt active">
+								<input type="radio" name="cakeHeight" value="4" checked style="display: none;"> 10 cm (Standard 3 couches)
+							</label>
+							<label class="height-opt">
+								<input type="radio" name="cakeHeight" value="5" style="display: none;"> 12,5 cm (Étage haut)
+							</label>
+							<label class="height-opt">
+								<input type="radio" name="cakeHeight" value="6" style="display: none;"> 15 cm (Double Barrel)
+							</label>
+						</div>
+					</div>
+
+					<button type="button" id="recalc-btn" class="hand-btn" style="width: 100%; padding: 0.9rem; font-size: 1.15rem;">
+						✨ Mettre à Jour le Gâteau
+					</button>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Interactive Visuals & Results -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Results Summary Card -->
+				<div class="hand-card" style="background: #fff; padding: 1.75rem;">
+					<div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+						<h2 class="font-heading" style="font-size: 1.6rem; color: var(--accent-red); margin: 0;">
+							Structure du Gâteau
+						</h2>
+						<span id="match-status" class="font-heading" style="background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">
+							Ajustement Idéal
+						</span>
+					</div>
+
+					<!-- Big Stats -->
+					<div class="cake-stats-grid" style="margin-bottom: 1.25rem;">
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Total Parts</span>
+							<strong id="res-total-servings" class="font-heading" style="font-size: 1.6rem; color: var(--accent-blue); display: block;">100</strong>
+							<span id="res-servings-diff" style="font-size: 0.75rem; color: var(--text-secondary);">Exact pour 100</span>
+						</div>
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Étages</span>
+							<strong id="res-tier-count" class="font-heading" style="font-size: 1.6rem; color: var(--fg-pencil); display: block;">3 Étages</strong>
+							<span id="res-tier-detail" style="font-size: 0.75rem; color: var(--text-secondary);">15, 23, 30 cm</span>
+						</div>
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Surface Estimée</span>
+							<strong id="res-cake-area" class="font-heading" style="font-size: 1.6rem; color: var(--fg-pencil); display: block;">1 320 cm²</strong>
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Glaçage & Décor</span>
+						</div>
+					</div>
+
+					<!-- Visual Cake Tier Render Container -->
+					<div id="visual-cake-studio" style="border: 2px dashed var(--fg-pencil); border-radius: 4px; padding: 1.5rem 0.5rem 0.5rem; background: var(--bg-paper); min-height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; position: relative; overflow: hidden; max-width: 100%;">
+						<div style="position: absolute; top: 8px; left: 10px; font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-heading);">
+							📐 Échelle Visuelle des Étages
+						</div>
+						<!-- Tiers dynamically rendered here -->
+						<div id="tiers-render-box" style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 100%;"></div>
+						<!-- Cake Stand -->
+						<div id="cake-stand-plate" style="width: min(240px, 90%); height: 10px; background: #e5e0d8; border: 2px solid var(--fg-pencil); border-radius: 10px; margin-top: -2px;"></div>
+						<div id="cake-stand-stem" style="width: 50px; height: 20px; background: #dcd6cc; border: 2px solid var(--fg-pencil); border-top: none; margin-bottom: 4px;"></div>
+						<div id="cake-stand-foot" style="width: 100px; height: 8px; background: #dcd6cc; border: 2px solid var(--fg-pencil); border-radius: 4px;"></div>
+					</div>
+
+					<!-- Breakdown List per Tier -->
+					<div id="tier-breakdown-list" style="margin-top: 1.5rem; font-family: var(--font-body); font-size: 0.95rem;">
+						<!-- Populated via JS -->
+					</div>
+
+					<!-- Pro-Tip Callout Box -->
+					<div id="pro-tip-box" style="margin-top: 1.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+						<div class="font-heading" style="font-size: 1.05rem; margin-bottom: 0.25rem; color: var(--fg-pencil);">
+							💡 Astuce Budget Pâtissier :
+						</div>
+						<p id="pro-tip-text" class="font-body" style="font-size: 0.92rem; margin: 0; line-height: 1.4;">
+							Commandez un gâteau à 2 étages d'apparat pour les photos et la découpe officielle, accompagné d'un gâteau d'office rectangulaire en cuisine pour nourrir le reste des invités avec 50% d'économie !
+						</p>
+					</div>
+
+				</div>
+
+				<!-- Visual Slice Scale Comparison Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+					<h3 class="font-heading" style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--fg-pencil); text-align: center;">
+						📏 Comparatif Visuel des Parts
+					</h3>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+							<div class="font-heading" style="font-size: 1.05rem; color: var(--accent-blue); margin-bottom: 0.5rem;">Part Mariage Standard</div>
+							<div style="width: 35px; height: 70px; background: #ffeaa7; border: 2px solid var(--fg-pencil); margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold;">
+								2,5×5cm
+							</div>
+							<div class="font-body" style="font-size: 0.82rem; color: var(--text-secondary);">
+								Standard après repas complet à table
+							</div>
+						</div>
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+							<div class="font-heading" style="font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.5rem;">Part Fête / Anniversaire</div>
+							<div style="width: 70px; height: 70px; background: #fab1a0; border: 2px solid var(--fg-pencil); margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold;">
+								5×5cm
+							</div>
+							<div class="font-body" style="font-size: 0.82rem; color: var(--text-secondary);">
+								Généreuse / Dessert unique
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 900px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape"></div>
+			
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Repères Rapides des Étages de Gâteau
+				</h3>
+				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
+					Guide Pratique
+				</span>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
+					📐 Les Ratios de Portion :
+				</div>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
+					<strong>Part Mariage Formelle = 2,5 cm × 5 cm sur 10 cm de haut</strong><br />
+					<strong>Part Fête Généreuse = 5 cm × 5 cm sur 10 cm de haut (Volume doublé)</strong>
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.90rem; min-width: 600px;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Structure</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Diamètres Ronds (cm / ")</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Parts Mariage (2,5×5 cm)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue); text-align: center;">Parts Fête (5×5 cm)</th>
+							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--fg-pencil); text-align: right;">Invités Cibles</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">2 Étages Intimiste</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">15 cm + 20 cm (6" + 8")</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">36 parts</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">18 parts</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">25–35 Invités</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">2 Étages Classique</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">15 cm + 25 cm (6" + 10")</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">50 parts</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">25 parts</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">40–50 Invités</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ 3 Étages Standard</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">15 cm + 23 cm + 30 cm (6"+9"+12")</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">100 parts</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">50 parts</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">90–100 Invités</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">4 Étages Prestige</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">15 + 20 + 25 + 30 cm (6"+8"+10"+12")</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">130 parts</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">65 parts</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">125–135 Invités</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Guide Pâtisserie de Mariage</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem;">
+					Le Guide Complet des Parts de Gâteau de Mariage
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; margin: 0.5rem auto 0;">
+					Tout savoir sur les dimensions des étages, la méthode de découpe et l'astuce économique du gâteau d'office.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem;">
+				<img 
+					src="/images/cake_cutting_sketch.webp" 
+					alt="Découpe et dimensions du gâteau de mariage" 
+					loading="lazy"
+					decoding="async"
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil);"
+				/>
+			</div>
+
+			<!-- Section 1 -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Comment Découper un Wedding Cake (Cercles Concentriques)
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Pour les étages de 20 cm de diamètre ou plus, ne coupez jamais en parts triangulaires comme une tarte ! Vous obtiendriez des parts trop longues et fragiles. Suivez la méthode des professionnels :
+				</p>
+				<ol class="font-body" style="padding-left: 1.5rem; line-height: 1.8; font-size: 1.05rem;">
+					<li><strong>Retirer le sommet :</strong> Déposez l'étage supérieur de 15 cm dans sa boîte pour les mariés. Retirez les tiges de support en bois (dowels).</li>
+					<li><strong>Tracer un cercle intérieur :</strong> À 5 cm du bord extérieur, incisez un cercle complet sur toute la hauteur.</li>
+					<li><strong>Découper l'anneau extérieur :</strong> Tranchez l'anneau en portions régulières de 2,5 cm de largeur.</li>
+					<li><strong>Découper le centre :</strong> Tranchez enfin le cylindre central restant en parts égales.</li>
+				</ol>
+			</section>
+
+			<!-- FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Foire Aux Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Combien coûte une part de wedding cake ?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						En moyenne, une part de wedding cake personnalisé (pâte à sucre, fleurs en sucre, cake design) coûte entre <strong>7 € et 12 € par part</strong>. Les gâteaux d'office en plaque coûtent généralement <strong>3,50 € à 5 € par part</strong>.
+					</p>
+				</details>
+			</section>
+		</article>
+
+		<RelatedTools currentPath="/fr/cake-serving-calculator" category="dining" />
+
+	</main>
+</Layout>
+
+<style>
+	.calc-container-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		width: 100%;
+		max-width: 100%;
+	}
+	@media (min-width: 900px) {
+		.calc-container-grid {
+			grid-template-columns: 1.15fr 0.85fr;
+		}
+	}
+
+	.mode-select-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.mode-tab {
+		cursor: pointer;
+		text-align: center;
+		padding: 0.6rem 0.3rem;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: var(--bg-paper);
+		font-family: var(--font-heading);
+		font-size: clamp(0.75rem, 2.5vw, 1rem);
+		white-space: normal;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.mode-tab.active {
+		background-color: var(--post-it) !important;
+		font-weight: bold;
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+
+	.height-select-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.height-opt {
+		cursor: pointer;
+		text-align: center;
+		padding: 0.5rem 0.25rem;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: var(--bg-paper);
+		font-size: clamp(0.75rem, 2.2vw, 0.95rem);
+		font-family: var(--font-body);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.height-opt.active {
+		background-color: var(--post-it) !important;
+		font-weight: bold;
+		border-color: var(--accent-blue) !important;
+	}
+
+	.cake-stats-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.tier-slice-item {
+		display: flex;
+		justify-content: space-between;
+		padding: 0.4rem 0.6rem;
+		border-bottom: 1px dashed var(--muted-paper);
+	}
+	.tier-slice-item:last-child {
+		border-bottom: none;
+	}
+
+	@media (max-width: 480px) {
+		.mode-select-grid {
+			grid-template-columns: 1fr;
+		}
+		.height-select-grid {
+			grid-template-columns: 1fr;
+		}
+		.cake-stats-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<script is:inline>
+	// Complete Round & Square Servings Map (Wedding 1x2 vs Party 2x2 vs Dessert 1.5x2)
+	const singleTierYields = {
+		round: {
+			4: { wedding: 6, party: 4, dessert: 5 },
+			6: { wedding: 12, party: 6, dessert: 8 },
+			8: { wedding: 24, party: 12, dessert: 16 },
+			9: { wedding: 32, party: 16, dessert: 21 },
+			10: { wedding: 38, party: 19, dessert: 25 },
+			11: { wedding: 46, party: 23, dessert: 30 },
+			12: { wedding: 56, party: 28, dessert: 37 },
+			13: { wedding: 66, party: 33, dessert: 44 },
+			14: { wedding: 78, party: 39, dessert: 52 },
+			15: { wedding: 88, party: 44, dessert: 58 },
+			16: { wedding: 100, party: 50, dessert: 66 },
+			18: { wedding: 128, party: 64, dessert: 85 }
+		},
+		square: {
+			4: { wedding: 8, party: 4, dessert: 5 },
+			6: { wedding: 18, party: 9, dessert: 12 },
+			8: { wedding: 32, party: 16, dessert: 21 },
+			9: { wedding: 40, party: 20, dessert: 26 },
+			10: { wedding: 50, party: 25, dessert: 33 },
+			11: { wedding: 60, party: 30, dessert: 40 },
+			12: { wedding: 72, party: 36, dessert: 48 },
+			13: { wedding: 84, party: 42, dessert: 56 },
+			14: { wedding: 98, party: 49, dessert: 65 },
+			15: { wedding: 112, party: 56, dessert: 74 },
+			16: { wedding: 128, party: 64, dessert: 85 },
+			18: { wedding: 162, party: 81, dessert: 108 }
+		},
+		heart: {
+			4: { wedding: 5, party: 3, dessert: 4 },
+			6: { wedding: 10, party: 5, dessert: 7 },
+			8: { wedding: 20, party: 10, dessert: 14 },
+			9: { wedding: 28, party: 14, dessert: 18 },
+			10: { wedding: 34, party: 17, dessert: 22 },
+			11: { wedding: 41, party: 20, dessert: 27 },
+			12: { wedding: 50, party: 25, dessert: 33 },
+			13: { wedding: 59, party: 29, dessert: 39 },
+			14: { wedding: 70, party: 35, dessert: 46 },
+			15: { wedding: 79, party: 39, dessert: 52 },
+			16: { wedding: 90, party: 45, dessert: 60 },
+			18: { wedding: 115, party: 57, dessert: 76 }
+		}
+	};
+
+	const standardTierCombos = [
+		{ tiers: 1, sizes: [6] },
+		{ tiers: 1, sizes: [8] },
+		{ tiers: 1, sizes: [10] },
+		{ tiers: 1, sizes: [12] },
+		{ tiers: 2, sizes: [6, 8] },
+		{ tiers: 2, sizes: [6, 9] },
+		{ tiers: 2, sizes: [8, 10] },
+		{ tiers: 2, sizes: [8, 12] },
+		{ tiers: 2, sizes: [10, 12] },
+		{ tiers: 3, sizes: [6, 8, 10] },
+		{ tiers: 3, sizes: [6, 9, 12] },
+		{ tiers: 3, sizes: [8, 10, 12] },
+		{ tiers: 3, sizes: [8, 10, 14] },
+		{ tiers: 4, sizes: [6, 8, 10, 12] },
+		{ tiers: 4, sizes: [6, 8, 10, 14] },
+		{ tiers: 4, sizes: [6, 9, 12, 14] },
+		{ tiers: 4, sizes: [8, 10, 12, 14] },
+		{ tiers: 4, sizes: [8, 10, 12, 16] },
+		{ tiers: 5, sizes: [6, 8, 10, 12, 14] },
+		{ tiers: 5, sizes: [6, 8, 10, 12, 16] },
+		{ tiers: 5, sizes: [6, 9, 12, 14, 16] },
+		{ tiers: 5, sizes: [8, 10, 12, 14, 16] },
+		{ tiers: 5, sizes: [8, 10, 12, 14, 18] }
+	];
+
+	// DOM Elements
+	const guestInput = document.getElementById('guest-count');
+	const guestSlider = document.getElementById('guest-slider');
+	const guestBadge = document.getElementById('guest-badge');
+	const shapeSelect = document.getElementById('cake-shape');
+	const portionSelect = document.getElementById('portion-size');
+	const tierPrefSelect = document.getElementById('tier-count-pref');
+	const saveTopTierCheck = document.getElementById('save-top-tier');
+	const recalcBtn = document.getElementById('recalc-btn');
+
+	const resTotalServings = document.getElementById('res-total-servings');
+	const resServingsDiff = document.getElementById('res-servings-diff');
+	const resTierCount = document.getElementById('res-tier-count');
+	const resTierDetail = document.getElementById('res-tier-detail');
+	const resCakeArea = document.getElementById('res-cake-area');
+	const matchStatus = document.getElementById('match-status');
+	const tiersRenderBox = document.getElementById('tiers-render-box');
+	const tierBreakdownList = document.getElementById('tier-breakdown-list');
+	const proTipText = document.getElementById('pro-tip-text');
+
+	// Sync Slider & Input
+	guestSlider.addEventListener('input', (e) => {
+		guestInput.value = e.target.value;
+		guestBadge.textContent = `${e.target.value} Invités`;
+		calculateAndRender();
+	});
+
+	guestInput.addEventListener('input', (e) => {
+		let val = parseInt(e.target.value) || 10;
+		if (val > 400) val = 400;
+		guestSlider.value = val;
+		guestBadge.textContent = `${val} Invités`;
+		calculateAndRender();
+	});
+
+	// Mode Selector Tabs
+	document.querySelectorAll('.mode-tab').forEach(tab => {
+		tab.addEventListener('click', () => {
+			document.querySelectorAll('.mode-tab').forEach(t => {
+				t.classList.remove('active');
+				t.style.background = 'var(--bg-paper)';
+			});
+			tab.classList.add('active');
+			tab.style.background = 'var(--post-it)';
+			tab.querySelector('input').checked = true;
+			calculateAndRender();
+		});
+	});
+
+	// Height Radios
+	document.querySelectorAll('input[name="cakeHeight"]').forEach(radio => {
+		radio.parentElement.addEventListener('click', () => {
+			document.querySelectorAll('input[name="cakeHeight"]').forEach(r => {
+				r.parentElement.classList.remove('active');
+				r.parentElement.style.background = 'var(--bg-paper)';
+			});
+			radio.parentElement.classList.add('active');
+			radio.parentElement.style.background = 'var(--post-it)';
+			radio.checked = true;
+			calculateAndRender();
+		});
+	});
+
+	// Event Listeners for selects & buttons
+	shapeSelect.addEventListener('change', calculateAndRender);
+	portionSelect.addEventListener('change', calculateAndRender);
+	tierPrefSelect.addEventListener('change', calculateAndRender);
+	saveTopTierCheck.addEventListener('change', calculateAndRender);
+	recalcBtn.addEventListener('click', calculateAndRender);
+
+	function calculateAndRender() {
+		const guests = parseInt(guestInput.value) || 100;
+		const mode = document.querySelector('input[name="cakeMode"]:checked').value;
+		const shape = shapeSelect.value;
+		const portion = portionSelect.value;
+		const tierPref = tierPrefSelect.value;
+		const saveTopTier = saveTopTierCheck.checked;
+		const height = parseInt(document.querySelector('input[name="cakeHeight"]:checked').value) || 4;
+
+		if (mode === 'sheet') {
+			renderSheetCakeMode(guests, portion);
+			return;
+		}
+
+		if (mode === 'combo') {
+			renderComboMode(guests, shape, portion, saveTopTier);
+			return;
+		}
+
+		// Standard Tiered Cake Calculation
+		let bestCombo = null;
+		let bestServings = 0;
+		let minDiff = 9999;
+
+		let candidateCombos = standardTierCombos;
+		if (tierPref !== 'auto') {
+			const targetTiers = parseInt(tierPref);
+			candidateCombos = standardTierCombos.filter(c => c.tiers === targetTiers);
+		}
+
+		candidateCombos.forEach(combo => {
+			let total = 0;
+			combo.sizes.forEach((size, idx) => {
+				const tierYield = singleTierYields[shape][size][portion] || 10;
+				if (saveTopTier && idx === 0 && combo.sizes.length > 1) {
+					// Top tier saved
+				} else {
+					total += tierYield;
+				}
+			});
+
+			const diff = total - guests;
+			if (diff >= 0 && diff < minDiff) {
+				minDiff = diff;
+				bestCombo = combo;
+				bestServings = total;
+			}
+		});
+
+		if (!bestCombo && candidateCombos.length > 0) {
+			bestCombo = candidateCombos[candidateCombos.length - 1];
+			bestServings = bestCombo.sizes.reduce((acc, s, idx) => {
+				if (saveTopTier && idx === 0 && bestCombo.sizes.length > 1) return acc;
+				return acc + (singleTierYields[shape][s][portion] || 10);
+			}, 0);
+		}
+
+		renderTieredResults(bestCombo, bestServings, guests, shape, portion, saveTopTier, height);
+	}
+
+	function renderTieredResults(combo, totalServings, guests, shape, portion, saveTopTier, height) {
+		resTotalServings.textContent = totalServings;
+		resTierCount.textContent = `${combo.tiers} Étage${combo.tiers > 1 ? 's' : ''}`;
+		resTierDetail.textContent = combo.sizes.map(s => `${Math.round(s * 2.54)} cm (${s}")`).join(', ');
+
+		const diff = totalServings - guests;
+		if (diff === 0) {
+			matchStatus.textContent = '🎯 Ajustement Idéal';
+			matchStatus.style.background = '#dcfce7';
+			resServingsDiff.textContent = `Exact pour ${guests} invités`;
+		} else if (diff > 0) {
+			matchStatus.textContent = `+${diff} Parts de Marge`;
+			matchStatus.style.background = 'var(--post-it)';
+			resServingsDiff.textContent = `${diff} parts de réserve`;
+		} else {
+			matchStatus.textContent = `${Math.abs(diff)} Parts Manquantes`;
+			matchStatus.style.background = '#fee2e2';
+			resServingsDiff.textContent = `Manque ${Math.abs(diff)} parts`;
+		}
+
+		// Calculate Area in cm2
+		let totalAreaIn2 = 0;
+		combo.sizes.forEach(s => {
+			if (shape === 'round') {
+				totalAreaIn2 += Math.PI * Math.pow(s / 2, 2);
+			} else if (shape === 'square') {
+				totalAreaIn2 += s * s;
+			} else {
+				totalAreaIn2 += 0.9 * Math.PI * Math.pow(s / 2, 2);
+			}
+		});
+		const totalAreaCm2 = Math.round(totalAreaIn2 * 6.4516);
+		resCakeArea.textContent = `${totalAreaCm2.toLocaleString('fr-FR')} cm²`;
+
+		// Render Visual Tiers
+		tiersRenderBox.innerHTML = '';
+		const maxDiameter = 18;
+		const maxRenderWidth = 240;
+		const tierColors = ['#fef08a', '#e0f2fe', '#fed7aa', '#fbcfe8', '#dcfce7'];
+
+		combo.sizes.forEach((size, idx) => {
+			const tierDiv = document.createElement('div');
+			const renderWidth = Math.max(50, (size / maxDiameter) * maxRenderWidth);
+			const tierHeightPx = height === 4 ? 36 : height === 5 ? 44 : 52;
+			const isTopSaved = saveTopTier && idx === 0 && combo.sizes.length > 1;
+
+			tierDiv.style.width = `${renderWidth}px`;
+			tierDiv.style.height = `${tierHeightPx}px`;
+			tierDiv.style.background = isTopSaved ? '#e2e8f0' : tierColors[idx % tierColors.length];
+			tierDiv.style.border = '2px solid var(--fg-pencil)';
+			tierDiv.style.display = 'flex';
+			tierDiv.style.alignItems = 'center';
+			tierDiv.style.justifyContent = 'center';
+			tierDiv.style.position = 'relative';
+			tierDiv.style.fontFamily = 'var(--font-heading)';
+			tierDiv.style.fontSize = '0.92rem';
+			tierDiv.style.color = 'var(--fg-pencil)';
+			tierDiv.style.transition = 'all 0.3s ease';
+
+			if (shape === 'square') {
+				tierDiv.style.borderRadius = '2px';
+			} else if (shape === 'round') {
+				tierDiv.style.borderRadius = idx === 0 ? '6px 6px 0 0' : '0';
+			} else {
+				tierDiv.style.borderRadius = '8px 8px 0 0';
+			}
+
+			if (idx !== combo.sizes.length - 1) {
+				tierDiv.style.borderBottom = 'none';
+			}
+
+			const tierYield = singleTierYields[shape][size][portion] || 10;
+			tierDiv.innerHTML = `<span>${Math.round(size * 2.54)} cm (${isTopSaved ? 'Sommet Gardé' : tierYield + ' parts'})</span>`;
+
+			tiersRenderBox.appendChild(tierDiv);
+		});
+
+		// Render Detailed Breakdown List
+		tierBreakdownList.innerHTML = '<strong class="font-heading" style="display: block; margin-bottom: 0.5rem; color: var(--fg-pencil);">📋 Détail Étage par Étage :</strong>';
+		combo.sizes.forEach((size, idx) => {
+			const isTopSaved = saveTopTier && idx === 0 && combo.sizes.length > 1;
+			const tierYield = singleTierYields[shape][size][portion] || 10;
+			const item = document.createElement('div');
+			item.className = 'tier-slice-item';
+			item.innerHTML = `
+				<span><strong>Étage ${idx + 1} (${Math.round(size * 2.54)} cm / ${size}") :</strong> haut. ${Math.round(height * 2.54)} cm</span>
+				<span style="font-weight: bold; color: ${isTopSaved ? 'var(--accent-red)' : 'var(--accent-blue)'};">
+					${isTopSaved ? '0 part invité (Gardé pour 1er anniversaire)' : tierYield + ' parts mariage'}
+				</span>
+			`;
+			tierBreakdownList.appendChild(item);
+		});
+
+		// Dynamic Pro Tip
+		if (guests > 120) {
+			proTipText.textContent = `Pour ${guests} convives, un grand gâteau à 4 ou 5 étages peut coûter cher. Optez pour un gâteau 3 étages (100 parts) associé à une plaque d'office en cuisine pour économiser environ 250 € !`;
+		} else if (saveTopTier) {
+			proTipText.textContent = `Comme vous gardez le sommet de 15 cm pour votre 1er anniversaire de mariage, la taille des étages inférieurs a été ajustée pour régaler vos ${guests} invités !`;
+		} else {
+			proTipText.textContent = `Une part de mariage standard (2,5 × 5 cm) est parfaitement calibrée après un repas complet. Si le gâteau est le dessert unique, choisissez le format "Part Fête" !`;
+		}
+	}
+
+	function renderSheetCakeMode(guests, portion) {
+		let sheetType = '1/4 Plaque (23 × 33 cm)';
+		let totalServings = 48;
+		let dimensions = '23 × 33 cm';
+
+		if (portion === 'wedding') {
+			if (guests <= 48) {
+				sheetType = '1 × Quart de Plaque (23 × 33 cm)';
+				totalServings = 48;
+				dimensions = '23 × 33 cm';
+			} else if (guests <= 96) {
+				sheetType = '1 × Demi-Plaque (30 × 45 cm)';
+				totalServings = 96;
+				dimensions = '30 × 45 cm';
+			} else if (guests <= 192) {
+				sheetType = '1 × Grande Plaque Entière (45 × 60 cm)';
+				totalServings = 192;
+				dimensions = '45 × 60 cm';
+			} else {
+				const numSheets = Math.ceil(guests / 192);
+				sheetType = `${numSheets} × Grandes Plaques Entières`;
+				totalServings = numSheets * 192;
+				dimensions = `${numSheets} Plaques`;
+			}
+		} else {
+			if (guests <= 24) {
+				sheetType = '1 × Quart de Plaque';
+				totalServings = 24;
+				dimensions = '23 × 33 cm';
+			} else if (guests <= 48) {
+				sheetType = '1 × Demi-Plaque';
+				totalServings = 48;
+				dimensions = '30 × 45 cm';
+			} else if (guests <= 96) {
+				sheetType = '1 × Grande Plaque';
+				totalServings = 96;
+				dimensions = '45 × 60 cm';
+			} else {
+				const numSheets = Math.ceil(guests / 96);
+				sheetType = `${numSheets} × Grandes Plaques`;
+				totalServings = numSheets * 96;
+				dimensions = `${numSheets} Plaques`;
+			}
+		}
+
+		resTotalServings.textContent = totalServings;
+		resTierCount.textContent = 'Gâteau Plaque';
+		resTierDetail.textContent = sheetType;
+		matchStatus.textContent = 'Formule Plaque';
+		matchStatus.style.background = '#e0f2fe';
+		resServingsDiff.textContent = `${totalServings - guests >= 0 ? '+' + (totalServings - guests) : totalServings - guests} vs ${guests} invités`;
+
+		tiersRenderBox.innerHTML = `
+			<div style="width: 220px; height: 110px; background: #fed7aa; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-heading);">
+				<span style="font-size: 1.05rem; color: var(--fg-pencil);">${sheetType}</span>
+				<span style="font-size: 0.85rem; color: var(--text-secondary);">${dimensions} — ${totalServings} Parts</span>
+				<div style="width: 85%; height: 2px; background: var(--fg-pencil); margin: 6px 0; border-style: dashed;"></div>
+				<span style="font-size: 0.75rem; color: var(--accent-blue);">Découpe rapide en cuisine</span>
+			</div>
+		`;
+
+		tierBreakdownList.innerHTML = `
+			<div class="tier-slice-item">
+				<span><strong>Format :</strong> ${sheetType}</span>
+				<span style="font-weight: bold; color: var(--accent-blue);">${totalServings} Parts Totales</span>
+			</div>
+			<div class="tier-slice-item">
+				<span><strong>Style de Découpe :</strong> Grille rectangulaire uniforme</span>
+				<span>Zéro perte / Service express</span>
+			</div>
+		`;
+
+		proTipText.textContent = `Les gâteaux d'office en plaque sont la solution la plus économique pour les grands banquets. Cuisson homogène et découpe ultra rapide par les maîtres d'hôtel !`;
+	}
+
+	function renderComboMode(guests, shape, portion, saveTopTier) {
+		const displayTierSizes = [6, 8];
+		const displayYield = (saveTopTier ? 0 : (singleTierYields[shape][6][portion] || 12)) + (singleTierYields[shape][8][portion] || 24);
+		const neededFromSheet = Math.max(0, guests - displayYield);
+		
+		let sheetName = '1 × Quart de Plaque (23 × 33 cm)';
+		let sheetServings = portion === 'wedding' ? 48 : 24;
+
+		if (neededFromSheet > 48) {
+			sheetName = '1 × Demi-Plaque (30 × 45 cm)';
+			sheetServings = portion === 'wedding' ? 96 : 48;
+		}
+		if (neededFromSheet > 96) {
+			sheetName = '1 × Grande Plaque (45 × 60 cm)';
+			sheetServings = portion === 'wedding' ? 192 : 96;
+		}
+
+		const totalComboServings = displayYield + sheetServings;
+
+		resTotalServings.textContent = totalComboServings;
+		resTierCount.textContent = 'Apparat + Office';
+		resTierDetail.textContent = `2 Étages (15, 20 cm) + ${sheetName.split(' ')[2] || 'Plaque'}`;
+		matchStatus.textContent = '💡 Formule Maligne';
+		matchStatus.style.background = '#fef08a';
+		resServingsDiff.textContent = `+${totalComboServings - guests} parts de réserve`;
+
+		tiersRenderBox.innerHTML = `
+			<div style="display: flex; gap: 1rem; align-items: flex-end; justify-content: center; width: 100%;">
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<div style="width: 70px; height: 30px; background: #fef08a; border: 2px solid var(--fg-pencil); border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-family: var(--font-heading);">15 cm Haut</div>
+					<div style="width: 110px; height: 35px; background: #e0f2fe; border: 2px solid var(--fg-pencil); border-top: none; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-family: var(--font-heading);">20 cm Base</div>
+					<span style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Gâteau d'Apparat (${displayYield} parts)</span>
+				</div>
+				<div style="width: 100px; height: 55px; background: #fed7aa; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-heading); text-align: center;">
+					<span style="font-size: 0.75rem; font-weight: bold;">Gâteau d'Office</span>
+					<span style="font-size: 0.7rem; color: var(--accent-blue);">+${sheetServings} parts</span>
+				</div>
+			</div>
+		`;
+
+		tierBreakdownList.innerHTML = `
+			<div class="tier-slice-item">
+				<span><strong>Gâteau d'Apparat en Salle (15 cm + 20 cm) :</strong></span>
+				<span style="color: var(--accent-blue); font-weight: bold;">${displayYield} Parts (Photos & Découpe)</span>
+			</div>
+			<div class="tier-slice-item">
+				<span><strong>Gâteau d'Office en Cuisine (${sheetName}) :</strong></span>
+				<span style="color: var(--accent-red); font-weight: bold;">${sheetServings} Parts (Plaque Traiteur)</span>
+			</div>
+		`;
+
+		proTipText.textContent = `Ce combo hybride vous offre la beauté d'une pièce montée d'apparat tout en économisant 200 € à 400 € de main d'œuvre pâtissière !`;
+	}
+
+	// Initial Calculation
+	calculateAndRender();
+</script>

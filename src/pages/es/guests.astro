@@ -1,0 +1,339 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Calculadoras de Invitados, Distribución de Mesas y Logística de Boda";
+const description = "Herramientas gratuitas para boda: creador de plano y distribución de mesas, dimensiones de pista de baile, orden de cortejo y cronograma del día.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://manage.wedding/es/guests/#collection",
+      "name": "Calculadoras de Invitados, Distribución de Mesas y Logística",
+      "url": "https://manage.wedding/es/guests",
+      "inLanguage": "es",
+      "description": "Suite de herramientas para organizar mesas interactivas, dimensionar la pista de baile, planificar el cortejo y crear el cronograma minuto a minuto.",
+      "hasPart": [
+        { "@type": "WebApplication", "name": "Creador de Plano y Distribución de Mesas", "url": "https://manage.wedding/es/seating-chart-maker" },
+        { "@type": "WebApplication", "name": "Calculadora de Pista de Baile y Espacios", "url": "https://manage.wedding/es/seating-clearance-calculator" },
+        { "@type": "WebApplication", "name": "Organizador del Orden de Cortejo", "url": "https://manage.wedding/es/wedding-processional-order" },
+        { "@type": "WebApplication", "name": "Generador de Cronograma del Gran Día", "url": "https://manage.wedding/es/day-of-timeline-generator" },
+        { "@type": "WebApplication", "name": "Planificador de Cena de Ensayo", "url": "https://manage.wedding/es/rehearsal-dinner-planner" },
+        { "@type": "WebApplication", "name": "Gestor de Lista de Invitados", "url": "https://manage.wedding/es/guest-list-manager" },
+        { "@type": "WebApplication", "name": "Control de Asistencia y Confirmaciones (RSVP)", "url": "https://manage.wedding/es/rsvp-tracker" },
+        { "@type": "WebApplication", "name": "Estimador de Asistencia Real y Bajas", "url": "https://manage.wedding/es/guest-count-estimator" },
+        { "@type": "WebApplication", "name": "Calculadora de Fechas de Envío de Invitaciones", "url": "https://manage.wedding/es/rsvp-date-calculator" },
+        { "@type": "WebApplication", "name": "Guión de Ceremonia y Temporizador de Oficiante", "url": "https://manage.wedding/es/wedding-officiant-script-timer" },
+        { "@type": "WebApplication", "name": "Checklist de Boda de 12 Meses", "url": "https://manage.wedding/es/wedding-checklist" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Qué porcentaje de invitados suele declinar la invitación de boda?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Para bodas locales en la misma ciudad de residencia de la mayoría de familias, suele declinar entre un 10% y un 15% de los invitados. Para bodas de destino o que requieren vuelos y reserva de hotel, el porcentaje de bajas suele situarse entre el 20% y el 30%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué tamaño debe tener la pista de baile para 150 invitados?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Se calcula que entre un 33% y un 50% de los invitados bailará simultáneamente en los momentos cumbre. Para 150 invitados (50-75 personas bailando a la vez), se recomienda una pista de baile de unos 20 a 25 metros cuadrados (aproximadamente 4,5m × 4,5m o 5m × 5m)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué distancia mínima debe dejarse entre las mesas del banquete?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Se debe mantener una distancia mínima de 1,5 metros entre los bordes de mesas contiguas. Esto permite 45 cm para retirar las sillas cómodamente a cada lado y deja un pasillo central libre de 60 cm para el servicio de camareros y personas con movilidad reducida."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const guestTools = [
+  {
+    title: "Calculadora de Bengalas de Boda",
+    url: "/es/wedding-sparkler-calculator",
+    icon: "✨",
+    badge: "Carteles Imprimibles",
+    desc: "Calcula las bengalas necesarias según retención de invitados, mecheros y cubos de arena. Incluye carteles 'Que el Amor Brille' en PDF y PNG.",
+    tags: ["Salida de Boda", "Carteles Imprimibles", "Fichas de Seguridad"]
+  },
+
+  {
+    title: "Plano y Distribución de Mesas",
+    url: "/es/seating-chart-maker",
+    icon: "🪑",
+    badge: "Arrastrar y Soltar",
+    desc: "Herramienta interactiva para organizar mesas redondas y alargadas. Asigna asientos, equilibra mesas y exporta el plano imprimible.",
+    tags: ["Planificador Visual", "Exportar PDF", "Equilibrio de Mesas"]
+  },
+  {
+    title: "Pista de Baile y Espacios de Salón",
+    url: "/es/seating-clearance-calculator",
+    icon: "📐",
+    badge: "Cálculo de Metros Cuadrados",
+    desc: "Calcula los metros cuadrados necesarios de pista de baile, número de mesas redondas de 150cm vs 180cm y pasillos de servicio de 1,5m.",
+    tags: ["Tamaño Pista de Baile", "Mesas Redondas", "Pasillos de Finca"]
+  },
+  {
+    title: "Orden de Cortejo y Entrada",
+    url: "/es/wedding-processional-order",
+    icon: "⛪",
+    badge: "Protocolo Ceremonial",
+    desc: "Organiza el orden de entrada del cortejo, padrinos, pajes, testigos y la salida de los recién casados para ceremonias religiosas y civiles.",
+    tags: ["Orden del Pasillo", "Guía de Ensayo", "Fichas Imprimibles"]
+  },
+  {
+    title: "Guión de Ceremonia y Temporizador de Oficiante",
+    url: "/es/wedding-officiant-script-timer",
+    icon: "📜",
+    badge: "Guión y Fichas A5",
+    desc: "Escribe y cronometra la ceremonia en 9 fases (115 PPM) con teleprónter interactivo y fichas imprimibles para la carpeta del celebrante.",
+    tags: ["Guión de Oficiante", "Temporizador de Ceremonia", "Fichas A5 para Atril"]
+  },
+  {
+    title: "Cronograma del Gran Día",
+    url: "/es/day-of-timeline-generator",
+    icon: "⏰",
+    badge: "Imprescindible",
+    desc: "Introduce la hora de tu ceremonia y genera automáticamente un horario minuto a minuto para peluquería, fotos, banquete y baile.",
+    tags: ["Horario Personalizado", "Compartir Proveedores", "Minuto a Minuto"]
+  },
+  {
+    title: "Cena de Ensayo / Preboda",
+    url: "/es/rehearsal-dinner-planner",
+    icon: "🍷",
+    badge: "Evento Preboda",
+    desc: "Calcula los asistentes por grupos (familia cercana vs invitados que viajan), estima el menú y organiza los horarios de la víspera.",
+    tags: ["Grupos de Invitados", "Horario Víspera", "Presupuesto Cena"]
+  },
+  {
+    title: "Control de Lista de Invitados",
+    url: "/es/guest-list-manager",
+    icon: "📋",
+    badge: "100% Privado Local",
+    desc: "Gestiona nombres, acompañantes (+1), direcciones para sobres, preferencias de menú y notas de alérgenos sin almacenamiento en la nube.",
+    tags: ["Acompañantes (+1)", "Exportar CSV", "Notas de Alérgenos"]
+  },
+  {
+    title: "Control de Asistencia (RSVP)",
+    url: "/es/rsvp-tracker",
+    icon: "✉️",
+    badge: "Recuento en Vivo",
+    desc: "Registra confirmaciones aceptadas y rechazadas, recuentos de menús y respuestas pendientes con barras de progreso automáticas.",
+    tags: ["Recuento Asistencia", "Menús Especiales", "Cierre Definitivo"]
+  },
+  {
+    title: "Estimador de Asistencia Real",
+    url: "/es/guest-count-estimator",
+    icon: "👥",
+    badge: "Probabilidad de Bajas",
+    desc: "Calcula las curvas de probabilidad de asistencia real según la proporción de invitados locales vs invitados de otras ciudades.",
+    tags: ["Probabilidad de Asistencia", "Límite de Finca", "Tasa de Bajas"]
+  },
+  {
+    title: "Fechas de Envío de Invitaciones",
+    url: "/es/rsvp-date-calculator",
+    icon: "📬",
+    badge: "Calendario de Envíos",
+    desc: "Introduce la fecha de tu boda para calcular las fechas límite exactas para el Save-the-Date, envío de invitaciones y cierre con el catering.",
+    tags: ["Fechas de Envío", "Plazos Catering", "Límite de Respuesta"]
+  },
+  {
+    title: "Checklist de Boda de 12 Meses",
+    url: "/es/wedding-checklist",
+    icon: "✅",
+    badge: "Interactivo",
+    desc: "Lista de tareas interactiva mes a mes con opción de añadir tareas personalizadas y guardado automático para que nada se olvide.",
+    tags: ["Plan de 12 Meses", "Seguimiento", "Gestor de Tareas"]
+  },
+  {
+    title: "Ajustes de Vestido de Novia",
+    url: "/es/dress-alterations-estimator",
+    icon: "🪡",
+    badge: "Modistería",
+    desc: "Estima los costes de modistería y arreglos de costura según el tipo de tejido, capas de tul, bajo y sistema para recoger la cola.",
+    tags: ["Costes de Modista", "Recoger la Cola", "Fechas de Pruebas"]
+  },
+  {
+    title: "Conversor de Tallas de Vestido",
+    url: "/es/dress-size-converter",
+    icon: "👗",
+    badge: "Guía de Medidas",
+    desc: "Convierte tus medidas de contorno de pecho, cintura y cadera en centímetros a las tallas nupciales oficiales de España (EU), US, UK e IT.",
+    tags: ["Tablas ES EU US", "Guía de Medición", "Tallas Novia"]
+  },
+  {
+    title: "Conversor de Tallas de Alianzas",
+    url: "/es/ring-size-converter",
+    icon: "💍",
+    badge: "Internacional",
+    desc: "Convierte la circunferencia y diámetro en milímetros a tallas de anillos españolas, europeas y americanas con medidor imprimible.",
+    tags: ["Medidor Imprimible", "Tabla Española", "Milímetros Exactos"]
+  }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+    
+    <!-- Hero Header -->
+    <header class="fade-in category-header" style="text-align: center; margin-bottom: 3rem; position: relative;">
+      <div class="tape" style="margin: 0 auto 1rem;"></div>
+      <span class="badge-postit">Centro de Logística y Organización</span>
+      <h1 class="font-heading" style="font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+        Calculadoras de <span class="accent-italic">Invitados, Mesas y Logística</span>
+      </h1>
+      <p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+        Diseña el orden del cortejo, calcula las dimensiones de la pista de baile, genera cronogramas minuto a minuto y organiza el plano de mesas visualmente.
+      </p>
+    </header>
+
+    <!-- Category Nav Bar -->
+    <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+      <span style="font-size: 0.9rem; font-weight: 700; color: #64748b; align-self: center;">Explorar Categorías:</span>
+      <a href="/es/budget" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💰 Presupuesto</a>
+      <a href="/es/dining" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">🍾 Banquete y Barra</a>
+      <a href="/es/guests" class="tool-tag" style="background: var(--post-it); font-weight: 700; text-decoration: none; padding: 6px 14px; border: 2px solid var(--fg-pencil);">👥 Invitados (Activo)</a>
+      <a href="/es/stationery" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💌 Papelería y Recuerdos</a>
+    </div>
+
+    <!-- Tools Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem; margin-bottom: 4rem;">
+      {guestTools.map(tool => (
+        <div class="hand-card" style="padding: 1.75rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span style="font-size: 2.2rem;">{tool.icon}</span>
+              <span style="font-size: 0.78rem; font-weight: 700; background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+                {tool.badge}
+              </span>
+            </div>
+            
+            <h2 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+              {tool.title}
+            </h2>
+            
+            <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 0.75rem;">
+              {tool.tags.map(t => (
+                <span class="tool-tag" style="font-size: 0.75rem; padding: 2px 6px;">{t}</span>
+              ))}
+            </div>
+
+            <p class="font-body" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+              {tool.desc}
+            </p>
+          </div>
+
+          <a href={tool.url} class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+            Abrir Herramienta →
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- In-Depth Logistics Guide -->
+    <article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+        <span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">Ingeniería del Evento</span>
+        <h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+          Cómo Diseñar la Logística Perfecta de tu Boda
+        </h2>
+        <p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+          Desde el orden del cortejo hasta los pasillos de servicio del salón, estas son las normas arquitectónicas de los coordinadores de bodas.
+        </p>
+      </div>
+
+      <section style="margin-bottom: 3rem;">
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+          1. Dimensionamiento de la Pista de Baile
+        </h3>
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+          Una pista de baile demasiado pequeña genera empujones e incomodidad, mientras que una excesivamente grande parece vacía en las fotos. Aplica la <strong>Regla del 33% (aprox. 0,45 m² por bailarín activo)</strong>:
+        </p>
+        
+        <div style="overflow-x: auto; margin-top: 1rem; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+            <thead>
+              <tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Invitados Totales</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Bailarines a la Vez</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--accent-blue);">Tamaño Recomendado de Pista</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">100 Invitados</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">35 – 45 personas</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">3,5m × 5m (aprox. 18 m²)</td>
+              </tr>
+              <tr style="background: #faf8f5;">
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">150 Invitados</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">50 – 70 personas</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">4,5m × 5m (aprox. 23–25 m²)</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">200 Invitados</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">70 – 90 personas</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">5,5m × 5,5m (aprox. 30 m²)</td>
+              </tr>
+              <tr style="background: #faf8f5;">
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">250+ Invitados</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">90 – 120 personas</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">6m × 6m o superior (36+ m²)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section>
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.25rem; text-align: center;">
+          Preguntas Frecuentes sobre Invitados y Logística
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              ¿Qué porcentaje de invitados suele declinar la invitación de boda?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              Para bodas locales en la misma ciudad de residencia de la mayoría de familias, suele declinar entre un 10% y un 15% de los invitados. Para bodas de destino o que requieren vuelos y reserva de hotel, el porcentaje de bajas suele situarse entre el 20% y el 30%.
+            </p>
+          </details>
+
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              ¿Qué tamaño debe tener la pista de baile para 150 invitados?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              Se calcula que entre un 33% y un 50% de los invitados bailará simultáneamente en los momentos cumbre. Para 150 invitados (50-75 personas bailando a la vez), se recomienda una pista de baile de unos 20 a 25 metros cuadrados (aproximadamente 4,5m × 4,5m o 5m × 5m).
+            </p>
+          </details>
+
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              ¿Qué distancia mínima debe dejarse entre las mesas del banquete?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              Se debe mantener una distancia mínima de 1,5 metros entre los bordes de mesas contiguas. Esto permite 45 cm para retirar las sillas cómodamente a cada lado y deja un pasillo central libre de 60 cm para el servicio de camareros y personas con movilidad reducida.
+            </p>
+          </details>
+        </div>
+      </section>
+
+    </article>
+
+  </main>
+</Layout>

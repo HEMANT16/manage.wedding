@@ -1,0 +1,456 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Calculadora de Orçamento para Chá de Panela / Chá de Lingerie",
+      "url": "https://manage.wedding/pt/bridal-shower-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calcule os custos do chá de panela ou lingerie, divida as despesas igualmente entre as madrinhas e dimensione o buffet e bar de mimosas.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<Layout
+	title="Calculadora de Chá de Panela & Lingerie — Divisão de Custos Madrinhas"
+	description="Calcule os gastos do chá de panela ou lingerie, divida os custos igualmente entre as madrinhas e calcule espumante, comidinhas e lembrancinhas."
+	lang="pt"
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/pt/" style="color: var(--text-secondary); text-decoration: none;">Início</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/pt/budget" style="color: var(--text-secondary); text-decoration: none;">Orçamento e Festas</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Calculadora Chá de Panela</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>🧁</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Planejador para Madrinhas & Bar de Mimosas</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Calculadora de Chá de Panela e Lingerie
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Calcule o custo total do chá da noiva, estime a quantidade de <strong>comida e espumante para mimosas</strong>, e descubra o <strong>valor exato a ser dividido por cada madrinha</strong>.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Inputs -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>👥</span> 1. Convidadas & Madrinhas a Pagar
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div>
+						<label for="input-shower-guests" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Total de Convidadas:</label>
+						<input type="number" id="input-shower-guests" min="5" max="100" value="25" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+					</div>
+					<div>
+						<label for="input-shower-hosts" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Madrinhas Pagantes:</label>
+						<input type="number" id="input-shower-hosts" min="1" max="12" value="5" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+					</div>
+				</div>
+
+				<h2 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 1.25rem 0 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.4rem;">
+					🥂 2. Local, Comidinhas & Bebidas
+				</h2>
+
+				<div style="margin-bottom: 1rem;">
+					<label for="select-venue-type" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Local do Evento:</label>
+					<select id="select-venue-type" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+						<option value="home" selected>🏡 Casa / Salão do Prédio (R$ 0)</option>
+						<option value="loft">🏛️ Espaço de Festas Alugado (~R$ 450)</option>
+						<option value="restaurant">🍽️ Restaurante / Bistrô Privado (~R$ 65 / pessoa)</option>
+					</select>
+				</div>
+
+				<div style="margin-bottom: 1rem;">
+					<label for="select-food-tier" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Cardápio / Buffet:</label>
+					<select id="select-food-tier" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+						<option value="light">🥐 Salgadinhos, Frutas & Canapés (R$ 28 / pers.)</option>
+						<option value="brunch" selected>🍳 Brunch Completo (Quiches, tortas, frios, waffles - R$ 45 / pers.)</option>
+						<option value="plated">🥗 Almoço Completo / Crepes (R$ 70 / pers.)</option>
+					</select>
+				</div>
+
+				<div style="margin-bottom: 1rem;">
+					<label for="select-bar-package" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Bar de Mimosas & Bebidas:</label>
+					<select id="select-bar-package" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+						<option value="full-mimosa" selected>🍾 Bar de Mimosas (Espumante, sucos, frutas - R$ 22 / pers.)</option>
+						<option value="wine-beer">🍷 Vinhos, Espumante e Drinks (R$ 32 / pers.)</option>
+						<option value="dry">☕ Café, Chás & Sucos Naturais (R$ 10 / pers.)</option>
+					</select>
+				</div>
+
+				<h2 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 1.25rem 0 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.4rem;">
+					🎈 3. Bolo, Decoração & Brincadeiras
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+					<div>
+						<label for="input-cake-cost" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Bolo / Docinhos (R$):</label>
+						<input type="number" id="input-cake-cost" min="0" max="2000" value="180" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem;" />
+					</div>
+					<div>
+						<label for="input-decor-cost" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Balões e Flores (R$):</label>
+						<input type="number" id="input-decor-cost" min="0" max="3000" value="250" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem;" />
+					</div>
+				</div>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.75rem;">
+					<div>
+						<label for="input-favors-pp" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Lembrancinhas (R$ / pers.):</label>
+						<input type="number" id="input-favors-pp" min="0" max="50" value="8" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem;" />
+					</div>
+					<div>
+						<label for="input-game-prizes" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Prêmios Brincadeiras (R$ total):</label>
+						<input type="number" id="input-game-prizes" min="0" max="500" value="90" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem;" />
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Resumo Financeiro</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Orçamento Chá da Noiva
+						</h2>
+					</div>
+					<span id="badge-guest-cost" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">R$ 96 / conv.</span>
+				</div>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Custo Total</span>
+						<strong id="stat-total-budget" style="font-size: 2rem; font-weight: 900; color: #b91c1c; line-height: 1.1;">R$ 2.395</strong>
+						<span id="stat-total-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(Todos os itens)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Valor por Madrinha</span>
+						<strong id="stat-host-share" style="font-size: 2rem; font-weight: 900; color: #1e40af; line-height: 1.1;">R$ 479</strong>
+						<span id="stat-host-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">Dividido entre 5 madrinhas</span>
+					</div>
+				</div>
+
+				<div style="background: #eff6ff; border: 1.5px solid #1e40af; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.85rem;">
+					<strong style="color: #1e40af; display: block; margin-bottom: 0.35rem;">🍾 Lista de Compras Bar de Mimosas (25 convidadas):</strong>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; color: #1e3a8a;">
+						<div>• <strong id="stat-champagne-bottles">13 Garrafas</strong> Espumante</div>
+						<div>• <strong id="stat-juice-carafes">4 Jarras</strong> Sucos</div>
+						<div>• <strong id="stat-berry-tubs">3 Potes</strong> Frutas Vermelhas</div>
+						<div>• <strong id="stat-gift-time">~30 Min</strong> Abertura Presentes</div>
+					</div>
+				</div>
+
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🏛️ Local / Espaço:</span>
+						<strong id="stat-line-venue" style="color: var(--fg-pencil);">R$ 0</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🥐 Comida & Buffet:</span>
+						<strong id="stat-line-food" style="color: var(--fg-pencil);">R$ 1.125</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🍾 Bar de Mimosas:</span>
+						<strong id="stat-line-bar" style="color: var(--fg-pencil);">R$ 550</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🎈 Bolo, Decoração & Brincadeiras:</span>
+						<strong id="stat-line-decor" style="color: var(--fg-pencil);">R$ 520</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0;">
+						<span style="color: #475569;">🎁 Lembrancinhas:</span>
+						<strong id="stat-line-favors" style="color: var(--fg-pencil);">R$ 200</strong>
+					</div>
+				</div>
+
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-print-summary" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Imprimir Divisão (PDF)
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Exportar Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/pt/bridal-shower-calculator" category="budget" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-shower-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Orçamento Chá de Panela / Lingerie & Divisão entre Madrinhas</h1>
+				<p id="print-shower-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Planejamento Madrinhas de Casamento | Gerado por Manage.Wedding</p>
+			</div>
+			<div id="print-shower-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	const inputShowerGuests = document.getElementById('input-shower-guests');
+	const inputShowerHosts = document.getElementById('input-shower-hosts');
+	const selectVenueType = document.getElementById('select-venue-type');
+	const selectFoodTier = document.getElementById('select-food-tier');
+	const selectBarPackage = document.getElementById('select-bar-package');
+	const inputCakeCost = document.getElementById('input-cake-cost');
+	const inputDecorCost = document.getElementById('input-decor-cost');
+	const inputFavorsPp = document.getElementById('input-favors-pp');
+	const inputGamePrizes = document.getElementById('input-game-prizes');
+
+	const statTotalBudget = document.getElementById('stat-total-budget');
+	const statHostShare = document.getElementById('stat-host-share');
+	const statHostSub = document.getElementById('stat-host-sub');
+	const badgeGuestCost = document.getElementById('badge-guest-cost');
+
+	const statLineVenue = document.getElementById('stat-line-venue');
+	const statLineFood = document.getElementById('stat-line-food');
+	const statLineBar = document.getElementById('stat-line-bar');
+	const statLineDecor = document.getElementById('stat-line-decor');
+	const statLineFavors = document.getElementById('stat-line-favors');
+
+	const statChampagneBottles = document.getElementById('stat-champagne-bottles');
+	const statJuiceCarafes = document.getElementById('stat-juice-carafes');
+	const statBerryTubs = document.getElementById('stat-berry-tubs');
+	const statGiftTime = document.getElementById('stat-gift-time');
+
+	function calculateShower() {
+		const guests = Math.max(1, parseInt(inputShowerGuests.value, 10) || 25);
+		const hosts = Math.max(1, parseInt(inputShowerHosts.value, 10) || 5);
+
+		let venueCost = 0;
+		if (selectVenueType.value === 'loft') venueCost = 450;
+		else if (selectVenueType.value === 'restaurant') venueCost = guests * 65;
+
+		let foodRate = 45;
+		if (selectFoodTier.value === 'light') foodRate = 28;
+		else if (selectFoodTier.value === 'plated') foodRate = 70;
+		const foodCost = guests * foodRate;
+
+		let barRate = 22;
+		if (selectBarPackage.value === 'wine-beer') barRate = 32;
+		else if (selectBarPackage.value === 'dry') barRate = 10;
+		const barCost = guests * barRate;
+
+		const cakeCost = parseFloat(inputCakeCost.value) || 0;
+		const decorCost = parseFloat(inputDecorCost.value) || 0;
+		const favorsCost = guests * (parseFloat(inputFavorsPp.value) || 0);
+		const prizesCost = parseFloat(inputGamePrizes.value) || 0;
+
+		const totalBudget = venueCost + foodCost + barCost + cakeCost + decorCost + favorsCost + prizesCost;
+		const perHost = totalBudget / hosts;
+		const perGuest = totalBudget / guests;
+
+		statTotalBudget.textContent = `R$ ${Math.round(totalBudget).toLocaleString()}`;
+		statHostShare.textContent = `R$ ${Math.round(perHost).toLocaleString()}`;
+		statHostSub.textContent = `Dividido entre ${hosts} madrinhas`;
+		badgeGuestCost.textContent = `R$ ${Math.round(perGuest)} / conv.`;
+
+		statLineVenue.textContent = `R$ ${Math.round(venueCost).toLocaleString()}`;
+		statLineFood.textContent = `R$ ${Math.round(foodCost).toLocaleString()}`;
+		statLineBar.textContent = `R$ ${Math.round(barCost).toLocaleString()}`;
+		statLineDecor.textContent = `R$ ${Math.round(cakeCost + decorCost + prizesCost).toLocaleString()}`;
+		statLineFavors.textContent = `R$ ${Math.round(favorsCost).toLocaleString()}`;
+
+		const champagneBottles = Math.ceil(guests / 2);
+		const juiceCarafes = Math.max(2, Math.ceil(guests / 7));
+		const berryTubs = Math.max(2, Math.ceil(guests / 9));
+		const giftMins = Math.round(guests * 1.2);
+
+		statChampagneBottles.textContent = `${champagneBottles} Garrafas`;
+		statJuiceCarafes.textContent = `${juiceCarafes} Jarras`;
+		statBerryTubs.textContent = `${berryTubs} Potes`;
+		statGiftTime.textContent = `~${giftMins} Min`;
+
+		document.getElementById('print-shower-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Item de Custo</th>
+						<th style="padding:6pt;">Detalhamento</th>
+						<th style="padding:6pt; text-align:right;">Subtotal</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Local do Evento</td>
+						<td style="padding:6pt;">${selectVenueType.options[selectVenueType.selectedIndex].text}</td>
+						<td style="padding:6pt; text-align:right;">R$ ${Math.round(venueCost)}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Comida / Brunch</td>
+						<td style="padding:6pt;">${guests} convidadas @ R$ ${foodRate}/pessoa</td>
+						<td style="padding:6pt; text-align:right;">R$ ${Math.round(foodCost)}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Bar de Mimosas & Bebidas</td>
+						<td style="padding:6pt;">${champagneBottles} garrafas de espumante, sucos e frutas</td>
+						<td style="padding:6pt; text-align:right;">R$ ${Math.round(barCost)}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Bolo, Decoração & Brincadeiras</td>
+						<td style="padding:6pt;">Bolo confeitado, arco de balões, flores e mimos</td>
+						<td style="padding:6pt; text-align:right;">R$ ${Math.round(cakeCost + decorCost + prizesCost)}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Lembrancinhas</td>
+						<td style="padding:6pt;">${guests} lembrancinhas @ R$ ${inputFavorsPp.value}/pers.</td>
+						<td style="padding:6pt; text-align:right;">R$ ${Math.round(favorsCost)}</td>
+					</tr>
+					<tr style="background:#eff6ff; font-weight:bold; font-size:11pt; border-top:2pt solid #000;">
+						<td style="padding:8pt;">ORÇAMENTO TOTAL</td>
+						<td style="padding:8pt;">${guests} Convidadas</td>
+						<td style="padding:8pt; text-align:right; color:#b91c1c;">R$ ${Math.round(totalBudget)}</td>
+					</tr>
+					<tr style="background:#f0fdf4; font-weight:bold; font-size:12pt; border-top:1.5pt solid #15803d;">
+						<td style="padding:8pt; color:#15803d;">VALOR POR MADRINHA</td>
+						<td style="padding:8pt; color:#15803d;">Dividido entre ${hosts} madrinhas</td>
+						<td style="padding:8pt; text-align:right; color:#15803d;">R$ ${Math.round(perHost)} / madrinha</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	[inputShowerGuests, inputShowerHosts, selectVenueType, selectFoodTier, selectBarPackage, inputCakeCost, inputDecorCost, inputFavorsPp, inputGamePrizes].forEach(el => {
+		el.addEventListener('input', calculateShower);
+		el.addEventListener('change', calculateShower);
+	});
+
+	document.getElementById('btn-print-summary').addEventListener('click', () => {
+		calculateShower();
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateShower();
+		const total = statTotalBudget.textContent;
+		const perHost = statHostShare.textContent;
+		const guests = inputShowerGuests.value;
+		const hosts = inputShowerHosts.value;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Orçamento Chá da Noiva</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Orçamento Chá de Panela e Divisão entre Madrinhas</h1>
+				<p><strong>Convidadas:</strong> ${guests} | <strong>Madrinhas Pagantes:</strong> ${hosts} | <strong>Total:</strong> ${total} | <strong>Por Madrinha:</strong> ${perHost}</p>
+				<hr/>
+				<h2>Lista de Compras Bar de Mimosas</h2>
+				<p>• ${statChampagneBottles.textContent} de Espumante / Prosecco</p>
+				<p>• ${statJuiceCarafes.textContent} de sucos de laranja, pêssego e cranberry</p>
+				<p>• ${statBerryTubs.textContent} de morangos e frutas vermelhas frescas</p>
+				<hr/>
+				<p><em>Gerado por Manage.Wedding</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Orcamento-Cha-da-Noiva-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateShower();
+</script>

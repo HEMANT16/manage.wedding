@@ -1,0 +1,1031 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/bachelor-party-budget-calculator/#webapp",
+      "name": "JGA Budget Rechner & Kostenverteiler (Junggesellenabschied Männer)",
+      "url": "https://manage.wedding/de/bachelor-party-budget-calculator",
+      "inLanguage": "de",
+      "description": "Kostenloser JGA Budget Rechner für Männer. Berechnen Sie die exakten Kosten pro Person für Ferienhaus, Aktivitäten, Brauhaustour, Verpflegung und Club – inklusive Freihalten des Bräutigams. Export für PayPal Freunde, Word und PDF.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie man das JGA-Budget für Männer fair plant und aufteilt",
+      "description": "Schritt-für-Schritt-Anleitung für Trauzeugen: JGA-Kosten kalkulieren, Geld von den Jungs einsammeln und den Bräutigam komplett einladen.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 1: Teilnehmerzahl fixieren & Bräutigam freihalten",
+          "text": "Bestimmen Sie die verbindlichen Zusagen und wenden Sie die N-1 Formel an: Die Kosten des Bräutigams für Unterkunft, Essen und Aktivitäten werden gleichmäßig auf alle Jungs umgelegt."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 2: Feste Gruppenkosten buchen",
+          "text": "Kalkulieren Sie unverhandelbare Fixkosten: Ferienhaus, Airbnb-Kaution, Endreinigung sowie 9-Sitzer Mietbus, Maut und Sprit."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 3: Aktivitäten und Abendprogramm planen",
+          "text": "Tragen Sie Schätzwerte für Kartfahren, Brauereitour, Bootsmiete, Steakhouse-Abendessen und Club-VIP-Tische ein."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 4: Anzahlung via PayPal Freunde einsammeln",
+          "text": "Senden Sie eine transparente Übersicht via WhatsApp: Sammeln Sie 50% Anzahlung 3 bis 6 Monate im Voraus ein, den Rest 2 Wochen vor der Reise."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Zahlt der Bräutigam etwas für seinen JGA?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nein. Nach moderner JGA-Etikette wird der Bräutigam von der Gruppe zu 100% freigehalten: Die mitreisenden Freunde teilen sich alle Kosten für Ferienhaus, Essen, Aktivitäten und Getränke gleichmäßig auf (N-1 Regel). Der Bräutigam zahlt höchstens sein eigenes Anreise-Zugticket oder seinen Flug."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie viel kostet ein JGA für Männer im Durchschnitt pro Person?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ein Wochenend-JGA mit Städtetrip (z. B. Mallorca, Prag, Hamburg, Amsterdam) kostet im Schnitt 220€ bis 450€ pro Person inklusive Unterkunft, Verpflegung, Programm, Feiern und Bräutigam-Umlage. Ein gemütliches Hüttenwochenende im Harz oder Schwarzwald liegt bei ca. 130€ bis 200€ pro Mann."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wann sollte der Trauzeuge das Geld für den JGA einsammeln?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sammeln Sie Rate 1 (50% Anzahlung für Unterkunft und feste Exkursionen) 3 bis 6 Monate vorab ein. Rate 2 (die restlichen 50% für Einkäufe, Grillen und Abendkasse) sollte 2 bis 3 Wochen vor Reisebeginn überwiesen sein. Legen Sie niemals tausende Euro privat aus, ohne Anzahlungen erhalten zu haben."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was tun, wenn ein Freund ein sehr knappes Budget hat?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Führen Sie vor der Reiseplanung eine anonyme Umfrage durch. Wenn jemand nicht das gesamte Wochenende mitfahren kann, bieten Sie ihm an, nur zum Samstagabend-Essen dazuzustoßen oder einen freiwilligen Betrag (z. B. 20-30€) für die Bräutigam-Bierrunde beizusteuern."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="JGA Budget Rechner & Kostenverteiler (Bräutigam Freihalten) | Manage.Wedding"
+	description="Kostenloser JGA-Kostenrechner für Männer. Berechnen Sie die exakten Kosten pro Person für Ferienhaus, Aktivitäten, Brauhaustour, Verpflegung und Club – inklusive Freihalten des Bräutigams. Export für PayPal Freunde, Word und PDF."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="JGA Budget Rechner" category="budget-finance" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Bräutigam Freihalten & PayPal Rechner</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				JGA Budget Rechner <span class="accent-italic">& Kostenverteiler</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Berechnen Sie den genauen Beitrag pro Mann für Ferienhaus, Paintball, Brauereiführung, Steakhouse und Clubnacht. Halten Sie den Bräutigam automatisch frei und generieren Sie fertige PayPal- und WhatsApp-Zahlungsaufforderungen.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Setup & Kategorien -->
+			<div class="hand-card" style="padding: clamp(1.25rem, 3vw, 2.25rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.45rem; margin: 0; color: var(--fg-pencil);">
+						JGA-Planung & Teilnehmer
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						N-1 Umlagesystem
+					</span>
+				</div>
+
+				<!-- Destination / Preset Picker -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="destination-preset" style="font-weight: 700;">Reiseziel / JGA-Motto Vorlage</label>
+					<select id="destination-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600; padding: 0.65rem;">
+						<option value="mallorca" selected>🍻 Mallorca / Palma (Bierkönig, Katamaran, Strand / 360€/Mann)</option>
+						<option value="prag">🏰 Prag / Budapest (Brauereitour, Schießstand & Feiern / 260€/Mann)</option>
+						<option value="hamburg">⚓ Hamburg / St. Pauli (Kiez-Tour, Reeperbahn & Hafen / 240€/Mann)</option>
+						<option value="amsterdam">🚲 Amsterdam (Grachtenboot, Craft Beer & Nightlife / 320€/Mann)</option>
+						<option value="huette">🌲 Hütte im Schwarzwald / Harz (Fassbier & Großes Grillen / 150€/Mann)</option>
+						<option value="custom">✏️ Individuelle Kalkulation</option>
+					</select>
+				</div>
+
+				<!-- Name des Bräutigams, Zahlende Jungs, Nächte -->
+				<div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+					<div>
+						<label class="form-label" for="groom-name" style="font-size: 0.9rem; font-weight: 600;">Bräutigam</label>
+						<input type="text" id="groom-name" class="form-input" value="Max" placeholder="z.B. Max" />
+					</div>
+					<div>
+						<label class="form-label" for="guys-count" style="font-size: 0.9rem; font-weight: 600;">Zahlende Jungs</label>
+						<input type="number" id="guys-count" class="form-input" value="7" min="1" max="40" />
+					</div>
+					<div>
+						<label class="form-label" for="trip-nights" style="font-size: 0.9rem; font-weight: 600;">Nächte</label>
+						<input type="number" id="trip-nights" class="form-input" value="2" min="1" max="30" />
+					</div>
+				</div>
+
+				<!-- Bräutigam Freihalten Toggle -->
+				<div class="form-group" style="background: #fffcf5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.5rem;">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 700; font-size: 0.98rem; margin: 0;">
+						<input type="checkbox" id="toggle-cover-groom" checked style="width: 18px; height: 18px; cursor: pointer;" />
+						<span>Bräutigam zu 100% freihalten (Zahlt 0€)</span>
+					</label>
+					<span style="font-size: 0.82rem; color: #64748b; display: block; margin-top: 4px; margin-left: 26px;">
+						Klassische JGA-Regel: Die 7 Jungs teilen sich alle Gesamtkosten gleichmäßig auf.
+					</span>
+				</div>
+
+				<!-- Ausgaben-Kategorien -->
+				
+				<!-- Kategorie 1: Unterkunft -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🏡 1. Unterkunft & Kaution (€)
+						</strong>
+						<span id="subtotal-lodging" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">900€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-airbnb" style="font-size: 0.85rem;">Ferienhaus / Airbnb / Hotel</label>
+							<input type="number" id="exp-airbnb" class="form-input" value="800" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-cleaning" style="font-size: 0.85rem;">Endreinigung & Nebenkosten</label>
+							<input type="number" id="exp-cleaning" class="form-input" value="100" min="0" step="10" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Kategorie 2: Aktivitäten -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🏎️ 2. Aktivitäten & Erlebnisse (€)
+						</strong>
+						<span id="subtotal-activities" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">550€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+						<div>
+							<label class="form-label" for="exp-boat" style="font-size: 0.85rem;">Bootstour / Floß / Katamaran</label>
+							<input type="number" id="exp-boat" class="form-input" value="300" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-shooting" style="font-size: 0.85rem;">Kartbahn / Paintball / Schießen</label>
+							<input type="number" id="exp-shooting" class="form-input" value="150" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-tours" style="font-size: 0.85rem;">Brauereiführung / Kiez-Tour</label>
+							<input type="number" id="exp-tours" class="form-input" value="100" min="0" step="20" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-golf" style="font-size: 0.85rem;">Sonstige Action / Spiele</label>
+							<input type="number" id="exp-golf" class="form-input" value="0" min="0" step="20" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Kategorie 3: Essen & Grillen -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🥩 3. Essen, Brauhaus & Grillen (€)
+						</strong>
+						<span id="subtotal-food" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">500€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+						<div>
+							<label class="form-label" for="exp-dinners" style="font-size: 0.85rem;">Brauhaus / Steakhouse</label>
+							<input type="number" id="exp-dinners" class="form-input" value="300" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-groceries" style="font-size: 0.85rem;">Supermarkt & Grillfleisch</label>
+							<input type="number" id="exp-groceries" class="form-input" value="120" min="0" step="10" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+					<div>
+						<label class="form-label" for="exp-brunch" style="font-size: 0.85rem;">Katerfrühstück, Döner & Snacks</label>
+						<input type="number" id="exp-brunch" class="form-input" value="80" min="0" step="10" style="font-size: 0.95rem;" />
+					</div>
+				</div>
+
+				<!-- Kategorie 4: Nachtleben & Getränke -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🍻 4. Nachtleben, Kneipen & Clubs (€)
+						</strong>
+						<span id="subtotal-nightlife" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">450€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+						<div>
+							<label class="form-label" for="exp-bars" style="font-size: 0.85rem;">Kneipentour & Bierrunden</label>
+							<input type="number" id="exp-bars" class="form-input" value="200" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-vip" style="font-size: 0.85rem;">Club-Eintritt / VIP-Tisch</label>
+							<input type="number" id="exp-vip" class="form-input" value="150" min="0" step="20" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+					<div>
+						<label class="form-label" for="exp-booze" style="font-size: 0.85rem;">Fassbier, Kästen & Schnaps Hütte</label>
+						<input type="number" id="exp-booze" class="form-input" value="100" min="0" step="10" style="font-size: 0.95rem;" />
+					</div>
+				</div>
+
+				<!-- Kategorie 5: Anreise & Transport -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🚗 5. Anreise & Transport (€)
+						</strong>
+						<span id="subtotal-transport" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">120€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-rental" style="font-size: 0.85rem;">Mietbus / Sprit / Maut</label>
+							<input type="number" id="exp-rental" class="form-input" value="80" min="0" step="10" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-uber" style="font-size: 0.85rem;">Großraumtaxis & Uber</label>
+							<input type="number" id="exp-uber" class="form-input" value="40" min="0" step="10" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Kategorie 6: JGA-Shirts & Bauchladen -->
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🧢 6. Shirts, Kostüm & Kater-Kits (€)
+						</strong>
+						<span id="subtotal-swag" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">90€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-shirts" style="font-size: 0.85rem;">Gruppen-Shirts & Bräutigam-Kostüm</label>
+							<input type="number" id="exp-shirts" class="form-input" value="60" min="0" step="5" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-kits" style="font-size: 0.85rem;">Kater-Kits, Elotrans & Becher</label>
+							<input type="number" id="exp-kits" class="form-input" value="30" min="0" step="5" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Zusammenfassung & PayPal Generator -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Cost Breakdown Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.25rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Kosten pro zahlendem Mann
+						</span>
+						<span id="groom-status-badge" style="font-size: 0.85rem; font-weight: 800; background: #16a34a; color: #fff; padding: 3px 8px; border-radius: 4px;">
+							🤵 Max Zahlt: 0€
+						</span>
+					</div>
+
+					<div id="display-per-person" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						373€
+					</div>
+
+					<div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); flex-wrap: wrap;">
+						<span>🌙 <strong id="display-per-night" style="color: var(--fg-pencil);">186€</strong> / Nacht</span>
+						<span>•</span>
+						<span>🎁 Bräutigam-Umlage: <strong id="display-groom-subsidy" style="color: var(--accent-red); font-weight: 700;">+47€</strong> / Mann</span>
+					</div>
+
+					<p style="font-size: 0.92rem; color: var(--text-secondary); margin: 0 0 1.25rem 0; padding-bottom: 1rem; border-bottom: 1px dashed #cbd5e1;">
+						Gesamtbudget der JGA-Gruppe: <strong id="display-trip-grand-total" style="color: var(--fg-pencil); font-weight: 700;">2.610€</strong> für <span id="display-headcount-text">7 Jungs</span> (+ Bräutigam).
+					</p>
+
+					<!-- Itemized Per-Person Split Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem 1rem; margin-bottom: 1.25rem;">
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🏡 Unterkunft & Kaution:</span>
+							<strong id="item-lodging-share">129€</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🏎️ Aktivitäten & Erlebnisse:</span>
+							<strong id="item-activity-share">79€</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🥩 Essen, Brauhaus & Grillen:</span>
+							<strong id="item-food-share">71€</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🍻 Nachtleben, Kneipen & Clubs:</span>
+							<strong id="item-nightlife-share">64€</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🚗 Anreise & Mietwagen:</span>
+							<strong id="item-transport-share">17€</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.9rem;">
+							<span>🧢 Shirts & Kater-Kits:</span>
+							<strong id="item-swag-share">13€</strong>
+						</div>
+					</div>
+
+					<!-- Suggested Payment Schedule -->
+					<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.88rem; line-height: 1.5;">
+						<strong style="display: block; color: var(--fg-pencil); margin-bottom: 4px;">📅 Empfohlener Zahlungsplan (2 Raten):</strong>
+						• <strong>Rate 1 (Anzahlung Buchung):</strong> <span id="sched-dep-1" style="font-weight: 700; color: var(--accent-red);">186€</span> (Ferienhaus & Aktivitäten sichern)<br />
+						• <strong>Rate 2 (2 Wochen vorher):</strong> <span id="sched-dep-2" style="font-weight: 700; color: var(--accent-blue);">187€</span> (Grillfleisch, Bier & Clubkasse)
+					</div>
+
+					<!-- Payment Handle & Deadline Setup -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem;">
+						<strong class="font-heading" style="display: block; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+							💳 Zahlungsdaten (PayPal Freunde / IBAN)
+						</strong>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<label class="form-label" for="payment-handle" style="font-size: 0.8rem;">PayPal.Me / IBAN</label>
+								<input type="text" id="payment-handle" class="form-input" value="paypal.me/trauzeuge" placeholder="paypal.me/name" style="font-size: 0.85rem; padding: 0.4rem 0.6rem;" />
+							</div>
+							<div>
+								<label class="form-label" for="payment-deadline" style="font-size: 0.8rem;">Frist Anzahlung</label>
+								<input type="text" id="payment-deadline" class="form-input" value="15. Oktober" placeholder="z.B. 15. Okt" style="font-size: 0.85rem; padding: 0.4rem 0.6rem;" />
+							</div>
+						</div>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
+						<button id="btn-copy-venmo" class="hand-btn" style="padding: 10px; font-size: 0.95rem; gap: 0.4rem; grid-column: span 2;">
+							<span>📲</span> WhatsApp & PayPal Nachricht kopieren
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="padding: 9px; font-size: 0.88rem; gap: 0.3rem;">
+							<span>📄</span> Word (.doc) Export
+						</button>
+						<button id="btn-print-pdf" class="hand-btn secondary" style="padding: 9px; font-size: 0.88rem; gap: 0.3rem;">
+							<span>🖨️</span> PDF Drucken
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Quick Checklist Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						🎯 Die 4 goldenen Regeln für den Trauzeugen:
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.88rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Anzahlung ist Pflicht:</strong> Nur wer pünktlich anbezahlt, wird bei der Bettenbelegung eingeplant.</li>
+						<li><strong>Bräutigam nicht überfordern:</strong> Gute Stimmung und Feiern stehen vor peinlichen Aufgaben.</li>
+						<li><strong>Splitwise-Gruppe anlegen:</strong> Für spontane Taxifahrten, Katerfrühstück und Kneipenrunden.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Schnellüberblick (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Faustregel: JGA Budget & Kostenverteilung für Männer
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Wenig Zeit? Hier ist die Standardformel zum Freihalten des Bräutigams und die Durchschnittskosten beliebter JGA-Ziele.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					💶 Die offizielle JGA-Umlageformel (N-1):
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Kosten pro Mann = [Ferienhaus + Aktivitäten + Essen + Feiern + Getränke + Anreise + Shirts] ÷ [Gesamtzahl Teilnehmer − 1 (Bräutigam)]
+				</p>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin: 6px 0 0 0;">
+					* Der Bräutigam übernimmt lediglich seine persönliche Anreise (Bahn/Flug); alle Kosten vor Ort werden zu 100% von den Freunden getragen.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Ziel / JGA-Konzept</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Durchschnitt pro Mann (2 Nächte)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Typische Hauptausgaben</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Atmosphäre & Highlights</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">🍻 Mallorca / Palma</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">320€ – 480€</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Finca/Hotel Playa de Palma, Katamaran mit BBQ, Bierkönig</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Sonne, Strand, Party non-stop & Bootstour</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">🏰 Prag / Budapest</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">220€ – 340€</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Großes Apartment Altstadt, Schießstand, Brauereiführung</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Günstiges Bier, Action, pulsierendes Nachtleben</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">⚓ Hamburg / St. Pauli</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">220€ – 320€</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Zentrales Hotel/Airbnb, Kiez-Tour mit Guide, Hafenrundfahrt</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Reeperbahn, Fischmarkt, Astra & Labskaus</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #0284c7);">🚲 Amsterdam / Köln</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">280€ – 400€</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Grachtenboot mit Freigetränken, Brauhäuser, Escape Game</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Kneipenkultur, Bootstouren, Metropolen-Flair</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">🌲 Berghütte (Harz / Schwarzwald / Allgäu)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">120€ – 180€</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Alleinlage Hütte mit Sauna, Fassbier & Grillbuffet</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Lagerfeuer, Wandern, Entspannung unter Freunden</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Der Trauzeugen-Leitfaden für JGA-Budgetierung & Geld-Einsammeln
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Ein legendärer Junggesellenabschied für den besten Freund muss nicht im finanziellen Chaos enden. Beachten Sie die folgenden Grundregeln für eine reibungslose Planung.
+				</p>
+			</div>
+
+			<!-- Section 1: Wer Zahlt Was -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Wer zahlt was beim Junggesellenabschied?
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Geldstreitigkeiten im Freundeskreis lassen sich durch klare Vorab-Absprachen komplett vermeiden:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>Was die teilnehmenden Jungs zahlen:</strong> Ihre eigene Anreise, ihren gleichen Anteil an Ferienhaus/Hotel, alle gemeinsamen Aktivitäten, Brauhaus-Essen, Club-Eintritte und den kompletten Anteil des Bräutigams.</li>
+					<li><strong>Was der Bräutigam zahlt:</strong> Höchstens sein eigenes Flug- oder Bahnticket zur Location. Vor Ort ist er zu 100% eingeladen.</li>
+					<li><strong>Die Rolle des Trauzeugen:</strong> Er koordiniert die Buchungen und zieht das Geld ein. Er haftet nicht privat für Ausfälle anderer Teilnehmer.</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: Zahlungsfristen -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. Die 2-Raten-Regel (Niemals tausende Euro alleine vorstrecken)
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Der klassische Fehler: Der Trauzeuge bucht eine 2.000€ Finca auf seine private Kreditkarte und rennt monatelang hinterher :
+				</p>
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-size: 0.98rem; line-height: 1.6; color: var(--fg-pencil);">
+					<strong>📲 Empfohlener Zahlungsablauf via PayPal Freunde:</strong><br />
+					• <strong>Phase 1 — Anzahlung (3 bis 6 Monate vorab):</strong> Sammeln Sie 50% der Gesamtkosten ein. Damit werden die Unterkunft und zeitkritische Programmpunkte (Boot, Kartbahn) fest gebucht. Wer die Frist verpasst, wird nicht eingeplant.<br />
+					• <strong>Phase 2 — Restzahlung (2 Wochen vorab):</strong> Ziehen Sie die restlichen 50% für Einkäufe, Grillen, Getränke und Clubkasse ein.<br />
+					• <strong>Während des Wochenendes:</strong> Nutzen Sie <em>Splitwise</em>, um spontane Taxifahrten, Katerfrühstück oder Kiosk-Einkäufe unkompliziert festzuhalten.
+				</div>
+			</section>
+
+			<!-- Section 3: Unterschiedliche Budgets -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: #16a34a; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					3. Wie man mit unterschiedlichen finanziellen Möglichkeiten umgeht
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Im Freundeskreis gibt es oft Studenten, Auszubildende und Berufstätige. Planen Sie fair:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1rem;">
+					<li><strong>Anonyme Vorab-Umfrage:</strong> Erstellen Sie eine Google Forms Umfrage zur Schmerzgrenze (z. B. 150€, 250€, 400€+), bevor ein teurer Städtetrip gebucht wird.</li>
+					<li><strong>Teilweise Teilnahme ermöglichen:</strong> Wer sich das ganze Wochenende nicht leisten kann, kann nur am Samstagabend zum Essen und Feiern dazustoßen.</li>
+					<li><strong>Volle Kostentransparenz:</strong> Teilen Sie die von unserem Rechner erstellte PDF- oder Word-Übersicht in der WhatsApp-Gruppe.</li>
+				</ul>
+			</section>
+
+			<!-- Section 4: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Häufig gestellte Fragen (FAQ)
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; background: var(--bg-paper);">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Zahlt der Trauzeuge mehr als die anderen Freunde?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Nein. Der Trauzeuge investiert bereits viel Freizeit und Organisationsarbeit in den JGA, bezahlt finanziell jedoch genau die gleiche Kopfpauschale wie alle anderen Gäste.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; background: var(--bg-paper);">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Was passiert mit übrig gebliebenem Geld aus der Gruppenkasse?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Überschüssiges Geld aus der Essens- und Getränkekasse kann am Sonntag für das gemeinsame Abschlussfrühstück genutzt oder via PayPal Freunde gleichmäßig zurücküberwiesen werden.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; background: var(--bg-paper);">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Wie viele Wochen vor der Hochzeit sollte der JGA stattfinden?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Der perfekte Zeitraum liegt <strong>4 bis 8 Wochen vor der Hochzeit</strong>. Vermeiden Sie Termine in den letzten 2 Wochen vor der Trauung, um Stress, Verletzungen oder Übermüdung des Bräutigams auszuschließen.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/de/bachelor-party-budget-calculator" category="budget" />
+
+	</main>
+
+	<!-- Interactive Logic & Export Handlers -->
+	<script is:inline>
+		// Form Elements
+		const presetSelect = document.getElementById('destination-preset');
+		const groomNameInput = document.getElementById('groom-name');
+		const guysCountInput = document.getElementById('guys-count');
+		const tripNightsInput = document.getElementById('trip-nights');
+		const toggleCoverGroom = document.getElementById('toggle-cover-groom');
+
+		// Inputs
+		const expAirbnb = document.getElementById('exp-airbnb');
+		const expCleaning = document.getElementById('exp-cleaning');
+		const expGolf = document.getElementById('exp-golf');
+		const expBoat = document.getElementById('exp-boat');
+		const expShooting = document.getElementById('exp-shooting');
+		const expTours = document.getElementById('exp-tours');
+		const expDinners = document.getElementById('exp-dinners');
+		const expGroceries = document.getElementById('exp-groceries');
+		const expBrunch = document.getElementById('exp-brunch');
+		const expBars = document.getElementById('exp-bars');
+		const expVip = document.getElementById('exp-vip');
+		const expBooze = document.getElementById('exp-booze');
+		const expRental = document.getElementById('exp-rental');
+		const expUber = document.getElementById('exp-uber');
+		const expShirts = document.getElementById('exp-shirts');
+		const expKits = document.getElementById('exp-kits');
+
+		// Subtotal displays
+		const subLodging = document.getElementById('subtotal-lodging');
+		const subActivities = document.getElementById('subtotal-activities');
+		const subFood = document.getElementById('subtotal-food');
+		const subNightlife = document.getElementById('subtotal-nightlife');
+		const subTransport = document.getElementById('subtotal-transport');
+		const subSwag = document.getElementById('subtotal-swag');
+
+		// Summary Displays
+		const displayPerPerson = document.getElementById('display-per-person');
+		const displayPerNight = document.getElementById('display-per-night');
+		const displayGroomSubsidy = document.getElementById('display-groom-subsidy');
+		const displayGrandTotal = document.getElementById('display-trip-grand-total');
+		const displayHeadcountText = document.getElementById('display-headcount-text');
+		const groomStatusBadge = document.getElementById('groom-status-badge');
+
+		// Itemized Shares
+		const itemLodgingShare = document.getElementById('item-lodging-share');
+		const itemActivityShare = document.getElementById('item-activity-share');
+		const itemFoodShare = document.getElementById('item-food-share');
+		const itemNightlifeShare = document.getElementById('item-nightlife-share');
+		const itemTransportShare = document.getElementById('item-transport-share');
+		const itemSwagShare = document.getElementById('item-swag-share');
+
+		// Payment Sched & Action Elements
+		const schedDep1 = document.getElementById('sched-dep-1');
+		const schedDep2 = document.getElementById('sched-dep-2');
+		const paymentHandleInput = document.getElementById('payment-handle');
+		const paymentDeadlineInput = document.getElementById('payment-deadline');
+
+		const btnCopyVenmo = document.getElementById('btn-copy-venmo');
+		const btnExportDoc = document.getElementById('btn-export-doc');
+		const btnPrintPdf = document.getElementById('btn-print-pdf');
+
+		function calculateBachelor() {
+			const guys = parseInt(guysCountInput.value, 10) || 1;
+			const nights = parseInt(tripNightsInput.value, 10) || 1;
+			const coverGroom = toggleCoverGroom.checked;
+			const groom = groomNameInput.value.trim() || 'Max';
+
+			// Group Category Sums
+			const lodgingTotal = (parseFloat(expAirbnb.value) || 0) + (parseFloat(expCleaning.value) || 0);
+			const activitiesTotal = (parseFloat(expBoat.value) || 0) + (parseFloat(expShooting.value) || 0) + (parseFloat(expTours.value) || 0) + (parseFloat(expGolf.value) || 0);
+			const foodTotal = (parseFloat(expDinners.value) || 0) + (parseFloat(expGroceries.value) || 0) + (parseFloat(expBrunch.value) || 0);
+			const nightlifeTotal = (parseFloat(expBars.value) || 0) + (parseFloat(expVip.value) || 0) + (parseFloat(expBooze.value) || 0);
+			const transportTotal = (parseFloat(expRental.value) || 0) + (parseFloat(expUber.value) || 0);
+			const swagTotal = (parseFloat(expShirts.value) || 0) + (parseFloat(expKits.value) || 0);
+
+			const grandTotal = lodgingTotal + activitiesTotal + foodTotal + nightlifeTotal + transportTotal + swagTotal;
+			
+			// Headcount Division
+			const totalHeadcount = guys + 1; // guys + groom
+			const payingCount = coverGroom ? guys : totalHeadcount;
+
+			const perPersonTotal = grandTotal / payingCount;
+			const perPersonPerNight = perPersonTotal / Math.max(nights, 1);
+
+			// Groom subsidy calculation
+			const baseEqualSplit = grandTotal / totalHeadcount;
+			const subsidyPerGuy = coverGroom ? (perPersonTotal - baseEqualSplit) : 0;
+
+			// Category Shares
+			const lodgingShare = lodgingTotal / payingCount;
+			const activityShare = activitiesTotal / payingCount;
+			const foodShare = foodTotal / payingCount;
+			const nightlifeShare = nightlifeTotal / payingCount;
+			const transportShare = transportTotal / payingCount;
+			const swagShare = swagTotal / payingCount;
+
+			// Update Subtotals
+			subLodging.textContent = `${Math.round(lodgingTotal).toLocaleString('de-DE')}€`;
+			subActivities.textContent = `${Math.round(activitiesTotal).toLocaleString('de-DE')}€`;
+			subFood.textContent = `${Math.round(foodTotal).toLocaleString('de-DE')}€`;
+			subNightlife.textContent = `${Math.round(nightlifeTotal).toLocaleString('de-DE')}€`;
+			subTransport.textContent = `${Math.round(transportTotal).toLocaleString('de-DE')}€`;
+			subSwag.textContent = `${Math.round(swagTotal).toLocaleString('de-DE')}€`;
+
+			// Update Summary Card
+			displayPerPerson.textContent = `${Math.round(perPersonTotal).toLocaleString('de-DE')}€`;
+			displayPerNight.textContent = `${Math.round(perPersonPerNight).toLocaleString('de-DE')}€`;
+			displayGrandTotal.textContent = `${Math.round(grandTotal).toLocaleString('de-DE')}€`;
+			displayHeadcountText.textContent = `${payingCount} Teilnehmer`;
+
+			if (coverGroom) {
+				groomStatusBadge.textContent = `🤵 ${groom} Zahlt: 0€`;
+				groomStatusBadge.style.background = '#16a34a';
+				displayGroomSubsidy.textContent = `+${Math.round(subsidyPerGuy).toLocaleString('de-DE')}€`;
+			} else {
+				groomStatusBadge.textContent = `🤵 ${groom} Zahlt Gleichen Anteil: ${Math.round(perPersonTotal).toLocaleString('de-DE')}€`;
+				groomStatusBadge.style.background = '#0284c7';
+				displayGroomSubsidy.textContent = `0€`;
+			}
+
+			// Update Itemized Shares
+			itemLodgingShare.textContent = `${Math.round(lodgingShare).toLocaleString('de-DE')}€`;
+			itemActivityShare.textContent = `${Math.round(activityShare).toLocaleString('de-DE')}€`;
+			itemFoodShare.textContent = `${Math.round(foodShare).toLocaleString('de-DE')}€`;
+			itemNightlifeShare.textContent = `${Math.round(nightlifeShare).toLocaleString('de-DE')}€`;
+			itemTransportShare.textContent = `${Math.round(transportShare).toLocaleString('de-DE')}€`;
+			itemSwagShare.textContent = `${Math.round(swagShare).toLocaleString('de-DE')}€`;
+
+			// 2-Deposit Schedule
+			const dep1 = Math.round(perPersonTotal / 2);
+			const dep2 = Math.round(perPersonTotal) - dep1;
+			schedDep1.textContent = `${dep1.toLocaleString('de-DE')}€`;
+			schedDep2.textContent = `${dep2.toLocaleString('de-DE')}€`;
+		}
+
+		// Preset Selection Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'mallorca') {
+				tripNightsInput.value = 2;
+				expAirbnb.value = 800;
+				expCleaning.value = 100;
+				expBoat.value = 300;
+				expShooting.value = 0;
+				expTours.value = 100;
+				expGolf.value = 0;
+				expDinners.value = 300;
+				expGroceries.value = 120;
+				expBrunch.value = 80;
+				expBars.value = 200;
+				expVip.value = 150;
+				expBooze.value = 100;
+				expRental.value = 80;
+				expUber.value = 40;
+				expShirts.value = 60;
+				expKits.value = 30;
+			} else if (p === 'prag') {
+				tripNightsInput.value = 2;
+				expAirbnb.value = 600;
+				expCleaning.value = 80;
+				expBoat.value = 150;
+				expShooting.value = 180; // Schießstand
+				expTours.value = 100; // Brauereitour
+				expGolf.value = 0;
+				expDinners.value = 250;
+				expGroceries.value = 80;
+				expBrunch.value = 60;
+				expBars.value = 180;
+				expVip.value = 80;
+				expBooze.value = 70;
+				expRental.value = 80;
+				expUber.value = 40;
+				expShirts.value = 50;
+				expKits.value = 20;
+			} else if (p === 'hamburg') {
+				tripNightsInput.value = 2;
+				expAirbnb.value = 750;
+				expCleaning.value = 90;
+				expBoat.value = 120; // Hafenrundfahrt
+				expShooting.value = 0;
+				expTours.value = 160; // Kiez-Führung
+				expGolf.value = 0;
+				expDinners.value = 280;
+				expGroceries.value = 80;
+				expBrunch.value = 70;
+				expBars.value = 200;
+				expVip.value = 80;
+				expBooze.value = 60;
+				expRental.value = 70;
+				expUber.value = 40;
+				expShirts.value = 50;
+				expKits.value = 25;
+			} else if (p === 'amsterdam') {
+				tripNightsInput.value = 2;
+				expAirbnb.value = 850;
+				expCleaning.value = 120;
+				expBoat.value = 280; // Grachtenboot
+				expShooting.value = 0;
+				expTours.value = 140; // Brauereien
+				expGolf.value = 0;
+				expDinners.value = 320;
+				expGroceries.value = 120;
+				expBrunch.value = 80;
+				expBars.value = 220;
+				expVip.value = 100;
+				expBooze.value = 80;
+				expRental.value = 90;
+				expUber.value = 50;
+				expShirts.value = 60;
+				expKits.value = 25;
+			} else if (p === 'huette') {
+				tripNightsInput.value = 2;
+				expAirbnb.value = 500; // Berghütte
+				expCleaning.value = 60;
+				expBoat.value = 0;
+				expShooting.value = 120; // Paintball
+				expTours.value = 0;
+				expGolf.value = 0;
+				expDinners.value = 150;
+				expGroceries.value = 200; // Großes Grillen
+				expBrunch.value = 50;
+				expBars.value = 0;
+				expVip.value = 0;
+				expBooze.value = 160; // Fassbier & Schnaps
+				expRental.value = 60;
+				expUber.value = 0;
+				expShirts.value = 40;
+				expKits.value = 20;
+			}
+			calculateBachelor();
+		});
+
+		// Live Listeners for all inputs
+		const allInputs = [
+			groomNameInput, guysCountInput, tripNightsInput, toggleCoverGroom,
+			expAirbnb, expCleaning, expGolf, expBoat, expShooting, expTours,
+			expDinners, expGroceries, expBrunch, expBars, expVip, expBooze,
+			expRental, expUber, expShirts, expKits
+		];
+
+		allInputs.forEach(el => {
+			el.addEventListener('input', calculateBachelor);
+			el.addEventListener('change', calculateBachelor);
+		});
+
+		// Copy WhatsApp / PayPal Request Message
+		btnCopyVenmo.addEventListener('click', () => {
+			const groom = groomNameInput.value.trim() || 'Max';
+			const perPerson = displayPerPerson.textContent;
+			const grandTotal = displayGrandTotal.textContent;
+			const handle = paymentHandleInput.value.trim() || 'paypal.me/trauzeuge';
+			const deadline = paymentDeadlineInput.value.trim() || 'in Kürze';
+			const nights = tripNightsInput.value;
+			const dep1 = schedDep1.textContent;
+			const dep2 = schedDep2.textContent;
+
+			let text = `🎉 *JGA von ${groom} — Budget & Zahlungsübersicht*\n\n`;
+			text += `Moin Jungs! Hier ist die Gesamtkalkulation für ${groom}s Junggesellenabschied (${nights} Nächte):\n\n`;
+			text += `💰 *Kosten pro Mann:* ${perPerson} (wir halten ${groom} frei, er zahlt 0€!)\n`;
+			text += `💶 *Gesamtbudget der Gruppe:* ${grandTotal}\n\n`;
+			text += `📋 *Enthaltene Kostenpunkte:*\n`;
+			text += `• 🏡 Unterkunft (Ferienhaus / Airbnb): ${itemLodgingShare.textContent}\n`;
+			text += `• 🏎️ Aktivitäten & Ausflüge: ${itemActivityShare.textContent}\n`;
+			text += `• 🥩 Essen, Brauhaus & Grillen: ${itemFoodShare.textContent}\n`;
+			text += `• 🍻 Nachtleben, Kneipen & Clubs: ${itemNightlifeShare.textContent}\n`;
+			text += `• 🚗 Anreise & Transport: ${itemTransportShare.textContent}\n`;
+			text += `• 🧢 JGA-Shirts & Kater-Kits: ${itemSwagShare.textContent}\n\n`;
+			text += `📅 *Zahlungsplan via PayPal Freunde:*\n`;
+			text += `1️⃣ *Anzahlung (Frist ${deadline}):* ${dep1} (für Unterkunft & Buchungen)\n`;
+			text += `2️⃣ *Restzahlung (2 Wochen vorher):* ${dep2} (Grillfleisch, Bier & Clubkasse)\n\n`;
+			text += `📲 *Zahlung senden an:* ${handle}\n\n`;
+			text += `Lasst uns ${groom} einen unvergesslichen Abschied bereiten! 🍻🔥`;
+
+			navigator.clipboard.writeText(text).then(() => {
+				const orig = btnCopyVenmo.innerHTML;
+				btnCopyVenmo.innerHTML = '<span>✅</span> In die Zwischenablage kopiert!';
+				setTimeout(() => { btnCopyVenmo.innerHTML = orig; }, 2500);
+			});
+		});
+
+		// 📄 Export Microsoft Word (.doc)
+		btnExportDoc.addEventListener('click', () => {
+			const groom = groomNameInput.value.trim() || 'Max';
+			const guys = guysCountInput.value;
+			const nights = tripNightsInput.value;
+			const dateStr = new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+
+			const html = `
+				<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+				<head>
+					<meta charset="utf-8">
+					<title>JGA Budgetplan von ${groom}</title>
+					<style>
+						body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #1e293b; padding: 24px; }
+						h1 { font-size: 20pt; color: #0f172a; margin-bottom: 4px; }
+						h2 { font-size: 14pt; color: #dc2626; margin-top: 20px; margin-bottom: 6px; border-bottom: 2px solid #cbd5e1; padding-bottom: 4px; }
+						p { margin: 4px 0 12px 0; color: #475569; font-size: 10.5pt; }
+						table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; font-size: 10.5pt; }
+						th { background-color: #f1f5f9; border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; font-weight: bold; }
+						td { border: 1px solid #cbd5e1; padding: 8px 10px; }
+						.total-row { background-color: #fef3c7; font-weight: bold; font-size: 12pt; }
+						.highlight { color: #dc2626; font-weight: bold; }
+					</style>
+				</head>
+				<body>
+					<h1>🎉 Manage.Wedding — JGA Budgetplan für ${groom}</h1>
+					<p>Erstellt am ${dateStr} | Reisedauer: <strong>${nights} Nächte</strong> | Zahlende Jungs: <strong>${guys} Teilnehmer</strong> (+ Bräutigam)</p>
+					
+					<h2>Finanzielle Zusammenfassung</h2>
+					<p>• <strong>Gesamtbudget der JGA-Gruppe:</strong> ${displayGrandTotal.textContent}</p>
+					<p>• <strong>Beitrag pro zahlendem Mann:</strong> <span class="highlight">${displayPerPerson.textContent}</span> (${displayPerNight.textContent} / Nacht)</p>
+					<p>• <strong>Status Bräutigam:</strong> ${groomStatusBadge.textContent} (Bräutigam-Umlage pro Mann: ${displayGroomSubsidy.textContent})</p>
+
+					<h2>Detaillierte Kostenaufstellung nach Kategorien</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Ausgaben-Kategorie</th>
+								<th>Gruppe Gesamt (€)</th>
+								<th>Anteil pro Mann (€)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><strong>1. Unterkunft & Kaution</strong> (Ferienhaus / Airbnb + Endreinigung)</td>
+								<td>${subLodging.textContent}</td>
+								<td>${itemLodgingShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>2. Aktivitäten & Erlebnisse</strong> (Bootstour, Kart, Paintball, Brauerei)</td>
+								<td>${subActivities.textContent}</td>
+								<td>${itemActivityShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>3. Essen, Brauhaus & Grillen</strong> (Steakhouse, Supermarkt, Katerfrühstück)</td>
+								<td>${subFood.textContent}</td>
+								<td>${itemFoodShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>4. Nachtleben, Kneipen & Clubs</strong> (Bierrunden, VIP-Tisch, Hütten-Bar)</td>
+								<td>${subNightlife.textContent}</td>
+								<td>${itemNightlifeShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>5. Anreise & Transport</strong> (Mietbus, Sprit, Taxis)</td>
+								<td>${subTransport.textContent}</td>
+								<td>${itemTransportShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>6. JGA-Shirts & Kater-Kits</strong> (Gruppen-Shirts, Bräutigam-Kostüm)</td>
+								<td>${subSwag.textContent}</td>
+								<td>${itemSwagShare.textContent}</td>
+							</tr>
+							<tr class="total-row">
+								<td>GESAMTBEITRAG PRO MANN</td>
+								<td>${displayGrandTotal.textContent}</td>
+								<td>${displayPerPerson.textContent}</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<h2>Zahlungsplan (PayPal Freunde / Überweisung)</h2>
+					<p>• <strong>Rate 1 - Anzahlung (Frist ${paymentDeadlineInput.value || 'Sofort'}):</strong> ${schedDep1.textContent} pro Mann (feste Buchung von Unterkunft & Boot)</p>
+					<p>• <strong>Rate 2 - Restzahlung (2 Wochen vor Reise):</strong> ${schedDep2.textContent} pro Mann (Essen, Getränke & Clubkasse)</p>
+					<p>• <strong>Zahlungsempfänger (PayPal):</strong> <code>${paymentHandleInput.value || 'paypal.me/trauzeuge'}</code></p>
+				</body>
+				</html>
+			`;
+
+			const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `JGA_Budget_${groom}_${new Date().toISOString().slice(0, 10)}.doc`;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		});
+
+		// 🖨️ Vector PDF Print Export
+		btnPrintPdf.addEventListener('click', () => {
+			const groom = groomNameInput.value.trim() || 'Max';
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>JGA Budgetplan für ${groom} — Manage.Wedding</title>
+					<style>
+						@page { size: 8.5in 11in; margin: 0.5in; }
+						body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11pt; color: #1e293b; line-height: 1.5; }
+						h1 { font-size: 20pt; color: #0f172a; margin-bottom: 4px; }
+						h2 { font-size: 13pt; color: #dc2626; margin-top: 18px; margin-bottom: 6px; border-bottom: 2px solid #cbd5e1; padding-bottom: 3px; }
+						table { width: 100%; border-collapse: collapse; margin-top: 12px; margin-bottom: 16px; }
+						th, td { border: 1px solid #cbd5e1; padding: 7px 10px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+						.footer-note { font-size: 9.5pt; color: #64748b; margin-top: 20px; border-top: 1px dashed #cbd5e1; padding-top: 8px; }
+					</style>
+				</head>
+				<body>
+					<h1>🎉 Offizieller JGA-Budgetplan für ${groom}</h1>
+					<p><strong>Reisedauer:</strong> ${tripNightsInput.value} Nächte | <strong>Zahlende Jungs:</strong> ${guysCountInput.value} | <strong>Status:</strong> ${groomStatusBadge.textContent}</p>
+					
+					<table>
+						<thead>
+							<tr>
+								<th>Ausgaben-Kategorie</th>
+								<th>Gruppe Gesamt (€)</th>
+								<th>Anteil pro Mann (€)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr><td>Unterkunft & Kaution (Ferienhaus / Airbnb)</td><td>${subLodging.textContent}</td><td>${itemLodgingShare.textContent}</td></tr>
+							<tr><td>Aktivitäten & Erlebnisse (Bootstour, Kart, Paintball)</td><td>${subActivities.textContent}</td><td>${itemActivityShare.textContent}</td></tr>
+							<tr><td>Essen, Brauhaus & Grillen (Steakhouse, BBQ, Brunch)</td><td>${subFood.textContent}</td><td>${itemFoodShare.textContent}</td></tr>
+							<tr><td>Nachtleben, Kneipen & Clubs (Bierrunden, Club, Bar)</td><td>${subNightlife.textContent}</td><td>${itemNightlifeShare.textContent}</td></tr>
+							<tr><td>Anreise & Transport (Mietbus, Taxis)</td><td>${subTransport.textContent}</td><td>${itemTransportShare.textContent}</td></tr>
+							<tr><td>Shirts, Kostüm & Kater-Kits</td><td>${subSwag.textContent}</td><td>${itemSwagShare.textContent}</td></tr>
+							<tr class="total-row"><td>GESAMTKOSTEN PRO MANN</td><td>${displayGrandTotal.textContent}</td><td>${displayPerPerson.textContent}</td></tr>
+						</tbody>
+					</table>
+
+					<h2>Zahlungsplan (PayPal Freunde)</h2>
+					<p>• <strong>Rate 1 - Anzahlung (Frist ${paymentDeadlineInput.value || 'Sofort'}):</strong> ${schedDep1.textContent} / Mann<br>
+					• <strong>Rate 2 - Restzahlung (2 Wochen vorher):</strong> ${schedDep2.textContent} / Mann<br>
+					• <strong>PayPal Freunde Adresse:</strong> ${paymentHandleInput.value || 'paypal.me/trauzeuge'}</p>
+
+					<div class="footer-note">
+						Erstellt mit Manage.Wedding • JGA Budget Rechner & Kostenverteiler
+					</div>
+
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body>
+				</html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Initial Calculation
+		calculateBachelor();
+	</script>
+</Layout>

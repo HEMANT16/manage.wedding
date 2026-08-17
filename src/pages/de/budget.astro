@@ -1,0 +1,231 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const title = "Hochzeitsbudget Rechner & Finanzierungs-Tools (Kostenlos) | Manage.Wedding";
+const description = "Kostenlose Hochzeitsbudget-Rechner: Gesamtbudget nach Branchenstandards aufteilen, versteckte Location-Kosten prüfen, Kostenaufteilung und JGA-Kalkulator.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://manage.wedding/de/budget/#collection",
+      "name": "Hochzeitsbudget & Finanzrechner",
+      "url": "https://manage.wedding/de/budget",
+      "inLanguage": "de",
+      "description": "Umfassende Sammlung interaktiver Hochzeitsbudget-Rechner, Location-Kostenprüfer, Kostenaufteilungs-Tools und Trinkgeld-Ratgeber.",
+      "hasPart": [
+        { "@type": "WebApplication", "name": "Hochzeitsbudget Rechner", "url": "https://manage.wedding/de/master-budget-calculator" },
+        { "@type": "WebApplication", "name": "Versteckte Location-Kosten Rechner", "url": "https://manage.wedding/de/wedding-venue-cost-calculator" },
+        { "@type": "WebApplication", "name": "Wer zahlt was bei der Hochzeit?", "url": "https://manage.wedding/de/who-pays-for-what-wedding" },
+        { "@type": "WebApplication", "name": "JGA Budget Planer (Junggesellenabschied)", "url": "https://manage.wedding/de/bachelorette-budget-calculator" },
+        { "@type": "WebApplication", "name": "Trinkgeld-Ratgeber für Dienstleister", "url": "https://manage.wedding/de/vendor-tipping-calculator" },
+        { "@type": "WebApplication", "name": "Flitterwochen Budget Rechner", "url": "https://manage.wedding/de/honeymoon-budget-estimator" },
+        { "@type": "WebApplication", "name": "Hochzeitskredit & Ratenrechner", "url": "https://manage.wedding/de/wedding-loan-calculator" },
+        { "@type": "WebApplication", "name": "Namensänderung nach der Hochzeit: Checkliste & Kostenrechner", "url": "https://manage.wedding/de/wedding-name-change-calculator" },
+        { "@type": "WebApplication", "name": "Geldgeschenke Rechner für Hochzeitsgäste", "url": "https://manage.wedding/de/gift-cash-calculator" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wie teilt man ein Hochzeitsbudget realistisch auf?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die bewährte Faustformel für Hochzeiten im deutschsprachigen Raum lautet: 45–50% für Location, Catering & Getränke, 12–15% für Hochzeitsfotografie & Video, 10–12% für Brautkleid, Anzug & Styling, 8–10% für Musik & Entertainment (DJ/Band), 8–10% für Blumen & Dekoration, 3–5% für Papeterie & Porto sowie 5% als Notfallpuffer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Welche versteckten Kosten entstehen bei Hochzeitslocations?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Häufige Zusatzkosten sind Servicepauschalen nach Mitternacht (Nachtzuschläge pro Stunde), Korkgeld / Tellergeld für mitgebrachte Weine oder Torten, Reinigungskosten, Mindestumsätze sowie Mehrwertsteuer auf Dienstleistungen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie viel Trinkgeld gibt man Hochzeitsdienstleistern in Deutschland, Österreich und der Schweiz?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Für das Servicepersonal und Serviceleiter sind 20 € bis 50 € pro Servicekraft üblich (oder 5–10% der Gastronomiekosten). Für DJ und Fotografen sind 50 € bis 100 € bei hervorragender Betreuung ein schönes Zeichen der Wertschätzung. Für Stylisten ca. 10–15%."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const budgetTools = [
+  {
+    title: "Junggesellenabschied (JGA) Budget-Rechner",
+    url: "/de/bachelor-party-budget-calculator",
+    icon: "🍻",
+    badge: "Bräutigam Einladen",
+    desc: "Kalkulieren Sie alle Kosten für Unterkunft, Aktivitäten und Partys fair unter allen Freunden und übernehmen Sie den Anteil des Bräutigams.",
+    tags: ["N-1 Aufteilung", "PayPal / Splitwise", "JGA-Planung"]
+  },
+
+  {
+    title: "Hochzeitsbudget Rechner",
+    url: "/de/master-budget-calculator",
+    icon: "💰",
+    badge: "Branchenformel",
+    desc: "Geben Sie Ihr Gesamtbudget ein und erhalten Sie eine realistische prozentuale Aufteilung auf Location, Catering, Foto, Blumen und Notfallpuffer.",
+    tags: ["Prozentrechnung", "Puffer-Fonds", "Kostenverfolgung"]
+  },
+  {
+    title: "Versteckte Location-Kosten Rechner",
+    url: "/de/wedding-venue-cost-calculator",
+    icon: "🏰",
+    badge: "Mindestumsatz & Miete",
+    desc: "Kalkulieren Sie die echten Gesamtkosten einer Location inklusive Mindestverzehr, Servicepauschalen, Nachtzuschlägen und Nebenkosten.",
+    tags: ["Mindestumsatz", "Nachtzuschlag", "Mietkosten"]
+  },
+  {
+    title: "Wer zahlt was bei der Hochzeit?",
+    url: "/de/who-pays-for-what-wedding",
+    icon: "👥",
+    badge: "Klassisch vs. Modern",
+    desc: "Vergleichen Sie traditionelle Bräuche mit modernen 3-Wege-Aufteilungen zwischen Brautpaar und beiden Elternpaaren.",
+    tags: ["Familienaufteilung", "Faire Aufteilung", "Druckbare Liste"]
+  },
+  {
+    title: "JGA Budget Planer (Junggesellenabschied)",
+    url: "/de/bachelorette-budget-calculator",
+    icon: "🍸",
+    badge: "Braut frei halten",
+    desc: "Teilen Sie Ferienwohnung, Club-Eintritte und Aktivitäten fair unter den Trauzeugen auf und übernehmen Sie die Kosten der Braut bzw. des Bräutigams.",
+    tags: ["Gruppenteilung", "Brautanteil", "Kostenrechner"]
+  },
+  {
+    title: "Trinkgeld-Ratgeber für Dienstleister",
+    url: "/de/vendor-tipping-calculator",
+    icon: "💵",
+    badge: "Knigge & Richtwerte",
+    desc: "Verhindern Sie Unsicherheiten am Hochzeitstag: Berechnen Sie passende Trinkgelder und erstellen Sie beschriftete Briefumschläge.",
+    tags: ["Briefumschläge", "Trinkgeld-Knigge", "Tages-Checkliste"]
+  },
+  {
+    title: "Flitterwochen Budget Rechner",
+    url: "/de/honeymoon-budget-estimator",
+    icon: "✈️",
+    badge: "Reisekostenplaner",
+    desc: "Kalkulieren Sie Flüge, Traumhotels, Candle-Light-Dinner, Ausflüge und Reiseversicherung für unvergessliche Flitterwochen.",
+    tags: ["Hotelkosten", "Tagesbudget", "Reisepuffer"]
+  },
+  {
+    title: "Hochzeitskredit & Ratenrechner",
+    url: "/de/wedding-loan-calculator",
+    icon: "🏦",
+    badge: "Zins- & Ratenrechner",
+    desc: "Berechnen Sie monatliche Raten, Gesamtzinsen und Laufzeiten für Hochzeitsfinanzierungen und Kredite.",
+    tags: ["Effektivzins", "Monatsrate", "Tilgungsplan"]
+  },
+  {
+    title: "Namensänderung & Behörden-Checkliste",
+    url: "/de/wedding-name-change-calculator",
+    icon: "✍️",
+    badge: "Gebühren & Ämter",
+    desc: "Berechnen Sie amtliche Gebühren für Personalausweis, Reisepass, Standesamt und Führerschein in der richtigen Reihenfolge.",
+    tags: ["Personalausweis", "Reisepass", "Bürgeramt"]
+  },
+  {
+    title: "Geldgeschenke Rechner für Hochzeitsgäste",
+    url: "/de/gift-cash-calculator",
+    icon: "🎁",
+    badge: "Für Gäste",
+    desc: "Unsicher über den passenden Geldbetrag im Umschlag? Berechnen Sie den angemessenen Richtwert nach Verwandtschaftsgrad und Reiseaufwand.",
+    tags: ["Gäste-Knigge", "Geschenke-Formel", "Umschlagwert"]
+  }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+    
+    <!-- Hero Header -->
+    <header class="fade-in category-header" style="text-align: center; margin-bottom: 3rem; position: relative;">
+      <div class="tape" style="margin: 0 auto 1rem;"></div>
+      <span class="badge-postit">Finanzierungs- & Budget-Zentrale</span>
+      <h1 class="font-heading" style="font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+        Hochzeitsbudget <span class="accent-italic">& Finanzrechner</span>
+      </h1>
+      <p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+        Behalten Sie Ihre Hochzeitsausgaben stets im Griff. 100% kostenlose, vertrauliche Browser-Rechner für realistische Budgetaufteilungen, transparente Location-Kosten und faire Kostenaufteilungen.
+      </p>
+    </header>
+
+    <!-- Tools Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
+      {budgetTools.map(tool => (
+        <a href={tool.url} class="hand-card tool-item-card" style="display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; padding: 1.75rem; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); transition: transform 0.2s ease, box-shadow 0.2s ease;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <span style="font-size: 2.2rem;">{tool.icon}</span>
+              <span class="tool-tag" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.8rem; font-weight: 700; color: var(--fg-pencil);">{tool.badge}</span>
+            </div>
+            
+            <h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0 0 0.5rem 0; line-height: 1.3;">
+              {tool.title}
+            </h3>
+            
+            <p class="font-body" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin: 0 0 1.25rem 0;">
+              {tool.desc}
+            </p>
+          </div>
+
+          <div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem;">
+              {tool.tags.map(tag => (
+                <span style="font-size: 0.75rem; background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 3px; font-weight: 600;">#{tag}</span>
+              ))}
+            </div>
+            
+            <span class="hand-btn" style="display: block; text-align: center; padding: 8px; font-size: 0.95rem;">
+              Rechner öffnen →
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- SEO Informational Article -->
+    <article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 3rem;">
+      <h2 class="font-heading" style="font-size: 2.2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+        Leitfaden für eine realistische Hochzeitskalkulation
+      </h2>
+      
+      <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;">
+        Die finanzielle Planung einer Hochzeit gehört zu den größten Herausforderungen für Brautpaare. Ohne strukturierte Aufschlüsselung summieren sich kleine Zusatzkosten schnell zu mehreren tausend Euro Mehrbelastung. Unsere spezialisierten Rechner helfen Ihnen, von Tag eins an transparente und verlässliche Zahlen festzuhalten.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+        <div style="background: var(--bg-paper); border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+          <h4 class="font-heading" style="color: var(--accent-red); margin-top: 0; font-size: 1.15rem;">1. Der 50%-Location-Kern</h4>
+          <p class="font-body" style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 0;">
+            Location, Essen und Getränke beanspruchen in der Regel rund die Hälfte Ihres gesamten Budgets. Prüfen Sie Mindestumsätze und Sperrstundengebühren genau.
+          </p>
+        </div>
+
+        <div style="background: var(--bg-paper); border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+          <h4 class="font-heading" style="color: var(--accent-blue); margin-top: 0; font-size: 1.15rem;">2. Der 5%-Notfallpuffer</h4>
+          <p class="font-body" style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 0;">
+            Planen Sie immer einen Notfallpuffer von 5% bis 10% ein für kurzfristige Kleideränderungen, Schönwetter-Schirme oder Überstunden am Hochzeitstag.
+          </p>
+        </div>
+
+        <div style="background: var(--bg-paper); border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+          <h4 class="font-heading" style="color: #16a34a; margin-top: 0; font-size: 1.15rem;">3. Versteckte Nebenkosten</h4>
+          <p class="font-body" style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 0;">
+            Korkgeld für mitgebrachte Weine, Reinigungspauschalen und Trinkgelder sollten von vornherein fest einkalkuliert werden.
+          </p>
+        </div>
+      </div>
+    </article>
+
+  </main>
+</Layout>

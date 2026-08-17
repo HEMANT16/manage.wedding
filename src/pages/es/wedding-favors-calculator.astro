@@ -1,0 +1,641 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Calculadora de Recuerdos y Detalles de Boda",
+      "url": "https://manage.wedding/es/wedding-favors-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calcula la cantidad exacta de detalles y recuerdos de boda por persona o por pareja, evitando el desperdicio del 20% en mesas y estimando el tiempo de montaje DIY.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Se entregan los recuerdos de boda por persona o por pareja?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Los detalles comestibles (chocolates, galletas, mini licores) se entregan 1 por persona. Los recuerdos duraderos para el hogar (aceite de oliva, velas aromáticas, posavasos) se entregan tradicionalmente 1 por pareja o familia."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué porcentaje de detalles se quedan olvidados en las mesas?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Entre el 15% y el 25% de los recuerdos suelen olvidarse en los platos. Este porcentaje se reduce a menos del 5% cuando son comestibles o se colocan en una mesa de despedida con un cartel visible."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout
+	title="Calculadora de Recuerdos y Detalles de Boda — Cantidad y Coste"
+	description="Calcula cuántos recuerdos de boda comprar (por persona vs por pareja), tasa de olvido en mesas, tiempo de montaje DIY, presupuesto y carteles imprimibles."
+	lang="es"
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Miga de pan" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/es/" style="color: var(--text-secondary); text-decoration: none;">Inicio</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/es/guests" style="color: var(--text-secondary); text-decoration: none;">Invitados y Logística</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Detalles de Boda</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>🎁</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Cálculo Exacto de Detalles y Prevención de Desperdicio</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Calculadora de Recuerdos y Detalles de Boda
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Calcula el número exacto de recuerdos según la distribución <strong>Individual o por Pareja</strong>, evita comprar un 20% de más que se quede en las mesas, calcula las horas de montaje DIY y genera carteles imprimibles.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Controls & Parameters -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>📋</span> 1. Invitados y Estrategia de Entrega
+				</h2>
+
+				<!-- Headcount Slider -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+						<label for="slider-guests" style="font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil);">
+							Número de Invitados Esperados:
+						</label>
+						<span id="badge-guests" class="badge-postit" style="font-weight: 700; font-size: 1.05rem; padding: 2px 8px; border-radius: 4px;">120 Invitados</span>
+					</div>
+					<input type="range" id="slider-guests" min="20" max="500" step="5" value="120" style="width: 100%; accent-color: var(--fg-pencil); cursor: pointer;" />
+					<div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
+						<span>20 Íntima</span>
+						<span>120 Estándar</span>
+						<span>250 Grande</span>
+						<span>500 Muy Grande</span>
+					</div>
+				</div>
+
+				<!-- Distribution Model -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Modelo de Distribución:
+					</label>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+						<label style="border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.6rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.2rem; background: #fef08a;" id="label-mode-individual">
+							<div style="display: flex; align-items: center; gap: 0.35rem; font-weight: 700; font-size: 0.88rem;">
+								<input type="radio" name="dist-mode" id="radio-mode-individual" value="individual" checked style="accent-color: var(--fg-pencil);" />
+								<span>1 Por Persona</span>
+							</div>
+							<span style="font-size: 0.75rem; color: #475569;">Dulces, mini botellitas, gafas</span>
+						</label>
+
+						<label style="border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.6rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.2rem; background: #fff;" id="label-mode-couple">
+							<div style="display: flex; align-items: center; gap: 0.35rem; font-weight: 700; font-size: 0.88rem;">
+								<input type="radio" name="dist-mode" id="radio-mode-couple" value="couple" style="accent-color: var(--fg-pencil);" />
+								<span>1 Por Pareja</span>
+							</div>
+							<span style="font-size: 0.75rem; color: #475569;">Aceite de oliva, velas, detalles hogar</span>
+						</label>
+					</div>
+				</div>
+
+				<!-- Favor Category -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label for="select-favor-type" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Categoría del Detalle (Afecta la Tasa de Olvido):
+					</label>
+					<select id="select-favor-type" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="edible-packaged" selected>🍬 Dulces Empaquetados (Macarons, Galletas) — 95% se lo llevan</option>
+						<option value="edible-drink">🍾 Mini Botellitas de Licor / Bebidas Artesanales — 98% se lo llevan</option>
+						<option value="edible-bulk">🍯 Tarros de Miel, Mermelada o Aceite — 92% se lo llevan</option>
+						<option value="keepsake-useful">🕯️ Objeto Útil (Velas, Abridor, Cerillas) — 82% se lo llevan</option>
+						<option value="keepsake-monogram">☕ Objetos con Iniciales (Vasos, Posavasos) — 75% se lo llevan</option>
+						<option value="greenery-seed">🌱 Suculentas y Semillas para Plantar — 80% se lo llevan</option>
+					</select>
+				</div>
+
+				<!-- Placement -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label for="select-placement" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Ubicación en el Banquete:
+					</label>
+					<select id="select-placement" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="place-setting" selected>🍽️ En el Plato / Mesa (Alta visibilidad, ~18% se olvida)</option>
+						<option value="exit-table">🚪 Mesa de Salida / Despedida (Aspecto limpio, ~10% con cartel)</option>
+						<option value="greeter-station">🥂 Entregado en Mano por Azafata / Novios (100% de precisión)</option>
+					</select>
+				</div>
+
+				<!-- Buffer Strategy -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label for="select-buffer" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Margen de Seguridad y Recuerdos:
+					</label>
+					<select id="select-buffer" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="recommended" selected>⭐ Recomendado (+5% extra + 3 para fotos y novios)</option>
+						<option value="eco">🌱 Eco-Ahorro (-15% descontando olvidos en mesa)</option>
+						<option value="generous">🎁 Generoso (+12% para invitados extra y familiares)</option>
+					</select>
+				</div>
+
+				<!-- Cost & Assembly -->
+				<div style="border-top: 2px dashed var(--fg-pencil); padding-top: 1rem; margin-top: 1rem;">
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-item-cost" style="display: block; font-weight: 700; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								Coste Unitario (€ / $):
+							</label>
+							<input type="number" id="input-item-cost" min="0" step="0.25" value="3.50" style="width: 100%; padding: 0.45rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-weight: 700; font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label for="input-assembly-seconds" style="display: block; font-weight: 700; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								Montaje DIY (Tiempo):
+							</label>
+							<select id="input-assembly-seconds" style="width: 100%; padding: 0.45rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="0">0s (Ya listos)</option>
+								<option value="45" selected>45s (Lazo y Etiqueta)</option>
+								<option value="120">2 min (Cajita y Relleno)</option>
+								<option value="240">4 min (Manualidad Compleja)</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Recomendación Exacta</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Plan de Compra y Presupuesto
+						</h2>
+					</div>
+					<span id="badge-dist-type" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">Por Invitado</span>
+				</div>
+
+				<!-- Big Number Highlights -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Total a Encargar</span>
+						<strong id="stat-order-qty" style="font-size: 2rem; font-weight: 900; color: #1e40af; line-height: 1.1;">129</strong>
+						<span id="stat-subtext-qty" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(120 base + 9 margen)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Gasto Estimado</span>
+						<strong id="stat-total-spend" style="font-size: 2rem; font-weight: 900; color: #15803d; line-height: 1.1;">451,50 €</strong>
+						<span id="stat-per-guest-cost" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">3,76 € por asistente</span>
+					</div>
+				</div>
+
+				<!-- Secondary Metrics Matrix -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">Parejas / Familias Estimadas:</span>
+						<strong id="stat-household-count" style="color: var(--fg-pencil);">67 Parejas</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">Olvidos Previstos en Mesas:</span>
+						<strong id="stat-attrition-rate" style="color: #b91c1c;">~6 uds olvidadas (5%)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">Recuerdos para Fotos y Novios:</span>
+						<strong id="stat-keepsake-margin" style="color: #1e40af;">+3 unidades</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
+						<span style="color: #475569;">Mano de Obra DIY:</span>
+						<strong id="stat-diy-hours" style="color: var(--fg-pencil);">1 h 37 min (1 persona)</strong>
+					</div>
+				</div>
+
+				<!-- Quick Table Hardware Recommendation -->
+				<div style="background: #fef08a; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.85rem;">
+					<strong style="color: var(--fg-pencil); display: block; margin-bottom: 0.25rem;">📦 Presentación en Mesa:</strong>
+					<span id="stat-table-hardware" style="color: #334155;">
+						Requiere <strong>3 a 4 bandejas o cajas de madera</strong> o una <strong>mesa de 1,20 m</strong> con cartel enmarcado.
+					</span>
+				</div>
+
+				<!-- Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Imprimir PDF
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Exportar Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Section: 1-Click Printable Sign Studio -->
+		<section id="section-print-studio" class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<div style="text-align: center; margin-bottom: 1.5rem;">
+				<span class="badge-postit" style="padding: 3px 10px; border-radius: 4px; font-size: 0.82rem; font-weight: 700;">Generador de Carteles</span>
+				<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin: 0.4rem 0 0.25rem;">
+					Carteles Imprimibles "Por Favor Toma Uno"
+				</h2>
+				<p class="font-body" style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+					Personaliza carteles para mesa enmarcados en formato 20x25 cm o 13x18 cm con vuestros nombres y fecha de boda.
+				</p>
+			</div>
+
+			<!-- Controls for Sign Studio -->
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+				<div>
+					<label for="input-couple-names" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Nombres de los Novios:</label>
+					<input type="text" id="input-couple-names" value="Sofía & Mateo" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600;" />
+				</div>
+				<div>
+					<label for="input-wedding-date" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Fecha de la Boda:</label>
+					<input type="text" id="input-wedding-date" value="18 de Octubre, 2026" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600;" />
+				</div>
+				<div>
+					<label for="select-sign-template" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Estilo del Mensaje:</label>
+					<select id="select-sign-template" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600; background: #fff;">
+						<option value="classic" selected>Con Amor y Gratitud • Por favor toma uno</option>
+						<option value="couple">Para Vosotros • Uno por pareja con cariño</option>
+						<option value="sweet">Un Dulce Final • Toma un detalle al salir</option>
+						<option value="seeds">Deja Crecer el Amor • Por favor toma una planta</option>
+					</select>
+				</div>
+				<div>
+					<label for="select-sign-size" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Tamaño de Marco:</label>
+					<select id="select-sign-size" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600; background: #fff;">
+						<option value="8x10" selected>20 x 25 cm (Marco de Mesa Estándar)</option>
+						<option value="5x7">13 x 18 cm (Atril Compacto)</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- Live Rendered Framed Sign Canvas -->
+			<div style="max-width: 500px; margin: 0 auto; background: #fff; border: 3px solid var(--fg-pencil); border-radius: 8px; padding: 2rem 1.5rem; text-align: center; box-shadow: 4px 4px 0px var(--fg-pencil);" id="sign-canvas-preview">
+				<div style="border: 2px double #1e293b; padding: 2rem 1.25rem;">
+					<span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🎁</span>
+					<h3 id="sign-preview-headline" class="font-heading" style="font-size: 1.8rem; color: #0f172a; margin: 0 0 0.5rem; line-height: 1.2;">
+						Con Amor y Gratitud
+					</h3>
+					<p id="sign-preview-subtext" style="font-size: 1.05rem; font-style: italic; color: #475569; margin: 0 0 1.25rem;">
+						¡Por favor, toma un detalle para recordar nuestro gran día!
+					</p>
+					<div style="width: 50px; height: 1.5px; background: #cbd5e1; margin: 0 auto 1.25rem;"></div>
+					<h4 id="sign-preview-names" class="font-heading" style="font-size: 1.15rem; letter-spacing: 0.05em; text-transform: uppercase; color: #0f172a; margin: 0 0 0.25rem;">
+						Sofía & Mateo
+					</h4>
+					<span id="sign-preview-date" style="font-size: 0.85rem; color: #64748b;">18 de Octubre, 2026</span>
+				</div>
+			</div>
+		</section>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/es/wedding-favors-calculator" category="guests" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-sign-container" class="print-page" style="page-break-after: always; break-after: page; padding: 15mm; text-align: center;">
+			<div style="border: 4px double #000; padding: 25mm 15mm; min-height: 190mm; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+				<h1 id="print-sign-title" style="font-size: 36pt; font-family: 'Georgia', serif; margin: 0 0 15pt 0; color: #000;">Con Amor y Gratitud</h1>
+				<p id="print-sign-sub" style="font-size: 18pt; font-style: italic; margin: 0 0 25pt 0; color: #333;">¡Por favor, toma un detalle!</p>
+				<div style="width: 70mm; height: 1.5pt; background: #000; margin: 0 auto 20pt;"></div>
+				<h2 id="print-sign-names" style="font-size: 18pt; letter-spacing: 2pt; text-transform: uppercase; margin: 0 0 8pt 0; color: #000;">Sofía & Mateo</h2>
+				<p id="print-sign-date" style="font-size: 13pt; color: #555; margin: 0;">18 de Octubre, 2026</p>
+			</div>
+		</div>
+
+		<div id="print-order-sheet-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Hoja de Pedido: Recuerdos y Detalles de Boda</h1>
+				<p id="print-order-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Novios: Sofía & Mateo | Fecha: 18 de Octubre, 2026 | Invitados: 120</p>
+			</div>
+			<div id="print-order-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	const sliderGuests = document.getElementById('slider-guests');
+	const badgeGuests = document.getElementById('badge-guests');
+	const radioModeIndividual = document.getElementById('radio-mode-individual');
+	const radioModeCouple = document.getElementById('radio-mode-couple');
+	const labelModeIndividual = document.getElementById('label-mode-individual');
+	const labelModeCouple = document.getElementById('label-mode-couple');
+	const selectFavorType = document.getElementById('select-favor-type');
+	const selectPlacement = document.getElementById('select-placement');
+	const selectBuffer = document.getElementById('select-buffer');
+	const inputItemCost = document.getElementById('input-item-cost');
+	const inputAssemblySeconds = document.getElementById('input-assembly-seconds');
+
+	const badgeDistType = document.getElementById('badge-dist-type');
+	const statOrderQty = document.getElementById('stat-order-qty');
+	const statSubtextQty = document.getElementById('stat-subtext-qty');
+	const statTotalSpend = document.getElementById('stat-total-spend');
+	const statPerGuestCost = document.getElementById('stat-per-guest-cost');
+	const statHouseholdCount = document.getElementById('stat-household-count');
+	const statAttritionRate = document.getElementById('stat-attrition-rate');
+	const statKeepsakeMargin = document.getElementById('stat-keepsake-margin');
+	const statDiyHours = document.getElementById('stat-diy-hours');
+	const statTableHardware = document.getElementById('stat-table-hardware');
+
+	function calculateFavors() {
+		const guests = parseInt(sliderGuests.value, 10) || 120;
+		badgeGuests.textContent = `${guests} Invitados`;
+
+		const isCouple = radioModeCouple.checked;
+		const households = Math.ceil(guests * 0.56);
+		statHouseholdCount.textContent = `${households} Parejas`;
+
+		const baseTarget = isCouple ? households : guests;
+		badgeDistType.textContent = isCouple ? '1 Por Pareja' : '1 Por Invitado';
+
+		const bufferStrategy = selectBuffer.value;
+		let bufferPercent = 0.05;
+		let keepsakeExtra = 3;
+
+		if (bufferStrategy === 'eco') {
+			bufferPercent = -0.15;
+			keepsakeExtra = 2;
+		} else if (bufferStrategy === 'generous') {
+			bufferPercent = 0.12;
+			keepsakeExtra = 5;
+		}
+
+		let finalQty = Math.round(baseTarget * (1 + bufferPercent)) + keepsakeExtra;
+		if (finalQty < 1) finalQty = 1;
+
+		statOrderQty.textContent = finalQty;
+		
+		const extraCount = finalQty - baseTarget;
+		const extraSign = extraCount >= 0 ? `+${extraCount}` : `${extraCount}`;
+		statSubtextQty.textContent = `(${baseTarget} base ${extraSign} margen/fotos)`;
+
+		const unitCost = parseFloat(inputItemCost.value) || 0;
+		const totalSpend = (finalQty * unitCost).toFixed(2);
+		statTotalSpend.textContent = `${Number(totalSpend).toLocaleString('es-ES', { minimumFractionDigits: 2 })} €`;
+		
+		const costPerAttending = (parseFloat(totalSpend) / guests).toFixed(2);
+		statPerGuestCost.textContent = `${costPerAttending} € por invitado`;
+
+		const favorType = selectFavorType.value;
+		let attritionRateNum = 0.05;
+		if (favorType.includes('monogram')) attritionRateNum = 0.25;
+		else if (favorType.includes('seed') || favorType.includes('keepsake-useful')) attritionRateNum = 0.15;
+		else if (favorType.includes('bulk')) attritionRateNum = 0.08;
+
+		if (selectPlacement.value === 'place-setting') attritionRateNum += 0.05;
+		
+		const estimatedLeftovers = Math.round(finalQty * attritionRateNum);
+		statAttritionRate.textContent = `~${estimatedLeftovers} uds olvidadas (${Math.round(attritionRateNum * 100)}%)`;
+		statKeepsakeMargin.textContent = `+${keepsakeExtra} uds (Novios y Fotos)`;
+
+		const assemblySecPerUnit = parseInt(inputAssemblySeconds.value, 10) || 0;
+		const totalSec = finalQty * assemblySecPerUnit;
+		if (totalSec === 0) {
+			statDiyHours.textContent = '0 min (Listos para colocar)';
+		} else {
+			const hrs = Math.floor(totalSec / 3600);
+			const mins = Math.ceil((totalSec % 3600) / 60);
+			statDiyHours.textContent = hrs > 0 ? `${hrs} h ${mins} min (1 persona)` : `${mins} min (1 persona)`;
+		}
+
+		const traysCount = Math.max(1, Math.ceil(finalQty / 35));
+		const tableFootage = finalQty > 100 ? 'mesa de 1,80 m' : 'mesa de 1,20 m';
+		statTableHardware.innerHTML = `Requiere <strong>${traysCount} bandejas/cajas</strong> en una <strong>${tableFootage}</strong> con cartel enmarcado.`;
+
+		const couple = document.getElementById('input-couple-names').value || 'Sofía & Mateo';
+		const date = document.getElementById('input-wedding-date').value || '18 de Octubre, 2026';
+		document.getElementById('print-order-meta').textContent = `Novios: ${couple} | Fecha: ${date} | Invitados: ${guests} | Distribución: ${badgeDistType.textContent}`;
+
+		document.getElementById('print-order-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Métrica del Pedido</th>
+						<th style="padding:6pt; text-align:center;">Cantidad Calculada</th>
+						<th style="padding:6pt;">Notas e Instrucciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Total de Recuerdos a Comprar</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; font-size:12pt; color:#1e40af;">${finalQty} unidades</td>
+						<td style="padding:6pt;">Base (${baseTarget}) más ${extraSign} de margen y fotos de detalle.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Presupuesto Total Estimado</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; color:#15803d;">${Number(totalSpend).toLocaleString('es-ES', { minimumFractionDigits: 2 })} €</td>
+						<td style="padding:6pt;">A ${unitCost.toFixed(2)} €/unidad (${costPerAttending} €/invitado).</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Bandejas y Cajas de Mesa</td>
+						<td style="padding:6pt; text-align:center;">${traysCount} Bandejas / Cajas</td>
+						<td style="padding:6pt;">Colocar en ${tableFootage} con marco 20x25 cm.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Montaje DIY Estimado</td>
+						<td style="padding:6pt; text-align:center;">${statDiyHours.textContent}</td>
+						<td style="padding:6pt;">Programar sesión de lazos 2 a 3 semanas antes del evento.</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	function updateModeStyles() {
+		if (radioModeIndividual.checked) {
+			labelModeIndividual.style.background = '#fef08a';
+			labelModeCouple.style.background = '#ffffff';
+		} else {
+			labelModeIndividual.style.background = '#ffffff';
+			labelModeCouple.style.background = '#fef08a';
+		}
+		calculateFavors();
+	}
+
+	function updateSignPreview() {
+		const couple = document.getElementById('input-couple-names').value || 'Sofía & Mateo';
+		const date = document.getElementById('input-wedding-date').value || '18 de Octubre, 2026';
+		const template = document.getElementById('select-sign-template').value;
+
+		document.getElementById('sign-preview-names').textContent = couple;
+		document.getElementById('sign-preview-date').textContent = date;
+		
+		const headline = document.getElementById('sign-preview-headline');
+		const subtext = document.getElementById('sign-preview-subtext');
+
+		if (template === 'couple') {
+			headline.textContent = 'Para Vosotros';
+			subtext.textContent = '¡Por favor tomad uno por pareja con todo nuestro cariño!';
+		} else if (template === 'sweet') {
+			headline.textContent = 'Un Dulce Final';
+			subtext.textContent = '¡Para un gran comienzo! Tomad un dulce al salir.';
+		} else if (template === 'seeds') {
+			headline.textContent = 'Deja Crecer el Amor';
+			subtext.textContent = '¡Plantad estas semillas y ved florecer el cariño!';
+		} else {
+			headline.textContent = 'Con Amor y Gratitud';
+			subtext.textContent = '¡Por favor, toma un detalle para recordar nuestro gran día!';
+		}
+
+		document.getElementById('print-sign-title').textContent = headline.textContent;
+		document.getElementById('print-sign-sub').textContent = subtext.textContent;
+		document.getElementById('print-sign-names').textContent = couple;
+		document.getElementById('print-sign-date').textContent = date;
+	}
+
+	sliderGuests.addEventListener('input', calculateFavors);
+	radioModeIndividual.addEventListener('change', updateModeStyles);
+	radioModeCouple.addEventListener('change', updateModeStyles);
+	selectFavorType.addEventListener('change', calculateFavors);
+	selectPlacement.addEventListener('change', calculateFavors);
+	selectBuffer.addEventListener('change', calculateFavors);
+	inputItemCost.addEventListener('input', calculateFavors);
+	inputAssemblySeconds.addEventListener('change', calculateFavors);
+
+	document.getElementById('input-couple-names').addEventListener('input', updateSignPreview);
+	document.getElementById('input-wedding-date').addEventListener('input', updateSignPreview);
+	document.getElementById('select-sign-template').addEventListener('change', updateSignPreview);
+	document.getElementById('select-sign-size').addEventListener('change', updateSignPreview);
+
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		calculateFavors();
+		updateSignPreview();
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const couple = document.getElementById('input-couple-names').value || 'Sofía & Mateo';
+		const date = document.getElementById('input-wedding-date').value || '18 de Octubre, 2026';
+		const guests = sliderGuests.value || '120';
+		const finalQty = statOrderQty.textContent;
+		const totalSpend = statTotalSpend.textContent;
+		const diyHours = statDiyHours.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Resumen de Pedido de Detalles</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Resumen de Compra: Recuerdos y Detalles de Boda</h1>
+				<p><strong>Novios:</strong> ${couple} | <strong>Fecha:</strong> ${date} | <strong>Invitados:</strong> ${guests}</p>
+				<hr/>
+				<h2>Detalles del Pedido</h2>
+				<table>
+					<tr style="background:#f1f5f9;">
+						<th>Métrica</th><th>Información</th>
+					</tr>
+					<tr><td><strong>Total a Encargar:</strong></td><td><strong>${finalQty} unidades</strong></td></tr>
+					<tr><td><strong>Gasto Estimado:</strong></td><td><strong>${totalSpend}</strong></td></tr>
+					<tr><td><strong>Distribución:</strong></td><td>${badgeDistType.textContent}</td></tr>
+					<tr><td><strong>Tiempo de Montaje:</strong></td><td>${diyHours}</td></tr>
+				</table>
+				<hr/>
+				<p><em>Generado por Manage.Wedding</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Recuerdos-Boda-${couple.replace(/[^a-zA-Z0-9]/g, '-')}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateFavors();
+	updateSignPreview();
+</script>

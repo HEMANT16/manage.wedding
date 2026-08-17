@@ -1,0 +1,897 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/master-budget-calculator/#webapp",
+      "name": "Hochzeitsbudget Rechner & Kostenplaner",
+      "url": "https://manage.wedding/de/master-budget-calculator",
+      "description": "Kostenloser Hochzeitsbudget-Rechner: Teilen Sie Ihr Gesamtbudget auf Location, Catering, Foto, Brautkleid & Deko auf. Mit Kosten pro Gast und Word-, PDF- & CSV-Export.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "inLanguage": "de",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie man ein Hochzeitsbudget realistisch aufstellt und verteilt",
+      "description": "Schritt-für-Schritt-Anleitung zur Aufteilung Ihres Hochzeitsbudgets auf Location, Bewirtung, Fotografie, Kleidung und Notfallpuffer.",
+      "inLanguage": "de",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Gesamtes Budget ermitteln",
+          "text": "Addieren Sie persönliche Ersparnisse, monatliche Sparraten bis zur Hochzeit und eventuelle finanzielle Beiträge der Familien."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. 45% bis 50% für Location & Bewirtung reservieren",
+          "text": "Planen Sie rund die Hälfte Ihres Budgets für Raummiete, Menü/Buffet, Sektempfang, Weine, Bier und Servicepersonal ein."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. 12% bis 15% für Hochzeitsfotografie & Video einplanen",
+          "text": "Investieren Sie in eine ganztägige fotografische Begleitung, Highlight-Video und hochwertige Hochzeitsalben."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Kleidung, Blumen und Musik aufteilen",
+          "text": "Planen Sie jeweils 8% bis 10% für Brautkleid, Anzug & Styling, für Floristik & Dekoration sowie für DJ oder Band ein."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "5. 5% Notfallpuffer fest einplanen",
+          "text": "Halten Sie 5% als Reserve für Nachtzuschläge, Trinkgelder, Schönwetter-Schirme oder kurzfristige Änderungen zurück."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wie teilt man ein Hochzeitsbudget prozentual auf?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die bewährte Aufteilung für den deutschsprachigen Raum lautet: 48% für Location & Bewirtung, 13% für Fotografie & Video, 9% für Brautkleid, Anzug & Styling, 8% für Blumen & Dekoration, 7% für Musik & DJ, 4% für Trauringe & Standesamt/Redner, 3% für Papeterie & Porto, 2% für Gastgeschenke, 2% für Transport und 4% als Notfallpuffer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie stark beeinflusst die Gästeanzahl die Gesamtkosten der Hochzeit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Über 55% aller Hochzeitsausgaben sind variable Kosten pro Gast (Essen, Getränke, Tischkarten, Tortenportionen, Stuhlmiete). Eine Reduzierung der Gästeliste um 20 Personen spart im Schnitt 3.000 € bis 5.000 €."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Welche versteckten Kosten sollten im Hochzeitsbudget beachtet werden?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Typische versteckte Kosten sind Servicezuschläge ab Mitternacht (Nachtzuschlag pro Stunde), Korkgeld für mitgebrachte Weine, Tellergeld für die Torte, Kleideränderungen (300–600 €), Dienstleister-Essen (Crew-Catering für Fotograf/DJ) und Trinkgelder."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie kann ich mein berechnetes Budget exportieren?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Klicken Sie oben auf '📝 Export Word (.doc)', '🖨️ Export PDF / Drucken' oder '📊 Export Excel (.csv)', um eine fertige Tabelle und Übersicht herunterzuladen."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const defaultCategories = [
+  { id: 'venue', name: 'Location & Bewirtung', defaultPct: 48, color: '#ffb3ba', desc: 'Raummiete, Menü/Buffet, Sektempfang, Weine, Bier & Servicepersonal' },
+  { id: 'photo', name: 'Fotografie & Video', defaultPct: 13, color: '#bae1ff', desc: 'Ganztägige Reportage, Zweitfotograf, Hochzeitsfilm & Fotobuch' },
+  { id: 'attire', name: 'Brautkleid, Anzug & Styling', defaultPct: 9, color: '#ffdfba', desc: 'Brautkleid, Maßanzug, Änderungen, Schleier, Schuhe, Brautstyling & Make-up' },
+  { id: 'florals', name: 'Blumen & Dekoration', defaultPct: 8, color: '#baffc9', desc: 'Brautstrauß, Anstecker, Tischgestecke, Traubogen & Raumdekoration' },
+  { id: 'entertain', name: 'Musik & Entertainment', defaultPct: 7, color: '#ffffba', desc: 'Hochzeits-DJ, Live-Band, Zeremonien-Musiker & Tontechnik' },
+  { id: 'rings', name: 'Trauringe & Trauung', defaultPct: 4, color: '#fbcfe8', desc: 'Trauringe, Standesamtgebühren & Honorar freie/r Trauredner/in' },
+  { id: 'stationery', name: 'Papeterie & Porto', defaultPct: 3, color: '#e8baff', desc: 'Save-the-Date, Einladungen, Portokosten, Menükarten & Danksagungen' },
+  { id: 'favors', name: 'Gastgeschenke & Aufmerksamkeiten', defaultPct: 2, color: '#fed7aa', desc: 'Gastgeschenke, Notfallkörbchen für die Toiletten & Präsente für Trauzeugen' },
+  { id: 'transport', name: 'Transport & Brautauto', defaultPct: 2, color: '#ccfbf1', desc: 'Brautauto (Oldtimer/Limousine) oder Shuttlebus für die Hochzeitsgäste' },
+  { id: 'buffer', name: 'Notfallpuffer & Nebenkosten', defaultPct: 4, color: '#e5e7eb', desc: 'Nachtzuschläge, Dienstleister-Essen, Trinkgelder & unvorhergesehene Ausgaben' }
+];
+---
+
+<Layout 
+	title="Hochzeitsbudget Rechner (Kostenaufteilung & Excel-Export) | Manage.Wedding"
+	description="Kostenloser Hochzeitsbudget-Rechner: Teilen Sie Ihr Gesamtbudget auf Location, Catering, Foto, Brautkleid & Deko auf. Mit Kosten pro Gast & Word-, PDF- & CSV-Export."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Hochzeitsbudget Rechner" category="budget" />
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 2rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Hochzeitsbudget <span class="accent-italic">Rechner & Kostenplaner</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Teilen Sie Ihr Hochzeitsbudget intelligent auf Location, Catering, Fotografie und Kleidung auf. Ermitteln Sie die Kosten pro Gast und exportieren Sie Ihre Planung in <strong>Word (.doc)</strong>, <strong>PDF</strong> oder <strong>Excel (.csv)</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Budget Overview Dashboard & Actions Toolbar -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.5rem; background: #fff;">
+			
+			<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+				<div style="flex: 1; min-width: 250px;">
+					<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+						💰 Finanzplaner für Ihre Hochzeit
+					</h2>
+					<p class="font-body" style="color: var(--text-secondary); font-size: 0.9rem; margin: 0.2rem 0 0 0; text-align: center;">
+						Passen Sie Anteile an und exportieren Sie Ihr individuelles Budget
+					</p>
+				</div>
+
+				<!-- Export & Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; width: 100%;" class="export-btn-group">
+					<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #eff6ff;">
+						📝 Export Word (.doc)
+					</button>
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #fef2f2;">
+						🖨️ Export PDF / Drucken
+					</button>
+					<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						📊 Export Excel (.csv)
+					</button>
+					<button type="button" id="btn-reset-defaults" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						🔄 Branchenstandard zurücksetzen
+					</button>
+				</div>
+			</div>
+
+			<!-- Preset Budget Tiers -->
+			<div style="margin-bottom: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+				<span class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+					⚡ Typische Budgetrahmen zur Auswahl:
+				</span>
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;">
+					<button type="button" class="tier-btn" data-amt="15000" data-guests="50">🪙 Gemütlich DIY (15.000 € • 50 Gäste)</button>
+					<button type="button" class="tier-btn active-tier" data-amt="30000" data-guests="80">💎 D-A-CH Schnitt (30.000 € • 80 Gäste)</button>
+					<button type="button" class="tier-btn" data-amt="50000" data-guests="100">👑 Gehobene Feier (50.000 € • 100 Gäste)</button>
+					<button type="button" class="tier-btn" data-amt="80000" data-guests="140">✨ Exklusive Feier (80.000 € • 140 Gäste)</button>
+				</div>
+			</div>
+
+			<!-- Core Global Inputs: Total Budget, Currency & Guest Count -->
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; background: #faf8f5; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+				
+				<!-- Total Budget -->
+				<div>
+					<label for="total-budget-input" class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+						Gesamtbudget der Hochzeit
+					</label>
+					<div style="display: flex; align-items: center; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; overflow: hidden;">
+						<span id="currency-symbol-display" style="padding: 0.6rem 0.8rem; background: var(--bg-paper); border-right: 1px solid var(--fg-pencil); font-weight: bold; font-family: var(--font-heading);">€</span>
+						<input type="number" id="total-budget-input" value="30000" min="500" step="500" style="flex: 1; border: none; padding: 0.6rem; font-family: var(--font-body); font-size: 1.2rem; font-weight: bold; outline: none; background: transparent;">
+					</div>
+				</div>
+
+				<!-- Currency Selector -->
+				<div>
+					<label for="currency-select" class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+						Währung
+					</label>
+					<select id="currency-select" style="width: 100%; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.05rem; background: #fff;">
+						<option value="€" selected>€ (EUR - Euro / D-A-CH)</option>
+						<option value="CHF">CHF (Schweizer Franken)</option>
+						<option value="$">$ (USD / CAD / AUD)</option>
+						<option value="£">£ (GBP - Britisches Pfund)</option>
+					</select>
+				</div>
+
+				<!-- Estimated Guest Count -->
+				<div>
+					<label for="guest-count-input" class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+						Geplante Gästeanzahl
+					</label>
+					<input type="number" id="guest-count-input" value="80" min="5" max="1000" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: #fff;">
+				</div>
+
+			</div>
+
+			<!-- Dynamic Stat Counters Grid -->
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
+				<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Gesamtbudget</span>
+					<strong id="stat-total-display" class="font-heading" style="font-size: 1.8rem; color: var(--fg-pencil);">30.000 €</strong>
+					<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">100% Aufgeteilt</span>
+				</div>
+				<div style="background: #eff6ff; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #1e40af; display: block;">Kosten pro Gast</span>
+					<strong id="stat-per-guest" class="font-heading" style="font-size: 1.8rem; color: var(--accent-blue);">375 €</strong>
+					<span id="stat-guest-count-note" style="font-size: 0.75rem; color: #1e40af; display: block;">Basierend auf 80 Gästen</span>
+				</div>
+				<div style="background: #f0fdf4; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #166534; display: block;">Location & Bewirtung (48%)</span>
+					<strong id="stat-venue-amt" class="font-heading" style="font-size: 1.8rem; color: #15803d;">14.400 €</strong>
+					<span style="font-size: 0.75rem; color: #166534; display: block;">Größter Hauptposten</span>
+				</div>
+				<div style="background: #fefce8; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #854d0e; display: block;">Notfallpuffer (4%)</span>
+					<strong id="stat-buffer-amt" class="font-heading" style="font-size: 1.8rem; color: #a16207;">1.200 €</strong>
+					<span style="font-size: 0.75rem; color: #854d0e; display: block;">Sicherheitsreserve</span>
+				</div>
+			</div>
+
+			<!-- Visual Stacked Expense Distribution Bar -->
+			<div>
+				<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem;">
+					<span class="font-heading" style="font-size: 0.95rem; color: var(--fg-pencil);">Aufteilung der Ausgabenkategorien</span>
+					<span id="pct-warning" class="font-body" style="font-size: 0.85rem; color: #15803d; font-weight: bold;">100% Aufgeteilt (Perfekt)</span>
+				</div>
+				<div id="stacked-budget-bar" style="display: flex; height: 26px; border: 2px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #e5e0d8; margin-bottom: 0.75rem;">
+					<!-- Injected via JS -->
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Interactive Category Allocation Grid -->
+		<section style="margin-bottom: 3.5rem;">
+			<h2 class="font-heading" style="font-size: 1.8rem; color: var(--fg-pencil); text-align: center; margin-bottom: 0.5rem;">
+				📊 Aufgeschlüsselte Kategorien & Beträge
+			</h2>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); text-align: center; max-width: 600px; margin: 0 auto 1.75rem;">
+				Verschieben Sie die Prozent-Schieberegler oder tippen Sie Werte direkt ein. Alle Beträge synchronisieren sich in Echtzeit.
+			</p>
+
+			<div id="categories-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem;">
+				<!-- Injected via JS -->
+			</div>
+		</section>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Offizieller Hochzeitsbudget-Plan</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportiert am: <span id="print-date"></span> | Gesamtbudget: <span id="print-total"></span> | Pro Gast: <span id="print-per-guest"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Kategorie</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 60px; text-align: center;">% Anteil</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 100px; text-align: right;">Geplanter Betrag</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Enthaltene Ausgaben</th>
+					</tr>
+				</thead>
+				<tbody id="print-table-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 2.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Auf einen Blick</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Faustformel für das Hochzeitsbudget
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 750px; margin: 0 auto; font-weight: 500;">
+					Hier ist die bewährte 1-Minuten-Formel mit Richtwerten für 20.000 €, 30.000 € und 50.000 € Gesamtbudgets.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📐 Die 1-Minuten-Grundformel:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					48% Location & Bewirtung + 13% Foto & Video + 9% Kleidung & Styling + 8% Blumen & Deko + 7% Musik & DJ + 11% Trauringe/Papeterie/Sonstiges + 4% Notfallpuffer = 100% Gesamtbudget
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 580px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Ausgabenbereich</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Ziel-%</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">20.000 € Budget</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">30.000 € Budget</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">50.000 € Budget</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Location & Bewirtung</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 600;">48%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">9.600 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">14.400 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">24.000 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Fotografie & Video</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 600;">13%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">2.600 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">3.900 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">6.500 €</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #d97706;">Brautkleid, Anzug & Styling</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 600;">9%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">1.800 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">2.700 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">4.500 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a;">Blumen & Dekoration</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 600;">8%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">1.600 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">2.400 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">4.000 €</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed;">Musik, DJ & Band</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 600;">7%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">1.400 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">2.100 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">3.500 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #475569;">Trauringe, Papeterie & Präsente</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 600;">11%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">2.200 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">3.300 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">5.500 €</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #0284c7;">Notfallpuffer & Nebenkosten</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 600;">4%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">800 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">1.200 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">2.000 €</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr style="background: var(--muted-paper); border-top: 2px solid var(--fg-pencil); font-weight: bold;">
+							<td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Gesamtes Hochzeitsbudget</td>
+							<td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">100%</td>
+							<td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; color: var(--accent-red);">20.000 €</td>
+							<td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; color: var(--accent-red);">30.000 €</td>
+							<td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; color: var(--accent-red);">50.000 €</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Budget-Ratgeber</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Der umfassende Leitfaden zur Hochzeitsbudget-Planung
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					So erstellen Sie ein solides Hochzeitsbudget, vermeiden versteckte Zusatzkosten und behalten Ihre Finanzen ohne Schulden im Griff.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/calculator_sketch.webp" 
+					alt="Hochzeitsbudget Rechner — Kostenaufteilung & Budgetplaner" 
+					loading="lazy"
+					decoding="async"
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Die Überwachung der Kosten pro Gast verhindert, dass die Ausgaben für Location und Catering aus dem Ruder laufen.
+				</p>
+			</div>
+
+			<!-- Section 1: The 50/15/10 Rule -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Die 50/15/10-Branchenformel
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Finanzplaner und Hochzeitskoordinatoren empfehlen, die Ausgaben in 4 zentrale Hauptbereiche zu strukturieren:
+				</p>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin: 1.5rem 0;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.5rem; text-align: center;">
+							45% - 50%: Location & Gastronomie
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Raummiete, Fingerfood beim Sektempfang, mehrgängiges Abendmenü oder Buffet, Weine, Bier, Softdrinks und Servicepersonal.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.5rem; text-align: center;">
+							12% - 15%: Erinnerungen & Fotografie
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Ganztägige Hochzeitsreportage, Paar-Shooting, Videografie, Drohnenaufnahmen und gebundene Fotobücher.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.5rem; text-align: center;">
+							8% - 10%: Blumen & Atmosphäre
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Brautstrauß, Wurfstrauß, Anstecker für Bräutigam und Trauzeugen, Tischdekoration, Kerzen und Traubogen.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #d97706; margin-bottom: 0.5rem; text-align: center;">
+							8% - 10%: Kleidung & Styling
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Brautkleid, Schleier, Schneideränderungen, Herrenanzug/Smoking, Brautschmuck, Probestyling und Hochzeits-Make-up.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Hidden Fees -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					2. Die 6 versteckten Hochzeitskosten
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Angebote von Locations enthalten oft Zusatzklauseln, die im Grundpreis nicht ersichtlich sind:
+				</p>
+				
+				<div style="background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+					<ul class="font-body" style="padding-left: 1.2rem; line-height: 1.8; font-size: 1rem; margin: 0; color: var(--fg-pencil);">
+						<li><strong>Nachtzuschläge ab Mitternacht (150 € - 350 € / Std.):</strong> Servicepersonal und Location-Miete werden zu später Stunde oft stundengenau nachberechnet.</li>
+						<li><strong>Korkgeld & Tellergeld (2 € - 6 € pro Gast):</strong> Für selbst mitgebrachte Weine oder die Hochzeitstorte erheben Locations Servicegebühren.</li>
+						<li><strong>Dienstleister-Essen (30 € - 60 € pro Person):</strong> Fotograf, Videograf und DJ arbeiten 8 bis 12 Stunden und erhalten ein warmes Crew-Essen.</li>
+						<li><strong>Brautkleid-Änderungen (300 € - 700 €):</strong> Kürzen von Spitzen, Einnähen von Cups und Schleppenaufhängungen sind im Kaufpreis selten inbegriffen.</li>
+						<li><strong>Portokosten für schwere Umschläge:</strong> Wachssiegel und dicke Papiere führen schnell zur Großbrief-Portostufe (1,60 € statt 0,85 €).</li>
+						<li><strong>Reinigungs- & Müllpauschalen:</strong> Bei Locations mit Selbstbewirtschaftung fallen oft Endreinigungskosten an.</li>
+					</ul>
+				</div>
+			</section>
+
+			<!-- Section 3: Cost Per Guest Math -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					3. Warum die Gästeanzahl der wichtigste Budgethebel ist
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Viele Paare versuchen zu sparen, indem sie bei den Blumen oder beim DJ Abstriche machen. <strong>Mehr als 55% der Gesamtkosten hängen jedoch direkt von der Gästeanzahl ab</strong> (Essen, Getränke, Tischkarten, Tortenstücke, Stuhlmieten).
+				</p>
+				<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+					<p class="font-body" style="margin: 0; font-size: 1.05rem; line-height: 1.6;">
+						💡 <strong>Die Beispielrechnung:</strong> Bei durchschnittlich <strong>250 € bis 350 € Gesamtkosten pro Gast</strong> spart eine Reduzierung der Gästeliste von 100 auf 80 Personen sofort <strong>5.000 € bis 7.000 €</strong> bares Geld – ohne Abstriche bei Location oder Fotografen!
+					</p>
+				</div>
+			</section>
+
+			<!-- Section 4: FAQs (Centered Heading) -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Häufig gestellte Fragen (FAQ)
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Wie verlässlich ist dieser Hochzeitsbudget-Rechner?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Unser Rechner basiert auf langjährigen empirischen Daten aus der Hochzeitsbranche im deutschsprachigen Raum (D-A-CH). Auch wenn Großstädte etwas teurer sind als ländliche Regionen, bleibt die prozentuale Verteilung über alle Budgetgrößen hinweg sehr stabil.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Wie kann man am effektivsten Hochzeitskosten sparen?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						1) <strong>Gästeliste straffen:</strong> Jeder Gast weniger spart direkt 150–250 € für Bewirtung und Drucksachen. 2) <strong>Freitag oder Sonntag wählen:</strong> Viele Locations bieten außerhalb der Samstage in der Hauptsaison Rabatte von 15% bis 25% auf die Raummiete.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Wie exportiere ich das Budget nach Word oder Excel?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Klicken Sie oben auf <strong>„📝 Export Word (.doc)“</strong> für ein formatiertes Dokument oder auf <strong>„📊 Export Excel (.csv)“</strong> für eine saubere Tabelle zur Weiterbearbeitung in Excel oder Google Sheets.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Wie viel Notfallpuffer sollte man einplanen?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Wir empfehlen, <strong>4% bis 5% des Gesamtbudgets unzugeordnet zu lassen</strong> (z. B. 1.200 € bei 30.000 € Budget). Das deckt spontane Ausgaben wie Regenschirme, Überstunden oder Trinkgelder stressfrei ab.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<!-- Related Tools -->
+		<RelatedTools currentPath="/de/master-budget-calculator" category="budget" />
+
+	</main>
+</Layout>
+
+<style>
+	.tier-btn {
+		background: #fff;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.35rem 0.65rem;
+		font-family: var(--font-heading);
+		font-size: 0.85rem;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+	.tier-btn:hover {
+		background: var(--muted-paper);
+	}
+	.tier-btn.active-tier {
+		background: var(--accent-blue) !important;
+		color: #fff !important;
+		border-color: #1e40af !important;
+	}
+
+	.category-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 6px;
+		padding: 1.1rem;
+		box-shadow: 2px 2px 0 var(--fg-pencil);
+		display: flex;
+		flex-direction: column;
+		transition: transform 0.15s ease;
+	}
+	.category-card:hover {
+		transform: translateY(-2px);
+		box-shadow: 4px 4px 0 var(--fg-pencil);
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	const categories = [
+		{ id: 'venue', name: 'Location & Bewirtung', defaultPct: 48, color: '#ffb3ba', desc: 'Raummiete, Menü/Buffet, Sektempfang, Weine, Bier & Servicepersonal' },
+		{ id: 'photo', name: 'Fotografie & Video', defaultPct: 13, color: '#bae1ff', desc: 'Ganztägige Reportage, Zweitfotograf, Hochzeitsfilm & Fotobuch' },
+		{ id: 'attire', name: 'Brautkleid, Anzug & Styling', defaultPct: 9, color: '#ffdfba', desc: 'Brautkleid, Maßanzug, Änderungen, Schleier, Schuhe, Brautstyling & Make-up' },
+		{ id: 'florals', name: 'Blumen & Dekoration', defaultPct: 8, color: '#baffc9', desc: 'Brautstrauß, Anstecker, Tischgestecke, Traubogen & Raumdekoration' },
+		{ id: 'entertain', name: 'Musik & Entertainment', defaultPct: 7, color: '#ffffba', desc: 'Hochzeits-DJ, Live-Band, Zeremonien-Musiker & Tontechnik' },
+		{ id: 'rings', name: 'Trauringe & Trauung', defaultPct: 4, color: '#fbcfe8', desc: 'Trauringe, Standesamtgebühren & Honorar freie/r Trauredner/in' },
+		{ id: 'stationery', name: 'Papeterie & Porto', defaultPct: 3, color: '#e8baff', desc: 'Save-the-Date, Einladungen, Portokosten, Menükarten & Danksagungen' },
+		{ id: 'favors', name: 'Gastgeschenke & Aufmerksamkeiten', defaultPct: 2, color: '#fed7aa', desc: 'Gastgeschenke, Notfallkörbchen für die Toiletten & Präsente für Trauzeugen' },
+		{ id: 'transport', name: 'Transport & Brautauto', defaultPct: 2, color: '#ccfbf1', desc: 'Brautauto (Oldtimer/Limousine) oder Shuttlebus für die Hochzeitsgäste' },
+		{ id: 'buffer', name: 'Notfallpuffer & Nebenkosten', defaultPct: 4, color: '#e5e7eb', desc: 'Nachtzuschläge, Dienstleister-Essen, Trinkgelder & unvorhergesehene Ausgaben' }
+	];
+
+	let userPcts = {};
+	categories.forEach(c => { userPcts[c.id] = c.defaultPct; });
+
+	const totalBudgetInput = document.getElementById('total-budget-input');
+	const guestCountInput = document.getElementById('guest-count-input');
+	const currencySelect = document.getElementById('currency-select');
+	const currencySymbolDisplay = document.getElementById('currency-symbol-display');
+
+	const statTotalDisplay = document.getElementById('stat-total-display');
+	const statPerGuest = document.getElementById('stat-per-guest');
+	const statGuestCountNote = document.getElementById('stat-guest-count-note');
+	const statVenueAmt = document.getElementById('stat-venue-amt');
+	const statBufferAmt = document.getElementById('stat-buffer-amt');
+
+	const stackedBudgetBar = document.getElementById('stacked-budget-bar');
+	const pctWarning = document.getElementById('pct-warning');
+	const categoriesGrid = document.getElementById('categories-grid');
+
+	function getCurrency() {
+		return currencySelect.value || '€';
+	}
+
+	function formatMoney(amount) {
+		const sym = getCurrency();
+		const val = Math.round(amount).toLocaleString('de-DE');
+		if (sym === '€' || sym === 'CHF') {
+			return `${val} ${sym}`;
+		}
+		return `${sym}${val}`;
+	}
+
+	function calculateBudget() {
+		const total = parseFloat(totalBudgetInput.value) || 0;
+		const guests = parseInt(guestCountInput.value) || 1;
+		const sym = getCurrency();
+		currencySymbolDisplay.textContent = sym;
+
+		let sumPct = 0;
+		categories.forEach(c => {
+			sumPct += parseFloat(userPcts[c.id]) || 0;
+		});
+		sumPct = Math.round(sumPct * 10) / 10;
+
+		// Update Stats
+		statTotalDisplay.textContent = formatMoney(total);
+		const perGuest = guests > 0 ? (total / guests) : 0;
+		statPerGuest.textContent = formatMoney(perGuest);
+		statGuestCountNote.textContent = `Basierend auf ${guests} Gästen`;
+
+		const venueAmt = total * ((parseFloat(userPcts['venue']) || 0) / 100);
+		statVenueAmt.textContent = formatMoney(venueAmt);
+
+		const bufferAmt = total * ((parseFloat(userPcts['buffer']) || 0) / 100);
+		statBufferAmt.textContent = formatMoney(bufferAmt);
+
+		// Total percentage indicator
+		if (sumPct === 100) {
+			pctWarning.textContent = '100% Aufgeteilt (Perfekt)';
+			pctWarning.style.color = '#15803d';
+		} else if (sumPct < 100) {
+			const diff = Math.round((100 - sumPct) * 10) / 10;
+			pctWarning.textContent = `${sumPct}% Aufgeteilt (${diff}% noch unverteilt)`;
+			pctWarning.style.color = '#a16207';
+		} else {
+			const diff = Math.round((sumPct - 100) * 10) / 10;
+			pctWarning.textContent = `${sumPct}% Aufgeteilt (${diff}% über Budget!)`;
+			pctWarning.style.color = '#dc2626';
+		}
+
+		// Update Stacked Visual Bar
+		stackedBudgetBar.innerHTML = '';
+		categories.forEach(c => {
+			const pct = parseFloat(userPcts[c.id]) || 0;
+			const displayPct = sumPct > 0 ? (pct / sumPct) * 100 : 0;
+			if (displayPct > 0) {
+				const seg = document.createElement('div');
+				seg.style.cssText = `height: 100%; width: ${displayPct}%; background-color: ${c.color}; border-right: 1px solid var(--fg-pencil); transition: width 0.3s ease;`;
+				seg.title = `${c.name}: ${pct}% (${formatMoney(total * (pct / 100))})`;
+				stackedBudgetBar.appendChild(seg);
+			}
+		});
+
+		if (stackedBudgetBar.lastChild) {
+			stackedBudgetBar.lastChild.style.borderRight = 'none';
+		}
+
+		// Update Category Cards Amounts
+		categories.forEach(c => {
+			const amtEl = document.getElementById(`amt-${c.id}`);
+			const pctInputEl = document.getElementById(`pct-input-${c.id}`);
+			const rangeEl = document.getElementById(`range-${c.id}`);
+			const pct = parseFloat(userPcts[c.id]) || 0;
+			const amt = total * (pct / 100);
+
+			if (amtEl) amtEl.textContent = formatMoney(amt);
+			if (pctInputEl && document.activeElement !== pctInputEl) pctInputEl.value = pct;
+			if (rangeEl && document.activeElement !== rangeEl) rangeEl.value = pct;
+		});
+	}
+
+	function renderCategoryCards() {
+		categoriesGrid.innerHTML = '';
+		const total = parseFloat(totalBudgetInput.value) || 0;
+
+		categories.forEach(c => {
+			const card = document.createElement('div');
+			card.className = 'category-card';
+
+			const pct = parseFloat(userPcts[c.id]) || 0;
+			const amt = total * (pct / 100);
+
+			card.innerHTML = `
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+					<div style="display: flex; align-items: center; gap: 0.4rem;">
+						<span style="width: 14px; height: 14px; background-color: ${c.color}; border: 1.5px solid var(--fg-pencil); border-radius: 3px; display: inline-block;"></span>
+						<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil);">${c.name}</strong>
+					</div>
+					<strong id="amt-${c.id}" class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil);">${formatMoney(amt)}</strong>
+				</div>
+
+				<p class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); margin: 0 0 0.75rem 0; line-height: 1.3;">
+					${c.desc}
+				</p>
+
+				<div style="display: flex; align-items: center; gap: 0.75rem; margin-top: auto;">
+					<input type="range" id="range-${c.id}" min="0" max="70" step="1" value="${pct}" style="flex: 1; accent-color: var(--fg-pencil); cursor: pointer;" oninput="updateCatPct('${c.id}', this.value)">
+					<div style="display: flex; align-items: center; gap: 0.2rem;">
+						<input type="number" id="pct-input-${c.id}" min="0" max="100" step="0.5" value="${pct}" style="width: 50px; padding: 3px 5px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; text-align: center;" oninput="updateCatPct('${c.id}', this.value)">
+						<span style="font-size: 0.9rem; font-weight: bold;">%</span>
+					</div>
+				</div>
+			`;
+
+			categoriesGrid.appendChild(card);
+		});
+	}
+
+	window.updateCatPct = function(id, val) {
+		userPcts[id] = parseFloat(val) || 0;
+		calculateBudget();
+	};
+
+	// Event Listeners
+	totalBudgetInput.addEventListener('input', calculateBudget);
+	guestCountInput.addEventListener('input', calculateBudget);
+	currencySelect.addEventListener('change', calculateBudget);
+
+	// Tier Presets
+	document.querySelectorAll('.tier-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active-tier'));
+			btn.classList.add('active-tier');
+
+			totalBudgetInput.value = btn.getAttribute('data-amt');
+			guestCountInput.value = btn.getAttribute('data-guests');
+			calculateBudget();
+		});
+	});
+
+	// Reset Defaults
+	document.getElementById('btn-reset-defaults').addEventListener('click', () => {
+		categories.forEach(c => { userPcts[c.id] = c.defaultPct; });
+		renderCategoryCards();
+		calculateBudget();
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const total = parseFloat(totalBudgetInput.value) || 0;
+		const guests = parseInt(guestCountInput.value) || 1;
+
+		let rows = '';
+		categories.forEach(c => {
+			const pct = parseFloat(userPcts[c.id]) || 0;
+			const amt = total * (pct / 100);
+			rows += `
+				<tr>
+					<td style="border:1px solid #ccc; padding:8px; font-weight:bold;">${c.name}</td>
+					<td style="border:1px solid #ccc; padding:8px; text-align:center;">${pct}%</td>
+					<td style="border:1px solid #ccc; padding:8px; text-align:right; font-weight:bold;">${formatMoney(amt)}</td>
+					<td style="border:1px solid #ccc; padding:8px; color:#555;">${c.desc}</td>
+				</tr>
+			`;
+		});
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Hochzeitsbudget Aufstellung</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Offizielle Hochzeitsbudget-Kalkulation</h1>
+				<p>Erstellt am ${new Date().toLocaleDateString('de-DE')} | Gesamtbudget: <strong>${formatMoney(total)}</strong> | Gästeanzahl: ${guests} | Kosten pro Gast: <strong>${formatMoney(total / guests)}</strong></p>
+				<table>
+					<thead>
+						<tr>
+							<th>Kategorie</th>
+							<th style="text-align:center;">% Anteil</th>
+							<th style="text-align:right;">Geplanter Betrag</th>
+							<th>Enthaltene Ausgaben</th>
+						</tr>
+					</thead>
+					<tbody>
+						${rows}
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Hochzeitsbudget_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		const total = parseFloat(totalBudgetInput.value) || 0;
+		const guests = parseInt(guestCountInput.value) || 1;
+
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('de-DE');
+		document.getElementById('print-total').textContent = formatMoney(total);
+		document.getElementById('print-per-guest').textContent = `${formatMoney(total / guests)} (${guests} Gäste)`;
+
+		const tbody = document.getElementById('print-table-body');
+		tbody.innerHTML = '';
+
+		categories.forEach(c => {
+			const pct = parseFloat(userPcts[c.id]) || 0;
+			const amt = total * (pct / 100);
+
+			const tr = document.createElement('tr');
+			tr.innerHTML = `
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight: bold;">${c.name}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align: center;">${pct}%</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align: right; font-weight: bold;">${formatMoney(amt)}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; color: #555;">${c.desc}</td>
+			`;
+			tbody.appendChild(tr);
+		});
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		const total = parseFloat(totalBudgetInput.value) || 0;
+		let csv = "Kategorie,Prozentualer Anteil,Geplanter Betrag,Enthaltene Ausgaben\n";
+		categories.forEach(c => {
+			const pct = parseFloat(userPcts[c.id]) || 0;
+			const amt = total * (pct / 100);
+			csv += `"${c.name}",${pct}%,${Math.round(amt)},"${(c.desc||'').replace(/"/g, '""')}"\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Hochzeitsbudget_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	renderCategoryCards();
+	calculateBudget();
+</script>

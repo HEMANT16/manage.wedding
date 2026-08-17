@@ -1,0 +1,590 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/bachelorette-budget-calculator/#webapp",
+      "name": "Calculateur de Budget EVJF & Partage des Dépenses",
+      "url": "https://manage.wedding/fr/bachelorette-budget-calculator",
+      "description": "Calculateur gratuit de budget EVJF et partage de frais entre amies. Calcule la part exacte par participante pour l'hébergement, les repas et les activités en offrant la part de la mariée. Export de message WhatsApp et Lydia.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Calculer et Répartir les Frais d'un EVJF Équitablement",
+      "description": "Guide étape par étape pour les témoins et organisatrices d'enterrement de vie de jeune fille.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Fixer le Nombre de Participantes",
+          "text": "Comptez le nombre total d'amies présentes et activez l'option pour offrir la part de la mariée (règle de division N-1)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Additionner les Coûts Fixes d'Hébergement",
+          "text": "Intégrez le tarif total du gîte, de l'Airbnb ou de l'hôtel, ainsi que les trajets collectifs (péages, van, essence)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Estimer les Repas et Activités",
+          "text": "Budgétisez les brunchs, restaurants, courses d'apéro, ateliers culinaires, spa et sorties festives."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Collecter les Règlements via WhatsApp et Lydia / Tricount",
+          "text": "Envoyez un récapitulatif transparent avec un premier acompte pour bloquer le logement, et le solde 2 semaines avant le départ."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "La future mariée doit-elle payer son EVJF ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Selon la tradition de l'EVJF, les participantes prennent en charge collectivement la totalité des frais sur place de la mariée (logement, restaurants, verres et activités). La mariée ne règle généralement que son propre billet de train ou d'avion si le voyage a lieu au loin."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quel est le budget moyen d'un EVJF par personne ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pour un week-end en France (location de gîte ou villa en Provence/Normandie), comptez en moyenne 250 € à 400 € par participante. Pour un voyage en Europe (Barcelone, Lisbonne, Rome), le budget se situe généralement entre 450 € et 650 € par personne tout compris."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quand faut-il collecter l'argent de l'EVJF ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Demandez un premier acompte (50%) 3 à 5 mois avant la date pour réserver le logement et les activités incontournables. Le solde restant (courses et restaurants) peut être collecté 2 semaines avant l'événement."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculateur de Budget EVJF / EVG & Partage des Frais (Offrir la Part de la Mariée)"
+	description="Calculateur gratuit de budget EVJF et partage des dépenses. Calculez la part par participante pour l'hébergement, repas et activités en offrant la part de la mariée. Export WhatsApp & Lydia."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Budget & Partage EVJF" category="budget-finance" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Partage Équitable & Export WhatsApp / Lydia</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Calculateur de Budget EVJF <span class="accent-italic">& Partage des Frais</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Calculez le coût exact par participante pour le logement, les courses apéro, la déco et les activités. Offrez automatiquement la part de la mariée et copiez le message de remboursement pour WhatsApp ou Lydia en 1 clic.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Trip Setup & Expense Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Détails de l'Événement
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Division N-1
+					</span>
+				</div>
+
+				<!-- Destination / Preset Picker -->
+				<div class="form-group">
+					<label class="form-label" for="destination-preset">Destination / Type de Séjour</label>
+					<select id="destination-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="bordeaux" selected>🍷 Vignoble & Bassin d'Arcachon (Dégustation & Bateau / ~380 € / pers)</option>
+						<option value="provence">🧖‍♀️ Villa avec Piscine en Provence / Normandie (Cocooning & Spa / ~280 € / pers)</option>
+						<option value="cotedazur">🌴 Côte d'Azur / Nice & Cannes (Plage privée & Rooftop / ~550 € / pers)</option>
+						<option value="europe">💃 City-trip Européen / Barcelone ou Lisbonne (Tapas & Soirée / ~450 € / pers)</option>
+						<option value="local">🏡 Soirée & Activités Locales / Escape Game (~150 € / pers)</option>
+						<option value="custom">✏️ Saisie Personnalisée</option>
+					</select>
+				</div>
+
+				<!-- Bride Name & Total Attendees -->
+				<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="bride-name">Prénom de la Future Mariée</label>
+						<input type="text" id="bride-name" class="form-input" value="Camille" placeholder="ex. Camille" />
+					</div>
+					<div>
+						<label class="form-label" for="bridesmaid-count">Participantes Payantes</label>
+						<input type="number" id="bridesmaid-count" class="form-input" value="7" min="1" max="30" />
+					</div>
+				</div>
+
+				<!-- Cover the Bride Toggle -->
+				<div class="form-group" style="background: #fffcf5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem;">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 700; font-size: 0.98rem; margin: 0;">
+						<input type="checkbox" id="toggle-cover-bride" checked style="width: 18px; height: 18px;" />
+						<span>Offrir la part de la mariée (La mariée paie 0 €)</span>
+					</label>
+					<span style="font-size: 0.82rem; color: #64748b; display: block; margin-top: 4px; margin-left: 26px;">
+						Règle d'usage : Les 7 amies divisent la facture totale entre elles.
+					</span>
+				</div>
+
+				<!-- Shared Fixed Expenses (Lodging / Transport / Decor) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Frais Communs du Groupe (€)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="airbnb-total" style="font-size: 0.9rem;">Logement (Airbnb / Gîte)</label>
+							<input type="number" id="airbnb-total" class="form-input" value="1200" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="transport-total" style="font-size: 0.9rem;">Transport / Péages / Essence</label>
+							<input type="number" id="transport-total" class="form-input" value="250" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="decor-total" style="font-size: 0.9rem;">Décoration & Goodies Personnalisés</label>
+							<input type="number" id="decor-total" class="form-input" value="180" min="0" step="10" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="grocery-total" style="font-size: 0.9rem;">Courses Apéro & Petit-déjeuner</label>
+							<input type="number" id="grocery-total" class="form-input" value="350" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Dining & Group Activities -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Sorties & Activités Collectives (€)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="dining-total" style="font-size: 0.9rem;">Restaurants & Brunchs</label>
+							<input type="number" id="dining-total" class="form-input" value="650" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="activities-total" style="font-size: 0.9rem;">Activités (Spa, Bateau, Atelier)</label>
+							<input type="number" id="activities-total" class="form-input" value="450" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results Card & Venmo Exporter -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Cost Breakdown Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Coût Total par Participante
+						</span>
+						<span id="bride-status-badge" style="font-size: 0.85rem; font-weight: 800; background: #16a34a; color: #fff; padding: 3px 8px; border-radius: 4px;">
+							👰 Camille paie : 0 €
+						</span>
+					</div>
+
+					<div id="display-per-person" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.5rem;">
+						440 €
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Budget total du séjour : <strong id="display-trip-grand-total" style="color: var(--fg-pencil);">3 080 €</strong> pour <span id="display-headcount-text">7 amies payantes</span>.
+					</p>
+
+					<!-- Itemized Per-Person Split Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Part Logement (Gîte / Airbnb) :</span>
+							<strong id="item-lodging-share">171 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Courses & Restaurants :</span>
+							<strong id="item-food-share">143 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Activités & Sorties :</span>
+							<strong id="item-activity-share">64 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Déco, Goodies & Transport :</span>
+							<strong id="item-decor-share">61 €</strong>
+						</div>
+					</div>
+
+					<!-- Payment Schedule Recommendation -->
+					<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem; font-size: 0.9rem; line-height: 1.5;">
+						<strong style="display: block; color: var(--fg-pencil); margin-bottom: 4px;">📅 Échéancier de Paiement Conseillé :</strong>
+						• <strong>Acompte 1 (Réservation) :</strong> <span id="sched-dep-1" style="font-weight: 700; color: var(--accent-red);">220 €</span> (pour bloquer le logement)<br />
+						• <strong>Solde 2 (2 sem. avant) :</strong> <span id="sched-dep-2" style="font-weight: 700; color: var(--accent-blue);">220 €</span> (courses et activités)
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-copy-venmo" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📲</span> Copier Message WhatsApp / Lydia
+						</button>
+						<button id="btn-print-itinerary" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Imprimer Budget (PDF)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Trending Themes Cheat Sheet -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						✨ 5 Idées de Thèmes EVJF Tendance :
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Dolce Vita & Riviera :</strong> Lunettes de soleil vintage, spritz, marinières et photos au bord de l'eau.</li>
+						<li><strong>Bohème Chic & Détente :</strong> Couronnes de fleurs séchées, pique-nique chic, séance de yoga et spa.</li>
+						<li><strong>Disco Fever & Paillettes :</strong> Boules à facettes, bar à cocktails, tenues brillantes et karaoké privé.</li>
+						<li><strong>Dégustation & Terroir :</strong> Visite de domaines viticoles, atelier œnologie et planches apéritives gourmandes.</li>
+						<li><strong>Aventure & Plein Air :</strong> Paddle, balade à cheval, accrobranche et soirée feu de camp.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Repères Rapides</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Grille des Budgets EVJF par Type de Séjour
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Voici la formule de calcul standard et la moyenne des dépenses par participante selon le format choisi.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					💵 La Formule Standard EVJF (Division N-1) :
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Coût par Participante = [Total Logement + Transport + Courses + Activités + Restaurants] ÷ [Total Participantes − 1 (Mariée)] • La mariée est invitée sur place par ses amies.
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Format d'EVJF</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Budget Moyen / Pers.</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Prestations Incluses</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Ambiance</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Week-end Villa / Campagne</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">220 € – 320 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Gîte avec piscine, grand barbecue, après-midi spa, jeux</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Détente & Convivialité</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Bordeaux / Arcachon / Mer</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">350 € – 480 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Sortie bateau pinasse, dégustation d'huîtres, bars à vin</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Chic & Festif</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">City-trip Européen (Barcelone/Lisbonne)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">450 € – 650 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Vol, appartement centre-ville, tapas, rooftop et club</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Festif & Dépaysement</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Journée & Soirée Locale</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">120 € – 180 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Brunch, escape game ou shooting photo, restaurant gastronomique</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Accessible & Intense</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guide Pratique pour Organiser un EVJF Réussi et Sans Stress
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Conseils pour les témoins : sonder les budgets en toute discrétion, planifier l'échéancier et gérer les remboursements en toute transparence.
+				</p>
+			</div>
+
+			<!-- Section 1 -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. La Règle d'Or : Sonder les Budgets Anonymement
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Chaque participante a une situation financière différente. Pour ne mettre personne mal à l'aise, créez un court sondage anonyme (via Google Forms ou Doodle) avec plusieurs fourchettes de prix (200 €, 350 €, 500 €) avant de fixer le lieu définitif.
+				</p>
+			</section>
+
+			<!-- Section 2: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Foire Aux Questions
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Qui gère la cagnotte de l'EVJF ?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						C'est généralement le rôle de la témoin principale, qui centralise les acomptes via Lydia, un compte partagé ou une application de gestion de dépenses comme Tricount.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Que faire si une amie ne peut pas payer le montant total ?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Proposez-lui de rejoindre le groupe pour une partie du week-end (ex. uniquement le restaurant du samedi soir ou une activité précise), sans lui imposer la part de logement complète.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/fr/bachelorette-budget-calculator" category="budget" />
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('destination-preset');
+		const brideNameInput = document.getElementById('bride-name');
+		const bridesmaidCountInput = document.getElementById('bridesmaid-count');
+		const toggleCoverBride = document.getElementById('toggle-cover-bride');
+
+		const airbnbInput = document.getElementById('airbnb-total');
+		const transportInput = document.getElementById('transport-total');
+		const decorInput = document.getElementById('decor-total');
+		const groceryInput = document.getElementById('grocery-total');
+		const diningInput = document.getElementById('dining-total');
+		const activitiesInput = document.getElementById('activities-total');
+
+		const displayPerPerson = document.getElementById('display-per-person');
+		const displayGrandTotal = document.getElementById('display-trip-grand-total');
+		const displayHeadcountText = document.getElementById('display-headcount-text');
+		const brideStatusBadge = document.getElementById('bride-status-badge');
+
+		const itemLodgingShare = document.getElementById('item-lodging-share');
+		const itemFoodShare = document.getElementById('item-food-share');
+		const itemActivityShare = document.getElementById('item-activity-share');
+		const itemDecorShare = document.getElementById('item-decor-share');
+		const schedDep1 = document.getElementById('sched-dep-1');
+		const schedDep2 = document.getElementById('sched-dep-2');
+
+		const btnCopyVenmo = document.getElementById('btn-copy-venmo');
+		const btnPrint = document.getElementById('btn-print-itinerary');
+
+		function formatCurrency(val) {
+			return `${Math.round(val).toLocaleString('fr-FR')} €`;
+		}
+
+		function calculateBachelorette() {
+			const bridesmaids = parseInt(bridesmaidCountInput.value, 10) || 1;
+			const coverBride = toggleCoverBride.checked;
+			const bride = brideNameInput.value.trim() || 'Camille';
+
+			const lodging = parseFloat(airbnbInput.value) || 0;
+			const transport = parseFloat(transportInput.value) || 0;
+			const decor = parseFloat(decorInput.value) || 0;
+			const groceries = parseFloat(groceryInput.value) || 0;
+			const dining = parseFloat(diningInput.value) || 0;
+			const activities = parseFloat(activitiesInput.value) || 0;
+
+			const grandTotal = lodging + transport + decor + groceries + dining + activities;
+			const payingCount = coverBride ? bridesmaids : (bridesmaids + 1);
+
+			const perPersonTotal = grandTotal / payingCount;
+			const lodgingShare = lodging / payingCount;
+			const foodShare = (groceries + dining) / payingCount;
+			const activityShare = activities / payingCount;
+			const decorShare = (decor + transport) / payingCount;
+
+			displayPerPerson.textContent = formatCurrency(perPersonTotal);
+			displayGrandTotal.textContent = formatCurrency(grandTotal);
+			displayHeadcountText.textContent = `${payingCount} participante${payingCount === 1 ? '' : 's'} payante${payingCount === 1 ? '' : 's'}`;
+
+			if (coverBride) {
+				brideStatusBadge.textContent = `👰 ${bride} paie : 0 €`;
+				brideStatusBadge.style.background = '#16a34a';
+			} else {
+				brideStatusBadge.textContent = `👰 ${bride} paie sa part : ${formatCurrency(perPersonTotal)}`;
+				brideStatusBadge.style.background = '#0284c7';
+			}
+
+			itemLodgingShare.textContent = formatCurrency(lodgingShare);
+			itemFoodShare.textContent = formatCurrency(foodShare);
+			itemActivityShare.textContent = formatCurrency(activityShare);
+			itemDecorShare.textContent = formatCurrency(decorShare);
+
+			const half = Math.round(perPersonTotal / 2);
+			schedDep1.textContent = formatCurrency(half);
+			schedDep2.textContent = formatCurrency(perPersonTotal - half);
+		}
+
+		// Preset Selection Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'bordeaux') {
+				airbnbInput.value = 1200;
+				transportInput.value = 250;
+				decorInput.value = 180;
+				groceryInput.value = 350;
+				diningInput.value = 650;
+				activitiesInput.value = 450; // Dégustation / Bateau
+			} else if (p === 'provence') {
+				airbnbInput.value = 950;
+				transportInput.value = 180;
+				decorInput.value = 150;
+				groceryInput.value = 300;
+				diningInput.value = 450;
+				activitiesInput.value = 250; // Spa
+			} else if (p === 'cotedazur') {
+				airbnbInput.value = 1800;
+				transportInput.value = 300;
+				decorInput.value = 200;
+				groceryInput.value = 400;
+				diningInput.value = 900;
+				activitiesInput.value = 650; // Plage privée
+			} else if (p === 'europe') {
+				airbnbInput.value = 1400;
+				transportInput.value = 200;
+				decorInput.value = 150;
+				groceryInput.value = 300;
+				diningInput.value = 750;
+				activitiesInput.value = 500;
+			} else if (p === 'local') {
+				airbnbInput.value = 0;
+				transportInput.value = 50;
+				decorInput.value = 100;
+				groceryInput.value = 150;
+				diningInput.value = 450;
+				activitiesInput.value = 300;
+			}
+			calculateBachelorette();
+		});
+
+		// Live Listeners
+		[brideNameInput, bridesmaidCountInput, toggleCoverBride, airbnbInput, transportInput, decorInput, groceryInput, diningInput, activitiesInput].forEach(inp => {
+			inp.addEventListener('input', calculateBachelorette);
+			inp.addEventListener('change', calculateBachelorette);
+		});
+
+		// Copy WhatsApp / Lydia Request
+		btnCopyVenmo.addEventListener('click', () => {
+			const bride = brideNameInput.value.trim() || 'Camille';
+			const perPerson = displayPerPerson.textContent;
+			const dep1 = schedDep1.textContent;
+			const dep2 = schedDep2.textContent;
+
+			let text = `🎉 *Budget & Organisation de l'EVJF de ${bride}*\n\n`;
+			text += `Coucou les filles ! Voici le récapitulatif des frais pour le week-end de ${bride} :\n\n`;
+			text += `💰 *Montant Total par Personne :* ${perPerson} (en offrant la part de ${bride} pour qu'elle ne paie 0 € !)\n\n`;
+			text += `📋 *Ce qui est inclus :*\n`;
+			text += `• Logement (Gîte / Airbnb) : ${itemLodgingShare.textContent}\n`;
+			text += `• Courses apéro & Restaurants : ${itemFoodShare.textContent}\n`;
+			text += `• Activités & Sorties : ${itemActivityShare.textContent}\n`;
+			text += `• Déco & Goodies : ${itemDecorShare.textContent}\n\n`;
+			text += `📅 *Modalités de Paiement (Lydia / Virement) :*\n`;
+			text += `1️⃣ Acompte 1 (Pour bloquer le logement) : *${dep1}*\n`;
+			text += `2️⃣ Solde 2 (2 semaines avant le départ) : *${dep2}*\n\n`;
+			text += `Trop hâte de fêter ça toutes ensemble ! 🍾✨`;
+
+			navigator.clipboard.writeText(text).then(() => {
+				const orig = btnCopyVenmo.textContent;
+				btnCopyVenmo.textContent = '✅ Message Copié dans le Presse-papier !';
+				setTimeout(() => { btnCopyVenmo.textContent = orig; }, 2500);
+			});
+		});
+
+		// Print PDF Summary
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Budget EVJF — Manage.Wedding</title>
+					<style>
+						@page { size: A4; margin: 15mm; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 18pt; color: #0f172a; margin-bottom: 4px; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Budget EVJF de ${brideNameInput.value || 'Camille'}</h1>
+					<p>Dépense Totale du Groupe : ${displayGrandTotal.textContent} | <strong>Coût par Participante : ${displayPerPerson.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Poste de Dépense</th><th>Total Groupe (€)</th><th>Part par Personne</th></tr></thead>
+						<tbody>
+							<tr><td>Logement (Gîte / Airbnb)</td><td>${airbnbInput.value} €</td><td>${itemLodgingShare.textContent}</td></tr>
+							<tr><td>Restaurants, Brunchs & Courses</td><td>${parseFloat(groceryInput.value) + parseFloat(diningInput.value)} €</td><td>${itemFoodShare.textContent}</td></tr>
+							<tr><td>Activités & Sorties</td><td>${activitiesInput.value} €</td><td>${itemActivityShare.textContent}</td></tr>
+							<tr><td>Déco, Goodies & Transport</td><td>${parseFloat(decorInput.value) + parseFloat(transportInput.value)} €</td><td>${itemDecorShare.textContent}</td></tr>
+							<tr class="total-row"><td>TOTAL PAR PARTICIPANTE</td><td>${displayGrandTotal.textContent}</td><td>${displayPerPerson.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Initial Calculation
+		calculateBachelorette();
+	</script>
+</Layout>

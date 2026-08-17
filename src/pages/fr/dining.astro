@@ -1,0 +1,259 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Simulateurs de Réception, Vin d'Honneur & Traiteur (Gratuits & Imprimables)";
+const description = "Simulateurs gratuits pour le bar et traiteur de mariage : calcul des bouteilles de vin et champagne pour le vin d'honneur, parts de gâteau et création de menus.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://manage.wedding/fr/dining/#collection",
+      "name": "Simulateurs de Réception, Vin d'Honneur et Traiteur de Mariage",
+      "url": "https://manage.wedding/fr/dining",
+      "inLanguage": "fr",
+      "description": "Suite complète d'outils pour calculer les boissons du vin d'honneur, dimensionner la pièce montée, estimer le devis traiteur et imprimer vos menus de table.",
+      "hasPart": [
+        { "@type": "WebApplication", "name": "Calculateur de Boissons & Vin d'Honneur", "url": "https://manage.wedding/fr/wedding-drink-calculator" },
+        { "@type": "WebApplication", "name": "Calculateur de Spiritueux & Bouteilles de Cocktail", "url": "https://manage.wedding/fr/liquor-wedding-calculator" },
+        { "@type": "WebApplication", "name": "Calculateur de Prix du Gâteau de Mariage", "url": "https://manage.wedding/fr/cake-pricing-calculator" },
+        { "@type": "WebApplication", "name": "Portions & Étages de Wedding Cake", "url": "https://manage.wedding/fr/cake-serving-calculator" },
+        { "@type": "WebApplication", "name": "Créateur de Menus Imprimables", "url": "https://manage.wedding/fr/reception-menu-maker" },
+        { "@type": "WebApplication", "name": "Traiteur : Menu Servi vs Buffet", "url": "https://manage.wedding/fr/catering-cost-estimator" },
+        { "@type": "WebApplication", "name": "Calculateur de Dilution d'Alcool & Cocktails", "url": "https://manage.wedding/fr/alcohol-dilution-calculator" },
+        { "@type": "WebApplication", "name": "Budget Fleurs & Décoration Florale", "url": "https://manage.wedding/fr/floral-cost-estimator" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Combien de verres par personne prévoir pour le vin d'honneur et la soirée ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La règle d'or des traiteurs est de compter 2 verres par invité pendant le vin d'honneur (première heure), puis 1 verre par personne pour chaque heure suivante de réception. Pour une soirée de 5 heures avec 150 convives, prévoyez environ 900 consommations au total."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien de bouteilles de vin et de champagne pour 100 personnes ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pour 100 invités sur une soirée de 4 à 5 heures : comptez environ 30 à 35 bouteilles de champagne (vin d'honneur et dessert), 35 à 45 bouteilles de vin (moitié rouge, moitié blanc/rosé), 150 bières et 10 à 12 bouteilles de spiritueux de 70cl pour la soirée dansante."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quel est le prix moyen d'une part de gâteau de mariage ou pièce montée ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Une pièce montée traditionnelle en choux coûte entre 4,50 € et 7,50 € par personne (3 à 4 choux par invité). Un wedding cake personnalisé sur mesure varie de 6,50 € à 12,00 € la part selon les décors en pâte à sucre et fleurs comestibles."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const diningTools = [
+  {
+    title: "Calculateur de Boissons & Vin d'Honneur",
+    url: "/fr/wedding-drink-calculator",
+    icon: "🍾",
+    badge: "Très Populaire",
+    desc: "Calculez le nombre exact de bouteilles de vin, champagne, bière, softs et glaçons selon le nombre d'invités et la durée de la fête.",
+    tags: ["Vin d'Honneur", "PDF 1-Clic", "Liste de Courses"]
+  },
+  {
+    title: "Calculateur de Spiritueux & Bouteilles de Cocktail",
+    url: "/fr/liquor-wedding-calculator",
+    icon: "🍸",
+    badge: "Bouteilles 70cl & Magnums",
+    desc: "Conçu pour les bars à cocktails et soirées dansantes : optimise les dosages de gin, rhum, vodka, whisky et mixers.",
+    tags: ["Dosage Cocktails", "Bouteilles 70cl / 1L", "Économies"]
+  },
+  {
+    title: "Créateur de Menus Imprimables (4x9 & 5x7)",
+    url: "/fr/reception-menu-maker",
+    icon: "📜",
+    badge: "Export PDF Vectoriel",
+    desc: "Mettez en page vos cartes de menu de table avec typographies soignées, bordures florales et pictogrammes d'allergènes.",
+    tags: ["Polices Calligraphiques", "PDF Imprimable", "Régimes Alimentaires"]
+  },
+  {
+    title: "Calculateur de Prix du Gâteau de Mariage",
+    url: "/fr/cake-pricing-calculator",
+    icon: "🎂",
+    badge: "Prix par Part",
+    desc: "Pour pâtissiers et futurs mariés : coût des ingrédients, heures de modelage, marge bénéficiaire et devis client imprimable.",
+    tags: ["Coût par Part", "Marge Pâtissier", "Devis PDF"]
+  },
+  {
+    title: "Portions & Étages de Wedding Cake",
+    url: "/fr/cake-serving-calculator",
+    icon: "🍰",
+    badge: "Guide Visuel",
+    desc: "Visualisez les diamètres d'étages (ronds et carrés), la découpe des parts traiteur et les gâteaux d'appoint pour 50 à 300+ convives.",
+    tags: ["Diamètres d'Étages", "Gâteaux de Réserve", "Guide de Coupe"]
+  },
+  {
+    title: "Bar à Desserts, Cookies & Candy Bar",
+    url: "/fr/wedding-dessert-table-calculator",
+    icon: "🧁",
+    badge: "Buffet Sucré",
+    desc: "Calculez mignardises par invité, douzaines pâtissières, kilos de bonbons et affiches 'L'amour est doux' imprimables.",
+    tags: ["Mignardises par Personne", "Bonbonnières", "Douzaines Pâtissier"]
+  },
+  {
+    title: "Traiteur : Menu Servi à Table vs Buffet",
+    url: "/fr/catering-cost-estimator",
+    icon: "🍽️",
+    badge: "Coût par Personne",
+    desc: "Comparez le prix par couvert entre service à l'assiette, buffet froid/chaud, cocktail dînatoire et ateliers culinaires avec personnel.",
+    tags: ["Assiette vs Buffet", "Ratio Serveurs", "Coût par Convive"]
+  },
+  {
+    title: "Calculateur de Dilution d'Alcool & Cocktails",
+    url: "/fr/alcohol-dilution-calculator",
+    icon: "🧪",
+    badge: "Pour Barman & Cocktails",
+    desc: "Ajustez le degré alcoolique cible et le volume de dilution pour vos fontaines à punch, sangrias et cocktails préparés à l'avance.",
+    tags: ["Degré Alcoolique (ABV)", "Cocktails en Fontaine", "Volumes"]
+  },
+  {
+    title: "Budget Fleurs & Décoration Florale",
+    url: "/fr/floral-cost-estimator",
+    icon: "💐",
+    badge: "Tarifs Fleuriste",
+    desc: "Estimez le coût du bouquet de mariée, des boutonnières, des centres de table et de l'arche fleurie pour la cérémonie.",
+    tags: ["Bouquet de Mariée", "Centres de Table", "Arche de Cérémonie"]
+  }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+    
+    <!-- Hero Header -->
+    <header class="fade-in category-header" style="text-align: center; margin-bottom: 3rem; position: relative;">
+      <div class="tape" style="margin: 0 auto 1rem;"></div>
+      <span class="badge-postit">Pôle Restauration & Boissons</span>
+      <h1 class="font-heading" style="font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+        Simulateurs de <span class="accent-italic">Réception, Vin d'Honneur & Traiteur</span>
+      </h1>
+      <p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+        Calculez les quantités exactes d'alcool pour votre vin d'honneur et soirée, dimensionnez votre gâteau de mariage et imprimez vos menus de table.
+      </p>
+    </header>
+
+    <!-- Category Nav Bar -->
+    <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+      <span style="font-size: 0.9rem; font-weight: 700; color: #64748b; align-self: center;">Catégories :</span>
+      <a href="/fr/budget" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💰 Budget</a>
+      <a href="/fr/dining" class="tool-tag" style="background: var(--post-it); font-weight: 700; text-decoration: none; padding: 6px 14px; border: 2px solid var(--fg-pencil);">🍾 Réception (Actif)</a>
+      <a href="/fr/guests" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">👥 Invités & Logistique</a>
+      <a href="/fr/stationery" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💌 Papeterie & Créatif</a>
+    </div>
+
+    <!-- Tools Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem; margin-bottom: 4rem;">
+      {diningTools.map(tool => (
+        <div class="hand-card" style="padding: 1.75rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span style="font-size: 2.2rem;">{tool.icon}</span>
+              <span style="font-size: 0.78rem; font-weight: 700; background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+                {tool.badge}
+              </span>
+            </div>
+            
+            <h2 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+              {tool.title}
+            </h2>
+            
+            <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 0.75rem;">
+              {tool.tags.map(t => (
+                <span class="tool-tag" style="font-size: 0.75rem; padding: 2px 6px;">{t}</span>
+              ))}
+            </div>
+
+            <p class="font-body" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+              {tool.desc}
+            </p>
+          </div>
+
+          <a href={tool.url} class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+            Ouvrir l'Outil →
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- In-Depth Dining & Bar Guide -->
+    <article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+        <span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">Règle Traiteur</span>
+        <h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+          Comment Calculer les Quantités pour le Vin d'Honneur et le Repas
+        </h2>
+        <p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+          Évitez les ruptures de stock au bar tout en maîtrisant les surplus grâce aux équations des sommeliers et traiteurs.
+        </p>
+      </div>
+
+      <section style="margin-bottom: 3rem;">
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+          1. La Formule Standard : 2 Verres au Cocktail + 1 Verre par Heure de Soirée
+        </h3>
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+          Les invités consomment davantage au vin d'honneur, puis le rythme se stabilise pendant le repas et la soirée :
+        </p>
+        
+        <div style="background: #faf8f5; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-family: var(--font-body); font-size: 1rem; line-height: 1.6;">
+          <strong>Total Verres = (Nombre d'Invités × 2 Verres au Vin d'Honneur) + (Nombre d'Invités × 1 Verre × Heures Suivantes)</strong>
+          <br/><br/>
+          <em>Exemple pour 150 Convives (5 Heures de Réception) :</em> (150 × 2) + (150 × 4) = <strong>900 Verres au Total</strong>.
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section>
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.25rem; text-align: center;">
+          Foire Aux Questions
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              Combien de verres par personne prévoir pour le vin d'honneur et la soirée ?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              Comptez 2 verres par invité lors de la première heure de cocktail, puis 1 verre par personne pour chaque heure de repas et de soirée dansante.
+            </p>
+          </details>
+
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              Combien de bouteilles de vin et de champagne pour 100 personnes ?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              Prévoyez environ 30 à 35 bouteilles de champagne (6 coupes par bouteille de 75cl), 40 bouteilles de vin (5 verres par bouteille) et 150 bières.
+            </p>
+          </details>
+
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              Quel est le prix moyen d'une part de gâteau de mariage ?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              Une pièce montée traditionnelle varie de 4,50 € à 7,50 € par personne, tandis qu'un wedding cake d'artisan se situe entre 6,50 € et 12,00 € la part.
+            </p>
+          </details>
+        </div>
+      </section>
+
+    </article>
+
+  </main>
+</Layout>

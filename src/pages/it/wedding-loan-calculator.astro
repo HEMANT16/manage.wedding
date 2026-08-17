@@ -1,0 +1,633 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/wedding-loan-calculator/#webapp",
+      "name": "Calcolatore Prestito e Rata Matrimonio (Piano di Ammortamento)",
+      "url": "https://manage.wedding/it/wedding-loan-calculator",
+      "inLanguage": "it",
+      "description": "Calcola la rata mensile del prestito per il matrimonio, gli interessi complessivi, il TAN, il TAEG e il piano di ammortamento dettagliato con esportazione in Word e PDF.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come calcolare la rata di un prestito per il matrimonio",
+      "description": "Guida passo-passo per valutare la sostenibilità di un prestito personale per le spese delle nozze.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Definire il fabbisogno effettivo",
+          "text": "Calcola la differenza tra il preventivo totale delle nozze e i risparmi disponibili per richiedere solo l'importo necessario."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Inserire TAN e durata",
+          "text": "Imposta il tasso annuo nominale (TAN) e la durata in mesi (da 12 a 84 mesi) per ottenere la rata mensile sostenibile."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Verificare spese accessorie e TAEG",
+          "text": "Includi le spese di istruttoria iniziale e valuta il costo complessivo comprensivo degli interessi."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Esportare il piano di ammortamento",
+          "text": "Scarica il prospetto mese per mese in formato Word o PDF per confrontare le offerte bancarie."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Conviene richiedere un prestito personale per sposarsi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "È consigliabile finanziare solo una quota marginale delle nozze (es. per bloccare gli acconti di sala e catering prima di ricevere i regali in busta), mantenendo la rata mensile al di sotto del 20% del reddito netto della coppia."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qual è il tasso di interesse medio per un prestito matrimonio in Italia?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "I prestiti personali per eventi e nozze in Italia hanno mediamente un TAN compreso tra il 6,5% e il 9,5% (TAEG 7,5% – 11%) a seconda del profilo creditizio e della durata del finanziamento."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calcolatore Prestito e Rata Matrimonio (Piano di Ammortamento) | Manage.Wedding"
+	description="Calcola la rata mensile del prestito per il matrimonio, gli interessi complessivi, il TAN, il TAEG e il piano di ammortamento con esportazione in Word e PDF."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Calcolatore Prestito Matrimonio" category="budget-finance" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Calcolatore Prestito <span class="accent-italic">Matrimonio</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Calcola la rata mensile, gli interessi totali e simula rimborsi anticipati. Esporta il <strong>Piano di Ammortamento Completo</strong> in <strong>Word</strong> o <strong>PDF</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Come Calcolare la Rata in 3 Semplici Passaggi
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Inserisci Importo e TAN (%)
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Digita la cifra da finanziare e il tasso annuo proposto dalla banca, oppure scegli un importo predefinito.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Imposta Durata e Rata Extra
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Scegli la durata (da 12 a 60 mesi) e verifica il risparmio sugli interessi aumentando la rata mensile.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Scarica il Piano Dettagliato
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Salva la tabella mese per mese per confrontarla con il preventivo della tua banca o della finanziaria.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="loan-calc-grid">
+			
+			<!-- Left Column: Input Form & Presets -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div style="width: 100%;">
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							🏦 Parametri del Finanziamento
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							Imposta capitale, tasso, durata e costi accessori
+						</span>
+					</div>
+				</div>
+
+				<!-- Quick Presets -->
+				<div style="margin-bottom: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; text-align: center;">
+					<span class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.4rem; text-align: center;">
+						⚡ Importi Predefiniti:
+					</span>
+					<div style="display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center;">
+						<button type="button" class="loan-preset-btn" data-amt="5000" data-apr="6.5" data-term="24">💵 5.000 € (24 Mesi • 6,5%)</button>
+						<button type="button" class="loan-preset-btn active-preset" data-amt="10000" data-apr="7.5" data-term="36">💳 10.000 € (36 Mesi • 7,5%)</button>
+						<button type="button" class="loan-preset-btn" data-amt="20000" data-apr="8.0" data-term="48">💎 20.000 € (48 Mesi • 8,0%)</button>
+						<button type="button" class="loan-preset-btn" data-amt="30000" data-apr="8.5" data-term="60">👑 30.000 € (60 Mesi • 8,5%)</button>
+					</div>
+				</div>
+
+				<form id="loan-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+					
+					<!-- Loan Amount & Currency -->
+					<div style="display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 0.75rem;">
+						<div>
+							<label for="input-loan-amount" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Importo Finanziato (€) *
+							</label>
+							<div style="display: flex; align-items: center; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; overflow: hidden;">
+								<span id="currency-symbol-display" style="padding: 0.55rem 0.75rem; background: var(--bg-paper); border-right: 1px solid var(--fg-pencil); font-weight: bold; font-family: var(--font-heading);">€</span>
+								<input type="number" id="input-loan-amount" value="10000" min="500" max="150000" step="500" required style="flex: 1; border: none; padding: 0.55rem; font-family: var(--font-body); font-size: 1.1rem; font-weight: bold; outline: none; background: transparent;">
+							</div>
+						</div>
+
+						<div>
+							<label for="currency-select" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Valuta
+							</label>
+							<select id="currency-select" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+								<option value="€" selected>€ (EUR)</option>
+								<option value="CHF">CHF (Franco Svizzero)</option>
+								<option value="$">$ (USD)</option>
+								<option value="£">£ (GBP)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- APR % & Term Months -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-apr" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Tasso di Interesse (TAN %) *
+							</label>
+							<div style="display: flex; align-items: center; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; overflow: hidden;">
+								<input type="number" id="input-apr" value="7.5" min="0" max="36" step="0.25" required style="flex: 1; border: none; padding: 0.55rem; font-family: var(--font-body); font-size: 1.1rem; outline: none; background: transparent;">
+								<span style="padding: 0.55rem 0.75rem; background: var(--bg-paper); border-left: 1px solid var(--fg-pencil); font-weight: bold;">%</span>
+							</div>
+						</div>
+
+						<div>
+							<label for="select-loan-term" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Durata Finanziamento (Mesi)
+							</label>
+							<select id="select-loan-term" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+								<option value="12">12 Mesi (1 Anno)</option>
+								<option value="24">24 Mesi (2 Anni)</option>
+								<option value="36" selected>36 Mesi (3 Anni)</option>
+								<option value="48">48 Mesi (4 Anni)</option>
+								<option value="60">60 Mesi (5 Anni)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Origination Fee & Extra Monthly Payment -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.75rem;">
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-origination-pct" class="font-heading" style="font-size: 0.85rem; color: var(--fg-pencil);">
+									Spese Istruttoria / Apertura Pratica (%)
+								</label>
+								<span id="origination-fee-display" style="font-size: 0.8rem; color: var(--accent-red); font-weight: bold;">0 €</span>
+							</div>
+							<div style="display: flex; align-items: center; gap: 0.5rem;">
+								<input type="range" id="input-origination-pct" min="0" max="5" step="0.5" value="0" style="flex: 1; accent-color: var(--fg-pencil);">
+								<span id="origination-pct-label" style="font-size: 0.85rem; font-weight: bold; width: 35px;">0%</span>
+							</div>
+						</div>
+
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-extra-payment" class="font-heading" style="font-size: 0.85rem; color: var(--fg-pencil);">
+									Quota Extra Mensile (Rimborso Anticipato)
+								</label>
+								<span id="extra-payment-display" style="font-size: 0.85rem; color: var(--accent-blue); font-weight: bold;">+0 €/mese</span>
+							</div>
+							<div style="display: flex; align-items: center; gap: 0.5rem;">
+								<input type="range" id="input-extra-payment" min="0" max="500" step="25" value="0" style="flex: 1; accent-color: var(--accent-blue);">
+								<span id="extra-payment-label" style="font-size: 0.85rem; font-weight: bold; width: 45px;">0 €</span>
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Financial Results -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Monthly Payment Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								💳 Rata Mensile Stimata
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Quota Capitale + Quota Interessi al mese
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Esporta Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Stampa PDF
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Monthly Payment Highlight -->
+					<div style="background: #eff6ff; border: 2.5px solid var(--accent-blue); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: var(--accent-blue); display: block; font-weight: bold;">Importo Rata Mensile</span>
+						<strong id="res-monthly-payment" class="font-heading" style="font-size: 2.6rem; color: var(--accent-blue); display: block; line-height: 1.2;">311,06 €</strong>
+						<span id="res-term-note" style="font-size: 0.8rem; color: var(--accent-blue);">Per 36 Mesi al 7,5% TAN</span>
+					</div>
+
+					<!-- Line-Item Totals Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Riepilogo Costi Totali
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.95rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">💵 Capitale Richiesto:</td>
+									<td id="res-principal-amount" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">10.000 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb; color: var(--accent-red);">
+									<td style="padding: 0.4rem 0;">📈 Interessi Passivi Totali:</td>
+									<td id="res-interest-amount" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">1.198 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🏷️ Spese Istruttoria Pratica:</td>
+									<td id="res-origination-fee" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">0 €</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #fafafa; font-size: 1.05rem;">
+									<td style="padding: 0.45rem 0; font-weight: bold;">Totale Complessivo Restituito:</td>
+									<td id="res-grand-total-paid" style="padding: 0.45rem 0; text-align: right; font-weight: bold; color: var(--accent-red);">11.198 €</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Visual Proportion Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span style="color: var(--accent-blue);">Capitale (<span id="bar-principal-pct">89%</span>)</span>
+							<span style="color: var(--accent-red);">Interessi (<span id="bar-interest-pct">11%</span>)</span>
+						</div>
+						<div style="display: flex; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="bar-principal" style="width: 89%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+							<div id="bar-interest" style="width: 11%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Extra Savings Alert Card -->
+				<div id="extra-savings-card" class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil); display: none;">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						🎉 Risparmio con Rata Extra!
+					</strong>
+					<p id="extra-savings-text" class="font-body" style="font-size: 0.9rem; line-height: 1.5; margin: 0; color: var(--fg-pencil); text-align: center;">
+						Aumentando la rata estingui il prestito con mesi di anticipo risparmiando sugli interessi!
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Piano di Ammortamento Prestito Matrimonio</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Data: <span id="print-date"></span> | Capitale: <span id="print-principal"></span> | Rata: <span id="print-monthly"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: center;">Mese</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Rata (€)</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Capitale (€)</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Interessi (€)</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Debito Residuo (€)</th>
+					</tr>
+				</thead>
+				<tbody id="print-schedule-body"></tbody>
+			</table>
+		</div>
+
+		<!-- SEO Article -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guida ai Finanziamenti e Prestiti per il Matrimonio
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Come scegliere il prestito giusto, valutare TAN e TAEG ed evitare il sovraindebitamento.
+				</p>
+			</div>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. TAN vs TAEG: Quale Tasso Guardare?
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Il <strong>TAN</strong> (Tasso Annuo Nominale) indica il puro tasso di interesse applicato al capitale. Il <strong>TAEG</strong> (Tasso Annuo Effettivo Globale) è il parametro più importante perché include tutte le spese obbligatorie: costi di istruttoria, imposte di bollo e spese di incasso rata.
+				</p>
+			</section>
+
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Domande Frequenti (FAQ)
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Posso estinguere anticipatamente il prestito con le buste degli ospiti?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Sì. Per legge (direttiva sul credito ai consumatori), è possibile estinguere parzialmente o totalmente un prestito personale in qualsiasi momento, risparmiando su tutti gli interessi futuri.
+					</p>
+				</details>
+			</section>
+		</article>
+
+		<RelatedTools currentPath="/it/wedding-loan-calculator" category="budget" />
+
+	</main>
+</Layout>
+
+<script is:inline>
+	let currencySymbol = '€';
+
+	const inputLoanAmt = document.getElementById('input-loan-amount');
+	const currencySelect = document.getElementById('currency-select');
+	const currencySymbolDisplay = document.getElementById('currency-symbol-display');
+	const inputApr = document.getElementById('input-apr');
+	const selectLoanTerm = document.getElementById('select-loan-term');
+	const inputOriginationPct = document.getElementById('input-origination-pct');
+	const originationPctLabel = document.getElementById('origination-pct-label');
+	const originationFeeDisplay = document.getElementById('origination-fee-display');
+	const inputExtraPayment = document.getElementById('input-extra-payment');
+	const extraPaymentLabel = document.getElementById('extra-payment-label');
+	const extraPaymentDisplay = document.getElementById('extra-payment-display');
+
+	const resMonthlyPayment = document.getElementById('res-monthly-payment');
+	const resTermNote = document.getElementById('res-term-note');
+	const resPrincipalAmount = document.getElementById('res-principal-amount');
+	const resInterestAmount = document.getElementById('res-interest-amount');
+	const resOriginationFee = document.getElementById('res-origination-fee');
+	const resGrandTotalPaid = document.getElementById('res-grand-total-paid');
+
+	const barPrincipal = document.getElementById('bar-principal');
+	const barInterest = document.getElementById('bar-interest');
+	const barPrincipalPct = document.getElementById('bar-principal-pct');
+	const barInterestPct = document.getElementById('bar-interest-pct');
+
+	const extraSavingsCard = document.getElementById('extra-savings-card');
+	const extraSavingsText = document.getElementById('extra-savings-text');
+
+	let scheduleData = [];
+
+	function formatMoney(amount) {
+		return `${Math.round(amount).toLocaleString('it-IT')} ${currencySymbol}`;
+	}
+
+	function calculateLoan() {
+		currencySymbol = currencySelect.value;
+		currencySymbolDisplay.textContent = currencySymbol;
+
+		const P = parseFloat(inputLoanAmt.value) || 0;
+		const apr = parseFloat(inputApr.value) || 0;
+		const termMonths = parseInt(selectLoanTerm.value, 10) || 12;
+		const origPct = parseFloat(inputOriginationPct.value) || 0;
+		const extraMonthly = parseFloat(inputExtraPayment.value) || 0;
+
+		originationPctLabel.textContent = `${origPct}%`;
+		const origFee = P * (origPct / 100);
+		originationFeeDisplay.textContent = formatMoney(origFee);
+
+		extraPaymentLabel.textContent = formatMoney(extraMonthly);
+		extraPaymentDisplay.textContent = `+${formatMoney(extraMonthly)}/mese`;
+
+		const r = (apr / 100) / 12;
+		let baseMonthly = 0;
+		if (r > 0) {
+			baseMonthly = (P * (r * Math.pow(1 + r, termMonths))) / (Math.pow(1 + r, termMonths) - 1);
+		} else {
+			baseMonthly = P / termMonths;
+		}
+
+		// Amortization simulation
+		let balance = P;
+		let totalInterest = 0;
+		let monthsActual = 0;
+		scheduleData = [];
+
+		while (balance > 0.01 && monthsActual < 360) {
+			monthsActual++;
+			const monthlyInterest = balance * r;
+			let monthlyPrincipal = (baseMonthly - monthlyInterest) + extraMonthly;
+
+			if (monthlyPrincipal > balance) {
+				monthlyPrincipal = balance;
+			}
+
+			const currentPayment = monthlyPrincipal + monthlyInterest;
+			balance -= monthlyPrincipal;
+			totalInterest += monthlyInterest;
+
+			scheduleData.push({
+				month: monthsActual,
+				payment: currentPayment,
+				principal: monthlyPrincipal,
+				interest: monthlyInterest,
+				balance: Math.max(0, balance)
+			});
+		}
+
+		const grandTotal = P + totalInterest + origFee;
+
+		resMonthlyPayment.textContent = `${(baseMonthly + extraMonthly).toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencySymbol}`;
+		resTermNote.textContent = `Per ${termMonths} Mesi al ${apr}% TAN`;
+		resPrincipalAmount.textContent = formatMoney(P);
+		resInterestAmount.textContent = formatMoney(totalInterest);
+		resOriginationFee.textContent = formatMoney(origFee);
+		resGrandTotalPaid.textContent = formatMoney(grandTotal);
+
+		if (grandTotal > 0) {
+			const pPct = Math.round((P / grandTotal) * 100);
+			const iPct = 100 - pPct;
+			barPrincipalPct.textContent = `${pPct}%`;
+			barInterestPct.textContent = `${iPct}%`;
+			barPrincipal.style.width = `${pPct}%`;
+			barInterest.style.width = `${iPct}%`;
+		}
+
+		if (extraMonthly > 0 && monthsActual < termMonths) {
+			const savedMonths = termMonths - monthsActual;
+			extraSavingsCard.style.display = 'block';
+			extraSavingsText.textContent = `Versando ${formatMoney(extraMonthly)} extra al mese, estingui il debito ${savedMonths} mesi prima!`;
+		} else {
+			extraSavingsCard.style.display = 'none';
+		}
+	}
+
+	// Presets
+	document.querySelectorAll('.loan-preset-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			document.querySelectorAll('.loan-preset-btn').forEach(b => b.classList.remove('active-preset'));
+			btn.classList.add('active-preset');
+			inputLoanAmt.value = btn.dataset.amt;
+			inputApr.value = btn.dataset.apr;
+			selectLoanTerm.value = btn.dataset.term;
+			calculateLoan();
+		});
+	});
+
+	[inputLoanAmt, inputApr, selectLoanTerm, inputOriginationPct, inputExtraPayment, currencySelect].forEach(el => {
+		el.addEventListener('input', calculateLoan);
+		el.addEventListener('change', calculateLoan);
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		let rows = '';
+		scheduleData.forEach(item => {
+			rows += `<tr>
+				<td style="text-align:center;">${item.month}</td>
+				<td style="text-align:right;">${Math.round(item.payment)} €</td>
+				<td style="text-align:right;">${Math.round(item.principal)} €</td>
+				<td style="text-align:right;">${Math.round(item.interest)} €</td>
+				<td style="text-align:right;">${Math.round(item.balance)} €</td>
+			</tr>`;
+		});
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Piano di Ammortamento Prestito Matrimonio</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 6px; text-align: right; }
+					td { border: 1px solid #ccc; padding: 6px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Piano di Ammortamento Prestito Nozze</h1>
+				<p>Data: ${new Date().toLocaleDateString('it-IT')} | Capitale: <strong>${resPrincipalAmount.textContent}</strong> | Rata: <strong>${resMonthlyPayment.textContent}</strong> | Interessi Totali: <strong>${resInterestAmount.textContent}</strong></p>
+				<table>
+					<thead>
+						<tr>
+							<th style="text-align:center;">Mese</th>
+							<th>Rata Mensile</th>
+							<th>Quota Capitale</th>
+							<th>Quota Interessi</th>
+							<th>Debito Residuo</th>
+						</tr>
+					</thead>
+					<tbody>
+						${rows}
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Piano_Ammortamento_Matrimonio_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('it-IT');
+		document.getElementById('print-principal').textContent = resPrincipalAmount.textContent;
+		document.getElementById('print-monthly').textContent = resMonthlyPayment.textContent;
+
+		const tbody = document.getElementById('print-schedule-body');
+		let rows = '';
+		scheduleData.forEach(item => {
+			rows += `<tr>
+				<td style="border:1px solid #ccc; padding:4px; text-align:center;">${item.month}</td>
+				<td style="border:1px solid #ccc; padding:4px; text-align:right;">${Math.round(item.payment)} €</td>
+				<td style="border:1px solid #ccc; padding:4px; text-align:right;">${Math.round(item.principal)} €</td>
+				<td style="border:1px solid #ccc; padding:4px; text-align:right;">${Math.round(item.interest)} €</td>
+				<td style="border:1px solid #ccc; padding:4px; text-align:right;">${Math.round(item.balance)} €</td>
+			</tr>`;
+		});
+		tbody.innerHTML = rows;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Mese,Rata Mensile,Quota Capitale,Quota Interessi,Debito Residuo\n";
+		scheduleData.forEach(item => {
+			csv += `"${item.month}","${Math.round(item.payment)}","${Math.round(item.principal)}","${Math.round(item.interest)}","${Math.round(item.balance)}"\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Piano_Ammortamento_Matrimonio_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateLoan();
+</script>

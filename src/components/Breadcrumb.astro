@@ -6,80 +6,100 @@ export interface Props {
 
 const { title, category = 'budget-finance' } = Astro.props;
 
-interface CategoryMeta {
-  name: string;
-  url: string;
-  icon: string;
-}
+// Dynamic Path & Language Detection
+const pathname = Astro.url.pathname.replace(/\/$/, "");
 
-const categoryMap: Record<string, CategoryMeta> = {
-  'budget-finance': {
-    name: 'Budget & Finance',
-    url: '/budget',
-    icon: '💰'
+let currentLang = 'en';
+if (pathname.startsWith('/es')) currentLang = 'es';
+else if (pathname.startsWith('/fr')) currentLang = 'fr';
+else if (pathname.startsWith('/de')) currentLang = 'de';
+else if (pathname.startsWith('/it')) currentLang = 'it';
+else if (pathname.startsWith('/pt')) currentLang = 'pt';
+
+const langPrefix = currentLang === 'en' ? '' : `/${currentLang}`;
+
+const homeNames: Record<string, string> = {
+  en: "Home",
+  es: "Inicio",
+  fr: "Accueil",
+  de: "Startseite",
+  it: "Home",
+  pt: "Início"
+};
+
+const categoryLabels: Record<string, Record<string, string>> = {
+  budget: {
+    en: "Budget & Finance",
+    es: "Presupuesto y Finanzas",
+    fr: "Budget & Finances",
+    de: "Budget & Finanzen",
+    it: "Budget & Finanze",
+    pt: "Orçamento e Finanças"
   },
-  'budget': {
-    name: 'Budget & Finance',
-    url: '/budget',
-    icon: '💰'
+  dining: {
+    en: "Food, Bar & Dining",
+    es: "Banquete, Barra y Pastel",
+    fr: "Banquet, Bar & Repas",
+    de: "Getränke, Menü & Torte",
+    it: "Banchetto, Bar & Torta",
+    pt: "Banquete, Bar e Doces"
   },
-  'food-dining': {
-    name: 'Food, Bar & Dining',
-    url: '/dining',
-    icon: '🍾'
+  guests: {
+    en: "Guests & Logistics",
+    es: "Invitados y Logística",
+    fr: "Invités & Logistique",
+    de: "Gäste & Logistik",
+    it: "Invitati & Logistica",
+    pt: "Convidados e Logística"
   },
-  'food-beverage': {
-    name: 'Food, Bar & Dining',
-    url: '/dining',
-    icon: '🍾'
-  },
-  'guests-logistics': {
-    name: 'Guests & Logistics',
-    url: '/guests',
-    icon: '👥'
-  },
-  'logistics': {
-    name: 'Guests & Logistics',
-    url: '/guests',
-    icon: '👥'
-  },
-  'stationery-creative': {
-    name: 'Stationery & Creative',
-    url: '/stationery',
-    icon: '💌'
-  },
-  'stationery': {
-    name: 'Stationery & Creative',
-    url: '/stationery',
-    icon: '💌'
+  stationery: {
+    en: "Stationery & Creative",
+    es: "Papelería y Recuerdos",
+    fr: "Papeterie & Créativité",
+    de: "Papeterie & Erinnerungen",
+    it: "Partecipazioni & Ricordi",
+    pt: "Papelaria e Lembranças"
   }
 };
 
-const currentCat = categoryMap[category] || {
-  name: 'All Tools',
-  url: '/#all-tools-section',
-  icon: '✨'
-};
+let catKey = 'budget';
+let catIcon = '💰';
+let catPath = '/budget';
 
+if (category.includes('food') || category.includes('dining') || category.includes('beverage')) {
+  catKey = 'dining';
+  catIcon = '🍾';
+  catPath = '/dining';
+} else if (category.includes('guest') || category.includes('logistics')) {
+  catKey = 'guests';
+  catIcon = '👥';
+  catPath = '/guests';
+} else if (category.includes('stationery') || category.includes('creative') || category.includes('planning')) {
+  catKey = 'stationery';
+  catIcon = '💌';
+  catPath = '/stationery';
+}
+
+const localizedCatName = categoryLabels[catKey]?.[currentLang] || categoryLabels[catKey]?.['en'] || "All Tools";
 const cleanTitle = title ? title.split(" — ")[0].split(" (")[0].split(" | ")[0].trim() : "Planning Tool";
 ---
 
 <nav aria-label="Breadcrumb" class="breadcrumb-trail" style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-body); font-size: 0.88rem; color: var(--text-secondary); margin: 0 auto 1.5rem auto; padding: 0.4rem 0.85rem; background: var(--muted-paper); border: 1.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px var(--fg-pencil); width: fit-content; max-width: 100%; overflow-x: auto; white-space: nowrap;">
-  <a href="/" style="color: var(--fg-pencil); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+  <a href={langPrefix || '/'} style="color: var(--fg-pencil); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
     <span>🏠</span>
-    <span>Home</span>
+    <span>{homeNames[currentLang] || "Home"}</span>
   </a>
   
   <span style="opacity: 0.4; font-size: 0.75rem;">›</span>
   
-  <a href={currentCat.url} style="color: var(--fg-pencil); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
-    <span>{currentCat.icon}</span>
-    <span>{currentCat.name}</span>
+  <a href={`${langPrefix}${catPath}`} style="color: var(--fg-pencil); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.25rem;">
+    <span>{catIcon}</span>
+    <span>{localizedCatName}</span>
   </a>
   
   <span style="opacity: 0.4; font-size: 0.75rem;">›</span>
   
-  <span style="color: var(--accent-red); font-weight: 700; max-width: 260px; overflow: hidden; text-overflow: ellipsis;" aria-current="page">
+  <span style="color: var(--accent-red); font-weight: 700; max-width: 280px; overflow: hidden; text-overflow: ellipsis;" aria-current="page">
     {cleanTitle}
   </span>
 </nav>

@@ -1,0 +1,382 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/wedding-drink-calculator/#webapp",
+      "name": "Calcolatore Bevande e Alcolici Matrimonio",
+      "url": "https://manage.wedding/it/wedding-drink-calculator",
+      "inLanguage": "it",
+      "description": "Calcola le quantità esatte di vino, prosecco/spumante per il brindisi, birra, superalcolici per l'open bar, mixer e ghiaccio (in kg) per il ricevimento di nozze.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come calcolare vino e bevande per il matrimonio",
+      "description": "Guida per calcolare le bottiglie di vino per il pasto, le bollicine per il brindisi e i litri di superalcolici per l'open bar.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Inserire il numero di invitati adulti e la durata",
+          "text": "Indica il numero di partecipanti maggiorenni e le ore complessive di servizio bar e banchetto."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Selezionare la formula del bar",
+          "text": "Scegli tra Open Bar Completo (vino, birra e superalcolici per cocktail serali) o Solo Vino & Birra."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Includere il brindisi con Spumante / Prosecco",
+          "text": "Aggiungi 1 calice a persona per il momento del taglio della torta nuziale (6 flûte per bottiglia da 750ml)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Calcolare ghiaccio e mixer",
+          "text": "Stima circa 0,7 kg di ghiaccio a persona e le bottiglie di tonica, soda e succhi necessarie per i barman."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quante bottiglie di vino servono per 100 persone al matrimonio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Per 100 invitati adulti durante un banchetto di 4 ore servono circa 40–50 bottiglie di vino da 750ml (suddivise tra bianchi e rossi in base al menù di carne o pesce), calcolando una media di 2–3 calici a persona."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quante bottiglie di spumante servono per il brindisi della torta?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Da ogni bottiglia standard di spumante o champagne (750ml) si ottengono esattamente 6 calici da flûte. Per 100 invitati serviranno circa 17 bottiglie per il brindisi degli sposi."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto ghiaccio serve per l'open bar del matrimonio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Si calcolano circa 0,7 kg di ghiaccio per invitato per mantenere al fresco bottiglie e preparare cocktail miscelati (circa 70 kg di cubetti per 100 persone)."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calcolatore Bevande e Alcolici Matrimonio (Open Bar & Vino) | Manage.Wedding"
+	description="Calcola le quantità esatte di vino, prosecco/spumante per il brindisi, birra, superalcolici per l'open bar e ghiaccio (in kg) per il tuo matrimonio."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<Breadcrumb title="Calcolatore Bevande & Open Bar" category="food-dining" />
+		
+		<header class="fade-in category-header" style="text-align: center;">
+			<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); margin-bottom: 0.5rem; font-weight: 500;">
+				Calcolatore Bevande & <span class="accent-italic">Open Bar Nozze</span>
+			</h1>
+			<p class="font-body" style="color: var(--secondary-ink); max-width: 600px; margin: 0 auto;">
+				Inserisci i dettagli del ricevimento per calcolare esattamente quante bottiglie di vino, spumante, birra, superalcolici e kg di ghiaccio acquistare.
+			</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 800px; margin: 0 auto;">
+			<div class="hand-card">
+				<form id="calc-form">
+					<div class="form-group">
+						<label class="form-label" for="guests">Numero di Invitati Adulti</label>
+						<input type="number" id="guests" class="form-input" value="100" min="1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="hours">Durata Ricevimento & Servizio Bar (Ore)</label>
+						<input type="number" id="hours" class="form-input" value="5" min="1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="barType">Tipologia Bar</label>
+						<select id="barType" class="form-input">
+							<option value="open">Open Bar Completo (Vino, Birra e Superalcolici per Cocktail)</option>
+							<option value="soft">Formula Soft Bar (Solo Vino & Birra)</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="vibe">Abitudine di Consumo degli Ospiti</label>
+						<select id="vibe" class="form-input">
+							<option value="average">Media (1 consumazione all'ora per ospite)</option>
+							<option value="light">Leggera / Sobria (-25% di consumazioni)</option>
+							<option value="heavy">Festaiola / Drinkers (+25% di consumazioni)</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="champagne">Brindisi con Spumante / Prosecco?</label>
+						<select id="champagne" class="form-input">
+							<option value="yes" selected>Sì (1 flûte a persona per il taglio torta)</option>
+							<option value="no">No (Incluso nell'open bar)</option>
+						</select>
+					</div>
+
+					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%; margin-top: 1rem;">Calcola Bevande</button>
+				</form>
+			</div>
+
+			<div class="hand-card result-box" id="result-container">
+				<h3 class="font-heading" style="margin-bottom: 1.5rem; text-align: center;">📋 Lista della Spesa per il Bar</h3>
+				
+				<div class="result-item">
+					<span class="item-label">TOTALE</span>
+					<span class="item-desc">Consumazioni complessive stimate</span>
+					<span class="item-value" id="res-total">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">VINO</span>
+					<span class="item-desc">Bottiglie standard da 750ml</span>
+					<span class="item-value" id="res-wine">0</span>
+				</div>
+
+				<div class="result-item" id="champagne-box">
+					<span class="item-label">SPUMANTE</span>
+					<span class="item-desc">Bottiglie per il Brindisi (750ml)</span>
+					<span class="item-value" id="res-champagne">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">BIRRA</span>
+					<span class="item-desc">Casse da 24 bottiglie (33cl)</span>
+					<span class="item-value" id="res-beer">0</span>
+				</div>
+
+				<div class="result-item" id="liquor-box">
+					<span class="item-label">SUPERALCOLICI</span>
+					<span class="item-desc">Bottiglie da 700/750ml (Gin, Vodka, Rum)</span>
+					<span class="item-value" id="res-liquor">0</span>
+				</div>
+
+				<div class="result-item" id="mixer-box">
+					<span class="item-label">SOFT DRINK</span>
+					<span class="item-desc">Litri di acqua tonica, soda, cola e succhi</span>
+					<span class="item-value" id="res-mixers">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">GHIACCIO</span>
+					<span class="item-desc">Chilogrammi (kg) in cubetti</span>
+					<span class="item-value" id="res-ice">0</span>
+				</div>
+
+				<div id="explanation-box" style="background-color: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 4px; box-shadow: 2px 2px 0px rgba(0,0,0,0.1); margin-top: 1.5rem; padding: 1.25rem; text-align: left;">
+					<strong class="font-heading" style="font-size: 1.1rem; display: block; margin-bottom: 0.4rem; color: var(--accent-red);">Come è stato calcolato:</strong>
+					<p id="explanation-text" class="font-body" style="font-size: 0.95rem; margin: 0; line-height: 1.5;">Stima calcolata sulla base di 1 consumazione all'ora per ospite.</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 800px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape"></div>
+			
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Regola Pratica dell'Orefice del Bar (BLUF)
+				</h3>
+				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
+					Formula 1 Minuto
+				</span>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px rgba(0,0,0,0.06);">
+				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
+					📐 La Regola del Banchetto & Open Bar:
+				</div>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
+					<strong>1 consumazione per ospite ogni ora</strong>, con una ripartizione standard del <strong>50% Vino</strong> (5 calici/bottiglia da 750ml), <strong>30% Birra</strong> (24 bottiglie a cassa), <strong>20% Superalcolici</strong> (16 drink a bottiglia) e <strong>0,7 kg di ghiaccio per invitato</strong>.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px rgba(0,0,0,0.06);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 560px;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Invitati (5 Ore Bar)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Vino (750ml)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue); text-align: center;">Birra (Casse 24pz)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: #7c3aed; text-align: center;">Superalcolici</th>
+							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--fg-pencil); text-align: right;">Ghiaccio</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">50 Invitati</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">25 bottiglie</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">3 casse (72 birre)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">4 bottiglie</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">35 kg</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ 100 Invitati</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">50 bottiglie</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">6 casse (144 birre)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: #7c3aed;">7 bottiglie</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">70 kg</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">150 Invitati</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">75 bottiglie</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">9 casse (216 birre)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">10 bottiglie</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">105 kg</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">200 Invitati</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">100 bottiglie</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">12 casse (288 birre)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">14 bottiglie</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">140 kg</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article -->
+		<article class="hand-card" style="margin: 4rem auto; max-width: 800px; padding: 3rem;">
+			<h2 class="font-heading" style="font-size: 2.2rem; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				Come Organizzare l'Open Bar del Matrimonio Senza Rimanere a Secco
+			</h2>
+			<p class="font-body" style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem;">
+				Gestire le scorte di vino, spumante e cocktail per il ricevimento richiede precisione. Rimanere senza prosecco durante il taglio della torta o a corto di gin all'open bar rischia di rovinare la festa, mentre comprare troppo alcol genera spese inutili non rimborsabili.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 1.6rem; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--accent-red);">
+				La Regola dell'Una Consumazione all'Ora
+			</h3>
+			<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;">
+				I catering e i barman professionisti si basano su una media consolidata: <strong>un calice o drink per ospite ogni ora</strong>. Mentre alcuni amici berranno 2–3 cocktail durante la festa serale, altri ospiti anziani sorseggeranno un solo bicchiere di vino durante l'intero banchetto.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 1.6rem; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--accent-blue);">
+				3 Consigli per Risparmiare sull'Alcol
+			</h3>
+			<ul class="font-body" style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem; padding-left: 1.5rem;">
+				<li><strong>Accorda il Diritto di Tappo:</strong> Se acquisti il vino direttamente da una cantina locale di fiducia, verifica con la location o il catering la tariffa del diritto di tappo per stappare le tue bottiglie.</li>
+				<li><strong>Scegli 2 o 3 Cocktail Signature:</strong> Evita liste cocktail interminabili; concentrati su Gin Tonic, Spritz e Mojito/Moscow Mule per velocizzare il servizio dei barman.</li>
+				<li><strong>Attenzione alla Stagione:</strong> Nei matrimoni estivi diurni il consumo di birra bionda e vino bianco fresco raddoppia; in autunno/inverno cresce la richiesta di vino rosso corposo e amari.</li>
+			</ul>
+		</article>
+
+		<RelatedTools currentPath="/it/wedding-drink-calculator" category="food-beverage" />
+	</main>
+</Layout>
+
+<script is:inline>
+	document.getElementById('calc-form')?.addEventListener('submit', function(e) {
+		e.preventDefault();
+		
+		const guests = parseInt(document.getElementById('guests').value, 10) || 0;
+		const hours = parseInt(document.getElementById('hours').value, 10) || 0;
+		const barType = document.getElementById('barType').value;
+		const vibe = document.getElementById('vibe').value;
+		const champagne = document.getElementById('champagne').value;
+
+		let multiplier = 1.0;
+		let vibeText = "consumo medio (1 consumazione/ora per invitato)";
+		if (vibe === 'light') {
+			multiplier = 0.75;
+			vibeText = "consumo moderato (-25%)";
+		} else if (vibe === 'heavy') {
+			multiplier = 1.25;
+			vibeText = "consumo festaiolo (+25%)";
+		}
+
+		const totalServings = Math.ceil(guests * hours * multiplier);
+
+		let beerRatio = 0.3;
+		let wineRatio = 0.45;
+		let liquorRatio = 0.25;
+
+		if (barType === 'soft') {
+			beerRatio = 0.45;
+			wineRatio = 0.55;
+			liquorRatio = 0;
+		}
+
+		const beerServings = totalServings * beerRatio;
+		const wineServings = totalServings * wineRatio;
+		const liquorServings = totalServings * liquorRatio;
+
+		const beerCases = Math.ceil(beerServings / 24);
+		const wineBottles = Math.ceil(wineServings / 5);
+		const liquorBottles = Math.ceil(liquorServings / 16);
+		const champagneBottles = Math.ceil(guests / 6);
+		const iceKg = Math.ceil(guests * 0.7);
+		const mixersLiters = barType === 'open' ? Math.ceil(guests / 3) : 0;
+
+		document.getElementById('res-total').textContent = totalServings.toString();
+		document.getElementById('res-beer').textContent = beerCases.toString();
+		document.getElementById('res-wine').textContent = wineBottles.toString();
+		
+		const liquorBox = document.getElementById('liquor-box');
+		const mixerBox = document.getElementById('mixer-box');
+		const champagneBox = document.getElementById('champagne-box');
+		
+		if (barType === 'soft') {
+			liquorBox.style.display = 'none';
+			mixerBox.style.display = 'none';
+		} else {
+			liquorBox.style.display = 'block';
+			mixerBox.style.display = 'block';
+			document.getElementById('res-liquor').textContent = liquorBottles.toString();
+			document.getElementById('res-mixers').textContent = mixersLiters.toString();
+		}
+
+		if (champagne === 'yes') {
+			champagneBox.style.display = 'block';
+			document.getElementById('res-champagne').textContent = champagneBottles.toString();
+		} else {
+			champagneBox.style.display = 'none';
+		}
+
+		document.getElementById('res-ice').textContent = iceKg.toString();
+
+		let expl = `Stima basata su una media di 1 consumazione all'ora per ospite (${vibeText}).`;
+		if (barType === 'soft') {
+			expl += ` Ripartizione: 55% vino e 45% birra.`;
+		} else {
+			expl += ` Ripartizione: 45% vino, 30% birra e 25% superalcolici per i cocktail serali.`;
+		}
+		if (champagne === 'yes') {
+			expl += ` Aggiunte ${champagneBottles} bottiglie di spumante per il brindisi (6 flûte a bottiglia).`;
+		}
+		expl += ` Consigliati circa ${iceKg} kg di ghiaccio in cubetti (0,7 kg a persona).`;
+		
+		document.getElementById('explanation-text').textContent = expl;
+	});
+
+	// Trigger initial calculation
+	document.getElementById('calc-form').dispatchEvent(new Event('submit'));
+</script>

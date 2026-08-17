@@ -1,0 +1,541 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/wedding-venue-cost-calculator/#webapp",
+      "name": "Calcolatore Costo Reale Location Matrimonio & Spese Nascoste",
+      "url": "https://manage.wedding/it/wedding-venue-cost-calculator",
+      "inLanguage": "it",
+      "description": "Calcola il costo totale effettivo della location: affitto villa o castello, banchetto catering, IVA, pulizie, diritto di tappo, taglio torta e straordinari notturni.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come calcolare il costo totale reale di una location di nozze",
+      "description": "Formula dettagliata per individuare tutte le spese accessorie oltre la tariffa base d'affitto pubblicizzata.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Inserire la tariffa base di affitto",
+          "text": "Indica il canone di locazione della struttura per la giornata dell'evento."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Aggiungere la quota per la cerimonia in loco",
+          "text": "Verifica se la villa applica una tariffa per la celebrazione del rito civile autentico o simbolico in giardino."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Calcolare il banchetto e l'open bar",
+          "text": "Moltiplica il prezzo a persona del menù per il numero di ospiti e aggiungi l'IVA applicabile (10% o 22%)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Conteggiare pulizie, straordinari e diritti di tappo",
+          "text": "Includi le spese di pulizia finale, gli straordinari orari oltre la mezzanotte, il diritto di tappo per i vini e la quota taglio torta per pasticceria esterna."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quali sono le spese nascoste più frequenti nei contratti delle location?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le voci extra più comuni includono: straordinari orari oltre l'orario concordato (200 € – 500 €/ora), pulizie finali e smaltimento rifiuti (300 € – 600 €), diritto di tappo se si portano bottiglie proprie (5 € – 15 €/bottiglia), quota taglio torta per pasticcerie esterne (1,50 € – 3 € a persona), e diritti SIAE per la musica."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Conviene una villa con catering esterno o un ristorante con cucina interna?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Il ristorante con cucina interna offre un prezzo all-inclusive più prevedibile. La villa con catering esterno garantisce maggiore personalizzazione ed esclusività, ma richiede spesso spese accessorie per allestimenti cucina, noleggio tovagliato e logistica."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calcolatore Costo Reale Location Matrimonio & Spese Nascoste | Manage.Wedding"
+	description="Calcola il costo effettivo della location di nozze: affitto villa, menù catering, IVA, pulizie, sicurezza, diritto di tappo e taglio torta con export PDF e Word."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Costo Reale Location & Spese Nascoste" category="budget-finance" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Evita Rincari Imprevisti nel Contratto</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Calcolatore <span class="accent-italic">Costo Reale Location</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Un preventivo di locazione da 5.000 € supera spesso i 20.000 € considerando banchetto, IVA, pulizie finali, straordinari notturni e diritti di tappo. Calcola la spesa effettiva prima di firmare il contratto!
+			</p>
+		</header>
+
+		<!-- Main Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Controls & Line-Item Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Voci del Contratto Location
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Simulatore Completo
+					</span>
+				</div>
+
+				<!-- Venue Archetype Presets -->
+				<div class="form-group">
+					<label class="form-label" for="venue-preset">Tipologia di Struttura</label>
+					<select id="venue-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="hotel" selected>🏨 Hotel / Relais con Ristorante (5.000 € Base + 14.400 € Banchetto + 10% IVA)</option>
+						<option value="barn">🌾 Casale / Agriturismo (6.000 € Base + Catering Esterno + Generatori)</option>
+						<option value="estate">🏰 Villa Storica / Castello (8.500 € Base + 1.200 € Rito Civile + Catering)</option>
+						<option value="winery">🍇 Tenuta Vinicola / Borgo (6.500 € Base + Vini della Tenuta + Navetta)</option>
+						<option value="custom">✏️ Valori Personalizzati</option>
+					</select>
+				</div>
+
+				<!-- Base Rental Fee & Ceremony Fee -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="base-rental">Affitto Base Location (€)</label>
+						<input type="number" id="base-rental" class="form-input" value="5000" min="0" step="250" />
+					</div>
+					<div>
+						<label class="form-label" for="ceremony-fee">Rito Civile in Loco (€)</label>
+						<input type="number" id="ceremony-fee" class="form-input" value="1000" min="0" step="100" />
+					</div>
+				</div>
+
+				<!-- Guest Count & F&B Spend -->
+				<div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="guest-count">Numero Invitati</label>
+						<input type="number" id="guest-count" class="form-input" value="120" min="10" max="600" />
+					</div>
+					<div>
+						<label class="form-label" for="fb-spend">Banchetto & Open Bar (€)</label>
+						<input type="number" id="fb-spend" class="form-input" value="14400" min="0" step="500" />
+					</div>
+				</div>
+
+				<!-- Service & Tax Rates -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="service-charge-rate">Servizio / Coperto (%)</label>
+						<input type="number" id="service-charge-rate" class="form-input" value="10" min="0" max="30" step="1" />
+					</div>
+					<div>
+						<label class="form-label" for="tax-rate">Aliquota IVA (%)</label>
+						<input type="number" id="tax-rate" class="form-input" value="10" min="0" max="22" step="1" />
+					</div>
+				</div>
+
+				<!-- Hidden Facility Surcharges -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Spese di Struttura & Personale (€)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="cleaning-fee" style="font-size: 0.9rem;">Pulizie Finali</label>
+							<input type="number" id="cleaning-fee" class="form-input" value="450" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="security-fee" style="font-size: 0.9rem;">Custodi / Parcheggiatori</label>
+							<input type="number" id="security-fee" class="form-input" value="350" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="insurance-fee" style="font-size: 0.9rem;">Assicurazione / SIAE</label>
+							<input type="number" id="insurance-fee" class="form-input" value="350" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="overtime-fee" style="font-size: 0.9rem;">Straordinari Notturni</label>
+							<input type="number" id="overtime-fee" class="form-input" value="500" min="0" step="100" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Vendor Friction Add-ons (Cake Cutting / Corkage / Infrastructure) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Extra & Servizi Aggiuntivi (€)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="cake-cutting-rate" style="font-size: 0.9rem;">Taglio Torta Esterna (€/ospite)</label>
+							<input type="number" id="cake-cutting-rate" class="form-input" value="2.50" min="0" step="0.50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="infrastructure-fee" style="font-size: 0.9rem;">Diritto di Tappo / Noleggio Tensostruttura</label>
+							<input type="number" id="infrastructure-fee" class="form-input" value="0" min="0" step="250" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Real Total & Price Shock Breakdown -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- True Cost Summary Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Costo Totale Effettivo
+						</span>
+						<span id="markup-multiplier-tag" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							4,8× Affitto Base
+						</span>
+					</div>
+
+					<div id="display-real-total" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.5rem;">
+						24.288 €
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Affitto base pattuito: <strong id="display-quoted-base" style="color: var(--fg-pencil);">5.000 €</strong>. Spesa effettiva per invitato: <strong id="display-per-guest" style="color: var(--fg-pencil);">202 €/persona</strong>.
+					</p>
+
+					<!-- Itemized Cost Breakdown Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Affitto Struttura + Rito Civile:</span>
+							<strong id="item-base-total">6.000 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Banchetto & Open Bar:</span>
+							<strong id="item-fb-spend">14.400 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem; color: var(--accent-red);">
+							<span>Servizio / Quota Coperto:</span>
+							<strong id="item-service-charge">1.440 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem; color: var(--accent-blue);">
+							<span>IVA di Legge:</span>
+							<strong id="item-sales-tax">1.584 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Struttura (Pulizie, Custodi, SIAE, Orari):</span>
+							<strong id="item-facility-total">1.650 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.95rem;">
+							<span>Taglio Torta Esterna & Extra:</span>
+							<strong id="item-addons-total">300 €</strong>
+						</div>
+					</div>
+
+					<!-- Export Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-audit" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Stampa Prospetto (PDF)
+						</button>
+						<button id="btn-export-word" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Esporta Documento Word
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Contract Warning Callout Box -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						🚨 3 Voci Contrattuali da Verificare Sempre:
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Applicazione dell'IVA:</strong> Verifica sempre se i prezzi indicati sono IVA inclusa (10% per ristorazione o 22% per locazione pura).</li>
+						<li><strong>Orari Limite per la Musica:</strong> Molti comuni impongono lo stop alla musica all'aperto a mezzanotte con tariffe di straordinario per la sala interna.</li>
+						<li><strong>Esclusiva dei Fornitori:</strong> Alcune ville impongono catering convenzionati con penali se si desidera ingaggiare un fornitore esterno.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Guide & FAQs -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Come Esaminare il Contratto della Location Senza Sorprese
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Location e banchetto assorbono quasi la metà del budget totale. Ecco le domande essenziali da porre ai gestori prima di versare la caparra.
+				</p>
+			</div>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					10 Domande Fondamentali da Fare al Sopralluogo
+				</h3>
+				<ol class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li>L'IVA è già inclusa nella tariffa di affitto e nei menù?</li>
+					<li>C'è un numero minimo di coperti garantiti obbligatorio per la data scelta?</li>
+					<li>Tavoli, sedie, ombrelloni e tovagliato sono compresi nel prezzo?</li>
+					<li>A che ora possono accedere i fioristi e i musicisti per l'allestimento?</li>
+					<li>Qual è la tariffa oraria per prolungare la festa oltre l'orario concordato?</li>
+					<li>Possiamo portare una pasticceria esterna per la torta nuziale senza costi aggiuntivi?</li>
+					<li>Qual è la politica per il diritto di tappo sui vini portati dagli sposi?</li>
+					<li>La struttura dispone di un piano B coperto adeguato in caso di maltempo?</li>
+					<li>I diritti SIAE per l'intrattenimento musicale sono a nostro carico?</li>
+					<li>Quali sono le condizioni di rimborso della caparra in caso di imprevisti?</li>
+				</ol>
+			</section>
+
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Domande Frequenti (FAQ)
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Cos'è il diritto di tappo e quanto costa solitamente?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						È una tariffa applicata da location e ristoranti per stappare e servire bottiglie di vino o spumante acquistate direttamente dagli sposi. Si aggira generalmente tra i 5 € e i 15 € a bottiglia.
+					</p>
+				</details>
+			</section>
+		</article>
+
+		<RelatedTools currentPath="/it/wedding-venue-cost-calculator" category="budget" />
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('venue-preset');
+		const baseRentalInput = document.getElementById('base-rental');
+		const ceremonyFeeInput = document.getElementById('ceremony-fee');
+		const guestCountInput = document.getElementById('guest-count');
+		const fbSpendInput = document.getElementById('fb-spend');
+		const serviceRateInput = document.getElementById('service-charge-rate');
+		const taxRateInput = document.getElementById('tax-rate');
+		const cleaningFeeInput = document.getElementById('cleaning-fee');
+		const securityFeeInput = document.getElementById('security-fee');
+		const insuranceFeeInput = document.getElementById('insurance-fee');
+		const overtimeFeeInput = document.getElementById('overtime-fee');
+		const cakeRateInput = document.getElementById('cake-cutting-rate');
+		const infraFeeInput = document.getElementById('infrastructure-fee');
+
+		const displayRealTotal = document.getElementById('display-real-total');
+		const displayQuotedBase = document.getElementById('display-quoted-base');
+		const displayPerGuest = document.getElementById('display-per-guest');
+		const markupTag = document.getElementById('markup-multiplier-tag');
+
+		const itemBaseTotal = document.getElementById('item-base-total');
+		const itemFbSpend = document.getElementById('item-fb-spend');
+		const itemServiceCharge = document.getElementById('item-service-charge');
+		const itemSalesTax = document.getElementById('item-sales-tax');
+		const itemFacilityTotal = document.getElementById('item-facility-total');
+		const itemAddonsTotal = document.getElementById('item-addons-total');
+
+		const btnPrint = document.getElementById('btn-print-audit');
+		const btnWord = document.getElementById('btn-export-word');
+
+		function calculateVenueCost() {
+			const base = parseFloat(baseRentalInput.value) || 0;
+			const ceremony = parseFloat(ceremonyFeeInput.value) || 0;
+			const guests = parseInt(guestCountInput.value, 10) || 1;
+			const fb = parseFloat(fbSpendInput.value) || 0;
+			const serviceRate = (parseFloat(serviceRateInput.value) || 0) / 100;
+			const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
+			const cleaning = parseFloat(cleaningFeeInput.value) || 0;
+			const security = parseFloat(securityFeeInput.value) || 0;
+			const insurance = parseFloat(insuranceFeeInput.value) || 0;
+			const overtime = parseFloat(overtimeFeeInput.value) || 0;
+			const cakeRate = parseFloat(cakeRateInput.value) || 0;
+			const infra = parseFloat(infrastructureFeeInput.value) || 0;
+
+			const serviceCharge = fb * serviceRate;
+			const subtotalBeforeTax = fb + serviceCharge;
+			const salesTax = subtotalBeforeTax * taxRate;
+
+			const facilityTotal = cleaning + security + insurance + overtime;
+			const cakeTotal = cakeRate * guests;
+			const addonsTotal = cakeTotal + infra;
+
+			const grandTotal = base + ceremony + fb + serviceCharge + salesTax + facilityTotal + addonsTotal;
+			const perGuest = grandTotal / guests;
+			const multiplier = base > 0 ? (grandTotal / base).toFixed(1) : 1;
+
+			displayRealTotal.textContent = `${Math.round(grandTotal).toLocaleString('it-IT')} €`;
+			displayQuotedBase.textContent = `${Math.round(base).toLocaleString('it-IT')} €`;
+			displayPerGuest.textContent = `${Math.round(perGuest).toLocaleString('it-IT')} €/persona`;
+			markupTag.textContent = `${multiplier}× Affitto Base`;
+
+			itemBaseTotal.textContent = `${Math.round(base + ceremony).toLocaleString('it-IT')} €`;
+			itemFbSpend.textContent = `${Math.round(fb).toLocaleString('it-IT')} €`;
+			itemServiceCharge.textContent = `${Math.round(serviceCharge).toLocaleString('it-IT')} €`;
+			itemSalesTax.textContent = `${Math.round(salesTax).toLocaleString('it-IT')} €`;
+			itemFacilityTotal.textContent = `${Math.round(facilityTotal).toLocaleString('it-IT')} €`;
+			itemAddonsTotal.textContent = `${Math.round(addonsTotal).toLocaleString('it-IT')} €`;
+		}
+
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'hotel') {
+				baseRentalInput.value = 5000;
+				ceremonyFeeInput.value = 1000;
+				guestCountInput.value = 120;
+				fbSpendInput.value = 14400;
+				serviceRateInput.value = 10;
+				taxRateInput.value = 10;
+				cleaningFeeInput.value = 450;
+				securityFeeInput.value = 350;
+				insuranceFeeInput.value = 350;
+				overtimeFeeInput.value = 500;
+				cakeRateInput.value = 2.50;
+				infraFeeInput.value = 0;
+			} else if (p === 'barn') {
+				baseRentalInput.value = 6000;
+				ceremonyFeeInput.value = 800;
+				guestCountInput.value = 120;
+				fbSpendInput.value = 12000;
+				serviceRateInput.value = 8;
+				taxRateInput.value = 10;
+				cleaningFeeInput.value = 500;
+				securityFeeInput.value = 400;
+				insuranceFeeInput.value = 300;
+				overtimeFeeInput.value = 600;
+				cakeRateInput.value = 0;
+				infraFeeInput.value = 1800;
+			} else if (p === 'estate') {
+				baseRentalInput.value = 8500;
+				ceremonyFeeInput.value = 1200;
+				guestCountInput.value = 120;
+				fbSpendInput.value = 16000;
+				serviceRateInput.value = 10;
+				taxRateInput.value = 10;
+				cleaningFeeInput.value = 600;
+				securityFeeInput.value = 500;
+				insuranceFeeInput.value = 400;
+				overtimeFeeInput.value = 800;
+				cakeRateInput.value = 3.00;
+				infraFeeInput.value = 400;
+			} else if (p === 'winery') {
+				baseRentalInput.value = 6500;
+				ceremonyFeeInput.value = 1000;
+				guestCountInput.value = 120;
+				fbSpendInput.value = 15000;
+				serviceRateInput.value = 10;
+				taxRateInput.value = 10;
+				cleaningFeeInput.value = 450;
+				securityFeeInput.value = 350;
+				insuranceFeeInput.value = 350;
+				overtimeFeeInput.value = 600;
+				cakeRateInput.value = 2.00;
+				infraFeeInput.value = 900;
+			}
+			calculateVenueCost();
+		});
+
+		[baseRentalInput, ceremonyFeeInput, guestCountInput, fbSpendInput, serviceRateInput, taxRateInput, cleaningFeeInput, securityFeeInput, insuranceFeeInput, overtimeFeeInput, cakeRateInput, infraFeeInput].forEach(inp => {
+			inp.addEventListener('input', calculateVenueCost);
+		});
+
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Prospetto Costo Location — Manage.Wedding</title>
+					<style>
+						@page { size: 8.5in 11in; margin: 0.5in; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 20pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 13pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Prospetto Costo Reale Location Matrimonio</h1>
+					<p>Calcolato per ${guestCountInput.value} invitati | Data: ${new Date().toLocaleDateString('it-IT')}</p>
+					
+					<table>
+						<thead>
+							<tr><th>Categoria di Spesa</th><th>Dettaglio Voci</th><th>Importo (€)</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Affitto Struttura & Rito Civile</td><td>Affitto (${baseRentalInput.value} €) + Rito Civile (${ceremonyFeeInput.value} €)</td><td>${itemBaseTotal.textContent}</td></tr>
+							<tr><td>Banchetto & Open Bar</td><td>Preventivo Ristorazione & Bevande</td><td>${itemFbSpend.textContent}</td></tr>
+							<tr><td>Servizio / Quota Coperto</td><td>${serviceRateInput.value}% Quota Servizio</td><td>${itemServiceCharge.textContent}</td></tr>
+							<tr><td>IVA di Legge</td><td>${taxRateInput.value}% IVA</td><td>${itemSalesTax.textContent}</td></tr>
+							<tr><td>Spese di Struttura</td><td>Pulizie (${cleaningFeeInput.value} €) + Custodi (${securityFeeInput.value} €) + SIAE (${insuranceFeeInput.value} €) + Straordinari (${overtimeFeeInput.value} €)</td><td>${itemFacilityTotal.textContent}</td></tr>
+							<tr><td>Extra & Allestimenti</td><td>Taglio Torta + Diritto di Tappo / Tensostruttura</td><td>${itemAddonsTotal.textContent}</td></tr>
+							<tr class="total-row"><td>COSTO TOTALE EFFETTIVO</td><td>Spesa complessiva reale (${markupTag.textContent})</td><td>${displayRealTotal.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		btnWord.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Prospetto Costo Location</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Prospetto Costo Reale Location</h2>
+					<p>Affitto Base Pattuito: ${baseRentalInput.value} € | <strong>Costo Totale Reale: ${displayRealTotal.textContent}</strong> (${displayPerGuest.textContent})</p>
+					<table>
+						<thead><tr><th>Voce di Spesa</th><th>Importo (€)</th></tr></thead>
+						<tbody>
+							<tr><td>Affitto Location & Rito Civile</td><td>${itemBaseTotal.textContent}</td></tr>
+							<tr><td>Banchetto & Open Bar</td><td>${itemFbSpend.textContent}</td></tr>
+							<tr><td>Servizio / Coperto (${serviceRateInput.value}%)</td><td>${itemServiceCharge.textContent}</td></tr>
+							<tr><td>IVA (${taxRateInput.value}%)</td><td>${itemSalesTax.textContent}</td></tr>
+							<tr><td>Spese Struttura (Pulizie, Custodi, SIAE)</td><td>${itemFacilityTotal.textContent}</td></tr>
+							<tr><td>Extra & Servizi Aggiuntivi</td><td>${itemAddonsTotal.textContent}</td></tr>
+							<tr style="font-weight:bold; background-color:#eee;"><td>TOTALE REALE</td><td>${displayRealTotal.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'prospetto-costo-location.doc';
+			link.click();
+		});
+
+		calculateVenueCost();
+	</script>
+</Layout>

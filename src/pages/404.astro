@@ -1,0 +1,404 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Page Not Found (404) — Manage.Wedding",
+  "url": "https://manage.wedding/404",
+  "description": "The page you are looking for on Manage.Wedding could not be found or has eloped. Explore our free wedding budget, dining, seating, and stationery calculators."
+};
+
+const categoryHubs = [
+  {
+    title: "Budget & Finance",
+    url: "/budget",
+    icon: "💰",
+    count: "8 Tools",
+    desc: "Master spend allocations, venue hidden fees (++), family contribution splitters & vendor tipping math."
+  },
+  {
+    title: "Food & Dining",
+    url: "/dining",
+    icon: "🍾",
+    count: "8 Tools",
+    desc: "Open bar bottle sizers, cake tier portions, catering cost comparisons & printable dinner menus."
+  },
+  {
+    title: "Guests & Logistics",
+    url: "/guests",
+    icon: "👥",
+    count: "11 Tools",
+    desc: "Visual seating charts, minute-by-minute timelines, RSVP tracking & bridal dress converters."
+  },
+  {
+    title: "Stationery & Speeches",
+    url: "/stationery",
+    icon: "💌",
+    count: "10 Tools",
+    desc: "Folded place card maker, speech pacing stopwatch, envelope addressing & hashtag generator."
+  }
+];
+
+const flagshipCalculators = [
+  {
+    title: "Open Bar Drink Calculator",
+    url: "/wedding-drink-calculator",
+    icon: "🍷",
+    badge: "Most Popular",
+    category: "Food & Dining",
+    desc: "Calculate exact bottle counts for wine, beer, champagne, and spirits for any guest count.",
+    cta: "Calculate Bar Needs →"
+  },
+  {
+    title: "Master Budget Allocator",
+    url: "/master-budget-calculator",
+    icon: "💵",
+    badge: "Financial Core",
+    category: "Budget & Finance",
+    desc: "Break down any total budget into verified industry percentage allocations with emergency buffer math.",
+    cta: "Allocate Budget →"
+  },
+  {
+    title: "Drag & Drop Seating Chart",
+    url: "/seating-chart-maker",
+    icon: "🪑",
+    badge: "Interactive",
+    category: "Guests & Logistics",
+    desc: "Visual round & banquet table designer with drag-and-drop guest assignments and instant PDF export.",
+    cta: "Arrange Seating →"
+  },
+  {
+    title: "Cake Servings & Dimensions",
+    url: "/cake-serving-calculator",
+    icon: "🍰",
+    badge: "Catering Sizer",
+    category: "Food & Dining",
+    desc: "Compute tier diameters, stacking heights, exact portion cuts, and cutting guides for 50-300+ guests.",
+    cta: "Size Cake Tiers →"
+  },
+  {
+    title: "Day-Of Timeline Generator",
+    url: "/day-of-timeline-generator",
+    icon: "⏰",
+    badge: "Day-Of Logistics",
+    category: "Guests & Logistics",
+    desc: "Generate minute-by-minute vendor and bridal party itineraries from morning hair to sparkler send-off.",
+    cta: "Build Timeline →"
+  },
+  {
+    title: "Folded Place Cards Maker",
+    url: "/table-place-cards",
+    icon: "💌",
+    badge: "Printable Tool",
+    category: "Stationery",
+    desc: "Generate and print custom tent place cards with guest names, table numbers, and meal icons.",
+    cta: "Print Place Cards →"
+  }
+];
+
+const allTools = [
+  // Budget
+  { title: "Master Budget Allocator", url: "/master-budget-calculator", category: "Budget", icon: "💰" },
+  { title: "Venue Hidden Fee & True Cost (++)", url: "/wedding-venue-cost-calculator", category: "Budget", icon: "🏰" },
+  { title: "Who Pays for What? Splitter", url: "/who-pays-for-what-wedding", category: "Budget", icon: "👥" },
+  { title: "Bachelorette Budget Splitter", url: "/bachelorette-budget-calculator", category: "Budget", icon: "🍸" },
+  { title: "Vendor Tipping Calculator", url: "/vendor-tipping-calculator", category: "Budget", icon: "💵" },
+  { title: "Honeymoon Budget Estimator", url: "/honeymoon-budget-estimator", category: "Budget", icon: "✈️" },
+  { title: "Wedding Loan Calculator", url: "/wedding-loan-calculator", category: "Budget", icon: "💳" },
+  { title: "Wedding Gift Cash Calculator", url: "/gift-cash-calculator", category: "Budget", icon: "🎁" },
+
+  // Dining
+  { title: "Open Bar Drink Calculator", url: "/wedding-drink-calculator", category: "Dining", icon: "🍷" },
+  { title: "Wedding Liquor & Spirits Sizer", url: "/liquor-wedding-calculator", category: "Dining", icon: "🍾" },
+  { title: "Wedding Cake Pricing Sizer", url: "/cake-pricing-calculator", category: "Dining", icon: "🎂" },
+  { title: "Cake Tier Serving Sizer", url: "/cake-serving-calculator", category: "Dining", icon: "🍰" },
+  { title: "Reception Menu Maker", url: "/reception-menu-maker", category: "Dining", icon: "📜" },
+  { title: "Catering Cost Estimator", url: "/catering-cost-estimator", category: "Dining", icon: "🍽️" },
+  { title: "Alcohol Dilution Calculator", url: "/alcohol-dilution-calculator", category: "Dining", icon: "🧪" },
+  { title: "Floral Cost Estimator", url: "/floral-cost-estimator", category: "Dining", icon: "💐" },
+
+  // Guests
+  { title: "Seating Chart Maker", url: "/seating-chart-maker", category: "Guests", icon: "🪑" },
+  { title: "Floor Plan & Dance Floor Sizer", url: "/seating-clearance-calculator", category: "Guests", icon: "📐" },
+  { title: "Processional Order Builder", url: "/wedding-processional-order", category: "Guests", icon: "⛪" },
+  { title: "Day-Of Timeline Generator", url: "/day-of-timeline-generator", category: "Guests", icon: "⏰" },
+  { title: "Rehearsal Dinner Planner", url: "/rehearsal-dinner-planner", category: "Guests", icon: "🥂" },
+  { title: "Guest List Manager", url: "/guest-list-manager", category: "Guests", icon: "📋" },
+  { title: "RSVP Tracker", url: "/rsvp-tracker", category: "Guests", icon: "📬" },
+  { title: "Guest Count Estimator", url: "/guest-count-estimator", category: "Guests", icon: "📊" },
+  { title: "RSVP Date Calculator", url: "/rsvp-date-calculator", category: "Guests", icon: "📅" },
+  { title: "12-Month Wedding Checklist", url: "/wedding-checklist", category: "Guests", icon: "✅" },
+  { title: "Dress Alterations Estimator", url: "/dress-alterations-estimator", category: "Guests", icon: "👗" },
+  { title: "Bridal Dress Size Converter", url: "/dress-size-converter", category: "Guests", icon: "📏" },
+  { title: "Ring Size Converter", url: "/ring-size-converter", category: "Guests", icon: "💍" },
+
+  // Stationery
+  { title: "Envelope Address Formatter", url: "/wedding-envelope-addressing", category: "Stationery", icon: "✉️" },
+  { title: "Invitation Suite Sizer", url: "/wedding-invitation-suite-sizer", category: "Stationery", icon: "📐" },
+  { title: "Invitation Postage Calculator", url: "/wedding-invitation-postage-calculator", category: "Stationery", icon: "📮" },
+  { title: "Folded Place Card Maker", url: "/table-place-cards", category: "Stationery", icon: "💌" },
+  { title: "Thank-You Note Generator", url: "/wedding-thank-you-cards", category: "Stationery", icon: "✍️" },
+  { title: "Digital Invitation Maker", url: "/digital-invitations", category: "Stationery", icon: "📱" },
+  { title: "Speech & Toast Timer", url: "/wedding-speech-calculator", category: "Stationery", icon: "🎤" },
+  { title: "Wedding Hashtag Generator", url: "/wedding-hashtag-generator", category: "Stationery", icon: "#️⃣" },
+  { title: "Wedding Date Numerology", url: "/wedding-date-numerology", category: "Stationery", icon: "🔮" },
+  { title: "Anniversary Gift Finder", url: "/anniversary-gift-finder", category: "Stationery", icon: "🎁" }
+];
+---
+
+<Layout 
+	title="Page Not Found (404) — Manage.Wedding"
+	description="Oops! Looks like this page eloped. Explore our free wedding budget calculators, open bar sizers, seating charts, and printable day-of stationery."
+	schema={schema}
+>
+	<main style="max-width: 1140px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem); box-sizing: border-box;">
+		
+		<!-- 1. Hero 404 Card -->
+		<section class="section-paper fade-in" style="margin-bottom: 3rem; text-align: center; position: relative;">
+			<div class="hand-card" style="padding: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 2.5rem); background: #fff; position: relative; max-width: 820px; margin: 0 auto;">
+				
+				<!-- Decorative Tape -->
+				<div class="tape"></div>
+
+				<!-- Post-it Badge -->
+				<span class="badge-postit" style="transform: rotate(-3deg); left: -10px; right: auto; top: -14px;">
+					404 ERROR • RSVP: DECLINED 💌
+				</span>
+
+				<!-- Whimsical Seating Card Mockup -->
+				<div style="display: inline-block; background: var(--bg-paper); border: 2px dashed var(--fg-pencil); border-radius: 6px; padding: 0.75rem 1.5rem; margin: 0.5rem auto 1.5rem; box-shadow: 2px 2px 0px rgba(0,0,0,0.06);">
+					<div style="font-size: 0.85rem; font-family: var(--font-body); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-blue); margin-bottom: 2px;">
+						SEATING PLAN AUDIT
+					</div>
+					<div class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil);">
+						Table #404: Missing in Action 💨
+					</div>
+				</div>
+
+				<!-- Main 404 Headline -->
+				<h1 class="font-heading" style="font-size: clamp(2.2rem, 5.5vw, 3.6rem); line-height: 1.15; color: var(--fg-pencil); margin: 0 0 1rem;">
+					Oops! Looks like this page eloped! 💍 💨
+				</h1>
+
+				<!-- Friendly Subtitle -->
+				<p class="font-body" style="font-size: clamp(1.1rem, 2.3vw, 1.25rem); color: var(--text-secondary); max-width: 650px; margin: 0 auto 1.5rem; line-height: 1.6;">
+					The page you're looking for might have been moved, renamed, or is currently enjoying a chilled glass of champagne at the open bar.
+				</p>
+
+				<!-- Friendly Coordinator Note -->
+				<div style="background: #fefce8; border: 1.5px solid #facc15; border-radius: 6px; padding: 0.85rem 1.25rem; max-width: 600px; margin: 0 auto 2rem; display: flex; align-items: center; gap: 0.75rem; text-align: left;">
+					<span style="font-size: 1.5rem; line-height: 1;">📋</span>
+					<span style="font-size: 0.95rem; color: #713f12; line-height: 1.45;">
+						<strong>Coordinator's Note:</strong> Even the best-planned weddings have a runaway boutonnière! Use the quick navigation hubs or search below to find any calculator in seconds.
+					</span>
+				</div>
+
+				<!-- Main Hero Actions -->
+				<div style="display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
+					<a href="/" class="hand-btn" style="padding: 13px 28px; font-size: 1.1rem; text-decoration: none;">
+						← Return to Homepage
+					</a>
+					<a href="#quick-hubs" class="hand-btn secondary" style="padding: 13px 24px; font-size: 1.1rem; text-decoration: none;">
+						Browse Category Hubs ↓
+					</a>
+				</div>
+
+				<!-- Live Search Bar -->
+				<div style="max-width: 520px; margin: 1.5rem auto 0; position: relative;">
+					<div style="display: flex; align-items: center; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem 0.85rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span style="font-size: 1.2rem; margin-right: 0.5rem;">🔍</span>
+						<input 
+							type="text" 
+							id="error-search-input" 
+							placeholder="Search calculators (e.g. bar, seating, budget, dress)..." 
+							style="border: none; background: transparent; width: 100%; font-size: 1rem; color: var(--fg-pencil); outline: none; padding: 4px;"
+							aria-label="Search all wedding planning tools"
+							autocomplete="off"
+						/>
+						<button id="clear-search-btn" style="display: none; background: none; border: none; font-size: 1rem; color: #94a3b8; cursor: pointer; padding: 0 4px;" aria-label="Clear search">✕</button>
+					</div>
+
+					<!-- Search Results Live Dropdown -->
+					<div id="error-search-results" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); max-height: 280px; overflow-y: auto; z-index: 50; text-align: left; padding: 0.5rem;">
+						<!-- Dynamic search items populated by JS -->
+					</div>
+				</div>
+
+			</div>
+		</section>
+
+		<!-- 2. Quick Navigation Hub (4 Main Categories) -->
+		<section id="quick-hubs" style="margin-bottom: 3.5rem;">
+			<div style="text-align: center; margin-bottom: 1.75rem;">
+				<span style="display: inline-block; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 12px; font-weight: 700; font-size: 0.85rem; border-radius: 20px; box-shadow: 1px 1px 0px var(--fg-pencil); margin-bottom: 0.5rem;">
+					QUICK DIRECTORY
+				</span>
+				<h2 class="font-heading" style="font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--fg-pencil); margin-bottom: 0.25rem;">
+					🗂️ Explore Planning Categories
+				</h2>
+				<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 550px; margin: 0 auto;">
+					Choose a category hub to browse all 37+ specialized calculators and printable guides:
+				</p>
+			</div>
+
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+				{categoryHubs.map((hub) => (
+					<a href={hub.url} style="text-decoration: none; color: inherit; display: flex;">
+						<div class="hand-card" style="width: 100%; padding: 1.5rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between; border: 2.5px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil); transition: transform 0.15s ease, box-shadow 0.15s ease;">
+							<div>
+								<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+									<span style="font-size: 2rem;">{hub.icon}</span>
+									<span style="font-size: 0.8rem; font-weight: 700; background: var(--muted-paper); border: 1px solid var(--fg-pencil); padding: 2px 8px; border-radius: 12px; color: var(--fg-pencil);">
+										{hub.count}
+									</span>
+								</div>
+								<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+									{hub.title}
+								</h3>
+								<p class="font-body" style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem;">
+									{hub.desc}
+								</p>
+							</div>
+							<div style="display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 700; font-size: 0.95rem; color: var(--accent-blue);">
+								<span>Open Category Hub</span>
+								<span>→</span>
+							</div>
+						</div>
+					</a>
+				))}
+			</div>
+		</section>
+
+		<!-- 3. Top 6 Flagship Calculators -->
+		<section style="margin-bottom: 3.5rem;">
+			<div style="text-align: center; margin-bottom: 2rem;">
+				<span style="display: inline-block; background: #dbeafe; border: 1.5px solid #2563eb; color: #1e40af; padding: 3px 12px; font-weight: 700; font-size: 0.85rem; border-radius: 20px; box-shadow: 1px 1px 0px #2563eb; margin-bottom: 0.5rem;">
+					CROWD FAVORITES
+				</span>
+				<h2 class="font-heading" style="font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--fg-pencil); margin-bottom: 0.25rem;">
+					⭐ Top 6 Flagship Calculators
+				</h2>
+				<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
+					Instant math and printables loved by couples and wedding coordinators worldwide:
+				</p>
+			</div>
+
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.75rem;">
+				{flagshipCalculators.map((calc) => (
+					<div class="hand-card" style="padding: 1.75rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between; border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil);">
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+								<span style="font-size: 2.2rem;">{calc.icon}</span>
+								<span style="font-size: 0.8rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 10px; border-radius: 14px; color: var(--fg-pencil);">
+									{calc.badge}
+								</span>
+							</div>
+							<div style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-blue); margin-bottom: 0.25rem;">
+								{calc.category}
+							</div>
+							<h3 style="font-size: 1.35rem; font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.6rem; font-family: var(--font-body);">
+								{calc.title}
+							</h3>
+							<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1.25rem;">
+								{calc.desc}
+							</p>
+						</div>
+						<div>
+							<a href={calc.url} class="hand-btn" style="width: 100%; box-sizing: border-box; text-align: center; padding: 10px 16px; font-size: 0.98rem; text-decoration: none;">
+								{calc.cta}
+							</a>
+						</div>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<!-- 4. Global Language Hub & Footer Help Box -->
+		<section class="hand-card" style="padding: 1.75rem 2rem; background: var(--bg-paper); border: 2px dashed var(--fg-pencil); border-radius: 8px; text-align: center; margin-bottom: 2rem;">
+			<div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🌍</div>
+			<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+				Looking for Manage.Wedding in Another Language?
+			</h3>
+			<p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem;">
+				Switch to your preferred language below:
+			</p>
+			<div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
+				<a href="/" class="hand-btn secondary" style="padding: 6px 14px; font-size: 0.9rem; text-decoration: none;">🇺🇸 English</a>
+				<a href="/es" class="hand-btn secondary" style="padding: 6px 14px; font-size: 0.9rem; text-decoration: none;">🇪🇸 Español</a>
+				<a href="/fr" class="hand-btn secondary" style="padding: 6px 14px; font-size: 0.9rem; text-decoration: none;">🇫🇷 Français</a>
+				<a href="/de" class="hand-btn secondary" style="padding: 6px 14px; font-size: 0.9rem; text-decoration: none;">🇩🇪 Deutsch</a>
+				<a href="/it" class="hand-btn secondary" style="padding: 6px 14px; font-size: 0.9rem; text-decoration: none;">🇮🇹 Italiano</a>
+				<a href="/pt" class="hand-btn secondary" style="padding: 6px 14px; font-size: 0.9rem; text-decoration: none;">🇵🇹 Português</a>
+			</div>
+		</section>
+
+	</main>
+</Layout>
+
+<script define:vars={{ allTools }}>
+	// Interactive Search on 404 Page
+	const searchInput = document.getElementById('error-search-input');
+	const clearBtn = document.getElementById('clear-search-btn');
+	const resultsDropdown = document.getElementById('error-search-results');
+
+	if (searchInput && resultsDropdown) {
+		searchInput.addEventListener('input', (e) => {
+			const query = (e.target.value || '').trim().toLowerCase();
+			
+			if (clearBtn) {
+				clearBtn.style.display = query.length > 0 ? 'inline-block' : 'none';
+			}
+
+			if (!query) {
+				resultsDropdown.style.display = 'none';
+				resultsDropdown.innerHTML = '';
+				return;
+			}
+
+			const filtered = allTools.filter(tool => 
+				tool.title.toLowerCase().includes(query) || 
+				tool.category.toLowerCase().includes(query)
+			);
+
+			if (filtered.length === 0) {
+				resultsDropdown.innerHTML = `
+					<div style="padding: 0.75rem; text-align: center; color: var(--text-secondary); font-size: 0.9rem;">
+						No calculators matched "<strong>${query}</strong>". <br />
+						<a href="/" style="color: var(--accent-blue); font-weight: 700; text-decoration: underline; margin-top: 4px; display: inline-block;">Return to Homepage</a>
+					</div>
+				`;
+				resultsDropdown.style.display = 'block';
+				return;
+			}
+
+			resultsDropdown.innerHTML = filtered.map(tool => `
+				<a href="${tool.url}" style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.8rem; text-decoration: none; border-radius: 4px; color: var(--fg-pencil); transition: background 0.1s;" onmouseover="this.style.background='var(--post-it)'" onmouseout="this.style.background='transparent'">
+					<div style="display: flex; align-items: center; gap: 0.5rem;">
+						<span style="font-size: 1.1rem;">${tool.icon}</span>
+						<span style="font-weight: 600; font-size: 0.95rem;">${tool.title}</span>
+					</div>
+					<span style="font-size: 0.75rem; font-weight: 600; color: #64748b; background: var(--muted-paper); padding: 2px 6px; border-radius: 4px;">${tool.category}</span>
+				</a>
+			`).join('');
+			resultsDropdown.style.display = 'block';
+		});
+
+		if (clearBtn) {
+			clearBtn.addEventListener('click', () => {
+				searchInput.value = '';
+				clearBtn.style.display = 'none';
+				resultsDropdown.style.display = 'none';
+				resultsDropdown.innerHTML = '';
+				searchInput.focus();
+			});
+		}
+
+		// Close dropdown when clicking outside
+		document.addEventListener('click', (e) => {
+			if (!searchInput.contains(e.target) && !resultsDropdown.contains(e.target)) {
+				resultsDropdown.style.display = 'none';
+			}
+		});
+	}
+</script>

@@ -1,0 +1,620 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Gastgeschenke Rechner Hochzeit",
+      "url": "https://manage.wedding/de/wedding-favors-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Berechnen Sie die genaue Menge an Gastgeschenken (pro Person vs. pro Paar/Haushalt), vermeiden Sie Reste auf den Tischen und planen Sie die DIY-Bastelzeit.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<Layout
+	title="Gastgeschenke Rechner Hochzeit — Menge, Kosten & DIY-Planer"
+	description="Berechnen Sie die genaue Anzahl an Gastgeschenken (pro Gast vs. pro Paar), Ausfallquote auf Tischen, DIY-Bastelzeit, Kosten und druckbare Tischaufsteller."
+	lang="de"
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/de/" style="color: var(--text-secondary); text-decoration: none;">Startseite</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/de/guests" style="color: var(--text-secondary); text-decoration: none;">Gäste & Logistik</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Gastgeschenke Rechner</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>🎁</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Mengenberechnung & Reste-Vermeidung für Gastgeschenke</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Gastgeschenke Rechner Hochzeit
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Ermitteln Sie die exakte Bestellmenge nach <strong>Einzel- oder Paarverteilung</strong>, sparen Sie unnötige Kosten durch 20% Tisch-Ausfallquote, berechnen Sie die DIY-Verpackungszeit und drucken Sie fertige Schilder.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Controls & Parameters -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>📋</span> 1. Gästezahl & Verteilungsstrategie
+				</h2>
+
+				<!-- Headcount Slider -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+						<label for="slider-guests" style="font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil);">
+							Erwartete Gästezahl:
+						</label>
+						<span id="badge-guests" class="badge-postit" style="font-weight: 700; font-size: 1.05rem; padding: 2px 8px; border-radius: 4px;">120 Gäste</span>
+					</div>
+					<input type="range" id="slider-guests" min="20" max="500" step="5" value="120" style="width: 100%; accent-color: var(--fg-pencil); cursor: pointer;" />
+					<div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
+						<span>20 Intim</span>
+						<span>120 Durchschnitt</span>
+						<span>250 Groß</span>
+						<span>500 Sehr groß</span>
+					</div>
+				</div>
+
+				<!-- Distribution Model -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Verteilungsmodell:
+					</label>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+						<label style="border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.6rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.2rem; background: #fef08a;" id="label-mode-individual">
+							<div style="display: flex; align-items: center; gap: 0.35rem; font-weight: 700; font-size: 0.88rem;">
+								<input type="radio" name="dist-mode" id="radio-mode-individual" value="individual" checked style="accent-color: var(--fg-pencil);" />
+								<span>1 Pro Gast</span>
+							</div>
+							<span style="font-size: 0.75rem; color: #475569;">Süßigkeiten, Schnäpse, Fächer</span>
+						</label>
+
+						<label style="border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.6rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.2rem; background: #fff;" id="label-mode-couple">
+							<div style="display: flex; align-items: center; gap: 0.35rem; font-weight: 700; font-size: 0.88rem;">
+								<input type="radio" name="dist-mode" id="radio-mode-couple" value="couple" style="accent-color: var(--fg-pencil);" />
+								<span>1 Pro Paar / Haushalt</span>
+							</div>
+							<span style="font-size: 0.75rem; color: #475569;">Olivenöl, Duftkerzen, Deko</span>
+						</label>
+					</div>
+				</div>
+
+				<!-- Favor Category -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label for="select-favor-type" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Art des Geschenks (Beeinflusst Liegenbleib-Quote):
+					</label>
+					<select id="select-favor-type" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="edible-packaged" selected>🍬 Verpackte Süßigkeiten (Macarons, Kekse) — 95% Mitnahme</option>
+						<option value="edible-drink">🍾 Mini-Liköre / Gin / Hochzeits-Schnaps — 98% Mitnahme</option>
+						<option value="edible-bulk">🍯 Honiggläser, Marmelade oder Olivenöl — 92% Mitnahme</option>
+						<option value="keepsake-useful">🕯️ Nützliche Geschenke (Kerzen, Flaschenöffner) — 82% Mitnahme</option>
+						<option value="keepsake-monogram">☕ Monogramm-Artikel (Untersetzer, Tassen) — 75% Mitnahme</option>
+						<option value="greenery-seed">🌱 Sukkulenten & Blumensamen-Tütchen — 80% Mitnahme</option>
+					</select>
+				</div>
+
+				<!-- Placement -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label for="select-placement" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Präsentation auf der Feier:
+					</label>
+					<select id="select-placement" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="place-setting" selected>🍽️ Direkt am Platzteller (~18% vergessen es am Tisch)</option>
+						<option value="exit-table">🚪 Auf separatem Geschenktisch am Ausgang (~10% mit Schild)</option>
+						<option value="greeter-station">🥂 Persönlich überreicht vom Brautpaar (100% Mitnahme)</option>
+					</select>
+				</div>
+
+				<!-- Buffer Strategy -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label for="select-buffer" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Sicherheitspuffer & Erinnerungsstücke:
+					</label>
+					<select id="select-buffer" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="recommended" selected>⭐ Empfohlen (+5% extra + 3 für Fotograf & Brautpaar)</option>
+						<option value="eco">🌱 Spar-Modus (-15% Ausfall-Abzug gegen Verschwendung)</option>
+						<option value="generous">🎁 Großzügig (+12% für zusätzliche Gäste & Helfer)</option>
+					</select>
+				</div>
+
+				<!-- Cost & Assembly -->
+				<div style="border-top: 2px dashed var(--fg-pencil); padding-top: 1rem; margin-top: 1rem;">
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-item-cost" style="display: block; font-weight: 700; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								Stückpreis (€):
+							</label>
+							<input type="number" id="input-item-cost" min="0" step="0.25" value="3.50" style="width: 100%; padding: 0.45rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-weight: 700; font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label for="input-assembly-seconds" style="display: block; font-weight: 700; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								DIY-Bastelzeit:
+							</label>
+							<select id="input-assembly-seconds" style="width: 100%; padding: 0.45rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="0">0s (Fertig gekauft)</option>
+								<option value="45" selected>45s (Schleife & Anhänger)</option>
+								<option value="120">2 Min (Schachtel falten & füllen)</option>
+								<option value="240">4 Min (Aufwendiges DIY-Projekt)</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Exakte Empfehlung</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Bestellübersicht & Budget
+						</h2>
+					</div>
+					<span id="badge-dist-type" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">Pro Gast</span>
+				</div>
+
+				<!-- Big Number Highlights -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Gesamt zu Bestellen</span>
+						<strong id="stat-order-qty" style="font-size: 2rem; font-weight: 900; color: #1e40af; line-height: 1.1;">129</strong>
+						<span id="stat-subtext-qty" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(120 Basis + 9 Puffer)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Geschätztes Budget</span>
+						<strong id="stat-total-spend" style="font-size: 2rem; font-weight: 900; color: #15803d; line-height: 1.1;">451,50 €</strong>
+						<span id="stat-per-guest-cost" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">3,76 € pro anwesendem Gast</span>
+					</div>
+				</div>
+
+				<!-- Secondary Metrics Matrix -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">Haushalte / Paare:</span>
+						<strong id="stat-household-count" style="color: var(--fg-pencil);">67 Haushalte</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">Vergessene Geschenke (Tisch):</span>
+						<strong id="stat-attrition-rate" style="color: #b91c1c;">~6 Stk. bleiben liegen (5%)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">Erinnerungsstücke (Fotos/Brautpaar):</span>
+						<strong id="stat-keepsake-margin" style="color: #1e40af;">+3 Stück</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
+						<span style="color: #475569;">DIY-Bastelzeit:</span>
+						<strong id="stat-diy-hours" style="color: var(--fg-pencil);">1 Std. 37 Min. (1 Person)</strong>
+					</div>
+				</div>
+
+				<!-- Quick Table Hardware Recommendation -->
+				<div style="background: #fef08a; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.85rem;">
+					<strong style="color: var(--fg-pencil); display: block; margin-bottom: 0.25rem;">📦 Tisch-Präsentation:</strong>
+					<span id="stat-table-hardware" style="color: #334155;">
+						Benötigt <strong>3 bis 4 Holzkisten oder Tabletts</strong> auf einem <strong>1,20 m Tisch</strong> mit gerahmtem Schild.
+					</span>
+				</div>
+
+				<!-- Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> PDF drucken
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Word (.doc) exportieren
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Section: 1-Click Printable Sign Studio -->
+		<section id="section-print-studio" class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<div style="text-align: center; margin-bottom: 1.5rem;">
+				<span class="badge-postit" style="padding: 3px 10px; border-radius: 4px; font-size: 0.82rem; font-weight: 700;">Schilder-Generator</span>
+				<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin: 0.4rem 0 0.25rem;">
+					Druckfertige Tischschilder "Bitte bedient euch"
+				</h2>
+				<p class="font-body" style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+					Personalisieren Sie Schilder im Format 20x25 cm oder 13x18 cm mit Ihren Namen und Hochzeitsdatum.
+				</p>
+			</div>
+
+			<!-- Controls for Sign Studio -->
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+				<div>
+					<label for="input-couple-names" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Namen des Brautpaars:</label>
+					<input type="text" id="input-couple-names" value="Laura & Felix" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600;" />
+				</div>
+				<div>
+					<label for="input-wedding-date" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Hochzeitsdatum:</label>
+					<input type="text" id="input-wedding-date" value="18. Oktober 2026" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600;" />
+				</div>
+				<div>
+					<label for="select-sign-template" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Text-Vorlage:</label>
+					<select id="select-sign-template" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600; background: #fff;">
+						<option value="classic" selected>Von Herzen Danke • Bitte nehmt euch eins mit</option>
+						<option value="couple">Für Euch • Eins pro Paar mit ganz viel Liebe</option>
+						<option value="sweet">Ein süßer Abschluss • Für den Heimweg</option>
+						<option value="seeds">Lasst Liebe wachsen • Bitte nehmt eine Pflanze mit</option>
+					</select>
+				</div>
+				<div>
+					<label for="select-sign-size" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Rahmengröße:</label>
+					<select id="select-sign-size" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600; background: #fff;">
+						<option value="8x10" selected>20 x 25 cm (Standard-Tischrahmen)</option>
+						<option value="5x7">13 x 18 cm (Kompakter Aufsteller)</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- Live Rendered Framed Sign Canvas -->
+			<div style="max-width: 500px; margin: 0 auto; background: #fff; border: 3px solid var(--fg-pencil); border-radius: 8px; padding: 2rem 1.5rem; text-align: center; box-shadow: 4px 4px 0px var(--fg-pencil);" id="sign-canvas-preview">
+				<div style="border: 2px double #1e293b; padding: 2rem 1.25rem;">
+					<span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🎁</span>
+					<h3 id="sign-preview-headline" class="font-heading" style="font-size: 1.8rem; color: #0f172a; margin: 0 0 0.5rem; line-height: 1.2;">
+						Von Herzen Danke
+					</h3>
+					<p id="sign-preview-subtext" style="font-size: 1.05rem; font-style: italic; color: #475569; margin: 0 0 1.25rem;">
+						Schön, dass ihr mit uns feiert! Bitte nehmt euch ein Geschenk mit.
+					</p>
+					<div style="width: 50px; height: 1.5px; background: #cbd5e1; margin: 0 auto 1.25rem;"></div>
+					<h4 id="sign-preview-names" class="font-heading" style="font-size: 1.15rem; letter-spacing: 0.05em; text-transform: uppercase; color: #0f172a; margin: 0 0 0.25rem;">
+						Laura & Felix
+					</h4>
+					<span id="sign-preview-date" style="font-size: 0.85rem; color: #64748b;">18. Oktober 2026</span>
+				</div>
+			</div>
+		</section>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/de/wedding-favors-calculator" category="guests" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-sign-container" class="print-page" style="page-break-after: always; break-after: page; padding: 15mm; text-align: center;">
+			<div style="border: 4px double #000; padding: 25mm 15mm; min-height: 190mm; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+				<h1 id="print-sign-title" style="font-size: 36pt; font-family: 'Georgia', serif; margin: 0 0 15pt 0; color: #000;">Von Herzen Danke</h1>
+				<p id="print-sign-sub" style="font-size: 18pt; font-style: italic; margin: 0 0 25pt 0; color: #333;">Bitte nehmt euch ein Geschenk mit!</p>
+				<div style="width: 70mm; height: 1.5pt; background: #000; margin: 0 auto 20pt;"></div>
+				<h2 id="print-sign-names" style="font-size: 18pt; letter-spacing: 2pt; text-transform: uppercase; margin: 0 0 8pt 0; color: #000;">Laura & Felix</h2>
+				<p id="print-sign-date" style="font-size: 13pt; color: #555; margin: 0;">18. Oktober 2026</p>
+			</div>
+		</div>
+
+		<div id="print-order-sheet-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Bestellliste & Bastelplan: Gastgeschenke Hochzeit</h1>
+				<p id="print-order-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Brautpaar: Laura & Felix | Datum: 18. Oktober 2026 | Gäste: 120</p>
+			</div>
+			<div id="print-order-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	const sliderGuests = document.getElementById('slider-guests');
+	const badgeGuests = document.getElementById('badge-guests');
+	const radioModeIndividual = document.getElementById('radio-mode-individual');
+	const radioModeCouple = document.getElementById('radio-mode-couple');
+	const labelModeIndividual = document.getElementById('label-mode-individual');
+	const labelModeCouple = document.getElementById('label-mode-couple');
+	const selectFavorType = document.getElementById('select-favor-type');
+	const selectPlacement = document.getElementById('select-placement');
+	const selectBuffer = document.getElementById('select-buffer');
+	const inputItemCost = document.getElementById('input-item-cost');
+	const inputAssemblySeconds = document.getElementById('input-assembly-seconds');
+
+	const badgeDistType = document.getElementById('badge-dist-type');
+	const statOrderQty = document.getElementById('stat-order-qty');
+	const statSubtextQty = document.getElementById('stat-subtext-qty');
+	const statTotalSpend = document.getElementById('stat-total-spend');
+	const statPerGuestCost = document.getElementById('stat-per-guest-cost');
+	const statHouseholdCount = document.getElementById('stat-household-count');
+	const statAttritionRate = document.getElementById('stat-attrition-rate');
+	const statKeepsakeMargin = document.getElementById('stat-keepsake-margin');
+	const statDiyHours = document.getElementById('stat-diy-hours');
+	const statTableHardware = document.getElementById('stat-table-hardware');
+
+	function calculateFavors() {
+		const guests = parseInt(sliderGuests.value, 10) || 120;
+		badgeGuests.textContent = `${guests} Gäste`;
+
+		const isCouple = radioModeCouple.checked;
+		const households = Math.ceil(guests * 0.56);
+		statHouseholdCount.textContent = `${households} Haushalte`;
+
+		const baseTarget = isCouple ? households : guests;
+		badgeDistType.textContent = isCouple ? '1 Pro Paar' : '1 Pro Gast';
+
+		const bufferStrategy = selectBuffer.value;
+		let bufferPercent = 0.05;
+		let keepsakeExtra = 3;
+
+		if (bufferStrategy === 'eco') {
+			bufferPercent = -0.15;
+			keepsakeExtra = 2;
+		} else if (bufferStrategy === 'generous') {
+			bufferPercent = 0.12;
+			keepsakeExtra = 5;
+		}
+
+		let finalQty = Math.round(baseTarget * (1 + bufferPercent)) + keepsakeExtra;
+		if (finalQty < 1) finalQty = 1;
+
+		statOrderQty.textContent = finalQty;
+		
+		const extraCount = finalQty - baseTarget;
+		const extraSign = extraCount >= 0 ? `+${extraCount}` : `${extraCount}`;
+		statSubtextQty.textContent = `(${baseTarget} Basis ${extraSign} Puffer/Fotos)`;
+
+		const unitCost = parseFloat(inputItemCost.value) || 0;
+		const totalSpend = (finalQty * unitCost).toFixed(2);
+		statTotalSpend.textContent = `${Number(totalSpend).toLocaleString('de-DE', { minimumFractionDigits: 2 })} €`;
+		
+		const costPerAttending = (parseFloat(totalSpend) / guests).toFixed(2);
+		statPerGuestCost.textContent = `${costPerAttending} € pro anwesendem Gast`;
+
+		const favorType = selectFavorType.value;
+		let attritionRateNum = 0.05;
+		if (favorType.includes('monogram')) attritionRateNum = 0.25;
+		else if (favorType.includes('seed') || favorType.includes('keepsake-useful')) attritionRateNum = 0.15;
+		else if (favorType.includes('bulk')) attritionRateNum = 0.08;
+
+		if (selectPlacement.value === 'place-setting') attritionRateNum += 0.05;
+		
+		const estimatedLeftovers = Math.round(finalQty * attritionRateNum);
+		statAttritionRate.textContent = `~${estimatedLeftovers} Stk. bleiben liegen (${Math.round(attritionRateNum * 100)}%)`;
+		statKeepsakeMargin.textContent = `+${keepsakeExtra} Stk. (Brautpaar & Fotos)`;
+
+		const assemblySecPerUnit = parseInt(inputAssemblySeconds.value, 10) || 0;
+		const totalSec = finalQty * assemblySecPerUnit;
+		if (totalSec === 0) {
+			statDiyHours.textContent = '0 Min. (Sofort einsatzbereit)';
+		} else {
+			const hrs = Math.floor(totalSec / 3600);
+			const mins = Math.ceil((totalSec % 3600) / 60);
+			statDiyHours.textContent = hrs > 0 ? `${hrs} Std. ${mins} Min. (1 Person)` : `${mins} Min. (1 Person)`;
+		}
+
+		const traysCount = Math.max(1, Math.ceil(finalQty / 35));
+		const tableFootage = finalQty > 100 ? '1,80 m Tisch' : '1,20 m Tisch';
+		statTableHardware.innerHTML = `Benötigt <strong>${traysCount} Kisten/Tabletts</strong> auf einem <strong>${tableFootage}</strong> mit gerahmtem Schild.`;
+
+		const couple = document.getElementById('input-couple-names').value || 'Laura & Felix';
+		const date = document.getElementById('input-wedding-date').value || '18. Oktober 2026';
+		document.getElementById('print-order-meta').textContent = `Brautpaar: ${couple} | Datum: ${date} | Gäste: ${guests} | Verteilung: ${badgeDistType.textContent}`;
+
+		document.getElementById('print-order-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Bestell-Parameter</th>
+						<th style="padding:6pt; text-align:center;">Berechnete Menge</th>
+						<th style="padding:6pt;">Planungshinweise</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Gesamt zu bestellende Geschenke</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; font-size:12pt; color:#1e40af;">${finalQty} Stück</td>
+						<td style="padding:6pt;">Basis (${baseTarget}) plus ${extraSign} Sicherheitspuffer & Detailfotos.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Gesamtkosten Gastgeschenke</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; color:#15803d;">${Number(totalSpend).toLocaleString('de-DE', { minimumFractionDigits: 2 })} €</td>
+						<td style="padding:6pt;">Bei ${unitCost.toFixed(2)} €/Stück (${costPerAttending} €/Gast).</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Tabletts & Kisten</td>
+						<td style="padding:6pt; text-align:center;">${traysCount} Tabletts / Kisten</td>
+						<td style="padding:6pt;">Auf ${tableFootage} mit 20x25 cm Rahmen aufstellen.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">DIY-Bastelaufwand</td>
+						<td style="padding:6pt; text-align:center;">${statDiyHours.textContent}</td>
+						<td style="padding:6pt;">Bastelabend 2 bis 3 Wochen vor der Hochzeit einplanen.</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	function updateModeStyles() {
+		if (radioModeIndividual.checked) {
+			labelModeIndividual.style.background = '#fef08a';
+			labelModeCouple.style.background = '#ffffff';
+		} else {
+			labelModeIndividual.style.background = '#ffffff';
+			labelModeCouple.style.background = '#fef08a';
+		}
+		calculateFavors();
+	}
+
+	function updateSignPreview() {
+		const couple = document.getElementById('input-couple-names').value || 'Laura & Felix';
+		const date = document.getElementById('input-wedding-date').value || '18. Oktober 2026';
+		const template = document.getElementById('select-sign-template').value;
+
+		document.getElementById('sign-preview-names').textContent = couple;
+		document.getElementById('sign-preview-date').textContent = date;
+		
+		const headline = document.getElementById('sign-preview-headline');
+		const subtext = document.getElementById('sign-preview-subtext');
+
+		if (template === 'couple') {
+			headline.textContent = 'Für Euch';
+			subtext.textContent = 'Bitte nehmt euch eins pro Paar mit ganz viel Liebe mit!';
+		} else if (template === 'sweet') {
+			headline.textContent = 'Ein süßer Abschluss';
+			subtext.textContent = 'Für den perfekten Start! Nehmt euch eine Kleinigkeit mit.';
+		} else if (template === 'seeds') {
+			headline.textContent = 'Lasst Liebe wachsen';
+			subtext.textContent = 'Pflanzt diese Samen und lasst die Freude aufblühen!';
+		} else {
+			headline.textContent = 'Von Herzen Danke';
+			subtext.textContent = 'Schön, dass ihr mit uns feiert! Bitte nehmt euch ein Geschenk mit.';
+		}
+
+		document.getElementById('print-sign-title').textContent = headline.textContent;
+		document.getElementById('print-sign-sub').textContent = subtext.textContent;
+		document.getElementById('print-sign-names').textContent = couple;
+		document.getElementById('print-sign-date').textContent = date;
+	}
+
+	sliderGuests.addEventListener('input', calculateFavors);
+	radioModeIndividual.addEventListener('change', updateModeStyles);
+	radioModeCouple.addEventListener('change', updateModeStyles);
+	selectFavorType.addEventListener('change', calculateFavors);
+	selectPlacement.addEventListener('change', calculateFavors);
+	selectBuffer.addEventListener('change', calculateFavors);
+	inputItemCost.addEventListener('input', calculateFavors);
+	inputAssemblySeconds.addEventListener('change', calculateFavors);
+
+	document.getElementById('input-couple-names').addEventListener('input', updateSignPreview);
+	document.getElementById('input-wedding-date').addEventListener('input', updateSignPreview);
+	document.getElementById('select-sign-template').addEventListener('change', updateSignPreview);
+	document.getElementById('select-sign-size').addEventListener('change', updateSignPreview);
+
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		calculateFavors();
+		updateSignPreview();
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const couple = document.getElementById('input-couple-names').value || 'Laura & Felix';
+		const date = document.getElementById('input-wedding-date').value || '18. Oktober 2026';
+		const guests = sliderGuests.value || '120';
+		const finalQty = statOrderQty.textContent;
+		const totalSpend = statTotalSpend.textContent;
+		const diyHours = statDiyHours.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Bestellübersicht Gastgeschenke</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Bestellübersicht: Gastgeschenke Hochzeit</h1>
+				<p><strong>Brautpaar:</strong> ${couple} | <strong>Datum:</strong> ${date} | <strong>Gästezahl:</strong> ${guests}</p>
+				<hr/>
+				<h2>Zusammenfassung</h2>
+				<table>
+					<tr style="background:#f1f5f9;">
+						<th>Kategorie</th><th>Wert</th>
+					</tr>
+					<tr><td><strong>Gesamtmenge zu Bestellen:</strong></td><td><strong>${finalQty} Stück</strong></td></tr>
+					<tr><td><strong>Geschätzte Kosten:</strong></td><td><strong>${totalSpend}</strong></td></tr>
+					<tr><td><strong>Verteilung:</strong></td><td>${badgeDistType.textContent}</td></tr>
+					<tr><td><strong>DIY-Bastelzeit:</strong></td><td>${diyHours}</td></tr>
+				</table>
+				<hr/>
+				<p><em>Erstellt von Manage.Wedding</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Gastgeschenke-${couple.replace(/[^a-zA-Z0-9]/g, '-')}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateFavors();
+	updateSignPreview();
+</script>

@@ -1,0 +1,454 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Minuteur et Compteur de Mots pour Vœux de Mariage",
+      "url": "https://manage.wedding/fr/wedding-vow-timer",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calculez la durée de lecture de vos vœux de mariage à l'autel, ajustez le rythme pour l'émotion et répétez avec un chronomètre en direct.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<Layout
+	title="Minuteur de Vœux de Mariage — Compteur de Mots et Rythme de Discours"
+	description="Calculez la durée de lecture de vos vœux de mariage, comparez la longueur avec votre moitié et répétez avec un chronomètre d'autel en direct."
+	lang="fr"
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Fil d'Ariane" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/fr/" style="color: var(--text-secondary); text-decoration: none;">Accueil</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/fr/stationery" style="color: var(--text-secondary); text-decoration: none;">Discours & Papeterie</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Minuteur de Vœux</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>💍</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Chronomètre d'Autel & Livret de Vœux</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Minuteur de Vœux de Mariage
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Collez le brouillon de vos vœux pour calculer votre <strong>temps de parole exact</strong>, adapter les pauses pour l'émotion et les rires, équilibrer la longueur avec votre partenaire et répéter à voix haute.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Inputs -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<h2 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.4rem;">
+						<span>✍️</span> Texte de Vos Vœux
+					</h2>
+					<button type="button" id="btn-load-sample" style="background: none; border: none; color: #1e40af; font-size: 0.8rem; font-weight: 700; cursor: pointer; text-decoration: underline;">
+						Charger un Exemple
+					</button>
+				</div>
+
+				<div style="margin-bottom: 1.25rem;">
+					<textarea id="input-vow-text" rows="11" placeholder="Écrivez ou collez vos vœux ici..." style="width: 100%; padding: 0.85rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-family: inherit; font-size: 0.95rem; line-height: 1.6; resize: vertical; box-sizing: border-box;"></textarea>
+				</div>
+
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong style="color: var(--fg-pencil); display: block; font-size: 0.85rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+						Rythme de Lecture & Pauses Émotionnelles
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+						<div>
+							<label for="select-speaking-pace" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Vitesse d'Élocution :</label>
+							<select id="select-speaking-pace" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="105" selected>❤️ Romantique / Lent (105 mpm)</option>
+								<option value="125">🗣️ Conversationnel Naturel (125 mpm)</option>
+								<option value="145">⚡ Rapide / Stressé (145 mpm)</option>
+							</select>
+						</div>
+						<div>
+							<label for="select-emotion-buffer" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Marge Émotions & Rires :</label>
+							<select id="select-emotion-buffer" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="20" selected>💧 +20% (Respirations et larmes)</option>
+								<option value="10">🙂 +10% (Légères pauses)</option>
+								<option value="0">⏱️ +0% (Lecture continue)</option>
+							</select>
+						</div>
+					</div>
+
+					<div>
+						<label for="input-partner-words" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">
+							Nombre de mots du/de la conjoint(e) (Optionnel) :
+						</label>
+						<input type="number" id="input-partner-words" min="0" max="2000" placeholder="Ex. 280 mots" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem;" />
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Analyse du Discours</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Durée Estimée à l'Autel
+						</h2>
+					</div>
+					<span id="badge-word-status" style="background: #dcfce7; border: 1.5px solid #15803d; color: #15803d; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">Longueur Idéale</span>
+				</div>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Temps de Parole</span>
+						<strong id="stat-duration-time" style="font-size: 2rem; font-weight: 900; color: #1e40af; line-height: 1.1;">2m 35s</strong>
+						<span id="stat-duration-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(Idéal : 2m 00s – 3m 00s)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Total des Mots</span>
+						<strong id="stat-word-count" style="font-size: 2rem; font-weight: 900; color: #b91c1c; line-height: 1.1;">274</strong>
+						<span id="stat-words-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">Cible : 250–350 mots</span>
+					</div>
+				</div>
+
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">📏 Nombre de Caractères :</span>
+						<strong id="stat-char-count" style="color: var(--fg-pencil);">1 450 caractères</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">📑 Pages Livret de Vœux :</span>
+						<strong id="stat-booklet-pages" style="color: var(--fg-pencil);">2 pages / 1 carte recto-verso</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
+						<span style="color: #475569;">⚖️ Équilibre avec Conjoint(e) :</span>
+						<strong id="stat-partner-balance" style="color: #15803d;">Bien Équilibré</strong>
+					</div>
+				</div>
+
+				<!-- Live Stopwatch -->
+				<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem; text-align: center;">
+					<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">🎙️ Chronomètre de Répétition à Voix Haute</span>
+					<div id="display-stopwatch" style="font-size: 2.25rem; font-family: monospace; font-weight: 900; color: var(--fg-pencil); margin: 0.25rem 0 0.5rem;">
+						00:00.0
+					</div>
+					<div style="display: flex; justify-content: center; gap: 0.5rem;">
+						<button type="button" id="btn-timer-toggle" class="hand-btn" style="background: #15803d; color: #fff; padding: 0.4rem 1.2rem; font-weight: 700; font-size: 0.85rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; cursor: pointer;">
+							▶️ Lancer l'Essai
+						</button>
+						<button type="button" id="btn-timer-reset" class="hand-btn" style="background: #e2e8f0; color: #334155; padding: 0.4rem 0.8rem; font-weight: 700; font-size: 0.85rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; cursor: pointer;">
+							🔄 Réinitialiser
+						</button>
+					</div>
+				</div>
+
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-print-vow-card" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Imprimer Livret de Vœux (PDF)
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Exporter Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/fr/wedding-vow-timer" category="stationery" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-vow-container" class="print-page" style="padding: 15mm; font-family: 'Times New Roman', serif;">
+			<div style="border: 2pt solid #444; border-radius: 8pt; padding: 15mm; min-height: 80vh; display: flex; flex-direction: column; justify-content: space-between;">
+				<div>
+					<div style="text-align: center; border-bottom: 1pt solid #ccc; padding-bottom: 4mm; margin-bottom: 8mm;">
+						<h1 style="font-size: 18pt; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 2mm 0;">Mes Vœux de Mariage</h1>
+						<p id="print-vow-meta" style="font-size: 9pt; color: #666; margin: 0;">Carte de Cérémonie | Manage.Wedding</p>
+					</div>
+					<div id="print-vow-body" style="font-size: 13pt; line-height: 1.8; color: #111; white-space: pre-wrap;">
+					</div>
+				</div>
+				<div style="text-align: center; border-top: 1pt solid #eee; padding-top: 4mm; font-size: 9pt; color: #888;">
+					Pour Toujours et à Jamais
+				</div>
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	const inputVowText = document.getElementById('input-vow-text');
+	const btnLoadSample = document.getElementById('btn-load-sample');
+	const selectSpeakingPace = document.getElementById('select-speaking-pace');
+	const selectEmotionBuffer = document.getElementById('select-emotion-buffer');
+	const inputPartnerWords = document.getElementById('input-partner-words');
+
+	const statDurationTime = document.getElementById('stat-duration-time');
+	const statDurationSub = document.getElementById('stat-duration-sub');
+	const statWordCount = document.getElementById('stat-word-count');
+	const badgeWordStatus = document.getElementById('badge-word-status');
+	const statCharCount = document.getElementById('stat-char-count');
+	const statBookletPages = document.getElementById('stat-booklet-pages');
+	const statPartnerBalance = document.getElementById('stat-partner-balance');
+
+	const displayStopwatch = document.getElementById('display-stopwatch');
+	const btnTimerToggle = document.getElementById('btn-timer-toggle');
+	const btnTimerReset = document.getElementById('btn-timer-reset');
+
+	const SAMPLE_VOWS = `Dès le premier jour où nos regards se sont croisés à Paris, j'ai su au fond de moi que ma vie prenait un tournant magnifique. Tu as apporté tellement de joie, d'éclats de rire et de douceur dans mon quotidien.
+
+J'admire ta générosité infinie, ta patience inébranlable et ton incroyable capacité à toujours me faire sourire après les journées les plus difficiles.
+
+Aujourd'hui, devant nos familles et tous nos proches réunis, je te fais ces promesses :
+Je promets de t'écouter toujours avec bienveillance et tendresse.
+Je promets d'encourager chacun de tes rêves et de célébrer chaque victoire à tes côtés.
+Je promets d'être ton roc dans les épreuves et ton complice dans le bonheur.
+Et je promets de te laisser choisir la musique lors de nos grands trajets en voiture.
+
+Tu es ma meilleure moitié, ma plus belle aventure et le grand amour de ma vie. Aujourd'hui, demain et pour toujours, je te choisis.`;
+
+	function calculateVows() {
+		const text = inputVowText.value.trim();
+		const words = text.length > 0 ? text.split(/\s+/).filter(Boolean) : [];
+		const wordCount = words.length;
+		const charCount = text.length;
+
+		statWordCount.textContent = wordCount.toLocaleString();
+		statCharCount.textContent = `${charCount.toLocaleString()} caractères`;
+
+		const paceWPM = parseInt(selectSpeakingPace.value, 10) || 105;
+		const emotionPercent = parseInt(selectEmotionBuffer.value, 10) || 20;
+
+		const rawMinutes = wordCount / paceWPM;
+		const totalSeconds = Math.round(rawMinutes * 60 * (1 + emotionPercent / 100));
+
+		const mins = Math.floor(totalSeconds / 60);
+		const secs = totalSeconds % 60;
+		statDurationTime.textContent = `${mins}m ${secs < 10 ? '0' : ''}${secs}s`;
+
+		if (wordCount === 0) {
+			badgeWordStatus.textContent = 'Écrivez vos vœux';
+			badgeWordStatus.style.background = '#f1f5f9';
+			badgeWordStatus.style.color = '#64748b';
+			badgeWordStatus.style.borderColor = '#cbd5e1';
+		} else if (wordCount < 180) {
+			badgeWordStatus.textContent = 'Très court (<1,5 min)';
+			badgeWordStatus.style.background = '#fef3c7';
+			badgeWordStatus.style.color = '#b45309';
+			badgeWordStatus.style.borderColor = '#b45309';
+		} else if (wordCount > 450) {
+			badgeWordStatus.textContent = 'Très long (>4 min)';
+			badgeWordStatus.style.background = '#fee2e2';
+			badgeWordStatus.style.color = '#dc2626';
+			badgeWordStatus.style.borderColor = '#dc2626';
+		} else {
+			badgeWordStatus.textContent = 'Longueur Idéale (2–3 min)';
+			badgeWordStatus.style.background = '#dcfce7';
+			badgeWordStatus.style.color = '#15803d';
+			badgeWordStatus.style.borderColor = '#15803d';
+		}
+
+		const pagesNeeded = Math.max(1, Math.ceil(wordCount / 140));
+		statBookletPages.textContent = `${pagesNeeded} ${pagesNeeded === 1 ? 'page' : 'pages'} (carte livret 4x6 po)`;
+
+		const partnerWords = parseInt(inputPartnerWords.value, 10);
+		if (!partnerWords || partnerWords <= 0) {
+			statPartnerBalance.textContent = 'Indiquez les mots du conjoint';
+			statPartnerBalance.style.color = '#64748b';
+		} else {
+			const diff = Math.abs(wordCount - partnerWords);
+			const ratio = wordCount / partnerWords;
+			if (ratio >= 0.75 && ratio <= 1.35) {
+				statPartnerBalance.textContent = `✅ Très Équilibré (${diff} mots d'écart)`;
+				statPartnerBalance.style.color = '#15803d';
+			} else if (ratio < 0.75) {
+				statPartnerBalance.textContent = `⚠️ Vos vœux sont plus courts (-${diff} mots)`;
+				statPartnerBalance.style.color = '#b45309';
+			} else {
+				statPartnerBalance.textContent = `⚠️ Vos vœux sont plus longs (+${diff} mots)`;
+				statPartnerBalance.style.color = '#dc2626';
+			}
+		}
+
+		document.getElementById('print-vow-body').textContent = text || 'Écrivez vos vœux pour imprimer...';
+	}
+
+	btnLoadSample.addEventListener('click', () => {
+		inputVowText.value = SAMPLE_VOWS;
+		inputPartnerWords.value = "270";
+		calculateVows();
+	});
+
+	[inputVowText, selectSpeakingPace, selectEmotionBuffer, inputPartnerWords].forEach(el => {
+		el.addEventListener('input', calculateVows);
+		el.addEventListener('change', calculateVows);
+	});
+
+	let timerInterval = null;
+	let startTime = 0;
+	let elapsedTime = 0;
+	let isRunning = false;
+
+	function updateStopwatch() {
+		const now = Date.now();
+		const totalMs = elapsedTime + (now - startTime);
+		const totalSecs = Math.floor(totalMs / 1000);
+		const mins = Math.floor(totalSecs / 60);
+		const secs = totalSecs % 60;
+		const tenths = Math.floor((totalMs % 1000) / 100);
+		displayStopwatch.textContent = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}.${tenths}`;
+	}
+
+	btnTimerToggle.addEventListener('click', () => {
+		if (!isRunning) {
+			isRunning = true;
+			startTime = Date.now();
+			timerInterval = setInterval(updateStopwatch, 100);
+			btnTimerToggle.textContent = '⏸️ Pause';
+			btnTimerToggle.style.background = '#dc2626';
+		} else {
+			isRunning = false;
+			elapsedTime += Date.now() - startTime;
+			clearInterval(timerInterval);
+			btnTimerToggle.textContent = '▶️ Reprendre';
+			btnTimerToggle.style.background = '#15803d';
+		}
+	});
+
+	btnTimerReset.addEventListener('click', () => {
+		isRunning = false;
+		clearInterval(timerInterval);
+		elapsedTime = 0;
+		displayStopwatch.textContent = '00:00.0';
+		btnTimerToggle.textContent = '▶️ Lancer l\'Essai';
+		btnTimerToggle.style.background = '#15803d';
+	});
+
+	document.getElementById('btn-print-vow-card').addEventListener('click', () => {
+		calculateVows();
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateVows();
+		const text = inputVowText.value.replace(/\n/g, '<br/>');
+		const duration = statDurationTime.textContent;
+		const words = statWordCount.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Vœux de Mariage</title>
+			<style>body{font-family:Georgia,serif;line-height:1.8;padding:20pt;} h1{text-align:center;font-size:20pt;} .meta{text-align:center;color:#666;font-size:10pt;}</style>
+			</head>
+			<body>
+				<h1>Nos Vœux de Mariage</h1>
+				<p class="meta"><strong>Durée :</strong> ${duration} | <strong>Mots :</strong> ${words}</p>
+				<hr/>
+				<div style="font-size:14pt; margin-top:20pt;">
+					${text}
+				</div>
+				<br/><br/>
+				<p style="text-align:center;font-style:italic;">— Pour Toujours et à Jamais —</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Voeux-Mariage-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	if (!inputVowText.value) {
+		inputVowText.value = SAMPLE_VOWS;
+		inputPartnerWords.value = "270";
+	}
+	calculateVows();
+</script>

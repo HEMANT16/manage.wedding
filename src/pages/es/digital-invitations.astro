@@ -1,0 +1,741 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/digital-invitations/#webapp",
+      "name": "Generador de Invitaciones Digitales de Boda y Tarjetas E-Invite",
+      "url": "https://manage.wedding/es/digital-invitations",
+      "inLanguage": "es",
+      "description": "Generador online gratuito de invitaciones digitales de boda. Crea tarjetas electrónicas personalizadas para tu lista de invitados con mensajes para WhatsApp/SMS, descarga en imagen PNG de alta resolución, Word y PDF.",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Crear, Enviar y Gestionar Invitaciones Digitales de Boda",
+      "description": "Flujo de trabajo en 4 pasos para diseñar tarjetas e-invite personalizadas, redactar mensajes para WhatsApp y gestionar confirmaciones de asistencia.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Paso 1: Introduce los Datos de los Novios y la Boda",
+          "text": "Escribe los nombres de la pareja, fecha, hora, lugar de la ceremonia y banquete, código de vestimenta (dress code) y enlace a la web de boda o formulario RSVP."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 2: Elige el Estilo Visual de la Tarjeta",
+          "text": "Selecciona el marco estético: Caligrafía Clásica Minimalista, Botánico / Eucalipto, Arco Romántico Toscano o Gala Black-Tie."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 3: Sincroniza la Lista de Invitados para Personalizar por Nombre",
+          "text": "Conecta tu lista de invitados para generar automáticamente tarjetas personalizadas con el nombre de cada familia o pareja."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 4: Exporta Tarjetas en PNG, PDF para Imprimir o Mensajes para WhatsApp",
+          "text": "Descarga las imágenes individuales en alta resolución, las hojas en PDF o el archivo Word con los mensajes redactados listos para copiar y pegar en WhatsApp."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Es correcto según el protocolo enviar invitaciones de boda digitales?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "¡Por supuesto! Más del 70% de las parejas actuales combinan invitaciones digitales y físicas. Las e-invites son ecológicas, suponen un ahorro de más de 800 € a 2.000 € en imprenta y sellos de correos, y permiten recibir confirmaciones con un solo clic en WhatsApp."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Con cuánta antelación se deben enviar las invitaciones digitales?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Para una boda local, entre 6 y 8 semanas antes (con Save the Date previo a 6-8 meses). Para bodas de destino, envíalas entre 10 y 14 semanas antes para que los invitados reserven alojamiento y transporte."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo enviar la invitación digital por WhatsApp sin perder calidad?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Descarga la tarjeta en imagen PNG de alta resolución y envíala acompañada del texto personalizado que genera esta herramienta (incluyendo el enlace directo de confirmación y el mapa de la finca)."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Generador de Invitaciones Digitales de Boda (E-Invites Gratis) | Manage.Wedding"
+	description="Crea y descarga invitaciones digitales de boda personalizadas para cada invitado. Incluye textos para WhatsApp/SMS, Word, PDF e imágenes PNG en alta resolución."
+	schema={schema}
+>
+	<!-- Include html2canvas for instant image capture -->
+	<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Invitaciones Digitales" category="stationery-creative" />
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Generador de Invitaciones <span class="accent-italic">Digitales</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Crea invitaciones electrónicas personalizadas en alta resolución para cada invitado de tu lista. Exporta tarjetas en <strong>PNG</strong>, <strong>PDF para imprimir</strong> o <strong>Word (.doc)</strong> con mensajes listos para WhatsApp.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Cómo Crear tus Invitaciones Digitales en 3 Pasos
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Datos de la Boda y Estilo
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Indica vuestros nombres, fecha, iglesia/finca, código de vestimenta (dress code) y el marco de diseño preferido.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Nombres de Invitados
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						La herramienta se conecta con tu lista o puedes hacer clic en <strong>"✨ Cargar Ejemplo"</strong> para generar tarjetas con nombres personalizados.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Descarga PNG y Textos WhatsApp
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Descarga imágenes PNG nítidas o exporta a Word (`.doc`) con los textos individualizados listos para enviar por WhatsApp.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Controls + Live Preview & Generated Roster -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="invitations-calc-grid">
+			
+			<!-- Left Column: Wedding Details Form & Guest Sync -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+						💌 Datos de la Boda y Diseño
+					</h2>
+					<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+						Personaliza el texto, los detalles del enlace y el marco visual
+					</span>
+				</div>
+
+				<form id="invite-form" style="display: flex; flex-direction: column; gap: 1rem;">
+					
+					<!-- Theme Style Selector -->
+					<div>
+						<label for="select-card-theme" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--accent-red); margin-bottom: 0.25rem;">
+							Estilo de Diseño de la Tarjeta
+						</label>
+						<select id="select-card-theme" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+							<option value="classic" selected>✒️ Caligrafía Clásica y Tinta (Elegancia Minimalista)</option>
+							<option value="botanical">🌿 Marco Botánico y Hojas de Eucalipto</option>
+							<option value="romantic">🏛️ Arco Romántico Toscano y Papel Artesanal</option>
+							<option value="modern">✨ Marco de Gala Moderno Black-Tie</option>
+						</select>
+					</div>
+
+					<!-- Couple's Names -->
+					<div>
+						<label for="input-couples-names" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Nombres de la Pareja *
+						</label>
+						<input type="text" id="input-couples-names" value="Elena & Alejandro" required style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-heading); font-size: 1.1rem; background: #fff;">
+					</div>
+
+					<!-- Wedding Date & Time -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+						<div>
+							<label for="input-wedding-date" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Fecha y Hora *
+							</label>
+							<input type="text" id="input-wedding-date" value="Sábado, 17 de Octubre de 2026 a las 18:00 h" required style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.85rem; background: #fff;">
+						</div>
+						<div>
+							<label for="input-rsvp-deadline" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Confirmar Antes de (RSVP)
+							</label>
+							<input type="text" id="input-rsvp-deadline" value="15 de Septiembre de 2026" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.85rem; background: #fff;">
+						</div>
+					</div>
+
+					<!-- Location & Dress Code -->
+					<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.6rem;">
+						<div>
+							<label for="input-wedding-location" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Lugar y Finca / Ciudad *
+							</label>
+							<input type="text" id="input-wedding-location" value="Finca Los Jardines del Sol, Madrid" required style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.85rem; background: #fff;">
+						</div>
+						<div>
+							<label for="input-dress-code" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Código de Vestimenta
+							</label>
+							<select id="input-dress-code" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.85rem;">
+								<option value="Etiqueta / Traje Oscuro y Vestido Largo" selected>Etiqueta / Traje y Vestido Largo</option>
+								<option value="Cóctel Elegante">Cóctel Elegante</option>
+								<option value="Garden Party / Campestre">Garden Party / Campestre</option>
+								<option value="Formal">Formal</option>
+								<option value="Informal / Relajado">Informal / Relajado</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- RSVP Website & Short Message -->
+					<div>
+						<label for="input-rsvp-link" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Enlace Web de Boda / Formulario de Confirmación
+						</label>
+						<input type="text" id="input-rsvp-link" value="https://manage.wedding/es/rsvp" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.85rem; background: #fff;">
+					</div>
+
+					<div>
+						<label for="input-wedding-message" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Mensaje de Bienvenida / Nota Especial
+						</label>
+						<textarea id="input-wedding-message" rows="2" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.85rem; background: #fff; resize: vertical;">¡Banquete, cóctel, barra libre y fiesta tras la ceremonia!</textarea>
+					</div>
+
+					<!-- Guest Personalization Toggle & Management Toolbar -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.6rem;">
+						
+						<!-- Personalization Mode Toggle -->
+						<div style="display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.5rem 0.75rem;">
+							<div>
+								<strong class="font-heading" style="font-size: 0.92rem; color: var(--fg-pencil); display: block;">
+									Personalizar con Nombre de Invitado
+								</strong>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">
+									Desactívalo para obtener una tarjeta universal para grupos
+								</span>
+							</div>
+							<label style="display: flex; align-items: center; cursor: pointer;">
+								<input type="checkbox" id="chk-include-guest-name" checked style="width: 20px; height: 20px; accent-color: var(--accent-blue); cursor: pointer;">
+							</label>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
+							<span class="font-heading" style="font-size: 0.9rem; color: var(--fg-pencil);">
+								👥 Lista de Invitados: <strong id="guest-count-badge">0 Invitados</strong>
+							</span>
+							<div style="display: flex; gap: 0.3rem;">
+								<button type="button" id="btn-load-sample-guests" class="hand-btn" style="padding: 0.25rem 0.55rem; font-size: 0.78rem; background: #eff6ff;">
+									✨ Cargar Ejemplo
+								</button>
+								<button type="button" id="btn-clear-all-guests" class="hand-btn secondary" style="padding: 0.25rem 0.55rem; font-size: 0.78rem; color: #b91c1c;">
+									🗑️ Vaciar
+								</button>
+							</div>
+						</div>
+
+						<div style="display: flex; gap: 0.4rem;">
+							<input type="text" id="input-quick-add-guest" placeholder="Escribe nombre y pulsa Añadir..." style="flex: 1; padding: 0.35rem 0.5rem; border: 1px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem;">
+							<button type="button" id="btn-quick-add-guest" class="hand-btn" style="padding: 0.35rem 0.65rem; font-size: 0.85rem;">
+								+ Añadir
+							</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Card Preview & Batch Generation Export Box -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Live Card Preview Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								🖼️ Vista Previa de la Invitación
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Renderizado en tiempo real de la tarjeta digital
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Exportar Textos WhatsApp (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Exportar PDF / Imprimir
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- The Interactive Preview Canvas Card -->
+					<div id="preview-invite-card" class="theme-classic" style="border: 2.5px solid var(--fg-pencil); border-radius: 6px; padding: 2rem 1.5rem; background: var(--bg-paper); text-align: center; position: relative; box-shadow: 3px 3px 0px var(--fg-pencil); margin-bottom: 1.5rem;">
+						
+						<!-- Aesthetic Hand-Drawn Corner Markers -->
+						<div style="position: absolute; top: 6px; left: 6px; width: 16px; height: 16px; border-top: 2px solid var(--fg-pencil); border-left: 2px solid var(--fg-pencil);"></div>
+						<div style="position: absolute; top: 6px; right: 6px; width: 16px; height: 16px; border-top: 2px solid var(--fg-pencil); border-right: 2px solid var(--fg-pencil);"></div>
+						<div style="position: absolute; bottom: 6px; left: 6px; width: 16px; height: 16px; border-bottom: 2px solid var(--fg-pencil); border-left: 2px solid var(--fg-pencil);"></div>
+						<div style="position: absolute; bottom: 6px; right: 6px; width: 16px; height: 16px; border-bottom: 2px solid var(--fg-pencil); border-right: 2px solid var(--fg-pencil);"></div>
+
+						<p style="font-family: var(--font-body); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 2.5px; color: var(--accent-red); margin: 0 0 0.5rem 0; font-weight: bold;">
+							ESTÁIS CORDIALMENTE INVITADOS A CELEBRAR
+						</p>
+
+						<h3 id="prev-guest-name" class="font-heading" style="font-size: 1.4rem; color: var(--accent-blue); margin: 0 0 0.75rem 0;">
+							Queridos Elena & Javier,
+						</h3>
+
+						<p style="font-family: var(--font-body); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); margin: 0 0 0.4rem 0;">
+							Junto a nuestras familias
+						</p>
+
+						<h2 id="prev-couples-names" class="font-heading" style="font-size: 2.4rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; line-height: 1.15;">
+							Elena & Alejandro
+						</h2>
+
+						<div style="width: 50px; height: 2px; background: var(--fg-pencil); margin: 0.6rem auto;"></div>
+
+						<p id="prev-wedding-message" class="font-body" style="font-size: 0.95rem; font-style: italic; color: var(--fg-pencil); margin: 0.5rem 0 1rem 0; line-height: 1.4;">
+							"¡Banquete, cóctel, barra libre y fiesta tras la ceremonia!"
+						</p>
+
+						<div style="border-top: 1.5px dashed var(--fg-pencil); border-bottom: 1.5px dashed var(--fg-pencil); padding: 0.75rem 0; margin: 1rem 0;">
+							<p id="prev-wedding-date" class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 0 0 0.25rem 0; font-weight: bold;">
+								Sábado, 17 de Octubre de 2026 a las 18:00 h
+							</p>
+							<p id="prev-wedding-location" class="font-body" style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+								Finca Los Jardines del Sol, Madrid
+							</p>
+						</div>
+
+						<div style="display: flex; justify-content: space-around; font-size: 0.8rem; font-family: var(--font-body); color: var(--fg-pencil); margin-top: 0.75rem;">
+							<span>👔 Vestimenta: <strong id="prev-dress-code">Etiqueta</strong></span>
+							<span>📅 Confirmar antes: <strong id="prev-rsvp-deadline">15 Sept 2026</strong></span>
+						</div>
+
+						<p id="prev-rsvp-link" style="font-family: var(--font-body); font-size: 0.78rem; color: var(--accent-blue); margin: 0.75rem 0 0 0; text-decoration: underline;">
+							Confirmar asistencia: https://manage.wedding/es/rsvp
+						</p>
+					</div>
+
+					<button type="button" id="btn-download-sample-png" class="hand-btn" style="width: 100%; text-align: center; font-size: 1rem; padding: 0.65rem; background: #f0fdf4;">
+						📸 Descargar Esta Tarjeta de Muestra (PNG en Alta Resolución)
+					</button>
+
+				</div>
+
+				<!-- Generated Guest Cards Stream Box -->
+				<div class="hand-card" style="padding: 1.5rem; background: #fff; max-height: 450px; overflow-y: auto;">
+					<h3 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center;">
+						📥 Tarjetas E-Invite Generadas por Invitado
+					</h3>
+					<div id="invites-stream-container" style="display: flex; flex-direction: column; gap: 0.75rem;">
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Invitaciones Oficiales de Boda</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportado el: <span id="print-date"></span> | Pareja: <span id="print-couple"></span></p>
+			</div>
+			<div id="print-invites-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;"></div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 0 auto 3rem auto; max-width: 900px; background: var(--post-it); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);"></div>
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h2 class="font-heading" style="font-size: clamp(1.3rem, 2.5vw, 1.7rem); color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Protocolo y Plazos de Envío Digital
+				</h2>
+				<span style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(0,0,0,0.06); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid var(--fg-pencil);">
+					Calendario de Envíos
+				</span>
+			</div>
+			
+			<div style="background: rgba(255, 255, 255, 0.9); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.6; margin: 0 0 0.5rem 0; color: var(--fg-pencil);">
+					<strong>Plazos Recomendados de Envío:</strong> 
+					<span style="display: inline-block; background: #fef3c7; border: 1px solid #d97706; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #92400e; margin: 2px 4px;">Save-the-Date Digital = 6–8 Meses Antes</span> · 
+					<span style="display: inline-block; background: #eff6ff; border: 1px solid #3b82f6; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #1e40af; margin: 2px 4px;">Invitaciones Formales = 6–8 Semanas Antes</span> · 
+					<span style="display: inline-block; background: #f0fdf4; border: 1px solid #22c55e; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #166534; margin: 2px 4px;">Recordatorio WhatsApp = 2 Semanas Antes del Cierre</span>
+				</p>
+				<p class="font-body" style="font-size: 0.9rem; margin: 0; color: var(--text-secondary); line-height: 1.5;">
+					<strong>Buenas Prácticas en WhatsApp:</strong> No envíes solo la imagen. Acompáñala siempre de un mensaje cordial que incluya el enlace directo para confirmar asistencia y el mapa de llegada.
+				</p>
+			</div>
+		</div>
+
+		<RelatedTools currentPath="/es/digital-invitations" category="stationery" />
+
+	</main>
+</Layout>
+
+<style>
+	.theme-classic {
+		background: #faf8f5 !important;
+	}
+	.theme-botanical {
+		background: #f4f8f3 !important;
+		border-color: #2d5a27 !important;
+	}
+	.theme-romantic {
+		background: #fdf5f2 !important;
+		border-color: #9f4d36 !important;
+	}
+	.theme-modern {
+		background: #ffffff !important;
+		border-color: #000000 !important;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let guestList = [];
+
+	const couplesNamesInput = document.getElementById('input-couples-names');
+	const weddingDateInput = document.getElementById('input-wedding-date');
+	const weddingLocationInput = document.getElementById('input-wedding-location');
+	const rsvpDeadlineInput = document.getElementById('input-rsvp-deadline');
+	const dressCodeSelect = document.getElementById('input-dress-code');
+	const rsvpLinkInput = document.getElementById('input-rsvp-link');
+	const weddingMessageInput = document.getElementById('input-wedding-message');
+	const cardThemeSelect = document.getElementById('select-card-theme');
+
+	const prevGuestName = document.getElementById('prev-guest-name');
+	const prevCouplesNames = document.getElementById('prev-couples-names');
+	const prevWeddingDate = document.getElementById('prev-wedding-date');
+	const prevWeddingLocation = document.getElementById('prev-wedding-location');
+	const prevWeddingMessage = document.getElementById('prev-wedding-message');
+	const prevDressCode = document.getElementById('prev-dress-code');
+	const prevRsvpDeadline = document.getElementById('prev-rsvp-deadline');
+	const prevRsvpLink = document.getElementById('prev-rsvp-link');
+	const previewCard = document.getElementById('preview-invite-card');
+
+	const guestCountBadge = document.getElementById('guest-count-badge');
+	const invitesStreamContainer = document.getElementById('invites-stream-container');
+
+	const chkIncludeGuestName = document.getElementById('chk-include-guest-name');
+
+	function loadGuests() {
+		try {
+			const saved = localStorage.getItem('manage_wedding_guests_es');
+			if (saved) {
+				guestList = JSON.parse(saved);
+			}
+		} catch (e) {
+			guestList = [];
+		}
+
+		if (!guestList || guestList.length === 0) {
+			guestList = [
+				{ name: "Elena & Javier García", group: "Familia de la Novia" },
+				{ name: "Lucía Santos & Pareja", group: "Amigos del Novio" },
+				{ name: "David Millán", group: "Compañeros de Trabajo" },
+				{ name: "Tía Carmen & Tío Manuel", group: "VIPs" }
+			];
+		}
+		renderAll();
+	}
+
+	function renderAll() {
+		const names = couplesNamesInput.value || 'Elena & Alejandro';
+		const date = weddingDateInput.value || 'Sábado, 17 de Octubre de 2026 a las 18:00 h';
+		const location = weddingLocationInput.value || 'Finca Los Jardines del Sol, Madrid';
+		const rsvpDeadline = rsvpDeadlineInput.value || '15 de Septiembre de 2026';
+		const dressCode = dressCodeSelect.value || 'Etiqueta';
+		const rsvpLink = rsvpLinkInput.value || 'https://manage.wedding/es/rsvp';
+		const msg = weddingMessageInput.value || '¡Banquete, cóctel, barra libre y fiesta tras la ceremonia!';
+		const theme = cardThemeSelect.value || 'classic';
+		const isPersonalized = chkIncludeGuestName.checked;
+
+		prevCouplesNames.textContent = names;
+		prevWeddingDate.textContent = date;
+		prevWeddingLocation.textContent = location;
+		prevRsvpDeadline.textContent = rsvpDeadline;
+		prevDressCode.textContent = dressCode;
+		prevRsvpLink.textContent = `Confirmar asistencia: ${rsvpLink}`;
+		prevWeddingMessage.textContent = msg ? `"${msg}"` : '';
+
+		if (isPersonalized && guestList.length > 0) {
+			prevGuestName.style.display = 'block';
+			if (!prevGuestName.textContent.startsWith('Queridos ') && !prevGuestName.textContent.startsWith('Querido ') && !prevGuestName.textContent.startsWith('Querida ')) {
+				prevGuestName.textContent = `Queridos ${guestList[0].name},`;
+			}
+		} else {
+			prevGuestName.style.display = 'none';
+		}
+
+		previewCard.className = `theme-${theme}`;
+		guestCountBadge.textContent = `${guestList.length} Invitados`;
+
+		invitesStreamContainer.innerHTML = '';
+		if (guestList.length === 0) {
+			invitesStreamContainer.innerHTML = `
+				<div style="text-align: center; padding: 1rem; color: var(--text-secondary); font-style: italic; font-size: 0.9rem;">
+					No hay comensales individuales. La tarjeta está en <strong>Modo Universal</strong> (Ideal para grupos de WhatsApp o redes sociales).
+				</div>
+			`;
+		} else {
+			guestList.forEach((guest, idx) => {
+				const item = document.createElement('div');
+				item.style.cssText = `display: flex; justify-content: space-between; align-items: center; background: var(--bg-paper); border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.5rem 0.75rem;`;
+				item.innerHTML = `
+					<div>
+						<strong class="font-heading" style="font-size: 0.95rem; color: var(--fg-pencil);">${guest.name}</strong>
+						<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">${guest.group || 'Invitado'}</span>
+					</div>
+					<div style="display: flex; gap: 0.25rem;">
+						<button type="button" class="btn-preview-guest hand-btn" data-idx="${idx}" style="padding: 0.2rem 0.45rem; font-size: 0.75rem; background: #eff6ff;" title="Previsualizar Tarjeta">
+							👁️ Ver
+						</button>
+						<button type="button" class="btn-download-guest hand-btn" data-idx="${idx}" style="padding: 0.2rem 0.45rem; font-size: 0.75rem; background: #f0fdf4;" title="Descargar PNG">
+							📸 PNG
+						</button>
+						<button type="button" class="btn-delete-guest hand-btn secondary" data-idx="${idx}" style="padding: 0.2rem 0.45rem; font-size: 0.75rem; color: #b91c1c;" title="Eliminar">
+							🗑️
+						</button>
+					</div>
+				`;
+				invitesStreamContainer.appendChild(item);
+			});
+		}
+
+		document.querySelectorAll('.btn-preview-guest').forEach(btn => {
+			btn.addEventListener('click', () => {
+				const idx = parseInt(btn.getAttribute('data-idx'));
+				if (guestList[idx]) {
+					chkIncludeGuestName.checked = true;
+					prevGuestName.style.display = 'block';
+					prevGuestName.textContent = `Queridos ${guestList[idx].name},`;
+				}
+			});
+		});
+
+		document.querySelectorAll('.btn-download-guest').forEach(btn => {
+			btn.addEventListener('click', () => {
+				const idx = parseInt(btn.getAttribute('data-idx'));
+				if (guestList[idx]) {
+					chkIncludeGuestName.checked = true;
+					prevGuestName.style.display = 'block';
+					prevGuestName.textContent = `Queridos ${guestList[idx].name},`;
+					captureCardPNG(guestList[idx].name);
+				}
+			});
+		});
+
+		document.querySelectorAll('.btn-delete-guest').forEach(btn => {
+			btn.addEventListener('click', () => {
+				const idx = parseInt(btn.getAttribute('data-idx'));
+				guestList.splice(idx, 1);
+				renderAll();
+			});
+		});
+	}
+
+	function captureCardPNG(filenamePrefix) {
+		if (window.html2canvas) {
+			window.html2canvas(previewCard, {
+				scale: 3,
+				backgroundColor: null,
+				useCORS: true
+			}).then(canvas => {
+				const link = document.createElement('a');
+				const safeName = (filenamePrefix || 'invitacion-boda').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+				link.download = `Invitacion_${safeName}.png`;
+				link.href = canvas.toDataURL("image/png");
+				link.click();
+			});
+		} else {
+			alert("Cargando motor de imagen. Por favor, reintenta en 2 segundos.");
+		}
+	}
+
+	document.getElementById('btn-quick-add-guest').addEventListener('click', () => {
+		const input = document.getElementById('input-quick-add-guest');
+		const val = input.value.trim();
+		if (val) {
+			guestList.push({ name: val, group: 'Invitado' });
+			input.value = '';
+			renderAll();
+		}
+	});
+
+	document.getElementById('btn-clear-all-guests').addEventListener('click', () => {
+		guestList = [];
+		renderAll();
+	});
+
+	document.getElementById('btn-load-sample-guests').addEventListener('click', () => {
+		guestList = [
+			{ name: "Elena & Javier García", group: "Familia de la Novia" },
+			{ name: "Lucía Santos & Pareja", group: "Amigos del Novio" },
+			{ name: "David Millán", group: "Compañeros de Trabajo" },
+			{ name: "Tía Carmen & Tío Manuel", group: "VIPs" },
+			{ name: "Sara & Tomás Morales", group: "Amigos en Común" }
+		];
+		chkIncludeGuestName.checked = true;
+		renderAll();
+	});
+
+	[couplesNamesInput, weddingDateInput, weddingLocationInput, rsvpDeadlineInput, dressCodeSelect, rsvpLinkInput, weddingMessageInput, cardThemeSelect, chkIncludeGuestName].forEach(el => {
+		el.addEventListener('input', renderAll);
+		el.addEventListener('change', renderAll);
+	});
+
+	document.getElementById('btn-download-sample-png').addEventListener('click', () => {
+		captureCardPNG('Muestra_Invitacion');
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		let sections = '';
+		guestList.forEach(guest => {
+			sections += `
+				<div style="margin-bottom: 25px; padding: 15px; border: 1px solid #ccc; background: #fafafa;">
+					<h3 style="margin: 0 0 8px 0; color: #1e3a8a;">Texto personalizado para: ${guest.name}</h3>
+					<p style="margin: 0; font-family: monospace; font-size: 13px; line-height: 1.5; color: #333;">
+						"¡Hola ${guest.name}! ${couplesNamesInput.value} os invitamos con muchísima ilusión a celebrar nuestra boda el ${weddingDateInput.value} en ${weddingLocationInput.value}. Vestimenta: ${dressCodeSelect.value}. Podéis ver vuestra invitación formal adjunta y confirmar asistencia antes del ${rsvpDeadlineInput.value} aquí: ${rsvpLinkInput.value}"
+					</p>
+				</div>
+			`;
+		});
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Textos de Invitación de Boda para WhatsApp</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Textos de Invitación Listos para Enviar</h1>
+				<p>Generado el ${new Date().toLocaleDateString('es-ES')} | Pareja: <strong>${couplesNamesInput.value}</strong> | Total Invitados: <strong>${guestList.length}</strong></p>
+				
+				<h2>Mensajes para WhatsApp y SMS:</h2>
+				${sections}
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Mensajes_Invitaciones_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('es-ES');
+		document.getElementById('print-couple').textContent = couplesNamesInput.value;
+
+		const grid = document.getElementById('print-invites-grid');
+		grid.innerHTML = '';
+
+		guestList.forEach(guest => {
+			const card = document.createElement('div');
+			card.style.cssText = `border: 2px solid #000; padding: 20px; text-align: center; font-family: 'Times New Roman', serif; margin-bottom: 15px;`;
+			card.innerHTML = `
+				<p style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 5px 0;">Estáis Cordialmente Invitados</p>
+				<h3 style="font-size: 18px; margin: 0 0 10px 0;">Queridos ${guest.name},</h3>
+				<p style="font-size: 12px; margin: 0 0 5px 0;">Para celebrar el enlace de</p>
+				<h2 style="font-size: 26px; margin: 0 0 10px 0;">${couplesNamesInput.value}</h2>
+				<p style="font-size: 14px; font-weight: bold; margin: 10px 0 5px 0;">${weddingDateInput.value}</p>
+				<p style="font-size: 12px; color: #444; margin: 0 0 10px 0;">${weddingLocationInput.value}</p>
+				<p style="font-size: 11px; margin: 0;">Vestimenta: ${dressCodeSelect.value} | Confirmar: ${rsvpLinkInput.value}</p>
+			`;
+			grid.appendChild(card);
+		});
+
+		window.print();
+	});
+
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Invitado,Grupo,Enlace RSVP,Estado\n";
+		guestList.forEach(guest => {
+			csv += `"${guest.name}","${guest.group || 'General'}","${rsvpLinkInput.value}","Lista para Enviar"\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Listado_Invitaciones_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	loadGuests();
+</script>

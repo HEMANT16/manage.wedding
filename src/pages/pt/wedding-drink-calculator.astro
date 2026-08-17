@@ -1,0 +1,422 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Calculadora de Bebidas para Casamento",
+      "url": "https://manage.wedding/pt/wedding-drink-calculator",
+      "inLanguage": "pt",
+      "description": "Calcule as quantidades exatas de vinho, cerveja, bebidas espirituosas, refrigerantes, espumante e gelo necessárias para o bar aberto e copo-d'água do seu casamento.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Como Calcular as Quantidades de Bebidas para o Casamento",
+      "description": "Guia passo a passo para calcular vinho, cerveja, destilados e gelo para o bar da festa de casamento.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Indique o Número de Convidados e Duração",
+          "text": "Introduza o número de adultos e as horas totais de bar aberto (habitualmente entre 4 e 6 horas)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Escolha o Tipo de Bar e Ritmo de Consumo",
+          "text": "Selecione Bar Aberto Completo (com espirituosas) ou Bar Suave (apenas cerveja e vinho) e o perfil dos convidados (moderado ou animado)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Ative o Brinde com Espumante",
+          "text": "Contemple 1 flûte por convidado (6 taças por garrafa de 750ml) para o momento do corte do bolo."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Obtenha a Lista de Compras Completa",
+          "text": "Veja as quantidades exatas de garrafas de vinho, grades de cerveja, litros de sumos/águas e quilos de gelo."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Como funciona a calculadora de bebidas para casamento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A calculadora cruza o número de convidados adultos, a duração do evento em horas e os hábitos de consumo para gerar uma lista de compras exata dividida entre vinho, cerveja, destilados e gelo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quantos copos rende uma garrafa de vinho de 750ml?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Uma garrafa padrão de 750ml de vinho tinto, branco ou rosé rende exatamente 5 copos de serviço normal (cerca de 150ml por copo)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quantas doses rende uma garrafa de bebida branca / espirituosa?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Uma garrafa de 750ml de destilados (gin, vodka, whisky, rum) rende aproximadamente 16 doses para cocktails (com doses padrão de 45ml a 50ml)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quantas taças rende uma garrafa de espumante ou champanhe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Num brinde de corte de bolo, as flûtes levam cerca de 125ml, pelo que cada garrafa de 750ml serve rigorosamente 6 convidados."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Bebidas para Casamento (Bar Aberto & Vinhos) | Manage.Wedding"
+	description="Calcule a quantidade exata de vinho, cerveja, destilados, sumos e gelo para o bar do seu casamento. Estimativas gratuitas com lista de compras em garrafas e litros."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<Breadcrumb title="Calculadora de Bebidas" category="food-dining" />
+		<header class="fade-in category-header" style="text-align: center;">
+			<h1 class="font-heading" style="font-size: 3.5rem; margin-bottom: 0.5rem; font-weight: 500;">Calculadora de <span class="accent-italic">Bebidas para Casamento</span></h1>
+			<p class="font-body" style="color: var(--secondary-ink); max-width: 650px; margin: 0 auto;">Introduza os dados da sua festa para calcular com rigor o vinho, cerveja, bebidas brancas, refrigerantes e gelo para o bar aberto.</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 800px;">
+			<div class="hand-card">
+				<form id="calc-form">
+					<div class="form-group">
+						<label class="form-label" for="guests">Número de Convidados Adultos</label>
+						<input type="number" id="guests" class="form-input" value="100" min="1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="hours">Duração do Evento / Bar Aberto (Horas)</label>
+						<input type="number" id="hours" class="form-input" value="5" min="1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="barType">Tipo de Bar</label>
+						<select id="barType" class="form-input">
+							<option value="open">Bar Aberto Completo (Cerveja, Vinho & Espirituosas)</option>
+							<option value="soft">Bar Suave (Apenas Cerveja & Vinho)</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="vibe">Ritmo de Consumo dos Convidados</label>
+						<select id="vibe" class="form-input">
+							<option value="average">Médio (1 bebida / hora por pessoa)</option>
+							<option value="light">Moderado (-25% de bebidas)</option>
+							<option value="heavy">Animado / Festa Rija (+25% de bebidas)</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="champagne">Brinde com Espumante / Champanhe?</label>
+						<select id="champagne" class="form-input">
+							<option value="no">Não</option>
+							<option value="yes" selected>Sim (1 taça por convidado no bolo)</option>
+						</select>
+					</div>
+
+					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%;">Calcular Bebidas</button>
+				</form>
+			</div>
+
+			<div class="hand-card result-box" id="result-container">
+				<h3 class="font-heading" style="margin-bottom: 2rem;">A Sua Lista de Compras do Bar</h3>
+				
+				<div class="result-item">
+					<span class="item-label">TOTAL</span>
+					<span class="item-desc">Total de bebidas / doses estimadas</span>
+					<span class="item-value" id="res-total">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">CERVEJA</span>
+					<span class="item-desc">Grades / Caixas (24 garrafas/latas)</span>
+					<span class="item-value" id="res-beer">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">VINHO</span>
+					<span class="item-desc">Garrafas padrão de 750ml (Tinto/Branco)</span>
+					<span class="item-value" id="res-wine">0</span>
+				</div>
+
+				<div class="result-item" id="liquor-box">
+					<span class="item-label">ESPIRITUOSAS</span>
+					<span class="item-desc">Garrafas de 750ml (Gin, Vodka, Whisky, Rum)</span>
+					<span class="item-value" id="res-liquor">0</span>
+				</div>
+
+				<div class="result-item" id="mixer-box">
+					<span class="item-label">REFRIGERANTES</span>
+					<span class="item-desc">Litros de água tónica, sumos e refrigerantes</span>
+					<span class="item-value" id="res-mixers">0</span>
+				</div>
+
+				<div class="result-item" id="champagne-box">
+					<span class="item-label">ESPUMANTE</span>
+					<span class="item-desc">Garrafas de 750ml para o brinde</span>
+					<span class="item-value" id="res-champagne">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">GELO</span>
+					<span class="item-desc">Quilos (kg) de gelo para copos e frappeiras</span>
+					<span class="item-value" id="res-ice">0</span>
+				</div>
+
+				<div id="explanation-box" style="background-color: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 2px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.1); margin-top: 2rem; padding: 1.5rem; text-align: left;">
+					<strong class="font-heading" style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem; color: var(--accent-red);">Como calculámos estes valores:</strong>
+					<p id="explanation-text" class="font-body" style="font-size: 1.1rem; margin: 0; line-height: 1.5;">Calculado com base na regra padrão de 1 bebida por convidado por hora.</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 800px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape"></div>
+			
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Resumo Direto ao Assunto (BLUF)
+				</h3>
+				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
+					Regra de Ouro em 1 Minuto
+				</span>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
+					📐 A Fórmula Central do Bar de Casamento:
+				</div>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
+					<strong>1 Bebida por Convidado por Hora</strong> com uma distribuição clássica de <strong>40% Vinho</strong> (5 copos/garrafa), <strong>30% Cerveja</strong> (24 un/grade), <strong>30% Bebidas Espirituosas</strong> (16 doses/garrafa) e <strong>0,7 a 1 kg de Gelo por Convidado</strong>.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 560px;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Convidados (5h Bar)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Total Bebidas</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Vinho (750ml)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue); text-align: center;">Cerveja (Grades 24)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: #7c3aed; text-align: center;">Destilados (750ml)</th>
+							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--fg-pencil); text-align: right;">Gelo Necessário</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">50 Convidados</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">250 bebidas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">20 garrafas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">3.5 grades (75 un)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">5 garrafas</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">35–50 kg</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ 100 Convidados</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">500 bebidas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">40 garrafas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">6.5 grades (150 un)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: #7c3aed;">10 garrafas</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">70–100 kg</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">150 Convidados</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 bebidas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">60 garrafas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">9.5 grades (225 un)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">14 garrafas</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">105–150 kg</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">200 Convidados</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1000 bebidas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">80 garrafas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">12.5 grades (300 un)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">19 garrafas</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">140–200 kg</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p class="font-body" style="font-size: 0.85rem; color: var(--fg-pencil); margin: 0; line-height: 1.4;">
+				💡 <strong>Brinde de Espumante:</strong> Para o momento do corte do bolo, acrescente <strong>1 garrafa por cada 6 convidados</strong> (ex.: 17 garrafas para 100 pessoas).
+			</p>
+		</div>
+
+		<article class="hand-card" style="margin: 4rem auto; max-width: 800px; padding: 3rem;">
+			<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Como Abastecer o Bar do Casamento com Precisão</h2>
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				Planear o bar do casamento não tem de ser uma dor de cabeça. Ninguém quer que as bebidas acabem a meio da festa nem gastar centenas de euros em garrafas que ninguém vai beber. 
+			</p>
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				Esta calculadora de bebidas automatiza toda a matemática necessária. Basta introduzir o número de convidados e as horas de festa para obter a lista exata.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-red);">A Regra de Ouro: 1 Bebida por Pessoa por Hora</h3>
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				Os profissionais de catering e barmen utilizam a regra consensual de <strong>uma bebida por convidado por hora</strong>. Enquanto alguns convidados bebem três cervejas por hora, outros bebem apenas um copo de vinho durante toda a noite. A média equilibra-se com grande precisão.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-blue);">Dicas Essenciais para o Bar do Casamento</h3>
+			<ul class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.6;">
+				<li style="margin-bottom: 0.5rem;"><strong>Cocktails de Assinatura Simples:</strong> Limite-se a 2 cocktails de assinatura fáceis de servir (ex.: Gin Tónico de autor e Porto Tónico). Cocktails muito complexos criam filas intermináveis no bar.</li>
+				<li style="margin-bottom: 0.5rem;"><strong>Conheça o Perfil dos Convidados:</strong> Num bar aberto completo, a divisão habitual é 40% vinho, 30% cerveja e 30% destilados. Se o seu grupo de amigos preferir cerveja artesanal, reforce os barris e reduza o whisky.</li>
+				<li style="margin-bottom: 0.5rem;"><strong>Adapte ao Clima e Estação:</strong> Casamentos de verão à tarde consomem muito vinho branco, espumante e cerveja fresca. Em casamentos de outono ou inverno, reforce o vinho tinto e destilados como rum e whisky.</li>
+			</ul>
+
+			<h3 class="font-heading" style="font-size: 2rem; margin-top: 3rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Perguntas Frequentes sobre Bebidas</h3>
+			
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">Como funciona a calculadora de bebidas?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">A calculadora utiliza o número de convidados, as horas de festa e o ritmo de consumo para gerar a lista recomendada de grades de cerveja, garrafas de vinho, destilados e quilos de gelo.</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">Quantos copos tem uma garrafa de vinho de 750ml?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Uma garrafa de 750ml rende exatamente <strong>5 copos</strong> de serviço padrão (cerca de 150ml cada).</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">Quantas doses rende uma garrafa de espirituosa / destilado?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Uma garrafa de 750ml de gin, vodka ou whisky rende cerca de <strong>16 doses</strong> para cocktails e combinados.</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">Quantas taças de espumante dá uma garrafa para o brinde?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">As flûtes de espumante utilizam doses de cerca de 125ml, rendendo <strong>6 taças</strong> por cada garrafa de 750ml.</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">Quantas cervejas traz uma grade / caixa?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Uma grade ou caixa padrão de cerveja contém exatamente <strong>24 garrafas ou latas</strong> de 33cl.</p>
+			</details>
+		</article>
+
+		<RelatedTools currentPath="/pt/wedding-drink-calculator" category="food-beverage" />
+	</main>
+
+	<script>
+		document.getElementById('calc-form')?.addEventListener('submit', function(e) {
+			e.preventDefault();
+			
+			const guests = parseInt((document.getElementById('guests') as HTMLInputElement).value) || 0;
+			const hours = parseInt((document.getElementById('hours') as HTMLInputElement).value) || 0;
+			const barType = (document.getElementById('barType') as HTMLSelectElement).value;
+			const vibe = (document.getElementById('vibe') as HTMLSelectElement).value;
+			const champagne = (document.getElementById('champagne') as HTMLSelectElement).value;
+
+			// Base: 1 drink per person per hour
+			let multiplier = 1.0;
+			let vibeText = "consumo médio";
+			if (vibe === 'light') {
+				multiplier = 0.75;
+				vibeText = "consumo mais moderado (-25%)";
+			} else if (vibe === 'heavy') {
+				multiplier = 1.25;
+				vibeText = "festa com consumo reforçado (+25%)";
+			}
+
+			const totalServings = Math.ceil(guests * hours * multiplier);
+
+			let beerRatio = 0.3;
+			let wineRatio = 0.4;
+			let liquorRatio = 0.3;
+
+			if (barType === 'soft') {
+				beerRatio = 0.5;
+				wineRatio = 0.5;
+				liquorRatio = 0;
+			}
+
+			const beerServings = totalServings * beerRatio;
+			const wineServings = totalServings * wineRatio;
+			const liquorServings = totalServings * liquorRatio;
+
+			// 1 grade de cerveja = 24 unidades
+			const beerCases = Math.ceil(beerServings / 24);
+			// 1 garrafa de vinho = 5 copos
+			const wineBottles = Math.ceil(wineServings / 5);
+			// 1 garrafa de destilados (750ml) = 16 doses
+			const liquorBottles = Math.ceil(liquorServings / 16);
+
+			// Espumante: 1 taça por convidado, 6 taças por garrafa
+			const champagneBottles = Math.ceil(guests / 6);
+
+			// Gelo: ~0.75 kg por convidado total
+			const iceKg = Math.ceil(guests * 0.75);
+			// Refrigerantes/Sumos: 1 Litro para cada 3 convidados no bar completo
+			const mixersLiters = barType === 'open' ? Math.ceil(guests / 3) : 0;
+
+			// Update DOM
+			document.getElementById('res-total')!.textContent = totalServings.toString();
+			document.getElementById('res-beer')!.textContent = `${beerCases} (${beerCases * 24} un)`;
+			document.getElementById('res-wine')!.textContent = wineBottles.toString();
+			
+			const liquorBox = document.getElementById('liquor-box')!;
+			const mixerBox = document.getElementById('mixer-box')!;
+			const champagneBox = document.getElementById('champagne-box')!;
+			
+			if (barType === 'soft') {
+				liquorBox.style.display = 'none';
+				mixerBox.style.display = 'none';
+			} else {
+				liquorBox.style.display = 'block';
+				mixerBox.style.display = 'block';
+				document.getElementById('res-liquor')!.textContent = liquorBottles.toString();
+				document.getElementById('res-mixers')!.textContent = `${mixersLiters} L`;
+			}
+
+			if (champagne === 'yes') {
+				champagneBox.style.display = 'block';
+				document.getElementById('res-champagne')!.textContent = champagneBottles.toString();
+			} else {
+				champagneBox.style.display = 'none';
+			}
+
+			document.getElementById('res-ice')!.textContent = `${iceKg} kg`;
+
+			// Update explanation text
+			let expl = `Calculado com a base de 1 bebida por convidado por hora, ajustado para um perfil de ${vibeText}.`;
+			if (barType === 'soft') {
+				expl += ` A distribuição foi dividida em 50% cerveja e 50% vinho.`;
+			} else {
+				expl += ` A distribuição contemplou cerca de 40% vinho, 30% cerveja e 30% bebidas brancas.`;
+			}
+			if (champagne === 'yes') {
+				expl += ` Incluímos também ${champagneBottles} garrafas de espumante para o brinde do corte do bolo (6 taças/garrafa).`;
+			}
+			expl += ` Recomendamos cerca de ${iceKg} kg de gelo para manter as frappeiras e copos sempre frescos.`;
+			
+			document.getElementById('explanation-text')!.textContent = expl;
+		});
+	</script>
+</Layout>

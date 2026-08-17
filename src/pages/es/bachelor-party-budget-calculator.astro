@@ -1,0 +1,1031 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/bachelor-party-budget-calculator/#webapp",
+      "name": "Calculadora de Presupuesto de Despedida de Soltero y Reparto de Gastos",
+      "url": "https://manage.wedding/es/bachelor-party-budget-calculator",
+      "inLanguage": "es",
+      "description": "Calculadora gratuita de despedida de soltero y división de gastos. Calcula el coste exacto por amigo para casa rural, Airbnb, barco, cenas, copas y fiesta cubriendo la parte del novio. Genera mensajes de Bizum, Word y PDF.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Organizar y Repartir los Gastos de una Despedida de Soltero",
+      "description": "Guía paso a paso para el organizador o padrino: planifica el presupuesto, reparte los costes entre los amigos e invita al novio sin perder dinero.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Paso 1: Define los Amigos que Pagan e Invita al Novio",
+          "text": "Establece el número de asistentes y aplica la fórmula N-1: el alojamiento, las comidas y las actividades del novio se dividen a partes iguales entre los amigos."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 2: Reserva Alojamiento y Furgoneta de Grupo",
+          "text": "Suma los costes fijos no negociables: reserva de casa rural o Airbnb, fianza, limpieza y furgoneta o gasolina compartida."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 3: Presupuesta Actividades, Cenas y Fiesta",
+          "text": "Añade estimaciones para karts o barco, cata de cervezas, cena de asador, compras de barbacoa y reservados o copas en discoteca."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 4: Recauda la Fianza Inicial por Bizum",
+          "text": "Envía un mensaje detallado a WhatsApp: recauda el 50% de fianza entre 2 y 4 meses antes para asegurar las reservas y el resto 2 semanas antes."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿El novio paga algo en su despedida de soltero?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En la tradición moderna de las despedidas de soltero, el novio está completamente invitado: sus amigos se reparten a partes iguales su parte del alojamiento, actividades, comidas y copas (fórmula N-1). El novio únicamente suele pagar su propio billete de avión o transporte individual si es un viaje al extranjero."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto cuesta de media una despedida de soltero por persona en España?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Un fin de semana completo fuera (ej. Ibiza, Salamanca, Benidorm, Oporto) suele costar entre 220€ y 450€ por amigo, incluyendo alojamiento, comidas, actividades, copas y cubrir al novio. Una escapada a una casa rural con barbacoa oscila entre 130€ y 220€ por persona."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuándo debe recaudar el dinero el organizador de la despedida?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Recauda el primer pago (50% de fianza para bloquear el Airbnb o casa rural y actividades clave) entre 2 y 4 meses antes. El segundo pago (el 50% restante para compra del supermercado, cenas y copas) debe recaudarse 2 semanas antes del evento. Nunca adelantes grandes sumas con tu tarjeta personal sin recibir antes la fianza."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué hacer si un amigo tiene un presupuesto muy ajustado?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pasa una encuesta anónima de presupuesto antes de elegir ciudad. Si un amigo no puede permitirse el viaje completo, permítele sumarse a planes puntuales (por ejemplo, venir solo a la cena del sábado) o contribuir con una pequeña aportación simbólica (20-30€) para invitar a la ronda del novio."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Presupuesto de Despedida de Soltero (Reparto de Gastos) | Manage.Wedding"
+	description="Calculadora gratis de despedida de soltero y división de gastos. Calcula el coste exacto por amigo para casa rural, Airbnb, barco, cenas, copas y fiesta cubriendo la parte del novio. Genera mensajes de Bizum, Word y PDF."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Presupuesto Despedida de Soltero" category="budget-finance" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Invitar al Novio & Reparto Bizum</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Presupuesto Despedida de Soltero <span class="accent-italic">& Reparto de Gastos</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Calcula el importe exacto por amigo para casa rural, Airbnb, paseo en barco, cenas de asador y fiesta. Cubre automáticamente la parte del novio y genera mensajes para Bizum y WhatsApp en 1 clic.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Configuración y Categorías -->
+			<div class="hand-card" style="padding: clamp(1.25rem, 3vw, 2.25rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.45rem; margin: 0; color: var(--fg-pencil);">
+						Datos del Viaje y Asistentes
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Fórmula N-1
+					</span>
+				</div>
+
+				<!-- Destination / Preset Picker -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="destination-preset" style="font-weight: 700;">Destino / Tipo de Plan</label>
+					<select id="destination-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600; padding: 0.65rem;">
+						<option value="ibiza" selected>🏖️ Ibiza / Mallorca (Barco, Beach Club & Discotecas / 420€/amigo)</option>
+						<option value="salamanca">🏰 Salamanca / Granada (Tapas, Cañas & Fiesta Universitaria / 190€/amigo)</option>
+						<option value="costa">🏄 Benidorm / Costa del Sol (Karts, Escape Room, Playa / 250€/amigo)</option>
+						<option value="porto">🍷 Oporto / Lisboa (Cata de Vinos, Paseo en Barco, Cenas / 290€/amigo)</option>
+						<option value="rural">🏡 Casa Rural con Piscina (Barbacoa & Fin de Semana Relax / 150€/amigo)</option>
+						<option value="custom">✏️ Configuración Personalizada</option>
+					</select>
+				</div>
+
+				<!-- Nombre del Novio, Amigos que pagan, Noches -->
+				<div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+					<div>
+						<label class="form-label" for="groom-name" style="font-size: 0.9rem; font-weight: 600;">Nombre del Novio</label>
+						<input type="text" id="groom-name" class="form-input" value="Carlos" placeholder="ej. Carlos" />
+					</div>
+					<div>
+						<label class="form-label" for="guys-count" style="font-size: 0.9rem; font-weight: 600;">Amigos que Pagan</label>
+						<input type="number" id="guys-count" class="form-input" value="7" min="1" max="40" />
+					</div>
+					<div>
+						<label class="form-label" for="trip-nights" style="font-size: 0.9rem; font-weight: 600;">Noches</label>
+						<input type="number" id="trip-nights" class="form-input" value="2" min="1" max="30" />
+					</div>
+				</div>
+
+				<!-- Toggle Cubrir al Novio -->
+				<div class="form-group" style="background: #fffcf5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.5rem;">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 700; font-size: 0.98rem; margin: 0;">
+						<input type="checkbox" id="toggle-cover-groom" checked style="width: 18px; height: 18px; cursor: pointer;" />
+						<span>Invitar al Novio 100% (El Novio Paga 0€)</span>
+					</label>
+					<span style="font-size: 0.82rem; color: #64748b; display: block; margin-top: 4px; margin-left: 26px;">
+						Costumbre habitual: Los 7 amigos dividen a partes iguales el total de la despedida.
+					</span>
+				</div>
+
+				<!-- Categorías de Gastos -->
+				
+				<!-- Categoría 1: Alojamiento -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🏡 1. Alojamiento y Fianza (€)
+						</strong>
+						<span id="subtotal-lodging" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">1.100€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-airbnb" style="font-size: 0.85rem;">Airbnb / Casa Rural / Hotel</label>
+							<input type="number" id="exp-airbnb" class="form-input" value="950" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-cleaning" style="font-size: 0.85rem;">Limpieza y Gastos de Gestión</label>
+							<input type="number" id="exp-cleaning" class="form-input" value="150" min="0" step="10" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Categoría 2: Actividades y Aventura -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🏄 2. Actividades y Excursiones (€)
+						</strong>
+						<span id="subtotal-activities" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">650€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+						<div>
+							<label class="form-label" for="exp-boat" style="font-size: 0.85rem;">Paseo en Barco / Catamarán</label>
+							<input type="number" id="exp-boat" class="form-input" value="450" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-shooting" style="font-size: 0.85rem;">Karts / Paintball / Humor Amarillo</label>
+							<input type="number" id="exp-shooting" class="form-input" value="0" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-tours" style="font-size: 0.85rem;">Cata de Cervezas / Bodega</label>
+							<input type="number" id="exp-tours" class="form-input" value="200" min="0" step="20" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-golf" style="font-size: 0.85rem;">Otras Actividades / Aventura</label>
+							<input type="number" id="exp-golf" class="form-input" value="0" min="0" step="20" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Categoría 3: Comidas y Cenas -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🥩 3. Comidas, Asador y Súper (€)
+						</strong>
+						<span id="subtotal-food" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">600€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+						<div>
+							<label class="form-label" for="exp-dinners" style="font-size: 0.85rem;">Cenas de Grupo / Asador</label>
+							<input type="number" id="exp-dinners" class="form-input" value="350" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-groceries" style="font-size: 0.85rem;">Compra Supermercado & Barbacoa</label>
+							<input type="number" id="exp-groceries" class="form-input" value="150" min="0" step="10" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+					<div>
+						<label class="form-label" for="exp-brunch" style="font-size: 0.85rem;">Desayunos, Tapas y Almuerzos</label>
+						<input type="number" id="exp-brunch" class="form-input" value="100" min="0" step="10" style="font-size: 0.95rem;" />
+					</div>
+				</div>
+
+				<!-- Categoría 4: Fiesta y Bebidas -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🍻 4. Fiesta, Copas y Discotecas (€)
+						</strong>
+						<span id="subtotal-nightlife" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">450€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+						<div>
+							<label class="form-label" for="exp-bars" style="font-size: 0.85rem;">Copas y Bares</label>
+							<input type="number" id="exp-bars" class="form-input" value="200" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-vip" style="font-size: 0.85rem;">Reservado / Entradas Club</label>
+							<input type="number" id="exp-vip" class="form-input" value="150" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+					<div>
+						<label class="form-label" for="exp-booze" style="font-size: 0.85rem;">Bebidas y Alcohol para el Alojamiento</label>
+						<input type="number" id="exp-booze" class="form-input" value="100" min="0" step="10" style="font-size: 0.95rem;" />
+					</div>
+				</div>
+
+				<!-- Categoría 5: Transporte -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🚗 5. Transporte y Gasolina (€)
+						</strong>
+						<span id="subtotal-transport" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">120€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-rental" style="font-size: 0.85rem;">Furgoneta Alquiler / Gasolina / Peajes</label>
+							<input type="number" id="exp-rental" class="form-input" value="80" min="0" step="10" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-uber" style="font-size: 0.85rem;">Taxis / VTC (Cabify, Uber)</label>
+							<input type="number" id="exp-uber" class="form-input" value="40" min="0" step="10" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Categoría 6: Camisetas y Disfraces -->
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🧢 6. Camisetas, Disfraces y Detalles (€)
+						</strong>
+						<span id="subtotal-swag" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">90€</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-shirts" style="font-size: 0.85rem;">Camisetas / Disfraz del Novio</label>
+							<input type="number" id="exp-shirts" class="form-input" value="60" min="0" step="5" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-kits" style="font-size: 0.85rem;">Kit Antiresaca y Vasos</label>
+							<input type="number" id="exp-kits" class="form-input" value="30" min="0" step="5" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Resultados, Bizum y Exportaciones -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Cost Breakdown Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.25rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Coste Total por Amigo
+						</span>
+						<span id="groom-status-badge" style="font-size: 0.85rem; font-weight: 800; background: #16a34a; color: #fff; padding: 3px 8px; border-radius: 4px;">
+							🤵 Carlos Paga: 0€
+						</span>
+					</div>
+
+					<div id="display-per-person" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						430€
+					</div>
+
+					<div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); flex-wrap: wrap;">
+						<span>🌙 <strong id="display-per-night" style="color: var(--fg-pencil);">215€</strong> / noche</span>
+						<span>•</span>
+						<span>🎁 Parte del novio: <strong id="display-groom-subsidy" style="color: var(--accent-red); font-weight: 700;">+54€</strong> / amigo</span>
+					</div>
+
+					<p style="font-size: 0.92rem; color: var(--text-secondary); margin: 0 0 1.25rem 0; padding-bottom: 1rem; border-bottom: 1px dashed #cbd5e1;">
+						Gasto total de la despedida: <strong id="display-trip-grand-total" style="color: var(--fg-pencil); font-weight: 700;">3.010€</strong> entre <span id="display-headcount-text">7 amigos</span> (+ novio).
+					</p>
+
+					<!-- Itemized Per-Person Split Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem 1rem; margin-bottom: 1.25rem;">
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🏡 Alojamiento y Fianza:</span>
+							<strong id="item-lodging-share">157€</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🏄 Actividades y Aventura:</span>
+							<strong id="item-activity-share">93€</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🥩 Comidas, Cenas y Asador:</span>
+							<strong id="item-food-share">86€</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🍻 Fiesta, Copas y Discotecas:</span>
+							<strong id="item-nightlife-share">64€</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🚗 Transporte y Gasolina:</span>
+							<strong id="item-transport-share">17€</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.9rem;">
+							<span>🧢 Camisetas y Detalles:</span>
+							<strong id="item-swag-share">13€</strong>
+						</div>
+					</div>
+
+					<!-- Suggested Payment Schedule -->
+					<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.88rem; line-height: 1.5;">
+						<strong style="display: block; color: var(--fg-pencil); margin-bottom: 4px;">📅 Calendario de Pago Recomendado (2 Plazos):</strong>
+						• <strong>Plazo 1 (Fianza Inicial):</strong> <span id="sched-dep-1" style="font-weight: 700; color: var(--accent-red);">215€</span> (para reservar casa y actividades)<br />
+						• <strong>Plazo 2 (2 Semanas Antes):</strong> <span id="sched-dep-2" style="font-weight: 700; color: var(--accent-blue);">215€</span> (comida, copas y logística)
+					</div>
+
+					<!-- Payment Handle & Deadline Setup -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem;">
+						<strong class="font-heading" style="display: block; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+							💳 Datos para el Bizum / Transferencia
+						</strong>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<label class="form-label" for="payment-handle" style="font-size: 0.8rem;">Teléfono Bizum / Cuenta</label>
+								<input type="text" id="payment-handle" class="form-input" value="612 345 678" placeholder="600 000 000" style="font-size: 0.85rem; padding: 0.4rem 0.6rem;" />
+							</div>
+							<div>
+								<label class="form-label" for="payment-deadline" style="font-size: 0.8rem;">Fecha Límite Fianza</label>
+								<input type="text" id="payment-deadline" class="form-input" value="15 de Octubre" placeholder="ej. 15 Oct" style="font-size: 0.85rem; padding: 0.4rem 0.6rem;" />
+							</div>
+						</div>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
+						<button id="btn-copy-venmo" class="hand-btn" style="padding: 10px; font-size: 0.95rem; gap: 0.4rem; grid-column: span 2;">
+							<span>📲</span> Copiar Mensaje para WhatsApp / Bizum
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="padding: 9px; font-size: 0.88rem; gap: 0.3rem;">
+							<span>📄</span> Descargar Word (.doc)
+						</button>
+						<button id="btn-print-pdf" class="hand-btn secondary" style="padding: 9px; font-size: 0.88rem; gap: 0.3rem;">
+							<span>🖨️</span> Imprimir PDF
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Quick Checklist Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						🎯 Consejos para el Organizador:
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.88rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Pide la fianza por adelantado:</strong> Quien no pague en la fecha límite no cuenta en la reserva.</li>
+						<li><strong>Sorpresas con cabeza:</strong> Guarda el secreto del plan pero respeta los gustos y límites del novio.</li>
+						<li><strong>Bote común en Tricount / Splitwise:</strong> Para registrar las rondas de cañas y taxis durante el fin de semana.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Resumen Rápido (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Regla de Oro: Presupuesto y Reparto en Despedidas de Soltero
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					¿Poco tiempo? Aquí tienes la fórmula estándar para invitar al novio y la media de gastos en los principales destinos de España.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					💶 La Fórmula Estándar de Reparto (N-1):
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Coste por Amigo = [Alojamiento + Actividades + Cenas + Fiesta + Bebidas + Transporte + Disfraces] ÷ [Total Asistentes − 1 (Novio)]
+				</p>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin: 6px 0 0 0;">
+					* El novio paga únicamente sus vuelos o transporte personal; los amigos asumen el 100% de la estancia y planes comunes.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Destino / Tipo de Despedida</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Coste Medio por Amigo (2 Noches)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Gastos Principales Incluidos</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Ambiente y Actividades</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">🏖️ Ibiza / Mallorca</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">380€ – 550€</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Apartamento/Villa, catamarán privado, beach club</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Fiesta internacional, calas, discotecas</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">🏰 Salamanca / Granada</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">160€ – 230€</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Hostal/Airbnb centro, ruta de tapas, cena espectáculo</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Ruta de bares, ambiente universitario, tapeo</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">🏄 Benidorm / Salou / Costa del Sol</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">220€ – 320€</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Apartamento playa, karts/paintball, discoteca</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Sol, playa, fiesta non-stop y multiaventura</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #0284c7);">🍷 Oporto / Lisboa</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">260€ – 380€</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Piso céntrico, paseo en velero por el río, cata de vinos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Gastronomía, vida nocturna, planes en barco</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">🏡 Casa Rural (Gredos / Pirineos / Toledo)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">130€ – 200€</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Alquiler íntegro casa, barbacoa gigante, barril de cerveza</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Piscina, juegos, música y relax entre amigos</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guía Definitiva para Organizar el Presupuesto de una Despedida de Soltero
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Organizar una despedida legendaria no tiene por qué convertirse en un dolor de cabeza financiero. Sigue estas recomendaciones de protocolo y recaudación.
+				</p>
+			</div>
+
+			<!-- Section 1: Quién Paga Qué -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. ¿Quién Paga Qué en una Despedida de Soltero?
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Las discusiones de dinero pueden arruinar el ambiente de un grupo de amigos. Para evitar malentendidos, define las reglas del juego antes de reservar:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>Lo que pagan los amigos asistentes:</strong> Su propio transporte, su parte proporcional de la casa rural o Airbnb, actividades, comidas, copas y la parte completa del novio repartida equitativamente.</li>
+					<li><strong>Lo que paga el novio:</strong> Su vuelo o tren personal (si es un destino lejano) y sus gastos individuales previos. Todo lo que ocurra durante el viaje corre a cargo de sus amigos.</li>
+					<li><strong>El papel del organizador / padrino:</strong> Coordina los planes, recoge el dinero y gestiona los pagos. No debe asumir más dinero ni pagar de su bolsillo los impagos de otros.</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: Calendario de Recaudación -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. La Regla de los 2 Pagos por Bizum (Evita Adelantar Dinero)
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					El error más común es reservar un alojamiento de 1.500€ en tu tarjeta y esperar que tus amigos te paguen semanas después. Aplica este método:
+				</p>
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-size: 0.98rem; line-height: 1.6; color: var(--fg-pencil);">
+					<strong>📲 Proceso Recomendado de Recaudación:</strong><br />
+					• <strong>Fase 1 — Fianza Inicial (3 a 5 meses antes):</strong> Recauda el 50% del presupuesto estimado. Con esto reservas la casa rural/Airbnb y las actividades más demandadas (barco o karts). Quien no envíe el Bizum antes del plazo fijado, queda fuera del plan.<br />
+					• <strong>Fase 2 — Saldo Final (2 semanas antes):</strong> Recauda el 50% restante para las compras de supermercado, comida, bebida y entradas de discoteca.<br />
+					• <strong>Durante el Viaje:</strong> Crea un grupo en <em>Tricount</em> o <em>Splitwise</em> para registrar rápidamente las rondas de cañas y taxis compartidos.
+				</div>
+			</section>
+
+			<!-- Section 3: Presupuestos Desiguales -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: #16a34a; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					3. Cómo Gestionar Amigos con Diferente Capacidad Económica
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					En un grupo de amigos suele haber situaciones laborales y económicas variadas. Mantén la empatía:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1rem;">
+					<li><strong>Encuesta Anónima Previa:</strong> Antes de proponer destinos como Ibiza o Ámsterdam, crea un formulario anónimo de Google preguntando cuánto está dispuesto a gastar cada uno (ej. 150€, 300€, 500€+).</li>
+					<li><strong>Flexibilidad en la Asistencia:</strong> Si algún amigo no puede costearse el fin de semana entero, ofrécele venir solo a la cena del sábado o participar de forma simbólica.</li>
+					<li><strong>Transparencia Absoluta:</strong> Comparte el desglose de gastos generado por esta herramienta (en PDF o Word) para que todos vean con claridad en qué se gasta cada euro.</li>
+				</ul>
+			</section>
+
+			<!-- Section 4: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Preguntas Frecuentes
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; background: var(--bg-paper);">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">¿El padrino u organizador paga menos por encargarse del viaje?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						No. El organizador dedica su tiempo y esfuerzo por cariño al novio, pero paga exactamente la misma cuota por persona que el resto de amigos del grupo.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; background: var(--bg-paper);">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">¿Qué pasa si sobra dinero del bote de comida y bebida?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Si sobra dinero al terminar la despedida, se puede emplear en pagar el desayuno de despedida del domingo o devolverse mediante Bizum a partes iguales entre todos los amigos.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; background: var(--bg-paper);">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">¿Con cuántos meses de antelación se debe celebrar la despedida?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Lo ideal es celebrarla entre <strong>1 y 2 meses antes de la boda</strong>. Evita fijar la despedida en las 2 semanas previas a la boda para no acumular cansancio ni imprevistos de última hora.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/es/bachelor-party-budget-calculator" category="budget" />
+
+	</main>
+
+	<!-- Interactive Logic & Export Handlers -->
+	<script is:inline>
+		// Form Elements
+		const presetSelect = document.getElementById('destination-preset');
+		const groomNameInput = document.getElementById('groom-name');
+		const guysCountInput = document.getElementById('guys-count');
+		const tripNightsInput = document.getElementById('trip-nights');
+		const toggleCoverGroom = document.getElementById('toggle-cover-groom');
+
+		// Inputs
+		const expAirbnb = document.getElementById('exp-airbnb');
+		const expCleaning = document.getElementById('exp-cleaning');
+		const expGolf = document.getElementById('exp-golf');
+		const expBoat = document.getElementById('exp-boat');
+		const expShooting = document.getElementById('exp-shooting');
+		const expTours = document.getElementById('exp-tours');
+		const expDinners = document.getElementById('exp-dinners');
+		const expGroceries = document.getElementById('exp-groceries');
+		const expBrunch = document.getElementById('exp-brunch');
+		const expBars = document.getElementById('exp-bars');
+		const expVip = document.getElementById('exp-vip');
+		const expBooze = document.getElementById('exp-booze');
+		const expRental = document.getElementById('exp-rental');
+		const expUber = document.getElementById('exp-uber');
+		const expShirts = document.getElementById('exp-shirts');
+		const expKits = document.getElementById('exp-kits');
+
+		// Subtotal displays
+		const subLodging = document.getElementById('subtotal-lodging');
+		const subActivities = document.getElementById('subtotal-activities');
+		const subFood = document.getElementById('subtotal-food');
+		const subNightlife = document.getElementById('subtotal-nightlife');
+		const subTransport = document.getElementById('subtotal-transport');
+		const subSwag = document.getElementById('subtotal-swag');
+
+		// Summary Displays
+		const displayPerPerson = document.getElementById('display-per-person');
+		const displayPerNight = document.getElementById('display-per-night');
+		const displayGroomSubsidy = document.getElementById('display-groom-subsidy');
+		const displayGrandTotal = document.getElementById('display-trip-grand-total');
+		const displayHeadcountText = document.getElementById('display-headcount-text');
+		const groomStatusBadge = document.getElementById('groom-status-badge');
+
+		// Itemized Shares
+		const itemLodgingShare = document.getElementById('item-lodging-share');
+		const itemActivityShare = document.getElementById('item-activity-share');
+		const itemFoodShare = document.getElementById('item-food-share');
+		const itemNightlifeShare = document.getElementById('item-nightlife-share');
+		const itemTransportShare = document.getElementById('item-transport-share');
+		const itemSwagShare = document.getElementById('item-swag-share');
+
+		// Payment Sched & Action Elements
+		const schedDep1 = document.getElementById('sched-dep-1');
+		const schedDep2 = document.getElementById('sched-dep-2');
+		const paymentHandleInput = document.getElementById('payment-handle');
+		const paymentDeadlineInput = document.getElementById('payment-deadline');
+
+		const btnCopyVenmo = document.getElementById('btn-copy-venmo');
+		const btnExportDoc = document.getElementById('btn-export-doc');
+		const btnPrintPdf = document.getElementById('btn-print-pdf');
+
+		function calculateBachelor() {
+			const guys = parseInt(guysCountInput.value, 10) || 1;
+			const nights = parseInt(tripNightsInput.value, 10) || 1;
+			const coverGroom = toggleCoverGroom.checked;
+			const groom = groomNameInput.value.trim() || 'Carlos';
+
+			// Group Category Sums
+			const lodgingTotal = (parseFloat(expAirbnb.value) || 0) + (parseFloat(expCleaning.value) || 0);
+			const activitiesTotal = (parseFloat(expBoat.value) || 0) + (parseFloat(expShooting.value) || 0) + (parseFloat(expTours.value) || 0) + (parseFloat(expGolf.value) || 0);
+			const foodTotal = (parseFloat(expDinners.value) || 0) + (parseFloat(expGroceries.value) || 0) + (parseFloat(expBrunch.value) || 0);
+			const nightlifeTotal = (parseFloat(expBars.value) || 0) + (parseFloat(expVip.value) || 0) + (parseFloat(expBooze.value) || 0);
+			const transportTotal = (parseFloat(expRental.value) || 0) + (parseFloat(expUber.value) || 0);
+			const swagTotal = (parseFloat(expShirts.value) || 0) + (parseFloat(expKits.value) || 0);
+
+			const grandTotal = lodgingTotal + activitiesTotal + foodTotal + nightlifeTotal + transportTotal + swagTotal;
+			
+			// Headcount Division
+			const totalHeadcount = guys + 1; // guys + groom
+			const payingCount = coverGroom ? guys : totalHeadcount;
+
+			const perPersonTotal = grandTotal / payingCount;
+			const perPersonPerNight = perPersonTotal / Math.max(nights, 1);
+
+			// Groom subsidy calculation (how much extra per guy to cover groom)
+			const baseEqualSplit = grandTotal / totalHeadcount;
+			const subsidyPerGuy = coverGroom ? (perPersonTotal - baseEqualSplit) : 0;
+
+			// Category Shares
+			const lodgingShare = lodgingTotal / payingCount;
+			const activityShare = activitiesTotal / payingCount;
+			const foodShare = foodTotal / payingCount;
+			const nightlifeShare = nightlifeTotal / payingCount;
+			const transportShare = transportTotal / payingCount;
+			const swagShare = swagTotal / payingCount;
+
+			// Update Subtotals
+			subLodging.textContent = `${Math.round(lodgingTotal).toLocaleString('es-ES')}€`;
+			subActivities.textContent = `${Math.round(activitiesTotal).toLocaleString('es-ES')}€`;
+			subFood.textContent = `${Math.round(foodTotal).toLocaleString('es-ES')}€`;
+			subNightlife.textContent = `${Math.round(nightlifeTotal).toLocaleString('es-ES')}€`;
+			subTransport.textContent = `${Math.round(transportTotal).toLocaleString('es-ES')}€`;
+			subSwag.textContent = `${Math.round(swagTotal).toLocaleString('es-ES')}€`;
+
+			// Update Summary Card
+			displayPerPerson.textContent = `${Math.round(perPersonTotal).toLocaleString('es-ES')}€`;
+			displayPerNight.textContent = `${Math.round(perPersonPerNight).toLocaleString('es-ES')}€`;
+			displayGrandTotal.textContent = `${Math.round(grandTotal).toLocaleString('es-ES')}€`;
+			displayHeadcountText.textContent = `${payingCount} amigo${payingCount === 1 ? '' : 's'}`;
+
+			if (coverGroom) {
+				groomStatusBadge.textContent = `🤵 ${groom} Paga: 0€`;
+				groomStatusBadge.style.background = '#16a34a';
+				displayGroomSubsidy.textContent = `+${Math.round(subsidyPerGuy).toLocaleString('es-ES')}€`;
+			} else {
+				groomStatusBadge.textContent = `🤵 ${groom} Paga Cuota Igual: ${Math.round(perPersonTotal).toLocaleString('es-ES')}€`;
+				groomStatusBadge.style.background = '#0284c7';
+				displayGroomSubsidy.textContent = `0€`;
+			}
+
+			// Update Itemized Shares
+			itemLodgingShare.textContent = `${Math.round(lodgingShare).toLocaleString('es-ES')}€`;
+			itemActivityShare.textContent = `${Math.round(activityShare).toLocaleString('es-ES')}€`;
+			itemFoodShare.textContent = `${Math.round(foodShare).toLocaleString('es-ES')}€`;
+			itemNightlifeShare.textContent = `${Math.round(nightlifeShare).toLocaleString('es-ES')}€`;
+			itemTransportShare.textContent = `${Math.round(transportShare).toLocaleString('es-ES')}€`;
+			itemSwagShare.textContent = `${Math.round(swagShare).toLocaleString('es-ES')}€`;
+
+			// 2-Deposit Schedule
+			const dep1 = Math.round(perPersonTotal / 2);
+			const dep2 = Math.round(perPersonTotal) - dep1;
+			schedDep1.textContent = `${dep1.toLocaleString('es-ES')}€`;
+			schedDep2.textContent = `${dep2.toLocaleString('es-ES')}€`;
+		}
+
+		// Preset Selection Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'ibiza') {
+				tripNightsInput.value = 2;
+				expAirbnb.value = 950;
+				expCleaning.value = 150;
+				expBoat.value = 450; // Catamarán
+				expShooting.value = 0;
+				expTours.value = 200;
+				expGolf.value = 0;
+				expDinners.value = 350;
+				expGroceries.value = 150;
+				expBrunch.value = 100;
+				expBars.value = 200;
+				expVip.value = 150;
+				expBooze.value = 100;
+				expRental.value = 80;
+				expUber.value = 40;
+				expShirts.value = 60;
+				expKits.value = 30;
+			} else if (p === 'salamanca') {
+				tripNightsInput.value = 2;
+				expAirbnb.value = 450;
+				expCleaning.value = 60;
+				expBoat.value = 0;
+				expShooting.value = 180; // Paintball / Humor amarillo
+				expTours.value = 120; // Cañas y tapas
+				expGolf.value = 0;
+				expDinners.value = 240; // Cena asador
+				expGroceries.value = 80;
+				expBrunch.value = 60;
+				expBars.value = 150;
+				expVip.value = 0;
+				expBooze.value = 60;
+				expRental.value = 60;
+				expUber.value = 20;
+				expShirts.value = 50;
+				expKits.value = 20;
+			} else if (p === 'costa') {
+				tripNightsInput.value = 2;
+				expAirbnb.value = 650;
+				expCleaning.value = 80;
+				expBoat.value = 250;
+				expShooting.value = 200; // Karts
+				expTours.value = 100;
+				expGolf.value = 0;
+				expDinners.value = 280;
+				expGroceries.value = 120;
+				expBrunch.value = 70;
+				expBars.value = 180;
+				expVip.value = 100;
+				expBooze.value = 80;
+				expRental.value = 70;
+				expUber.value = 30;
+				expShirts.value = 50;
+				expKits.value = 25;
+			} else if (p === 'porto') {
+				tripNightsInput.value = 2;
+				expAirbnb.value = 750;
+				expCleaning.value = 100;
+				expBoat.value = 300; // Velero Duero
+				expShooting.value = 0;
+				expTours.value = 180; // Bodegas Oporto
+				expGolf.value = 0;
+				expDinners.value = 320;
+				expGroceries.value = 100;
+				expBrunch.value = 80;
+				expBars.value = 180;
+				expVip.value = 80;
+				expBooze.value = 80;
+				expRental.value = 90;
+				expUber.value = 40;
+				expShirts.value = 50;
+				expKits.value = 25;
+			} else if (p === 'rural') {
+				tripNightsInput.value = 2;
+				expAirbnb.value = 500; // Casa rural íntegra
+				expCleaning.value = 50;
+				expBoat.value = 0;
+				expShooting.value = 150; // Karts o paintball
+				expTours.value = 0;
+				expGolf.value = 0;
+				expDinners.value = 180;
+				expGroceries.value = 200; // Gran barbacoa
+				expBrunch.value = 40;
+				expBars.value = 0;
+				expVip.value = 0;
+				expBooze.value = 150; // Barriles de cerveza y copas
+				expRental.value = 50;
+				expUber.value = 0;
+				expShirts.value = 40;
+				expKits.value = 20;
+			}
+			calculateBachelor();
+		});
+
+		// Live Listeners for all inputs
+		const allInputs = [
+			groomNameInput, guysCountInput, tripNightsInput, toggleCoverGroom,
+			expAirbnb, expCleaning, expGolf, expBoat, expShooting, expTours,
+			expDinners, expGroceries, expBrunch, expBars, expVip, expBooze,
+			expRental, expUber, expShirts, expKits
+		];
+
+		allInputs.forEach(el => {
+			el.addEventListener('input', calculateBachelor);
+			el.addEventListener('change', calculateBachelor);
+		});
+
+		// Copy WhatsApp / Bizum Request Message
+		btnCopyVenmo.addEventListener('click', () => {
+			const groom = groomNameInput.value.trim() || 'Carlos';
+			const perPerson = displayPerPerson.textContent;
+			const grandTotal = displayGrandTotal.textContent;
+			const handle = paymentHandleInput.value.trim() || '600 000 000';
+			const deadline = paymentDeadlineInput.value.trim() || 'próximamente';
+			const nights = tripNightsInput.value;
+			const dep1 = schedDep1.textContent;
+			const dep2 = schedDep2.textContent;
+
+			let text = `🎉 *Despedida de Soltero de ${groom} — Presupuesto y Pagos*\n\n`;
+			text += `¡Buenas chavales! Aquí tenéis el desglose completo del viaje de ${groom} (${nights} Noches):\n\n`;
+			text += `💰 *Coste Total por Amigo:* ${perPerson} (¡invitamos al novio para que pague 0€!)\n`;
+			text += `💶 *Presupuesto Total Grupo:* ${grandTotal}\n\n`;
+			text += `📋 *Desglose de Gastos Incluidos:*\n`;
+			text += `• 🏡 Alojamiento (Casa Rural/Airbnb): ${itemLodgingShare.textContent}\n`;
+			text += `• 🏄 Actividades y Aventura: ${itemActivityShare.textContent}\n`;
+			text += `• 🥩 Cenas, Asador y Comidas: ${itemFoodShare.textContent}\n`;
+			text += `• 🍻 Fiesta, Copas y Discotecas: ${itemNightlifeShare.textContent}\n`;
+			text += `• 🚗 Transporte y Gasolina: ${itemTransportShare.textContent}\n`;
+			text += `• 🧢 Camisetas y Detalles: ${itemSwagShare.textContent}\n\n`;
+			text += `📅 *Plazos de Pago (Bizum / Transferencia):*\n`;
+			text += `1️⃣ *Fianza 1 (Límite ${deadline}):* ${dep1} (para reservar casa y actividades)\n`;
+			text += `2️⃣ *Pago 2 (2 semanas antes):* ${dep2} (comida, bebida y fiesta)\n\n`;
+			text += `📲 *Enviar Bizum a:* ${handle}\n\n`;
+			text += `¡Vamos a despedir a ${groom} por todo lo alto! 🍻🎉`;
+
+			navigator.clipboard.writeText(text).then(() => {
+				const orig = btnCopyVenmo.innerHTML;
+				btnCopyVenmo.innerHTML = '<span>✅</span> ¡Copiado al Portapapeles!';
+				setTimeout(() => { btnCopyVenmo.innerHTML = orig; }, 2500);
+			});
+		});
+
+		// 📄 Export Microsoft Word (.doc)
+		btnExportDoc.addEventListener('click', () => {
+			const groom = groomNameInput.value.trim() || 'Carlos';
+			const guys = guysCountInput.value;
+			const nights = tripNightsInput.value;
+			const dateStr = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+
+			const html = `
+				<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+				<head>
+					<meta charset="utf-8">
+					<title>Presupuesto Despedida de Soltero de ${groom}</title>
+					<style>
+						body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #1e293b; padding: 24px; }
+						h1 { font-size: 20pt; color: #0f172a; margin-bottom: 4px; }
+						h2 { font-size: 14pt; color: #dc2626; margin-top: 20px; margin-bottom: 6px; border-bottom: 2px solid #cbd5e1; padding-bottom: 4px; }
+						p { margin: 4px 0 12px 0; color: #475569; font-size: 10.5pt; }
+						table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; font-size: 10.5pt; }
+						th { background-color: #f1f5f9; border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; font-weight: bold; }
+						td { border: 1px solid #cbd5e1; padding: 8px 10px; }
+						.total-row { background-color: #fef3c7; font-weight: bold; font-size: 12pt; }
+						.highlight { color: #dc2626; font-weight: bold; }
+					</style>
+				</head>
+				<body>
+					<h1>🎉 Manage.Wedding — Despedida de Soltero de ${groom}</h1>
+					<p>Generado el ${dateStr} | Duración: <strong>${nights} Noches</strong> | Amigos que pagan: <strong>${guys} Amigos</strong> (+ Novio)</p>
+					
+					<h2>Resumen Financiero del Viaje</h2>
+					<p>• <strong>Coste Total de la Despedida:</strong> ${displayGrandTotal.textContent}</p>
+					<p>• <strong>Coste Total por Amigo:</strong> <span class="highlight">${displayPerPerson.textContent}</span> (${displayPerNight.textContent} / noche)</p>
+					<p>• <strong>Estado del Novio:</strong> ${groomStatusBadge.textContent} (Aportación por amigo para invitar al novio: ${displayGroomSubsidy.textContent})</p>
+
+					<h2>Desglose Detallado por Partidas</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Concepto del Gasto</th>
+								<th>Total Grupo (€)</th>
+								<th>Parte por Amigo (€)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><strong>1. Alojamiento y Fianza</strong> (Casa Rural / Airbnb + Limpieza)</td>
+								<td>${subLodging.textContent}</td>
+								<td>${itemLodgingShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>2. Actividades y Excursiones</strong> (Barco, Karts, Catas, Paintball)</td>
+								<td>${subActivities.textContent}</td>
+								<td>${itemActivityShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>3. Comidas y Restauración</strong> (Asador, Compra Súper, Barbacoa)</td>
+								<td>${subFood.textContent}</td>
+								<td>${itemFoodShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>4. Fiesta y Vida Nocturna</strong> (Copas, Reservado Discoteca, Bebida Casa)</td>
+								<td>${subNightlife.textContent}</td>
+								<td>${itemNightlifeShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>5. Transporte y Gasolina</strong> (Furgoneta, Gasolina, Taxis)</td>
+								<td>${subTransport.textContent}</td>
+								<td>${itemTransportShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>6. Camisetas y Disfraces</strong> (Camisetas personalizadas, Kit Antiresaca)</td>
+								<td>${subSwag.textContent}</td>
+								<td>${itemSwagShare.textContent}</td>
+							</tr>
+							<tr class="total-row">
+								<td>TOTAL A PAGAR POR AMIGO</td>
+								<td>${displayGrandTotal.textContent}</td>
+								<td>${displayPerPerson.textContent}</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<h2>Calendario de Pagos (Bizum)</h2>
+					<p>• <strong>Plazo 1 - Fianza (Límite ${paymentDeadlineInput.value || 'Inmediato'}):</strong> ${schedDep1.textContent} por amigo (reserva de alojamiento y actividades clave)</p>
+					<p>• <strong>Plazo 2 - Saldo Final (2 semanas antes):</strong> ${schedDep2.textContent} por amigo (comida, bebida y fiesta)</p>
+					<p>• <strong>Datos de Pago (Bizum):</strong> <code>${paymentHandleInput.value || '600 000 000'}</code></p>
+				</body>
+				</html>
+			`;
+
+			const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `Despedida_${groom}_Presupuesto_${new Date().toISOString().slice(0, 10)}.doc`;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		});
+
+		// 🖨️ Vector PDF Print Export
+		btnPrintPdf.addEventListener('click', () => {
+			const groom = groomNameInput.value.trim() || 'Carlos';
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Presupuesto Despedida de Soltero de ${groom} — Manage.Wedding</title>
+					<style>
+						@page { size: 8.5in 11in; margin: 0.5in; }
+						body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11pt; color: #1e293b; line-height: 1.5; }
+						h1 { font-size: 20pt; color: #0f172a; margin-bottom: 4px; }
+						h2 { font-size: 13pt; color: #dc2626; margin-top: 18px; margin-bottom: 6px; border-bottom: 2px solid #cbd5e1; padding-bottom: 3px; }
+						table { width: 100%; border-collapse: collapse; margin-top: 12px; margin-bottom: 16px; }
+						th, td { border: 1px solid #cbd5e1; padding: 7px 10px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+						.footer-note { font-size: 9.5pt; color: #64748b; margin-top: 20px; border-top: 1px dashed #cbd5e1; padding-top: 8px; }
+					</style>
+				</head>
+				<body>
+					<h1>🎉 Presupuesto Oficial Despedida de Soltero de ${groom}</h1>
+					<p><strong>Duración:</strong> ${tripNightsInput.value} Noches | <strong>Amigos que pagan:</strong> ${guysCountInput.value} | <strong>Estado:</strong> ${groomStatusBadge.textContent}</p>
+					
+					<table>
+						<thead>
+							<tr>
+								<th>Concepto del Gasto</th>
+								<th>Total Grupo (€)</th>
+								<th>Parte por Amigo (€)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr><td>Alojamiento y Fianza (Casa Rural / Airbnb / Hotel)</td><td>${subLodging.textContent}</td><td>${itemLodgingShare.textContent}</td></tr>
+							<tr><td>Actividades y Aventura (Barco, Karts, Catas)</td><td>${subActivities.textContent}</td><td>${itemActivityShare.textContent}</td></tr>
+							<tr><td>Comidas y Restauración (Asador, Súper, Barbacoa)</td><td>${subFood.textContent}</td><td>${itemFoodShare.textContent}</td></tr>
+							<tr><td>Fiesta y Vida Nocturna (Copas, Reservado, Bebidas)</td><td>${subNightlife.textContent}</td><td>${itemNightlifeShare.textContent}</td></tr>
+							<tr><td>Transporte y Gasolina (Furgoneta, Taxis)</td><td>${subTransport.textContent}</td><td>${itemTransportShare.textContent}</td></tr>
+							<tr><td>Camisetas, Disfraces y Detalles</td><td>${subSwag.textContent}</td><td>${itemSwagShare.textContent}</td></tr>
+							<tr class="total-row"><td>COSTE TOTAL POR AMIGO</td><td>${displayGrandTotal.textContent}</td><td>${displayPerPerson.textContent}</td></tr>
+						</tbody>
+					</table>
+
+					<h2>Calendario de Pagos (Bizum)</h2>
+					<p>• <strong>Plazo 1 - Fianza (Límite ${paymentDeadlineInput.value || 'Inmediato'}):</strong> ${schedDep1.textContent} / amigo<br>
+					• <strong>Plazo 2 - Saldo Final (2 semanas antes):</strong> ${schedDep2.textContent} / amigo<br>
+					• <strong>Enviar Bizum al:</strong> ${paymentHandleInput.value || '600 000 000'}</p>
+
+					<div class="footer-note">
+						Generado con Manage.Wedding • Calculadora de Despedida de Soltero y Reparto de Gastos
+					</div>
+
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body>
+				</html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Initial Calculation
+		calculateBachelor();
+	</script>
+</Layout>

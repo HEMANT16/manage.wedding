@@ -1,0 +1,843 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Wedding Favors Quantity & Leftover Estimator",
+      "url": "https://manage.wedding/wedding-favors-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calculate exact wedding favors to order based on individual vs per-couple distribution, edible vs keepsake attrition rates, and DIY packaging assembly time.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Calculate Wedding Favor Quantities and Prevent Leftovers",
+      "description": "A step-by-step formula to calculate how many favors to buy without overspending or having dozens left behind.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Choose Distribution Model",
+          "text": "Decide whether favors are given per individual attendee (1 per person for edible treats or wearables) or per household/couple (1 per pair for high-end keepsakes like olive oil or candles)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Account for Table Attrition",
+          "text": "Factor in the 15% to 20% typical guest abandonment rate where guests forget items at reception tables, preventing excess spend."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Include Vendor & Photographer Keepsakes",
+          "text": "Add 3 to 5 extra favors for your wedding photographer flat-lay details and couple keepsakes."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Calculate Total Spend and DIY Assembly Hours",
+          "text": "Estimate the total cost and time required for tying ribbons, tagging, and boxing."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do you give wedding favors per person or per couple?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It depends on the favor type. Edible favors (macarons, cookies, mini alcohol bottles, mints) and wearable items (sunglasses, pashminas) should be provided 1 per person. Substantial home keepsakes (bottles of olive oil, scented candles, custom cutting boards, coasters) are traditionally given 1 per couple or household."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What percentage of wedding favors are left behind?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Industry data shows that 15% to 25% of favors are left behind on reception tables when placed at individual place settings. This rate drops below 5% for edible items and when favors are displayed on an attended exit table with a clear 'Please Take One' sign."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many extra favors should I order?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We recommend ordering 5 to 10 extra favors beyond your final headcount. This accommodates unexpected plus-ones, keepsakes for the couple and parents, vendor gifts, and 2 pristine copies for your photographer's flat-lay detail photos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much should you spend on wedding favors per guest?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The average wedding favor spend ranges between $2.00 and $5.00 per guest. High-end artisan or personalized favors range from $6.00 to $12.00 per couple. Edible favors like custom cookies or honey jars typically cost $2.50 to $4.00 each."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout
+	title="Wedding Favors Quantity & Leftover Estimator — Free Favor Sizer"
+	description="Calculate exact wedding favors needed (per person vs per couple), edible vs keepsake leftover attrition rates, DIY assembly time, budget spend, and 1-click printable table signs."
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/" style="color: var(--text-secondary); text-decoration: none;">Home</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/guests" style="color: var(--text-secondary); text-decoration: none;">Guests & Logistics</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Wedding Favors Calculator</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>🎁</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Guest Favor Math & Waste Prevention Engine</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Wedding Favors Quantity & Leftover Estimator
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Calculate the exact number of favors to buy based on <strong>Individual vs Couple</strong> distribution, prevent the dreaded 20% table leftover waste, calculate DIY ribbon & assembly hours, and print custom table display signs.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Controls & Parameters -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>📋</span> 1. Guest Count & Favor Strategy
+				</h2>
+
+				<!-- Headcount Slider -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+						<label for="slider-guests" style="font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil);">
+							Expected Guest Count:
+						</label>
+						<span id="badge-guests" class="badge-postit" style="font-weight: 700; font-size: 1.05rem; padding: 2px 8px; border-radius: 4px;">120 Guests</span>
+					</div>
+					<input type="range" id="slider-guests" min="20" max="500" step="5" value="120" style="width: 100%; accent-color: var(--fg-pencil); cursor: pointer;" />
+					<div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
+						<span>20 Intimate</span>
+						<span>120 Average</span>
+						<span>250 Large</span>
+						<span>500 Grand</span>
+					</div>
+				</div>
+
+				<!-- Distribution Model -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Distribution Method:
+					</label>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+						<label style="border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.6rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.2rem; background: #fef08a;" id="label-mode-individual">
+							<div style="display: flex; align-items: center; gap: 0.35rem; font-weight: 700; font-size: 0.88rem;">
+								<input type="radio" name="dist-mode" id="radio-mode-individual" value="individual" checked style="accent-color: var(--fg-pencil);" />
+								<span>1 Per Person</span>
+							</div>
+							<span style="font-size: 0.75rem; color: #475569;">Edible treats, mini bottles, sunglasses</span>
+						</label>
+
+						<label style="border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.6rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.2rem; background: #fff;" id="label-mode-couple">
+							<div style="display: flex; align-items: center; gap: 0.35rem; font-weight: 700; font-size: 0.88rem;">
+								<input type="radio" name="dist-mode" id="radio-mode-couple" value="couple" style="accent-color: var(--fg-pencil);" />
+								<span>1 Per Couple</span>
+							</div>
+							<span style="font-size: 0.75rem; color: #475569;">Olive oil, candles, premium keepsakes</span>
+						</label>
+					</div>
+				</div>
+
+				<!-- Favor Category & Type -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label for="select-favor-type" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Favor Category (Affects Leftover Attrition):
+					</label>
+					<select id="select-favor-type" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="edible-packaged" selected>🍬 Packaged Edible (Macarons, Cookies, Chocolates) — 95% Take Rate</option>
+						<option value="edible-drink">🍾 Mini Alcohol / Artisanal Drink Bottle — 98% Take Rate</option>
+						<option value="edible-bulk">🍯 Jars of Honey, Jam, Olive Oil or Spice Blends — 92% Take Rate</option>
+						<option value="keepsake-useful">🕯️ Useful Keepsake (Scented Candle, Matchbox, Opener) — 82% Take Rate</option>
+						<option value="keepsake-monogram">☕ Monogram Item (Koozies, Coasters, Mugs) — 75% Take Rate</option>
+						<option value="greenery-seed">🌱 Living Plant / Succulent / Seed Packets — 80% Take Rate</option>
+					</select>
+				</div>
+
+				<!-- Display Location & Signage -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label for="select-placement" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Placement & Display Setup:
+					</label>
+					<select id="select-placement" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="place-setting" selected>🍽️ At Each Place Setting (High visibility, standard 18% table leftover)</option>
+						<option value="exit-table">🚪 Dedicated Exit Favor Table (Clean look, 10% leftover with clear sign)</option>
+						<option value="greeter-station">🥂 Handed out by Coordinator/Greeter (100% distribution precision)</option>
+					</select>
+				</div>
+
+				<!-- Leftover Buffer Buffer Strategy -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label for="select-buffer" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Safety Buffer & Keepsake Margin:
+					</label>
+					<select id="select-buffer" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="recommended" selected>⭐ Recommended (+5% extra + 3 photographer flat-lay keepsakes)</option>
+						<option value="eco">🌱 Eco-Saver (-15% attrition discount — zero leftover waste)</option>
+						<option value="generous">🎁 Generous (+12% extra for plus-ones & generous second-helpings)</option>
+					</select>
+				</div>
+
+				<!-- Cost & Assembly Sizer -->
+				<div style="border-top: 2px dashed var(--fg-pencil); padding-top: 1rem; margin-top: 1rem;">
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-item-cost" style="display: block; font-weight: 700; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								Unit Cost ($/Favor):
+							</label>
+							<input type="number" id="input-item-cost" min="0" step="0.25" value="3.50" style="width: 100%; padding: 0.45rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-weight: 700; font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label for="input-assembly-seconds" style="display: block; font-weight: 700; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								DIY Assembly Time:
+							</label>
+							<select id="input-assembly-seconds" style="width: 100%; padding: 0.45rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="0">0s (Pre-assembled)</option>
+								<option value="45" selected>45s (Tag & Ribbon)</option>
+								<option value="120">2 min (Box, Fill & Bow)</option>
+								<option value="240">4 min (Complex Craft)</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results & Procurement Blueprint -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Exact Recommendation</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Favor Procurement Blueprint
+						</h2>
+					</div>
+					<span id="badge-dist-type" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">Per Guest</span>
+				</div>
+
+				<!-- Big Number Highlights -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Total Favors to Order</span>
+						<strong id="stat-order-qty" style="font-size: 2rem; font-weight: 900; color: #1e40af; line-height: 1.1;">129</strong>
+						<span id="stat-subtext-qty" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(120 guests + 9 buffer)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Estimated Total Spend</span>
+						<strong id="stat-total-spend" style="font-size: 2rem; font-weight: 900; color: #15803d; line-height: 1.1;">$451.50</strong>
+						<span id="stat-per-guest-cost" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">$3.76 per attending guest</span>
+					</div>
+				</div>
+
+				<!-- Secondary Metrics Matrix -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">Target Households / Couples:</span>
+						<strong id="stat-household-count" style="color: var(--fg-pencil);">67 Households</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">Expected Table Attrition (Leftover):</span>
+						<strong id="stat-attrition-rate" style="color: #b91c1c;">~6 pcs left behind (5%)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">Keepsake & Detail Photos Margin:</span>
+						<strong id="stat-keepsake-margin" style="color: #1e40af;">+3 units (Keepsakes)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
+						<span style="color: #475569;">DIY Assembly Labor:</span>
+						<strong id="stat-diy-hours" style="color: var(--fg-pencil);">1 hr 37 min (1 person)</strong>
+					</div>
+				</div>
+
+				<!-- Quick Table Hardware Recommendation -->
+				<div style="background: #fef08a; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.85rem;">
+					<strong style="color: var(--fg-pencil); display: block; margin-bottom: 0.25rem;">📦 Table Display Hardware Needed:</strong>
+					<span id="stat-table-hardware" style="color: #334155;">
+						Requires <strong>3 to 4 display trays</strong> (or wooden crates) or a <strong>4-foot welcome table</strong> with a framed 8x10" sign.
+					</span>
+				</div>
+
+				<!-- Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Export PDF / Print
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Export Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Section: 1-Click Printable Sign Studio -->
+		<section id="section-print-studio" class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<div style="text-align: center; margin-bottom: 1.5rem;">
+				<span class="badge-postit" style="padding: 3px 10px; border-radius: 4px; font-size: 0.82rem; font-weight: 700;">Vector Sign Generator</span>
+				<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin: 0.4rem 0 0.25rem;">
+					Printable "Please Take One" Favor Table Signs
+				</h2>
+				<p class="font-body" style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+					Customize ready-to-frame 8x10" or 5x7" tabletop display signage with your names, wedding date, and chosen sentiment.
+				</p>
+			</div>
+
+			<!-- Controls for Sign Studio -->
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+				<div>
+					<label for="input-couple-names" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Couple Names:</label>
+					<input type="text" id="input-couple-names" value="Emma & Liam" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600;" />
+				</div>
+				<div>
+					<label for="input-wedding-date" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Wedding Date:</label>
+					<input type="text" id="input-wedding-date" value="October 18, 2026" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600;" />
+				</div>
+				<div>
+					<label for="select-sign-template" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Sign Header Style:</label>
+					<select id="select-sign-template" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600; background: #fff;">
+						<option value="classic" selected>With Love & Gratitude • Please Take One</option>
+						<option value="couple">For You & Yours • One Per Couple Please</option>
+						<option value="sweet">Sweet Ending • Take a Treat on Your Way</option>
+						<option value="seeds">Let Love Grow • Please Take a Plant</option>
+					</select>
+				</div>
+				<div>
+					<label for="select-sign-size" style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">Frame Dimensions:</label>
+					<select id="select-sign-size" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 600; background: #fff;">
+						<option value="8x10" selected>8" x 10" (Standard Table Frame)</option>
+						<option value="5x7">5" x 7" (Compact Easel)</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- Live Rendered Framed Sign Canvas -->
+			<div style="max-width: 500px; margin: 0 auto; background: #fff; border: 3px solid var(--fg-pencil); border-radius: 8px; padding: 2rem 1.5rem; text-align: center; box-shadow: 4px 4px 0px var(--fg-pencil);" id="sign-canvas-preview">
+				<div style="border: 2px double #1e293b; padding: 2rem 1.25rem;">
+					<span style="font-size: 1.5rem; display: block; margin-bottom: 0.5rem;">🎁</span>
+					<h3 id="sign-preview-headline" class="font-heading" style="font-size: 1.8rem; color: #0f172a; margin: 0 0 0.5rem; line-height: 1.2;">
+						With Love & Gratitude
+					</h3>
+					<p id="sign-preview-subtext" style="font-size: 1.05rem; font-style: italic; color: #475569; margin: 0 0 1.25rem;">
+						Please take one to remember our special day!
+					</p>
+					<div style="width: 50px; height: 1.5px; background: #cbd5e1; margin: 0 auto 1.25rem;"></div>
+					<h4 id="sign-preview-names" class="font-heading" style="font-size: 1.15rem; letter-spacing: 0.05em; text-transform: uppercase; color: #0f172a; margin: 0 0 0.25rem;">
+						Emma & Liam
+					</h4>
+					<span id="sign-preview-date" style="font-size: 0.85rem; color: #64748b;">October 18, 2026</span>
+				</div>
+			</div>
+		</section>
+
+		<!-- Section: Breakdown Matrix Table -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1rem;">
+				📊 Wedding Favor Quantity Rules by Category
+			</h2>
+			<div style="overflow-x: auto;">
+				<table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem;">Favor Category</th>
+							<th style="padding: 0.6rem;">Distribution Rule</th>
+							<th style="padding: 0.6rem;">Typical Attrition</th>
+							<th style="padding: 0.6rem;">Recommended Buffer</th>
+							<th style="padding: 0.6rem;">Why This Works</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem; font-weight: 700;">🍬 Fresh Edible (Macarons, Cookies)</td>
+							<td style="padding: 0.6rem;">1 Per Guest</td>
+							<td style="padding: 0.6rem; color: #16a34a;">3–5% left behind</td>
+							<td style="padding: 0.6rem; font-weight: 700;">+5% Extra</td>
+							<td style="padding: 0.6rem; color: #475569;">Guests consume them during the reception or take them home easily.</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfdfd;">
+							<td style="padding: 0.6rem; font-weight: 700;">🍾 Mini Booze / Artisan Drinks</td>
+							<td style="padding: 0.6rem;">1 Per Adult (21+)</td>
+							<td style="padding: 0.6rem; color: #16a34a;">&lt;2% left behind</td>
+							<td style="padding: 0.6rem; font-weight: 700;">+3% Extra</td>
+							<td style="padding: 0.6rem; color: #475569;">Highest take-home rate among all wedding favors. Exclude minors.</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem; font-weight: 700;">🕯️ Scented Candles / Olive Oil Jars</td>
+							<td style="padding: 0.6rem;">1 Per Couple / Household</td>
+							<td style="padding: 0.6rem; color: #b45309;">8–12% left behind</td>
+							<td style="padding: 0.6rem; font-weight: 700;">+8% Extra</td>
+							<td style="padding: 0.6rem; color: #475569;">A couple does not need 2 identical candles; saves ~40% on overall spend.</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfdfd;">
+							<td style="padding: 0.6rem; font-weight: 700;">🌱 Succulents & Seed Packets</td>
+							<td style="padding: 0.6rem;">1 Per Guest or Household</td>
+							<td style="padding: 0.6rem; color: #b45309;">15–20% left behind</td>
+							<td style="padding: 0.6rem; font-weight: 700;">Exact Headcount</td>
+							<td style="padding: 0.6rem; color: #475569;">Air travelers often cannot take live soil plants through airport security.</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.6rem; font-weight: 700;">☕ Monogrammed Coasters / Koozies</td>
+							<td style="padding: 0.6rem;">1 Per Guest</td>
+							<td style="padding: 0.6rem; color: #dc2626;">20–30% left behind</td>
+							<td style="padding: 0.6rem; font-weight: 700;">-10% (Discounted)</td>
+							<td style="padding: 0.6rem; color: #475569;">Items with other people's initials have higher abandonment rates.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<!-- Section: Editorial Guide & Common Mistakes -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1rem;">
+				📖 How to Avoid the 5 Biggest Wedding Favor Mistakes
+			</h2>
+			
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #f8fafc;">
+					<strong style="color: #b91c1c; display: block; font-size: 0.95rem; margin-bottom: 0.3rem;">
+						1. Over-Ordering for Couples
+					</strong>
+					<p style="font-size: 0.85rem; color: #334155; margin: 0; line-height: 1.45;">
+						Ordering 150 candles for 150 guests means 75 couples receive 2 of the exact same home decor item. Calculate <strong>1 per household</strong> (typically ~55% of guest count) and save hundreds of dollars.
+					</p>
+				</div>
+
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #f8fafc;">
+					<strong style="color: #b91c1c; display: block; font-size: 0.95rem; margin-bottom: 0.3rem;">
+						2. The Airport Security Trap
+					</strong>
+					<p style="font-size: 0.85rem; color: #334155; margin: 0; line-height: 1.45;">
+						Liquids over 3.4 oz (100ml) like full-size wine bottles or local honey jars cannot go in carry-on bags. Destination guests will reluctantly leave them in hotel rooms.
+					</p>
+				</div>
+
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #f8fafc;">
+					<strong style="color: #b91c1c; display: block; font-size: 0.95rem; margin-bottom: 0.3rem;">
+						3. Missing the Exit Table Sign
+					</strong>
+					<p style="font-size: 0.85rem; color: #334155; margin: 0; line-height: 1.45;">
+						If favors are placed on an exit table rather than place settings, over 40% of guests may walk past without noticing unless you have a prominent, lit sign and a DJ announcement.
+					</p>
+				</div>
+
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #f8fafc;">
+					<strong style="color: #b91c1c; display: block; font-size: 0.95rem; margin-bottom: 0.3rem;">
+						4. Forgetting Photographer Keepsakes
+					</strong>
+					<p style="font-size: 0.85rem; color: #334155; margin: 0; line-height: 1.45;">
+						Always order at least 2 extra pristine, untied/unopened favors to give to your wedding photographer during morning flat-lay detail shoots.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Frequently Asked Questions -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1.25rem;">
+				❓ Frequently Asked Questions: Wedding Favors
+			</h2>
+			
+			<div style="display: flex; flex-direction: column; gap: 1rem;">
+				<div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.85rem;">
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						Are wedding favors still necessary in 2026?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						No, favors are entirely optional. Modern couples frequently choose edible late-night snacks (like a donut wall or cookie bar) or make a charitable donation in lieu of traditional trinkets. However, if you choose to give favors, consumable treats have the highest satisfaction and zero waste.
+					</p>
+				</div>
+
+				<div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.85rem;">
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						How many favors should you place at each table?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						If distributing 1 per person, place exactly 1 favor at each set chair/napkin. If distributing 1 per couple, place the favor in the center of the bread plate or between the couple's wine glasses with a "One per pair" tag, or distribute them from an exit display table.
+					</p>
+				</div>
+
+				<div>
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						When should we assemble DIY wedding favors?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						For non-perishable keepsakes (candles, matchboxes, coasters), assemble them 3 to 4 weeks prior to the wedding. For baked goods (cookies, macarons), package them no earlier than 1 to 2 days before the wedding, or order vacuum-sealed bakery packaging.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/wedding-favors-calculator" category="guests" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-sign-container" class="print-page" style="page-break-after: always; break-after: page; padding: 15mm; text-align: center;">
+			<div style="border: 4px double #000; padding: 25mm 15mm; min-height: 190mm; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+				<h1 id="print-sign-title" style="font-size: 36pt; font-family: 'Georgia', serif; margin: 0 0 15pt 0; text-transform: none; color: #000;">With Love & Gratitude</h1>
+				<p id="print-sign-sub" style="font-size: 18pt; font-style: italic; margin: 0 0 25pt 0; color: #333;">Please take one to remember our special day!</p>
+				<div style="width: 70mm; height: 1.5pt; background: #000; margin: 0 auto 20pt;"></div>
+				<h2 id="print-sign-names" style="font-size: 18pt; letter-spacing: 2pt; text-transform: uppercase; margin: 0 0 8pt 0; color: #000;">Emma & Liam</h2>
+				<p id="print-sign-date" style="font-size: 13pt; color: #555; margin: 0;">October 18, 2026</p>
+			</div>
+		</div>
+
+		<div id="print-order-sheet-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Wedding Favors Procurement & Assembly Brief</h1>
+				<p id="print-order-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Couple: Emma & Liam | Date: October 18, 2026 | Headcount: 120 Guests</p>
+			</div>
+			<div id="print-order-tables">
+				<!-- Injected by script -->
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	// DOM Element References
+	const sliderGuests = document.getElementById('slider-guests');
+	const badgeGuests = document.getElementById('badge-guests');
+	const radioModeIndividual = document.getElementById('radio-mode-individual');
+	const radioModeCouple = document.getElementById('radio-mode-couple');
+	const labelModeIndividual = document.getElementById('label-mode-individual');
+	const labelModeCouple = document.getElementById('label-mode-couple');
+	const selectFavorType = document.getElementById('select-favor-type');
+	const selectPlacement = document.getElementById('select-placement');
+	const selectBuffer = document.getElementById('select-buffer');
+	const inputItemCost = document.getElementById('input-item-cost');
+	const inputAssemblySeconds = document.getElementById('input-assembly-seconds');
+
+	// Result DOM References
+	const badgeDistType = document.getElementById('badge-dist-type');
+	const statOrderQty = document.getElementById('stat-order-qty');
+	const statSubtextQty = document.getElementById('stat-subtext-qty');
+	const statTotalSpend = document.getElementById('stat-total-spend');
+	const statPerGuestCost = document.getElementById('stat-per-guest-cost');
+	const statHouseholdCount = document.getElementById('stat-household-count');
+	const statAttritionRate = document.getElementById('stat-attrition-rate');
+	const statKeepsakeMargin = document.getElementById('stat-keepsake-margin');
+	const statDiyHours = document.getElementById('stat-diy-hours');
+	const statTableHardware = document.getElementById('stat-table-hardware');
+
+	// Calculation Function
+	function calculateFavors() {
+		const guests = parseInt(sliderGuests.value, 10) || 120;
+		badgeGuests.textContent = `${guests} Guests`;
+
+		const isCouple = radioModeCouple.checked;
+		const households = Math.ceil(guests * 0.56); // Average ~1.8 guests per household/couple
+		statHouseholdCount.textContent = `${households} Households`;
+
+		// Base target items
+		const baseTarget = isCouple ? households : guests;
+		badgeDistType.textContent = isCouple ? '1 Per Couple' : '1 Per Person';
+
+		// Buffer strategy
+		const bufferStrategy = selectBuffer.value;
+		let bufferPercent = 0.05;
+		let keepsakeExtra = 3;
+
+		if (bufferStrategy === 'eco') {
+			bufferPercent = -0.15; // Attrition deduction
+			keepsakeExtra = 2;
+		} else if (bufferStrategy === 'generous') {
+			bufferPercent = 0.12;
+			keepsakeExtra = 5;
+		}
+
+		let finalQty = Math.round(baseTarget * (1 + bufferPercent)) + keepsakeExtra;
+		if (finalQty < 1) finalQty = 1;
+
+		statOrderQty.textContent = finalQty;
+		
+		const extraCount = finalQty - baseTarget;
+		const extraSign = extraCount >= 0 ? `+${extraCount}` : `${extraCount}`;
+		statSubtextQty.textContent = `(${baseTarget} base ${extraSign} buffer/keepsakes)`;
+
+		// Cost Calculation
+		const unitCost = parseFloat(inputItemCost.value) || 0;
+		const totalSpend = (finalQty * unitCost).toFixed(2);
+		statTotalSpend.textContent = `$${Number(totalSpend).toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+		
+		const costPerAttending = (parseFloat(totalSpend) / guests).toFixed(2);
+		statPerGuestCost.textContent = `$${costPerAttending} per attending guest`;
+
+		// Attrition Estimate
+		const favorType = selectFavorType.value;
+		let attritionRateNum = 0.05;
+		if (favorType.includes('monogram')) attritionRateNum = 0.25;
+		else if (favorType.includes('seed') || favorType.includes('keepsake-useful')) attritionRateNum = 0.15;
+		else if (favorType.includes('bulk')) attritionRateNum = 0.08;
+
+		if (selectPlacement.value === 'place-setting') attritionRateNum += 0.05;
+		
+		const estimatedLeftovers = Math.round(finalQty * attritionRateNum);
+		statAttritionRate.textContent = `~${estimatedLeftovers} pcs left behind (${Math.round(attritionRateNum * 100)}%)`;
+		statKeepsakeMargin.textContent = `+${keepsakeExtra} units (Couple & Details)`;
+
+		// DIY Assembly Time
+		const assemblySecPerUnit = parseInt(inputAssemblySeconds.value, 10) || 0;
+		const totalSec = finalQty * assemblySecPerUnit;
+		if (totalSec === 0) {
+			statDiyHours.textContent = '0 min (Ready to display)';
+		} else {
+			const hrs = Math.floor(totalSec / 3600);
+			const mins = Math.ceil((totalSec % 3600) / 60);
+			statDiyHours.textContent = hrs > 0 ? `${hrs} hr ${mins} min (1 person)` : `${mins} min (1 person)`;
+		}
+
+		// Table Hardware Recommendation
+		const traysCount = Math.max(1, Math.ceil(finalQty / 35));
+		const tableFootage = finalQty > 100 ? '6-foot banquet table' : '4-foot welcome table';
+		statTableHardware.innerHTML = `Requires <strong>${traysCount} display crates/trays</strong> on a <strong>${tableFootage}</strong> with a framed sign.`;
+
+		// Update Print Order Table
+		const couple = document.getElementById('input-couple-names').value || 'Emma & Liam';
+		const date = document.getElementById('input-wedding-date').value || 'October 18, 2026';
+		document.getElementById('print-order-meta').textContent = `Couple: ${couple} | Date: ${date} | Headcount: ${guests} Guests | Distribution: ${badgeDistType.textContent}`;
+
+		document.getElementById('print-order-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Procurement Metric</th>
+						<th style="padding:6pt; text-align:center;">Calculated Value</th>
+						<th style="padding:6pt;">Planning Notes & Instructions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Final Favor Order Quantity</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; font-size:12pt; color:#1e40af;">${finalQty} units</td>
+						<td style="padding:6pt;">Includes base target (${baseTarget}) plus ${extraSign} safety buffer & photographer flat-lay copies.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Total Favor Spend Budget</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; color:#15803d;">$${Number(totalSpend).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+						<td style="padding:6pt;">Based on $${unitCost.toFixed(2)}/unit cost ($${costPerAttending}/attending guest).</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Display Crates & Trays</td>
+						<td style="padding:6pt; text-align:center;">${traysCount} Trays / Crates</td>
+						<td style="padding:6pt;">Place on ${tableFootage} with framed 8x10 tabletop sign.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">DIY Packaging Labor</td>
+						<td style="padding:6pt; text-align:center;">${statDiyHours.textContent}</td>
+						<td style="padding:6pt;">Schedule assembly session 2 to 3 weeks prior to wedding day.</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	// Update Radio Toggle Backgrounds
+	function updateModeStyles() {
+		if (radioModeIndividual.checked) {
+			labelModeIndividual.style.background = '#fef08a';
+			labelModeCouple.style.background = '#ffffff';
+		} else {
+			labelModeIndividual.style.background = '#ffffff';
+			labelModeCouple.style.background = '#fef08a';
+		}
+		calculateFavors();
+	}
+
+	// Sign Live Preview Function
+	function updateSignPreview() {
+		const couple = document.getElementById('input-couple-names').value || 'Emma & Liam';
+		const date = document.getElementById('input-wedding-date').value || 'October 18, 2026';
+		const template = document.getElementById('select-sign-template').value;
+
+		document.getElementById('sign-preview-names').textContent = couple;
+		document.getElementById('sign-preview-date').textContent = date;
+		
+		const headline = document.getElementById('sign-preview-headline');
+		const subtext = document.getElementById('sign-preview-subtext');
+
+		if (template === 'couple') {
+			headline.textContent = 'For You & Yours';
+			subtext.textContent = 'Please take one per couple with our warmest love!';
+		} else if (template === 'sweet') {
+			headline.textContent = 'A Sweet Ending';
+			subtext.textContent = 'To a wonderful new beginning! Grab a treat on your way.';
+		} else if (template === 'seeds') {
+			headline.textContent = 'Let Love Grow';
+			subtext.textContent = 'Plant these seeds and watch love blossom!';
+		} else {
+			headline.textContent = 'With Love & Gratitude';
+			subtext.textContent = 'Please take one to remember our special day!';
+		}
+
+		// Update Print DOM
+		document.getElementById('print-sign-title').textContent = headline.textContent;
+		document.getElementById('print-sign-sub').textContent = subtext.textContent;
+		document.getElementById('print-sign-names').textContent = couple;
+		document.getElementById('print-sign-date').textContent = date;
+	}
+
+	// Event Listeners
+	sliderGuests.addEventListener('input', calculateFavors);
+	radioModeIndividual.addEventListener('change', updateModeStyles);
+	radioModeCouple.addEventListener('change', updateModeStyles);
+	selectFavorType.addEventListener('change', calculateFavors);
+	selectPlacement.addEventListener('change', calculateFavors);
+	selectBuffer.addEventListener('change', calculateFavors);
+	inputItemCost.addEventListener('input', calculateFavors);
+	inputAssemblySeconds.addEventListener('change', calculateFavors);
+
+	document.getElementById('input-couple-names').addEventListener('input', updateSignPreview);
+	document.getElementById('input-wedding-date').addEventListener('input', updateSignPreview);
+	document.getElementById('select-sign-template').addEventListener('change', updateSignPreview);
+	document.getElementById('select-sign-size').addEventListener('change', updateSignPreview);
+
+	// Export PDF / Print Button (Direct In-Page Print)
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		calculateFavors();
+		updateSignPreview();
+		window.print();
+	});
+
+	// Export Word (.doc) Brief
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const couple = document.getElementById('input-couple-names').value || 'Emma & Liam';
+		const date = document.getElementById('input-wedding-date').value || 'October 18, 2026';
+		const guests = sliderGuests.value || '120';
+		const finalQty = statOrderQty.textContent;
+		const totalSpend = statTotalSpend.textContent;
+		const diyHours = statDiyHours.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Wedding Favors Order Brief</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Wedding Favors Procurement & Packaging Brief</h1>
+				<p><strong>Couple:</strong> ${couple} | <strong>Date:</strong> ${date} | <strong>Guest Count:</strong> ${guests} Guests</p>
+				<hr/>
+				<h2>Order Summary</h2>
+				<table>
+					<tr style="background:#f1f5f9;">
+						<th>Metric</th><th>Details</th>
+					</tr>
+					<tr><td><strong>Total Favors to Order:</strong></td><td><strong>${finalQty} units</strong> (Includes buffer & keepsakes)</td></tr>
+					<tr><td><strong>Estimated Spend:</strong></td><td><strong>${totalSpend}</strong></td></tr>
+					<tr><td><strong>Distribution Model:</strong></td><td>${badgeDistType.textContent}</td></tr>
+					<tr><td><strong>DIY Packaging Time:</strong></td><td>${diyHours}</td></tr>
+				</table>
+				<br/>
+				<h2>Display & Setup Instructions</h2>
+				<p>• Display on welcome table with framed 8x10 sign ("With Love & Gratitude").</p>
+				<p>• Provide 2 units to the wedding photographer for morning invitation suite flat-lays.</p>
+				<hr/>
+				<p><em>Generated by Manage.Wedding Favors Calculator</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding-Favors-Brief-${couple.replace(/[^a-zA-Z0-9]/g, '-')}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateFavors();
+	updateSignPreview();
+</script>

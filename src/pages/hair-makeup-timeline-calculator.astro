@@ -1,0 +1,617 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Bridal Hair & Makeup Morning Timeline Calculator",
+      "url": "https://manage.wedding/hair-makeup-timeline-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calculate your exact wedding morning hair and makeup start time, artist staffing needs, chair-by-chair timeline slots, and 45-minute dress buffer.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Calculate Your Wedding Morning Hair & Makeup Schedule",
+      "description": "A backward-planning formula to calculate wake-up time, artist slot allocations, and avoid wedding ceremony delays.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Set Your 'Dressed & Ready' Anchor Time",
+          "text": "Start with your first look or photography arrival time, and subtract a mandatory 45-minute buffer for putting on your dress, veil, and final touch-ups."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Enter Party Headcounts & Services",
+          "text": "Tally how many people are getting both hair & makeup vs hair-only or makeup-only (Bride, bridesmaids, mothers, flower girls)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Allocate Artist Team Members",
+          "text": "Specify the number of hair stylists and makeup artists. If one artist has more than 6 services, hire an assistant artist to prevent a 5:00 AM start."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Order Chair Slots Strategically",
+          "text": "Schedule the bride second-to-last so her hair and makeup are fresh and flawless without any last-minute rushing."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How long does bridal hair and makeup take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bridal hair typically takes 45 to 60 minutes, and bridal makeup takes 45 to 60 minutes (totaling 1.5 to 2 hours for the bride). Bridesmaids and mothers typically take 35 to 45 minutes per service."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When in the schedule should the bride get her hair and makeup done?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The bride should always be scheduled second-to-last in the timeline. Going first causes makeup to lose its freshness over 6 hours of waiting, while going last risks delays cutting into the photographer's portrait time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many hair and makeup artists do I need for 8 bridesmaids?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For a wedding party of 8 bridesmaids plus the bride and mothers (18 total services), you need at least 2 hair stylists and 2 makeup artists. A single artist can comfortably complete a maximum of 5 to 6 services within a standard 4.5-hour morning window."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do you need a 45-minute buffer after hair and makeup?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Putting on a structured wedding gown, buttoning delicate corset loops, fastening jewelry/shoes, adjusting the veil, and taking robe photos with bridesmaids takes 30 to 45 minutes. Without this buffer, the bride is forced to rush into her dress in 5 minutes."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout
+	title="Bridal Hair & Makeup Morning Timeline Calculator — Glam Schedule Sizer"
+	description="Calculate exact wedding morning wake-up time, artist team staffing, chair-by-chair time slots, and printable schedule for bridesmaids and bridal party."
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/" style="color: var(--text-secondary); text-decoration: none;">Home</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/budget" style="color: var(--text-secondary); text-decoration: none;">Budget & Planning</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Hair & Makeup Timeline</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>💄</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Morning Glam Chair-by-Chair Scheduling Engine</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Bridal Hair & Makeup Morning Timeline Calculator
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Calculate your exact <strong>Morning Wake-Up & Start Time</strong>, determine if you need assistant artists, schedule individual chair slots, and protect your 45-minute dress & photography buffer.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Inputs & Party Roster -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>👰</span> 1. Target Time & Party Roster
+				</h2>
+
+				<!-- Target Ready Time -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<label for="input-target-ready-time" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+						Target Ready / Photographer Arrival Time:
+					</label>
+					<div style="display: flex; gap: 0.75rem; align-items: center;">
+						<input type="time" id="input-target-ready-time" value="13:30" style="padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700; font-size: 1rem;" />
+						<span style="font-size: 0.8rem; color: #64748b;">(When everyone must be 100% finished & dressed)</span>
+					</div>
+				</div>
+
+				<!-- Party Roster Matrix -->
+				<div style="margin-bottom: 1.25rem;">
+					<strong style="color: var(--fg-pencil); display: block; font-size: 0.9rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+						People Receiving Services
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+						<div>
+							<label for="input-bridesmaids-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Bridesmaids (Hair & Makeup):</label>
+							<input type="number" id="input-bridesmaids-count" min="0" max="15" value="5" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+						<div>
+							<label for="input-mothers-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Mothers / Grandmothers:</label>
+							<input type="number" id="input-mothers-count" min="0" max="8" value="2" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-flower-girls-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Flower Girls (Hair Only):</label>
+							<input type="number" id="input-flower-girls-count" min="0" max="6" value="1" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+						<div>
+							<label for="input-hair-only-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Single Service Only Guests:</label>
+							<input type="number" id="input-hair-only-count" min="0" max="10" value="0" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Artist Team Staffing -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong style="color: var(--fg-pencil); display: block; font-size: 0.9rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+						Stylist Team Available
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="select-hair-stylists" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Hair Stylists:</label>
+							<select id="select-hair-stylists" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="1" selected>1 Hair Stylist</option>
+								<option value="2">2 Hair Stylists (Lead + Assistant)</option>
+								<option value="3">3 Hair Stylists (Large Team)</option>
+							</select>
+						</div>
+						<div>
+							<label for="select-makeup-artists" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Makeup Artists:</label>
+							<select id="select-makeup-artists" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="1" selected>1 Makeup Artist</option>
+								<option value="2">2 Makeup Artists (Lead + Assistant)</option>
+								<option value="3">3 Makeup Artists (Large Team)</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<!-- Buffer Margin Selector -->
+				<div class="form-group">
+					<label for="select-buffer-dress" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Dress Zipping & Robe Photo Buffer:
+					</label>
+					<select id="select-buffer-dress" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="45" selected>⭐ Recommended 45 Min Buffer (Dressing, jewelry, veil & robe photos)</option>
+						<option value="30">⚡ Tight 30 Min Buffer (Fast slip dress / small party)</option>
+						<option value="60">🛡️ Relaxed 60 Min Buffer (Corset lace-up + bridal portraits)</option>
+					</select>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Morning Timeline Blueprint -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Morning Schedule Blueprint</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Glam Schedule & Wake-Up Call
+						</h2>
+					</div>
+					<span id="badge-total-services" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">16 Services</span>
+				</div>
+
+				<!-- Big Number Highlights -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Glam Start Time</span>
+						<strong id="stat-start-time" style="font-size: 2rem; font-weight: 900; color: #b91c1c; line-height: 1.1;">7:15 AM</strong>
+						<span id="stat-wakeup-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(Wake-up ~6:30 AM for breakfast)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Bride Hair & Makeup Slot</span>
+						<strong id="stat-bride-slot" style="font-size: 1.35rem; font-weight: 900; color: #1e40af; line-height: 1.2; display: block; margin-top: 4px;">10:45 AM - 12:45 PM</strong>
+						<span style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">Second-to-last (optimal)</span>
+					</div>
+				</div>
+
+				<!-- Summary Breakdown -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">💇 Total Hair Services:</span>
+						<strong id="stat-hair-services-count" style="color: var(--fg-pencil);">9 services (6.0 hrs work)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">💄 Total Makeup Services:</span>
+						<strong id="stat-makeup-services-count" style="color: var(--fg-pencil);">8 services (5.5 hrs work)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">👗 Dress & Touch-Up Window:</span>
+						<strong id="stat-dress-window" style="color: #15803d;">12:45 PM – 1:30 PM (45m)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
+						<span style="color: #475569;">👩‍🎨 Staffing Status:</span>
+						<strong id="stat-staffing-status" style="color: #1e40af;">Balanced Team</strong>
+					</div>
+				</div>
+
+				<!-- Staffing Recommendation / Warning Box -->
+				<div style="background: #fef08a; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.85rem;" id="box-staffing-warning">
+					<strong style="color: var(--fg-pencil); display: block; margin-bottom: 0.25rem;">💡 Pro Tip for Bridal Mornings:</strong>
+					<span id="stat-staffing-tip" style="color: #334155;">
+						Have bridesmaids arrive with dry, clean hair and moisturized clean skin wearing button-down shirts or robes so hairstyles are not disturbed while changing into dresses.
+					</span>
+				</div>
+
+				<!-- Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Export PDF / Print
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Export Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Section: Morning Routine Guide -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1rem;">
+				💄 The Golden Rules of Wedding Morning Glam
+			</h2>
+			
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; font-size: 0.88rem;">
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #f8fafc;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem; margin-bottom: 0.3rem;">
+						1. The Second-to-Last Rule
+					</strong>
+					<p style="color: #334155; margin: 0; line-height: 1.45;">
+						Never put the bride in the chair first (makeup will sit for 6 hours before photos) or last (if the timeline runs behind, the bride gets rushed). The second-to-last slot is perfection.
+					</p>
+				</div>
+
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #f8fafc;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem; margin-bottom: 0.3rem;">
+						2. Button-Down Shirts Only
+					</strong>
+					<p style="color: #334155; margin: 0; line-height: 1.45;">
+						Everyone must wear loose robes or button-down flannel/silk shirts. Pulling a tight t-shirt over an elaborate bridal updo will instantly ruin $150 worth of hairstyling.
+					</p>
+				</div>
+
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #f8fafc;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem; margin-bottom: 0.3rem;">
+						3. The 45-Minute Dress Buffer
+					</strong>
+					<p style="color: #334155; margin: 0; line-height: 1.45;">
+						Corset buttons, crochet hooks, shapewear, jewelry clasps, and shoes take at least 30 minutes. Always build in 45 minutes between the final makeup brush stroke and photographer arrival.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Frequently Asked Questions -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1.25rem;">
+				❓ Frequently Asked Questions: Wedding Hair & Makeup
+			</h2>
+			
+			<div style="display: flex; flex-direction: column; gap: 1rem;">
+				<div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.85rem;">
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						What should bridesmaids do with their hair on the morning of the wedding?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						Bridesmaids should wash and thoroughly dry their hair the night before. Freshly washed wet hair requires blow-drying, which adds 25 minutes per person and derails the entire morning timeline.
+					</p>
+				</div>
+
+				<div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.85rem;">
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						Should moms get their hair and makeup done early or late?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						Mothers of the bride and groom should be scheduled in the middle of the morning. This ensures they are fully dressed and ready to help the bride step into her gown during the photographer's prep coverage.
+					</p>
+				</div>
+
+				<div>
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						How much should you tip wedding hair and makeup artists?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						The standard industry gratuity is <strong>15% to 20%</strong> of the total service cost, handed in cash envelopes at the conclusion of morning touch-ups.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/hair-makeup-timeline-calculator" category="budget" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-glam-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Wedding Morning Hair & Makeup Master Schedule</h1>
+				<p id="print-glam-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Day-Of Glam Plan | Generated by Manage.Wedding</p>
+			</div>
+			<div id="print-glam-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	// Input elements
+	const inputTargetReadyTime = document.getElementById('input-target-ready-time');
+	const inputBridesmaidsCount = document.getElementById('input-bridesmaids-count');
+	const inputMothersCount = document.getElementById('input-mothers-count');
+	const inputFlowerGirlsCount = document.getElementById('input-flower-girls-count');
+	const inputHairOnlyCount = document.getElementById('input-hair-only-count');
+	const selectHairStylists = document.getElementById('select-hair-stylists');
+	const selectMakeupArtists = document.getElementById('select-makeup-artists');
+	const selectBufferDress = document.getElementById('select-buffer-dress');
+
+	// Result elements
+	const badgeTotalServices = document.getElementById('badge-total-services');
+	const statStartTime = document.getElementById('stat-start-time');
+	const statWakeupSub = document.getElementById('stat-wakeup-sub');
+	const statBrideSlot = document.getElementById('stat-bride-slot');
+	const statHairServicesCount = document.getElementById('stat-hair-services-count');
+	const statMakeupServicesCount = document.getElementById('stat-makeup-services-count');
+	const statDressWindow = document.getElementById('stat-dress-window');
+	const statStaffingStatus = document.getElementById('stat-staffing-status');
+	const statStaffingTip = document.getElementById('stat-staffing-tip');
+
+	function formatTime(minutesSinceMidnight) {
+		let totalMins = Math.round(minutesSinceMidnight);
+		while (totalMins < 0) totalMins += 24 * 60;
+		while (totalMins >= 24 * 60) totalMins -= 24 * 60;
+
+		const h = Math.floor(totalMins / 60);
+		const m = totalMins % 60;
+		const ampm = h >= 12 ? 'PM' : 'AM';
+		const displayH = h % 12 === 0 ? 12 : h % 12;
+		const displayM = m < 10 ? `0${m}` : m;
+		return `${displayH}:${displayM} ${ampm}`;
+	}
+
+	function calculateTimeline() {
+		const targetStr = inputTargetReadyTime.value || "13:30";
+		const [targetH, targetM] = targetStr.split(':').map(Number);
+		const targetMinutes = targetH * 60 + targetM;
+
+		const dressBuffer = parseInt(selectBufferDress.value, 10) || 45;
+		const glamFinishMinutes = targetMinutes - dressBuffer;
+
+		// Headcounts
+		const bridesmaids = parseInt(inputBridesmaidsCount.value, 10) || 0;
+		const mothers = parseInt(inputMothersCount.value, 10) || 0;
+		const flowerGirls = parseInt(inputFlowerGirlsCount.value, 10) || 0;
+		const extraSingle = parseInt(inputHairOnlyCount.value, 10) || 0;
+
+		// 1 Bride (60m Hair, 60m Makeup)
+		// Bridesmaids (40m Hair, 40m Makeup)
+		// Mothers (35m Hair, 35m Makeup)
+		// Flower girls (20m Hair)
+		const totalHairMinutes = (60) + (bridesmaids * 40) + (mothers * 35) + (flowerGirls * 20) + (extraSingle * 35);
+		const totalMakeupMinutes = (60) + (bridesmaids * 40) + (mothers * 35);
+
+		const numHairStylists = parseInt(selectHairStylists.value, 10) || 1;
+		const numMakeupArtists = parseInt(selectMakeupArtists.value, 10) || 1;
+
+		const effectiveHairDuration = Math.ceil(totalHairMinutes / numHairStylists);
+		const effectiveMakeupDuration = Math.ceil(totalMakeupMinutes / numMakeupArtists);
+
+		const totalWorkingDuration = Math.max(effectiveHairDuration, effectiveMakeupDuration);
+
+		const startMinutes = glamFinishMinutes - totalWorkingDuration;
+		const wakeupMinutes = startMinutes - 45; // 45 min before for coffee/breakfast
+
+		statStartTime.textContent = formatTime(startMinutes);
+		statWakeupSub.textContent = `(Wake-up ~${formatTime(wakeupMinutes)} for coffee & breakfast)`;
+
+		// Bride Slot (second-to-last: finishing 30 min before glam finish)
+		const brideEnd = glamFinishMinutes;
+		const brideStart = brideEnd - 100; // ~1h 40m for bride
+		statBrideSlot.textContent = `${formatTime(brideStart)} – ${formatTime(brideEnd)}`;
+
+		const totalHairCount = 1 + bridesmaids + mothers + flowerGirls + extraSingle;
+		const totalMakeupCount = 1 + bridesmaids + mothers;
+		const totalServices = totalHairCount + totalMakeupCount;
+		badgeTotalServices.textContent = `${totalServices} Total Services`;
+
+		statHairServicesCount.textContent = `${totalHairCount} hair (${(totalHairMinutes/60).toFixed(1)}h total / ${numHairStylists} stylist)`;
+		statMakeupServicesCount.textContent = `${totalMakeupCount} makeup (${(totalMakeupMinutes/60).toFixed(1)}h total / ${numMakeupArtists} artist)`;
+		statDressWindow.textContent = `${formatTime(glamFinishMinutes)} – ${formatTime(targetMinutes)} (${dressBuffer}m)`;
+
+		// Staffing warnings
+		if (totalWorkingDuration > 300) { // >5 hours of glam
+			statStaffingStatus.textContent = '⚠️ Long Morning (Consider +1 Artist)';
+			statStaffingStatus.style.color = '#dc2626';
+			statStaffingTip.innerHTML = `⚠️ With <strong>${totalServices} services</strong> and 1 artist per role, your start time is very early (<strong>${formatTime(startMinutes)}</strong>). Adding an assistant stylist would shorten your morning by ~2 hours.`;
+		} else {
+			statStaffingStatus.textContent = '✅ Balanced & Relaxed Team';
+			statStaffingStatus.style.color = '#15803d';
+			statStaffingTip.innerHTML = `Your timeline allows a comfortable, stress-free morning pace with a start time of <strong>${formatTime(startMinutes)}</strong> and ${dressBuffer} min dress buffer.`;
+		}
+
+		// Print Schedule Generation
+		document.getElementById('print-glam-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Milestone / Time Slot</th>
+						<th style="padding:6pt;">Role & Service</th>
+						<th style="padding:6pt;">Important Instructions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1; background:#fdf2f8;">
+						<td style="padding:6pt; font-weight:bold;">${formatTime(startMinutes)}</td>
+						<td style="padding:6pt; font-weight:bold; color:#b91c1c;">Stylist Arrival & Setup</td>
+						<td style="padding:6pt;">Set up hair/makeup chairs near natural window light, plug in hot tools, clear table space.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">${formatTime(startMinutes + 15)} – ${formatTime(startMinutes + 90)}</td>
+						<td style="padding:6pt;">Slot 1: Bridesmaids / Mothers</td>
+						<td style="padding:6pt;">First 2 attendees in chairs (dry, clean hair + moisturized face). Wear robes/button-downs.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">${formatTime(startMinutes + 90)} – ${formatTime(brideStart)}</td>
+						<td style="padding:6pt;">Slot 2: Remaining Wedding Party</td>
+						<td style="padding:6pt;">Mothers of Bride/Groom styled and dressed so they can assist bride later.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1; background:#eff6ff;">
+						<td style="padding:6pt; font-weight:bold; color:#1e40af;">${formatTime(brideStart)} – ${formatTime(brideEnd)}</td>
+						<td style="padding:6pt; font-weight:bold; color:#1e40af;">👰 BRIDE Hair & Makeup</td>
+						<td style="padding:6pt;">Dedicated bridal styling slot. Second-to-last position for ultimate freshness.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1; background:#f0fdf4;">
+						<td style="padding:6pt; font-weight:bold; color:#15803d;">${formatTime(glamFinishMinutes)} – ${formatTime(targetMinutes)}</td>
+						<td style="padding:6pt; font-weight:bold; color:#15803d;">Dressing, Veil & Touch-Ups</td>
+						<td style="padding:6pt;">${dressBuffer}-minute calm window for corset zipping, jewelry, perfume, veil placement & robe cheers.</td>
+					</tr>
+					<tr style="background:#f8fafc; font-weight:bold;">
+						<td style="padding:8pt; font-size:11pt; color:#1e40af;">${formatTime(targetMinutes)}</td>
+						<td style="padding:8pt; font-size:11pt; color:#1e40af;">100% READY & DRESSED</td>
+						<td style="padding:8pt;">Photographer arrival / departure for first look or ceremony.</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	// Listeners
+	[inputTargetReadyTime, inputBridesmaidsCount, inputMothersCount, inputFlowerGirlsCount, inputHairOnlyCount, selectHairStylists, selectMakeupArtists, selectBufferDress].forEach(el => {
+		el.addEventListener('input', calculateTimeline);
+		el.addEventListener('change', calculateTimeline);
+	});
+
+	// Direct In-Page Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		calculateTimeline();
+		window.print();
+	});
+
+	// Export Word Document
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateTimeline();
+		const startTime = statStartTime.textContent;
+		const brideSlot = statBrideSlot.textContent;
+		const dressWindow = statDressWindow.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Wedding Morning Glam Schedule</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Wedding Morning Hair & Makeup Master Schedule</h1>
+				<p><strong>Start Time:</strong> ${startTime} | <strong>Bride Slot:</strong> ${brideSlot} | <strong>Dressing Window:</strong> ${dressWindow}</p>
+				<hr/>
+				<h2>Morning Rules for Bridesmaids</h2>
+				<p>• Arrive with 100% dry, clean hair washed the night before.</p>
+				<p>• Clean, moisturized face (no heavy SPF or foundation).</p>
+				<p>• Wear button-down shirts or robes only.</p>
+				<hr/>
+				<p><em>Generated by Manage.Wedding Hair & Makeup Sizer</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding-Morning-Glam-Schedule-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateTimeline();
+</script>

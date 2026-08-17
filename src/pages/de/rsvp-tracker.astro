@@ -1,0 +1,1059 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/rsvp-tracker/#webapp",
+      "name": "Hochzeits-Rückmeldungs-Tracker (RSVP) & Gäste-Manager | Manage.Wedding",
+      "url": "https://manage.wedding/de/rsvp-tracker",
+      "inLanguage": "de",
+      "description": "Kostenloser Online-Rückmeldungs-Tracker für Ihre Hochzeit. Verwalten Sie Zusagen, Absagen, offene Rückmeldungen, Menüwünsche, Begleitpersonen und exportieren Sie Listen nach Word, PDF oder Excel.",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie verwaltet man Hochzeits-Rückmeldungen (RSVP) und erinnert säumige Gäste?",
+      "description": "Schritt-für-Schritt-Leitfaden zur Erfassung von Rückmeldungsquoten, Menüwünschen und zur Bestätigung der finalen Gästezahl für das Catering.",
+      "inLanguage": "de",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 1: Rückmeldefrist festlegen & Gästeliste anlegen",
+          "text": "Setzen Sie die Rückmeldefrist auf 3 bis 4 Wochen vor dem Hochzeitstermin an und erfassen Sie alle eingeladenen Haushalte."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 2: Zusagen, Absagen & Menüwünsche in Echtzeit erfassen",
+          "text": "Tragen Sie eingehende Antworten sofort ein und vermerken Sie Essenswünsche (Fleisch, Fisch, Vegetarisch, Vegan) sowie Allergien (Glutenfrei, Laktosefrei)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 3: Freundliche Erinnerungsnachrichten versenden",
+          "text": "Filtern Sie 48 bis 72 Stunden nach Fristablauf nach 'Ausstehend' und senden Sie eine nette Erinnerungs-SMS oder WhatsApp-Nachricht."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 4: Finale Personenzahl sperren & Catering-Export erstellen",
+          "text": "Erstellen Sie 14 Tage vor dem Event den finalen Export für den Caterer als Word-Dokument (.doc), druckfertiges PDF oder CSV."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "de",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wann sollte die Rückmeldefrist (RSVP) für die Hochzeit liegen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die ideale Rückmeldefrist liegt 3 bis 4 Wochen vor dem Hochzeitstag. So bleibt Ihnen 1 Woche Puffer, um säumigen Gästen nachzutelefonieren, bevor die Location ca. 14 Tage vorher die verbindliche Personenzahl verlangt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie viel Prozent der geladenen Gäste sagen im Schnitt ab?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bei Gästen aus der Region liegt die Absagequote erfahrungsgemäß bei 10% bis 15%. Bei Weitanreisenden oder reinen Auslandshochzeiten (Destination Weddings) steigen die Absagen auf 25% bis 40%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie formuliert man eine höfliche Erinnerung bei verpasster Frist?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Warten Sie 2 bis 3 Tage nach Fristende und schreiben Sie entspannt: 'Liebe/r [Name], wir finalisieren diese Woche unsere Menüzahlen mit der Location und wollten nachfragen, ob unsere Einladung angekommen ist. Gib uns doch bitte bis [Datum] Bescheid, ob du mit uns feiern kannst!'"
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Hochzeits-Rückmeldungs-Tracker (RSVP) | Gästestatus & Menüwünsche"
+	description="Hochzeits-Rückmeldungen mühelos online verwalten. Verfolgen Sie Zusagen, offene Antworten, Absagen und Menüwünsche in Echtzeit mit Word-, PDF- & Excel-Export."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="RSVP & Rückmeldungs-Tracker" category="guests" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Hochzeits- <span class="accent-italic">Rückmeldungs-Tracker (RSVP)</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Echtzeit-Gästeübersicht, Menü-Erfassung und Rückmeldequoten. Exportieren Sie Ihre finale Liste mit einem Klick nach <strong>Word (.doc)</strong>, <strong>PDF</strong> oder <strong>Excel (.csv)</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Overview Stats & Export Dashboard -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.5rem; background: #fff;">
+			<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+				<div>
+					<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin: 0;">
+						📈 Rückmeldestatus & Quoten-Analyse
+					</h2>
+					<span class="font-body" style="color: var(--text-secondary); font-size: 0.95rem;">
+						Synchronisiert mit Gästeliste und Sitzplan
+					</span>
+				</div>
+
+				<!-- Export & Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" class="export-btn-group">
+					<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #eff6ff;">
+						📝 Word-Export (.doc)
+					</button>
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #fef2f2;">
+						🖨️ PDF / Drucken
+					</button>
+					<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						📊 Excel-Export (.csv)
+					</button>
+					<button type="button" id="btn-sample-data" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						➕ Beispieldaten
+					</button>
+					<button type="button" id="btn-clear-all" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; color: var(--accent-red);">
+						🗑️ Leeren
+					</button>
+				</div>
+			</div>
+
+			<!-- Stat Counters Grid -->
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
+				<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Eingeladene Plätze</span>
+					<strong id="stat-total" class="font-heading" style="font-size: 1.8rem; color: var(--fg-pencil);">0</strong>
+					<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">(<span id="stat-parties">0</span> Einladungen)</span>
+				</div>
+				<div style="background: #f0fdf4; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #166534; display: block;">Zusagen (Ja)</span>
+					<strong id="stat-attending" class="font-heading" style="font-size: 1.8rem; color: #15803d;">0</strong>
+					<span id="stat-attending-pct" style="font-size: 0.75rem; color: #166534; display: block;">0% der Plätze</span>
+				</div>
+				<div style="background: #fefce8; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #854d0e; display: block;">Ausstehend (Offen)</span>
+					<strong id="stat-pending" class="font-heading" style="font-size: 1.8rem; color: #a16207;">0</strong>
+					<span id="stat-pending-pct" style="font-size: 0.75rem; color: #854d0e; display: block;">0% der Plätze</span>
+				</div>
+				<div style="background: #fef2f2; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #991b1b; display: block;">Absagen (Nein)</span>
+					<strong id="stat-declined" class="font-heading" style="font-size: 1.8rem; color: var(--accent-red);">0</strong>
+					<span id="stat-declined-pct" style="font-size: 0.75rem; color: #991b1b; display: block;">0% der Plätze</span>
+				</div>
+				<div style="background: #eff6ff; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #1e40af; display: block;">Rückmeldequote</span>
+					<strong id="stat-response-rate" class="font-heading" style="font-size: 1.8rem; color: var(--accent-blue);">0%</strong>
+					<span style="font-size: 0.75rem; color: #1e40af; display: block;">Ziel: 95%+</span>
+				</div>
+			</div>
+
+			<!-- Dynamic Visual Attendance Progress Bar -->
+			<div>
+				<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem;">
+					<span class="font-heading" style="font-size: 0.95rem; color: var(--fg-pencil);">Visuelle Rückmelde-Verteilung</span>
+					<span id="stat-summary-note" class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">Bereit zur Erfassung</span>
+				</div>
+				<div style="display: flex; height: 26px; border: 2px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #e5e0d8; margin-bottom: 0.75rem;">
+					<div id="bar-attending" style="height: 100%; width: 0%; background-color: #22c55e; border-right: 1px solid var(--fg-pencil); transition: width 0.3s ease;" title="Zugesagt"></div>
+					<div id="bar-pending" style="height: 100%; width: 0%; background-color: #eab308; border-right: 1px solid var(--fg-pencil); transition: width 0.3s ease;" title="Ausstehend"></div>
+					<div id="bar-declined" style="height: 100%; width: 0%; background-color: var(--accent-red); transition: width 0.3s ease;" title="Abgesagt"></div>
+				</div>
+				<div style="display: flex; justify-content: space-between; font-family: var(--font-body); font-size: 0.85rem;">
+					<span style="color: #15803d; font-weight: bold;">🟢 Zugesagt (<span id="legend-attending">0</span>)</span>
+					<span style="color: #a16207; font-weight: bold;">🟡 Ausstehend (<span id="legend-pending">0</span>)</span>
+					<span style="color: var(--accent-red); font-weight: bold;">🔴 Abgesagt (<span id="legend-declined">0</span>)</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Workspace Grid: Add / Edit RSVP + Filterable Guest List -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 360px 1fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="rsvp-workspace-grid">
+			
+			<!-- Left Column: Add / Log RSVP Response -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.5rem; margin-bottom: 1.25rem; color: var(--fg-pencil); display: flex; align-items: center; gap: 0.5rem;">
+					<span>📬</span> Rückmeldung erfassen
+				</h2>
+
+				<form id="rsvp-form" style="display: flex; flex-direction: column; gap: 1rem;">
+					
+					<!-- Guest Full Name -->
+					<div>
+						<label for="rsvp-name" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+							Name des Gastes / Haushalts *
+						</label>
+						<input type="text" id="rsvp-name" required placeholder="z. B. Onkel Robert & Tante Helga" class="form-input" style="width: 100%; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper); font-family: var(--font-body); font-size: 1.05rem;">
+					</div>
+
+					<!-- Group -->
+					<div>
+						<label for="rsvp-group" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+							Gruppe / Seite
+						</label>
+						<select id="rsvp-group" class="form-input" style="width: 100%; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 1.05rem;">
+							<option value="Brautfamilie">Brautfamilie</option>
+							<option value="Bräutigamfamilie">Bräutigamfamilie</option>
+							<option value="Brautfreunde">Brautfreunde</option>
+							<option value="Bräutigamfreunde">Bräutigamfreunde</option>
+							<option value="Gemeinsame Freunde">Gemeinsame Freunde</option>
+							<option value="Trauzeugen / VIP">Trauzeugen / VIP</option>
+							<option value="Arbeitskollegen">Arbeitskollegen</option>
+						</select>
+					</div>
+
+					<!-- Party Size & RSVP Selection -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="rsvp-party" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+								Personenanzahl
+							</label>
+							<select id="rsvp-party" class="form-input" style="width: 100%; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 1.05rem;">
+								<option value="1">1 (Einzelperson)</option>
+								<option value="2" selected>2 (Paar / +1)</option>
+								<option value="3">3 (Familie mit Kind)</option>
+								<option value="4">4 (Familie mit 2 Kindern)</option>
+								<option value="5">5+ (Große Gruppe)</option>
+							</select>
+						</div>
+						<div>
+							<label for="rsvp-status" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+								Status Rückmeldung
+							</label>
+							<select id="rsvp-status" class="form-input" style="width: 100%; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 1.05rem;">
+								<option value="Attending">✅ Zugesagt (Ja)</option>
+								<option value="Pending">⏳ Ausstehend (Offen)</option>
+								<option value="Declined">❌ Abgesagt (Nein)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Meal Selection / Dietary -->
+					<div>
+						<label for="rsvp-dietary" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+							Menüwahl / Allergien & Unverträglichkeiten
+						</label>
+						<input type="text" id="rsvp-dietary" placeholder="z. B. 1x Rinderfilet, 1x Vegetarisch, Laktosefrei" class="form-input" style="width: 100%; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper); font-family: var(--font-body); font-size: 1rem;">
+						<div style="display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem;">
+							<button type="button" class="meal-tag-btn" data-val="Rind / Fleisch" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">🥩 Rind</button>
+							<button type="button" class="meal-tag-btn" data-val="Geflügel" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">🍗 Geflügel</button>
+							<button type="button" class="meal-tag-btn" data-val="Fisch" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">🐟 Fisch</button>
+							<button type="button" class="meal-tag-btn" data-val="Vegetarisch" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">🥗 Vegetarisch</button>
+							<button type="button" class="meal-tag-btn" data-val="Vegan" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">🌱 Vegan</button>
+							<button type="button" class="meal-tag-btn" data-val="Glutenfrei" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">🌾 Glutenfrei</button>
+						</div>
+					</div>
+
+					<button type="submit" class="hand-btn" style="width: 100%; padding: 0.85rem; font-size: 1.15rem; margin-top: 0.5rem;">
+						✨ Rückmeldung speichern
+					</button>
+
+				</form>
+
+				<!-- Follow-Up Message Copy Box -->
+				<div style="margin-top: 1.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+					<strong class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+						💬 Vorlage: Freundliche RSVP-Erinnerung
+					</strong>
+					<p id="copy-template-text" class="font-body" style="font-size: 0.9rem; line-height: 1.4; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+						"Hallo! Wir stimmen diese Woche die finalen Gästezahlen und Menüs mit unserem Caterer ab. Gib uns doch bitte kurz bis Freitag Bescheid, ob du dabei sein kannst! Wir freuen uns auf dich! ❤️"
+					</p>
+					<button type="button" id="btn-copy-template" class="hand-btn secondary" style="padding: 0.25rem 0.6rem; font-size: 0.8rem; width: 100%;">
+						📋 Text in die Zwischenablage kopieren
+					</button>
+				</div>
+			</div>
+
+			<!-- Right Column: Searchable, Filterable RSVP Registry Table -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<!-- Filter & Search Bar -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 1rem;">
+					
+					<!-- Search -->
+					<div style="flex: 1; min-width: 180px;">
+						<input type="text" id="search-input" placeholder="🔍 Gastname oder Menüwunsch suchen..." class="form-input" style="width: 100%; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem;">
+					</div>
+
+					<!-- RSVP Status Filter -->
+					<div>
+						<select id="filter-status" class="form-input" style="padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+							<option value="all">Alle Rückmeldungen</option>
+							<option value="Attending">✅ Nur Zusagen</option>
+							<option value="Pending">⏳ Nur Ausstehend</option>
+							<option value="Declined">❌ Nur Absagen</option>
+						</select>
+					</div>
+
+					<!-- Group Filter -->
+					<div>
+						<select id="filter-group" class="form-input" style="padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+							<option value="all">Alle Gruppen</option>
+							<option value="Brautfamilie">Brautfamilie</option>
+							<option value="Bräutigamfamilie">Bräutigamfamilie</option>
+							<option value="Brautfreunde">Brautfreunde</option>
+							<option value="Bräutigamfreunde">Bräutigamfreunde</option>
+							<option value="Gemeinsame Freunde">Gemeinsame Freunde</option>
+							<option value="Trauzeugen / VIP">Trauzeugen / VIP</option>
+							<option value="Arbeitskollegen">Arbeitskollegen</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Table Container -->
+				<div id="rsvp-table-wrap" style="overflow-x: auto; max-height: 550px;">
+					<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 1rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil); position: sticky; top: 0; z-index: 1;">
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Gastname</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Gruppe</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Plätze</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Status</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Menü / Allergien</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Aktionen</th>
+							</tr>
+						</thead>
+						<tbody id="rsvp-table-body">
+							<!-- Injected via JS -->
+						</tbody>
+					</table>
+				</div>
+
+				<!-- Empty State Box -->
+				<div id="empty-state-box" style="display: none; text-align: center; padding: 3rem 1rem; color: var(--text-secondary);">
+					<div style="font-size: 2.5rem; margin-bottom: 0.5rem;">💌</div>
+					<h3 class="font-heading" style="font-size: 1.3rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">Keine Rückmeldungen vorhanden</h3>
+					<p class="font-body" style="font-size: 1.05rem; margin-bottom: 1.25rem;">Erfassen Sie Gäste über das linke Formular oder laden Sie Beispieldaten.</p>
+					<button type="button" id="btn-empty-sample" class="hand-btn" style="padding: 0.5rem 1.25rem; font-size: 1rem;">
+						➕ Beispieldaten laden
+					</button>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Offizielle Hochzeits-Rückmeldungsliste (RSVP)</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportiert am: <span id="print-date"></span> | Bestätigte Zusagen: <span id="print-attending-headcount"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Gastname</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Gruppe</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: center;">Plätze</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: center;">Status</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Menü / Unverträglichkeiten</th>
+					</tr>
+				</thead>
+				<tbody id="print-table-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 0 auto 3rem auto; max-width: 900px; background: var(--post-it); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);"></div>
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h2 class="font-heading" style="font-size: clamp(1.3rem, 2.5vw, 1.7rem); color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Auf einen Blick (BLUF): Rückmeldequoten & Fristen
+				</h2>
+				<span style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(0,0,0,0.06); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid var(--fg-pencil);">
+					1-Minuten Richtwerte
+				</span>
+			</div>
+			
+			<!-- Core Formula Banner -->
+			<div style="background: rgba(255, 255, 255, 0.9); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.6; margin: 0 0 0.5rem 0; color: var(--fg-pencil);">
+					<strong>Durchschnittliche Zusagequoten:</strong> 
+					<span style="display: inline-block; background: #eff6ff; border: 1px solid #3b82f6; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #1e40af; margin: 2px 4px;">Regionale Gäste: 85%–90% Zusagen (10%–15% Absagen)</span> · 
+					<span style="display: inline-block; background: #fef3c7; border: 1px solid #d97706; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #92400e; margin: 2px 4px;">Weit Angereiste: 65%–75% Zusagen (25%–35% Absagen)</span> · 
+					<span style="display: inline-block; background: #fdf2f8; border: 1px solid #ec4899; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #9d174d; margin: 2px 4px;">Auslandshochzeit: 50%–60% Zusagen</span>
+				</p>
+				<p class="font-body" style="font-size: 0.9rem; margin: 0; color: var(--text-secondary); line-height: 1.5;">
+					<strong>Der Nachzügler-Puffer:</strong> 15% bis 25% der Gäste melden sich nicht vor Fristende. Setzen Sie Ihre offizielle Frist auf <strong>3 bis 4 Wochen vor der Trauung</strong>, damit Sie 5 bis 7 Tage Zeit haben, säumige Gäste zu kontaktieren, bevor der Caterer 14 Tage vor dem Event verbindliche Zahlen verlangt.
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto;">
+				<table style="width: 100%; border-collapse: collapse; background: #fff; border: 2px solid var(--fg-pencil); font-family: var(--font-body); font-size: 0.92rem; text-align: left;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Gäste-Kategorie / Nähe</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-blue);">Zusagequote</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-red);">Absagequote</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Reaktionszeit</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Erinnerungs-Kanal</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Engste Familie & Trauzeugen</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">98%–100%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">0%–2%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">1–3 Tage</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Persönliches Gespräch</td>
+						</tr>
+						<tr style="background: #faf8f3;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Regionale Freunde & Verwandte</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">85%–90%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">10%–15%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">10–14 Tage</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">WhatsApp / SMS nach 48h</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Weit Angereiste (Inland/Bahn/Flug)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">65%–75%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">25%–35%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">14–21 Tage</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">E-Mail / Telefonat</td>
+						</tr>
+						<tr style="background: #faf8f3;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Auslandshochzeit / Fernreisen</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">50%–60%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">40%–50%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">21–30 Tage</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Persönlicher Anruf</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Kollegen & Bekannte</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">55%–70%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">30%–45%</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">14–20 Tage</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Kurze Direktnachricht</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">RSVP Praxis-Ratgeber</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem;">
+					Der vollständige Leitfaden für Hochzeits-Rückmeldungen
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; margin: 0.5rem auto 0;">
+					Alles über Fristensetzung, diplomatisches Nachfassen und den perfekten Datenexport für das Catering.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem;">
+				<img 
+					src="/images/rsvp_envelopes.webp" 
+					alt="Hochzeits-Rückmeldungs-Tracker — Dashboard für Menüs und Rückmeldungen" 
+					loading="lazy"
+					decoding="async"
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil);"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Die Echtzeit-Erfassung verhindert teure Überkapazitäten beim Menü und Chaos bei der Tischordnung.
+				</p>
+			</div>
+
+			<!-- Section 1: Timeline -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Der optimale Zeitplan für Hochzeitseinladungen & Rückmeldungen
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Die Frist zu früh zu setzen führt dazu, dass Gäste die Antwort aufschieben; eine zu späte Frist bringt den Caterer in Bedrängnis. Dieser Ablauf hat sich bewährt:
+				</p>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin: 1.5rem 0;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.5rem;">
+							8 bis 12 Wochen vorher
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Versand der gedruckten Einladungskarten inklusive Rückmeldekarte (Antwortkarte) oder Link/QR-Code zur Hochzeits-Website.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.5rem;">
+							4 Wochen vorher
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							<strong>Offizielle Rückmeldefrist.</strong> Bis zu diesem Tag sollten ca. 75–80% aller Rückmeldungen in diesem Tracker erfasst sein.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #d97706; margin-bottom: 0.5rem;">
+							3 Wochen vorher
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Nachfassen bei allen offenen 'Ausstehend'-Einträgen per WhatsApp oder Telefon. Frei gewordene Plätze mit B-Listen-Gästen besetzen.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.5rem;">
+							2 Wochen vorher
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Finale Gästezahl und Allergenliste sperren und per <strong>Word/PDF-Export</strong> verbindlich an die Location und den Caterer übermitteln.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Non-Awkward Follow-Up Strategy -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. Entspanntes Nachfassen bei verspäteten Rückmeldungen
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Nehmen Sie es nicht persönlich: Einladungen gehen im Alltagstrubel oder in der Post unter. Nutzen Sie dieses 2-Stufen-Prinzip:
+				</p>
+				<div style="background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+					<p class="font-body" style="margin-bottom: 0.75rem; line-height: 1.6;">
+						<strong>Schritt 1 (Die freundliche Erinnerung):</strong> Senden Sie 48 Stunden nach Fristende eine kurze Nachricht: <em>"Hallo [Name]! Wir freuen uns riesig auf unsere Hochzeit. Wir stimmen diese Woche die finalen Zahlen mit der Location ab – gib uns doch kurz Bescheid, ob du dabei sein kannst!"</em>
+					</p>
+					<p class="font-body" style="margin: 0; line-height: 1.6;">
+						<strong>Schritt 2 (Die verbindliche Abrundung):</strong> Falls nach 5 Tagen keine Antwort erfolgt: <em>"Liebe/r [Name], da wir nichts von dir gehört haben, haben wir dich schweren Herzens als 'verhindert' eingetragen, um unsere Frist bei der Location einzuhalten. Lass uns bald mal so treffen!"</em>
+					</p>
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Häufig gestellte Fragen (FAQ)
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Wie exportiere ich meine RSVP-Liste nach Word oder PDF?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Klicken Sie oben auf <strong>"📝 Word-Export (.doc)"</strong>, um eine übersichtliche Word-Tabelle aller Zusagen, Menüwünsche und Allergien herunterzuladen. Mit <strong>"🖨️ PDF / Drucken"</strong> erstellen Sie eine druckfertige Übergabeliste für den Caterer.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Sind meine Gästedaten in diesem Tool sicher und geschützt?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Ja, zu 100%! Alle Daten werden ausschließlich lokal in Ihrem Browser (localStorage) gespeichert. Es werden niemals Gastnamen, Telefonnummern oder E-Mails an externe Server übertragen.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/de/rsvp-tracker" category="guests" />
+
+	</main>
+</Layout>
+
+<style>
+	.rsvp-workspace-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+	@media (min-width: 992px) {
+		.rsvp-workspace-grid {
+			grid-template-columns: 360px 1fr;
+		}
+	}
+
+	.btn-status-toggle {
+		cursor: pointer;
+		padding: 0.2rem 0.5rem;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 4px;
+		font-family: var(--font-heading);
+		font-size: 0.8rem;
+		transition: all 0.15s ease;
+		white-space: nowrap;
+	}
+
+	.btn-status-toggle.active-attending {
+		background: #22c55e !important;
+		color: #fff !important;
+		border-color: #15803d !important;
+		font-weight: bold;
+	}
+	.btn-status-toggle.active-pending {
+		background: #eab308 !important;
+		color: #000 !important;
+		border-color: #a16207 !important;
+		font-weight: bold;
+	}
+	.btn-status-toggle.active-declined {
+		background: var(--accent-red) !important;
+		color: #fff !important;
+		border-color: #991b1b !important;
+		font-weight: bold;
+	}
+
+	.action-icon-btn {
+		background: none;
+		border: none;
+		cursor: pointer;
+		font-size: 1.1rem;
+		padding: 0.25rem;
+		border-radius: 3px;
+	}
+	.action-icon-btn:hover {
+		background: var(--muted-paper);
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	const STORAGE_KEY = 'manage_wedding_guests_de';
+
+	const sampleRSVPs = [
+		{ id: '1', name: 'Sophie & Maximilian Weber', group: "Brautfamilie", partySize: 2, rsvpStatus: 'Attending', dietary: '1x Rind, 1x Vegetarisch' },
+		{ id: '2', name: 'Dr. Thomas Meyer', group: "Bräutigamfamilie", partySize: 2, rsvpStatus: 'Attending', dietary: 'Lachs / Fisch, Laktosefrei' },
+		{ id: '3', name: 'Elena Schulz', group: "Trauzeugen / VIP", partySize: 1, rsvpStatus: 'Attending', dietary: 'Vegan' },
+		{ id: '4', name: 'David & Lisa Miller', group: "Bräutigamfreunde", partySize: 2, rsvpStatus: 'Pending', dietary: 'Geflügel' },
+		{ id: '5', name: 'Katharina Schmidt', group: "Brautfreunde", partySize: 2, rsvpStatus: 'Pending', dietary: 'Glutenfrei' },
+		{ id: '6', name: 'Markus Hoffmann', group: "Arbeitskollegen", partySize: 1, rsvpStatus: 'Declined', dietary: 'Keine' },
+		{ id: '7', name: 'Tobias & Sarah Wagner', group: "Gemeinsame Freunde", partySize: 2, rsvpStatus: 'Attending', dietary: '2x Rind / Fleisch' },
+		{ id: '8', name: 'Tante Hildegard', group: "Brautfamilie", partySize: 1, rsvpStatus: 'Attending', dietary: 'Geflügel' }
+	];
+
+	let guests = [];
+
+	function loadGuests() {
+		const raw = localStorage.getItem(STORAGE_KEY);
+		if (raw) {
+			try {
+				guests = JSON.parse(raw);
+				guests.forEach(g => {
+					if (!g.rsvpStatus) {
+						if (g.status === 'attending') g.rsvpStatus = 'Attending';
+						else if (g.status === 'declined') g.rsvpStatus = 'Declined';
+						else g.rsvpStatus = 'Pending';
+					}
+					if (!g.partySize) g.partySize = 1;
+					if (!g.dietary) g.dietary = 'Keine';
+				});
+			} catch (e) {
+				guests = [];
+			}
+		} else {
+			guests = JSON.parse(JSON.stringify(sampleRSVPs));
+			saveGuests();
+		}
+	}
+
+	function saveGuests() {
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(guests));
+		render();
+	}
+
+	// DOM Elements
+	const form = document.getElementById('rsvp-form');
+	const tableBody = document.getElementById('rsvp-table-body');
+	const emptyStateBox = document.getElementById('empty-state-box');
+	const tableWrap = document.getElementById('rsvp-table-wrap');
+
+	const statTotal = document.getElementById('stat-total');
+	const statParties = document.getElementById('stat-parties');
+	const statAttending = document.getElementById('stat-attending');
+	const statAttendingPct = document.getElementById('stat-attending-pct');
+	const statPending = document.getElementById('stat-pending');
+	const statPendingPct = document.getElementById('stat-pending-pct');
+	const statDeclined = document.getElementById('stat-declined');
+	const statDeclinedPct = document.getElementById('stat-declined-pct');
+	const statResponseRate = document.getElementById('stat-response-rate');
+	const statSummaryNote = document.getElementById('stat-summary-note');
+
+	const barAttending = document.getElementById('bar-attending');
+	const barPending = document.getElementById('bar-pending');
+	const barDeclined = document.getElementById('bar-declined');
+
+	const legendAttending = document.getElementById('legend-attending');
+	const legendPending = document.getElementById('legend-pending');
+	const legendDeclined = document.getElementById('legend-declined');
+
+	const searchInput = document.getElementById('search-input');
+	const filterStatus = document.getElementById('filter-status');
+	const filterGroup = document.getElementById('filter-group');
+
+	// Add / Submit Form
+	form.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const name = document.getElementById('rsvp-name').value.trim();
+		const group = document.getElementById('rsvp-group').value;
+		const partySize = parseInt(document.getElementById('rsvp-party').value) || 1;
+		const rsvpStatus = document.getElementById('rsvp-status').value;
+		const dietary = document.getElementById('rsvp-dietary').value.trim() || 'Keine';
+
+		if (!name) return;
+
+		const newEntry = {
+			id: Date.now().toString(),
+			name,
+			group,
+			partySize,
+			rsvpStatus,
+			dietary
+		};
+
+		guests.unshift(newEntry);
+		saveGuests();
+		form.reset();
+		document.getElementById('rsvp-dietary').value = '';
+	});
+
+	// Quick Meal Tag Buttons
+	document.querySelectorAll('.meal-tag-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			const input = document.getElementById('rsvp-dietary');
+			const val = btn.getAttribute('data-val');
+			if (!input.value || input.value === 'Keine') {
+				input.value = val;
+			} else if (!input.value.includes(val)) {
+				input.value += `, ${val}`;
+			}
+		});
+	});
+
+	// Copy Template Text
+	document.getElementById('btn-copy-template').addEventListener('click', () => {
+		const text = document.getElementById('copy-template-text').textContent.trim();
+		navigator.clipboard.writeText(text).then(() => {
+			const btn = document.getElementById('btn-copy-template');
+			btn.textContent = '✅ In die Zwischenablage kopiert!';
+			setTimeout(() => { btn.textContent = '📋 Text in die Zwischenablage kopieren'; }, 2000);
+		});
+	});
+
+	// Delete Guest
+	window.deleteRsvpItem = function(id) {
+		if (confirm("Diesen Gast aus dem Rückmeldungs-Tracker entfernen?")) {
+			guests = guests.filter(g => g.id !== id);
+			saveGuests();
+		}
+	};
+
+	// Set Guest Status
+	window.setRsvpStatus = function(id, status) {
+		const g = guests.find(item => item.id === id);
+		if (g) {
+			g.rsvpStatus = status;
+			saveGuests();
+		}
+	};
+
+	// Search & Filter Events
+	searchInput.addEventListener('input', render);
+	filterStatus.addEventListener('change', render);
+	filterGroup.addEventListener('change', render);
+
+	// Load & Clear Handlers
+	document.getElementById('btn-sample-data').addEventListener('click', () => {
+		guests = JSON.parse(JSON.stringify(sampleRSVPs));
+		saveGuests();
+	});
+	document.getElementById('btn-empty-sample').addEventListener('click', () => {
+		guests = JSON.parse(JSON.stringify(sampleRSVPs));
+		saveGuests();
+	});
+	document.getElementById('btn-clear-all').addEventListener('click', () => {
+		if (confirm("Möchten Sie wirklich alle Einträge leeren?")) {
+			guests = [];
+			saveGuests();
+		}
+	});
+
+	// 📝 Export to Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		if (guests.length === 0) {
+			alert("Ihr Rückmeldungs-Tracker ist leer. Bitte erfassen Sie zuerst Gäste!");
+			return;
+		}
+
+		let tableRows = '';
+		guests.forEach((g, idx) => {
+			const statusLabel = g.rsvpStatus === 'Attending' ? '✅ Zugesagt' : g.rsvpStatus === 'Declined' ? '❌ Abgesagt' : '⏳ Ausstehend';
+			tableRows += `
+				<tr>
+					<td style="border:1px solid #ccc; padding:8px;">${idx + 1}</td>
+					<td style="border:1px solid #ccc; padding:8px; font-weight:bold;">${g.name}</td>
+					<td style="border:1px solid #ccc; padding:8px;">${g.group || "Allgemein"}</td>
+					<td style="border:1px solid #ccc; padding:8px; text-align:center;">${g.partySize || 1}</td>
+					<td style="border:1px solid #ccc; padding:8px; text-align:center; font-weight:bold;">${statusLabel}</td>
+					<td style="border:1px solid #ccc; padding:8px;">${g.dietary || 'Keine'}</td>
+				</tr>
+			`;
+		});
+
+		const totalSeats = guests.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const attendingSeats = guests.filter(g => g.rsvpStatus === 'Attending').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const declinedSeats = guests.filter(g => g.rsvpStatus === 'Declined').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const pendingSeats = guests.filter(g => g.rsvpStatus === 'Pending').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Manage.Wedding — Offizielle Hochzeits-Gästeliste (RSVP)</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Offizielle Hochzeits-Gästeliste (RSVP)</h1>
+				<p>Erstellt am ${new Date().toLocaleDateString('de-DE')} | Geladene Plätze gesamt: ${totalSeats} | <strong>Bestätigte Zusagen: ${attendingSeats}</strong> | Ausstehend: ${pendingSeats} | Abgesagt: ${declinedSeats}</p>
+				<table>
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Gastname</th>
+							<th>Gruppe</th>
+							<th>Plätze</th>
+							<th>Status</th>
+							<th>Menü / Allergien</th>
+						</tr>
+					</thead>
+					<tbody>
+						${tableRows}
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Hochzeits_RSVP_Gästeliste_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		if (guests.length === 0) {
+			alert("Ihr Rückmeldungs-Tracker ist leer. Bitte erfassen Sie zuerst Gäste!");
+			return;
+		}
+
+		const printDate = document.getElementById('print-date');
+		const printHeadcount = document.getElementById('print-attending-headcount');
+		const printTbody = document.getElementById('print-table-body');
+
+		printDate.textContent = new Date().toLocaleDateString('de-DE');
+		const attendingSeats = guests.filter(g => g.rsvpStatus === 'Attending').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const totalSeats = guests.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		printHeadcount.textContent = `${attendingSeats} bestätigte Gäste (von ${totalSeats} geladenen)`;
+
+		printTbody.innerHTML = '';
+		guests.forEach(g => {
+			const tr = document.createElement('tr');
+			const statusLabel = g.rsvpStatus === 'Attending' ? 'Zugesagt' : g.rsvpStatus === 'Declined' ? 'Abgesagt' : 'Ausstehend';
+			tr.innerHTML = `
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight: bold;">${g.name}</td>
+				<td style="border: 1px solid #ccc; padding: 6px;">${g.group || '-'}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align: center;">${g.partySize || 1}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align: center; font-weight: bold;">${statusLabel}</td>
+				<td style="border: 1px solid #ccc; padding: 6px;">${g.dietary || 'Keine'}</td>
+			`;
+			printTbody.appendChild(tr);
+		});
+
+		window.print();
+	});
+
+	// 📊 Export to Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		if (guests.length === 0) {
+			alert("Ihr Rückmeldungs-Tracker ist leer. Bitte erfassen Sie zuerst Gäste!");
+			return;
+		}
+
+		let csv = "Gastname;Gruppe;Personen;Status;Menue und Allergien\n";
+		guests.forEach(g => {
+			const safeName = `"${(g.name || '').replace(/"/g, '""')}"`;
+			const safeGroup = `"${(g.group || '').replace(/"/g, '""')}"`;
+			const safeDiet = `"${(g.dietary || '').replace(/"/g, '""')}"`;
+			const statusLabel = g.rsvpStatus === 'Attending' ? 'Zugesagt' : g.rsvpStatus === 'Declined' ? 'Abgesagt' : 'Ausstehend';
+			csv += `${safeName};${safeGroup};${g.partySize || 1};${statusLabel};${safeDiet}\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Hochzeits_RSVP_Tracker_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	function render() {
+		const q = searchInput.value.toLowerCase().trim();
+		const selStatus = filterStatus.value;
+		const selGroup = filterGroup.value;
+
+		const filtered = guests.filter(g => {
+			const matchesQuery = !q || g.name.toLowerCase().includes(q) || (g.dietary && g.dietary.toLowerCase().includes(q)) || (g.group && g.group.toLowerCase().includes(q));
+			const matchesStatus = selStatus === 'all' || g.rsvpStatus === selStatus;
+			const matchesGroup = selGroup === 'all' || g.group === selGroup;
+			return matchesQuery && matchesStatus && matchesGroup;
+		});
+
+		// Calculate Totals
+		const totalParties = guests.length;
+		const totalSeats = guests.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		
+		const attendingSeats = guests.filter(g => g.rsvpStatus === 'Attending').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const pendingSeats = guests.filter(g => g.rsvpStatus === 'Pending').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const declinedSeats = guests.filter(g => g.rsvpStatus === 'Declined').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+
+		const respondedSeats = attendingSeats + declinedSeats;
+		const responsePct = totalSeats > 0 ? Math.round((respondedSeats / totalSeats) * 100) : 0;
+
+		statTotal.textContent = totalSeats;
+		statParties.textContent = totalParties;
+		statAttending.textContent = attendingSeats;
+		statAttendingPct.textContent = totalSeats > 0 ? `${Math.round((attendingSeats / totalSeats) * 100)}% der Plätze` : '0%';
+		
+		statPending.textContent = pendingSeats;
+		statPendingPct.textContent = totalSeats > 0 ? `${Math.round((pendingSeats / totalSeats) * 100)}% der Plätze` : '0%';
+
+		statDeclined.textContent = declinedSeats;
+		statDeclinedPct.textContent = totalSeats > 0 ? `${Math.round((declinedSeats / totalSeats) * 100)}% der Plätze` : '0%';
+
+		statResponseRate.textContent = `${responsePct}%`;
+
+		// Visual Progress Bar
+		if (totalSeats > 0) {
+			const attPct = (attendingSeats / totalSeats) * 100;
+			const penPct = (pendingSeats / totalSeats) * 100;
+			const decPct = (declinedSeats / totalSeats) * 100;
+
+			barAttending.style.width = `${attPct}%`;
+			barPending.style.width = `${penPct}%`;
+			barDeclined.style.width = `${decPct}%`;
+
+			legendAttending.textContent = attendingSeats;
+			legendPending.textContent = pendingSeats;
+			legendDeclined.textContent = declinedSeats;
+
+			statSummaryNote.textContent = `${attendingSeats} bestätigte Gäste • ${pendingSeats} offen`;
+		} else {
+			barAttending.style.width = '0%';
+			barPending.style.width = '0%';
+			barDeclined.style.width = '0%';
+			legendAttending.textContent = '0';
+			legendPending.textContent = '0';
+			legendDeclined.textContent = '0';
+			statSummaryNote.textContent = 'Rückmeldungen erfassen für Auswertung';
+		}
+
+		// Table Render
+		tableBody.innerHTML = '';
+		if (filtered.length === 0 && guests.length === 0) {
+			tableWrap.style.display = 'none';
+			emptyStateBox.style.display = 'block';
+		} else {
+			tableWrap.style.display = 'block';
+			emptyStateBox.style.display = 'none';
+
+			if (filtered.length === 0) {
+				tableBody.innerHTML = `<tr><td colspan="6" style="padding: 2rem; text-align: center; color: var(--text-secondary); font-style: italic;">Keine Gäste mit den gewählten Filtern gefunden.</td></tr>`;
+			} else {
+				filtered.forEach((g, idx) => {
+					const tr = document.createElement('tr');
+					tr.style.borderBottom = '1px solid var(--muted-paper)';
+					tr.style.background = idx % 2 === 0 ? '#fff' : '#faf8f5';
+
+					tr.innerHTML = `
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper);">
+							<strong style="display: block; font-size: 1.05rem; color: var(--fg-pencil);">${g.name}</strong>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper);">
+							<span style="font-size: 0.85rem; color: var(--text-secondary);">${g.group || 'Allgemein'}</span>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper); text-align: center; font-weight: bold;">
+							${g.partySize || 1}
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper); text-align: center;">
+							<div style="display: flex; justify-content: center; gap: 0.25rem;">
+								<button type="button" class="btn-status-toggle ${g.rsvpStatus === 'Attending' ? 'active-attending' : ''}" onclick="setRsvpStatus('${g.id}', 'Attending')">✓ Ja</button>
+								<button type="button" class="btn-status-toggle ${g.rsvpStatus === 'Pending' ? 'active-pending' : ''}" onclick="setRsvpStatus('${g.id}', 'Pending')">? Offen</button>
+								<button type="button" class="btn-status-toggle ${g.rsvpStatus === 'Declined' ? 'active-declined' : ''}" onclick="setRsvpStatus('${g.id}', 'Declined')">✗ Nein</button>
+							</div>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper);">
+							<span style="font-size: 0.9rem; ${g.dietary && g.dietary !== 'Keine' ? 'color: var(--accent-blue); font-weight: bold;' : 'color: var(--text-secondary);'}">
+								${g.dietary || 'Keine'}
+							</span>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper); text-align: center;">
+							<button type="button" class="action-icon-btn" title="Eintrag löschen" onclick="deleteRsvpItem('${g.id}')">
+								🗑️
+							</button>
+						</td>
+					`;
+					tableBody.appendChild(tr);
+				});
+			}
+		}
+	}
+
+	// Initialize
+	loadGuests();
+	render();
+</script>

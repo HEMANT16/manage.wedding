@@ -1,0 +1,882 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/pt/digital-invitations/#webapp",
+      "name": "Gerador de Convites de Casamento Digitais & E-Invites",
+      "url": "https://manage.wedding/pt/digital-invitations",
+      "inLanguage": "pt",
+      "description": "Gerador gratuito de convites digitais de casamento. Crie convites eletrónicos personalizados para toda a lista de convidados com mensagens adaptadas para WhatsApp/SMS, imagens PNG em alta resolução e exportação em Word e PDF.",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Como Criar, Enviar e Gerir Convites de Casamento Digitais",
+      "description": "Processo passo a passo para desenhar convites digitais personalizados, escrever mensagens para WhatsApp/SMS e controlar confirmações.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Passo 1: Introduza os Dados do Casamento e Local",
+          "text": "Indique os nomes dos noivos, data, hora, local da cerimónia/quinta, dress code, prazo de confirmação de RSVP e link do site."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 2: Escolha o Tema Visual do Convite",
+          "text": "Selecione o estilo da moldura artística, como Tinta Clássica, Floral Botânico ou Arco Romântico."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 3: Sincronize a Lista de Convidados",
+          "text": "Ligue a base de dados de convidados para gerar automaticamente cartões personalizados com o nome de cada convidado ou família."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 4: Descarregue PNGs e Exporte Mensagens para WhatsApp",
+          "text": "Descarregue imagens em alta definição, imprima folhas PDF ou exporte o ficheiro Word com as mensagens de texto prontas a enviar."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Os convites de casamento digitais são aceites na etiqueta moderna?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sim! Mais de 65% dos noivos utilizam hoje convites digitais ou formatos híbridos. São ecológicos, poupam entre 800€ e 2.500€ em papel, caligrafia e selos de correio, e permitem respostas de RSVP instantâneas com 1 clique."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quando devem ser enviados os convites de casamento digitais?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Os convites digitais devem ser enviados 6 a 8 semanas antes do casamento local (e 10 a 14 semanas antes para casamentos com viagem). Como não há atrasos dos correios, os convidados recebem o convite no próprio dia."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como enviar os convites digitais por WhatsApp aos convidados?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Descarregue a imagem PNG personalizada e anexe-a à mensagem de WhatsApp gerada pela ferramenta com o link de confirmação e detalhes do dress code."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Gerador de Convites de Casamento Digitais | Manage.Wedding"
+	description="Crie e exporte convites de casamento digitais personalizados para a sua lista de convidados. Inclui mensagens para WhatsApp e SMS, descarregamento de imagens PNG e exportação Word e PDF."
+	schema={schema}
+>
+	<!-- Include html2canvas for instant image capture -->
+	<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Convites Digitais" category="stationery" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Gerador de Convites Digitais
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Gere convites digitais de casamento personalizados e em alta resolução para todos os seus convidados. Exporte cartões em <strong>PNG</strong>, folhas <strong>PDF Imprimíveis</strong> ou ficheiros <strong>Word (.doc)</strong> com mensagens personalizadas prontas a enviar por WhatsApp ou SMS.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Como Criar Convites Digitais em 3 Passos Simples
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Detalhes do Casamento & Tema
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Introduza os nomes dos noivos, data, local da quinta, dress code, prazo de confirmação de RSVP e escolha a moldura visual.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Sincronize Nomes de Convidados
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						A sua lista de convidados guardada conecta-se automaticamente, ou clique em <strong>"✨ Carregar Exemplos"</strong> para testar!
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Descarregue Imagens e Textos
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Descarregue imagens PNG nítidas, gere o PDF para impressão ou exporte para Word com as mensagens de WhatsApp já escritas!
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Controls + Live Preview & Generated Roster -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="invitations-calc-grid">
+			
+			<!-- Left Column: Wedding Details Form & Guest Sync -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+						💌 Detalhes do Convite & Tema
+					</h2>
+					<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+						Personalize textos e estilo visual do seu convite eletrónico
+					</span>
+				</div>
+
+				<form id="invite-form" style="display: flex; flex-direction: column; gap: 1rem;">
+					
+					<!-- Theme Style Selector -->
+					<div>
+						<label for="select-card-theme" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--accent-red); margin-bottom: 0.25rem;">
+							Tema Visual do Convite
+						</label>
+						<select id="select-card-theme" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+							<option value="classic" selected>✒️ Tinta Clássica & Caligrafia (Elegante Minimalista)</option>
+							<option value="botanical">🌿 Floral Botânico & Folhas de Oliveira</option>
+							<option value="romantic">🏛️ Arco Romântico & Papel Quente</option>
+							<option value="modern">✨ Luxo Moderno Moldura Black-Tie</option>
+						</select>
+					</div>
+
+					<!-- Couple's Names -->
+					<div>
+						<label for="input-couples-names" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Nomes dos Noivos *
+						</label>
+						<input type="text" id="input-couples-names" value="Sara & Gonçalo" required style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-heading); font-size: 1.1rem; background: #fff;">
+					</div>
+
+					<!-- Wedding Date & Time -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+						<div>
+							<label for="input-wedding-date" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Data & Hora *
+							</label>
+							<input type="text" id="input-wedding-date" value="Sábado, 17 de Outubro de 2026 às 16:30" required style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.85rem; background: #fff;">
+						</div>
+						<div>
+							<label for="input-rsvp-deadline" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Prazo de RSVP
+							</label>
+							<input type="text" id="input-rsvp-deadline" value="15 de Setembro de 2026" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.85rem; background: #fff;">
+						</div>
+					</div>
+
+					<!-- Location & Dress Code -->
+					<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.6rem;">
+						<div>
+							<label for="input-wedding-location" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Quinta / Local & Cidade *
+							</label>
+							<input type="text" id="input-wedding-location" value="Quinta da Serra, Sintra" required style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.85rem; background: #fff;">
+						</div>
+						<div>
+							<label for="input-dress-code" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Código de Vestuário
+							</label>
+							<select id="input-dress-code" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.85rem;">
+								<option value="Fato Escuro / Gala" selected>Fato Escuro / Gala</option>
+								<option value="Cocktail">Cocktail</option>
+								<option value="Casual Chic">Casual Chic</option>
+								<option value="Semi-Formal">Semi-Formal</option>
+								<option value="Livre">Livre / Descontraído</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- RSVP Website & Short Message -->
+					<div>
+						<label for="input-rsvp-link" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Link do Site de Casamento / Confirmação
+						</label>
+						<input type="text" id="input-rsvp-link" value="https://manage.wedding/pt/rsvp" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.85rem; background: #fff;">
+					</div>
+
+					<div>
+						<label for="input-wedding-message" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Mensagem dos Noivos / Nota
+						</label>
+						<textarea id="input-wedding-message" rows="2" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.85rem; background: #fff; resize: vertical;">Copo-d'água, animação e festa logo a seguir à cerimónia!</textarea>
+					</div>
+
+					<!-- Guest Personalization Toggle & Management Toolbar -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.6rem;">
+						
+						<!-- Personalization Mode Toggle -->
+						<div style="display: flex; justify-content: space-between; align-items: center; background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.5rem 0.75rem;">
+							<div>
+								<strong class="font-heading" style="font-size: 0.92rem; color: var(--fg-pencil); display: block;">
+									Personalizar com o Nome do Convidado
+								</strong>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">
+									Desmarque para gerar um convite universal para grupos de WhatsApp
+								</span>
+							</div>
+							<label style="display: flex; align-items: center; cursor: pointer;">
+								<input type="checkbox" id="chk-include-guest-name" checked style="width: 20px; height: 20px; accent-color: var(--accent-blue); cursor: pointer;">
+							</label>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem;">
+							<span class="font-heading" style="font-size: 0.9rem; color: var(--fg-pencil);">
+								👥 Lista de Convites: <strong id="guest-count-badge">0 Convidados</strong>
+							</span>
+							<div style="display: flex; gap: 0.3rem;">
+								<button type="button" id="btn-load-sample-guests" class="hand-btn" style="padding: 0.25rem 0.55rem; font-size: 0.78rem; background: #eff6ff;">
+									✨ Carregar Exemplos
+								</button>
+								<button type="button" id="btn-clear-all-guests" class="hand-btn secondary" style="padding: 0.25rem 0.55rem; font-size: 0.78rem; color: #b91c1c;">
+									🗑️ Limpar Tudo
+								</button>
+							</div>
+						</div>
+
+						<div style="display: flex; gap: 0.4rem;">
+							<input type="text" id="input-quick-add-guest" placeholder="Escreva o nome do convidado..." style="flex: 1; padding: 0.35rem 0.5rem; border: 1px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem;">
+							<button type="button" id="btn-quick-add-guest" class="hand-btn" style="padding: 0.35rem 0.65rem; font-size: 0.85rem;">
+								+ Adicionar
+							</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Card Preview & Batch Generation Export Box -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Live Card Preview Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								🖼️ Pré-visualização em Tempo Real
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Renderização instantânea do seu convite digital
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Exportar Mensagens Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Exportar PDF / Imprimir
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- The Interactive Preview Canvas Card -->
+					<div id="preview-invite-card" class="theme-classic" style="border: 2.5px solid var(--fg-pencil); border-radius: 6px; padding: 2rem 1.5rem; background: var(--bg-paper); text-align: center; position: relative; box-shadow: 3px 3px 0px var(--fg-pencil); margin-bottom: 1.5rem;">
+						
+						<!-- Corner accents -->
+						<div style="position: absolute; top: 6px; left: 6px; width: 16px; height: 16px; border-top: 2px solid var(--fg-pencil); border-left: 2px solid var(--fg-pencil);"></div>
+						<div style="position: absolute; top: 6px; right: 6px; width: 16px; height: 16px; border-top: 2px solid var(--fg-pencil); border-right: 2px solid var(--fg-pencil);"></div>
+						<div style="position: absolute; bottom: 6px; left: 6px; width: 16px; height: 16px; border-bottom: 2px solid var(--fg-pencil); border-left: 2px solid var(--fg-pencil);"></div>
+						<div style="position: absolute; bottom: 6px; right: 6px; width: 16px; height: 16px; border-bottom: 2px solid var(--fg-pencil); border-right: 2px solid var(--fg-pencil);"></div>
+
+						<p style="font-family: var(--font-body); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 2.5px; color: var(--accent-red); margin: 0 0 0.5rem 0; font-weight: bold;">
+							TEMOS A HONRA DE CONVIDAR
+						</p>
+
+						<h3 id="prev-guest-name" class="font-heading" style="font-size: 1.4rem; color: var(--accent-blue); margin: 0 0 0.75rem 0;">
+							Queridos Helena & Tiago,
+						</h3>
+
+						<p style="font-family: var(--font-body); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); margin: 0 0 0.4rem 0;">
+							Juntamente com as suas famílias
+						</p>
+
+						<h2 id="prev-couples-names" class="font-heading" style="font-size: 2.4rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; line-height: 1.15;">
+							Sara & Gonçalo
+						</h2>
+
+						<div style="width: 50px; height: 2px; background: var(--fg-pencil); margin: 0.6rem auto;"></div>
+
+						<p id="prev-wedding-message" class="font-body" style="font-size: 0.95rem; font-style: italic; color: var(--fg-pencil); margin: 0.5rem 0 1rem 0; line-height: 1.4;">
+							"Copo-d'água, animação e festa logo a seguir à cerimónia!"
+						</p>
+
+						<div style="border-top: 1.5px dashed var(--fg-pencil); border-bottom: 1.5px dashed var(--fg-pencil); padding: 0.75rem 0; margin: 1rem 0;">
+							<p id="prev-wedding-date" class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 0 0 0.25rem 0; font-weight: bold;">
+								Sábado, 17 de Outubro de 2026 às 16:30
+							</p>
+							<p id="prev-wedding-location" class="font-body" style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+								Quinta da Serra, Sintra
+							</p>
+						</div>
+
+						<div style="display: flex; justify-content: space-around; font-size: 0.8rem; font-family: var(--font-body); color: var(--fg-pencil); margin-top: 0.75rem;">
+							<span>👔 Dress Code: <strong id="prev-dress-code">Fato Escuro / Gala</strong></span>
+							<span>📅 RSVP até: <strong id="prev-rsvp-deadline">15 Set 2026</strong></span>
+						</div>
+
+						<p id="prev-rsvp-link" style="font-family: var(--font-body); font-size: 0.78rem; color: var(--accent-blue); margin: 0.75rem 0 0 0; text-decoration: underline;">
+							Confirmação & Lista de Casamento: https://manage.wedding/pt/rsvp
+						</p>
+					</div>
+
+					<button type="button" id="btn-download-sample-png" class="hand-btn" style="width: 100%; text-align: center; font-size: 1rem; padding: 0.65rem; background: #f0fdf4;">
+						📸 Descarregar Este Convite de Exemplo (PNG HD)
+					</button>
+
+				</div>
+
+				<!-- Generated Guest Cards Stream Box -->
+				<div class="hand-card" style="padding: 1.5rem; background: #fff; max-height: 450px; overflow-y: auto;">
+					<h3 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center;">
+						📥 Convites Digitais Gerados por Convidado
+					</h3>
+					<div id="invites-stream-container" style="display: flex; flex-direction: column; gap: 0.75rem;">
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Convites de Casamento</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportado em: <span id="print-date"></span> | Noivos: <span id="print-couple"></span></p>
+			</div>
+			<div id="print-invites-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;"></div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 0 auto 3rem auto; max-width: 900px; background: var(--post-it); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);"></div>
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h2 class="font-heading" style="font-size: clamp(1.3rem, 2.5vw, 1.7rem); color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Resumo Direto ao Assunto (BLUF)
+				</h2>
+				<span style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(0,0,0,0.06); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid var(--fg-pencil);">
+					Etiqueta de Convites Digitais
+				</span>
+			</div>
+			
+			<!-- Core Formula Banner -->
+			<div style="background: rgba(255, 255, 255, 0.9); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.6; margin: 0 0 0.5rem 0; color: var(--fg-pencil);">
+					<strong>Calendário de Envio Digital:</strong> 
+					<span style="display: inline-block; background: #fef3c7; border: 1px solid #d97706; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #92400e; margin: 2px 4px;">Save-the-Date Digital = 6–8 Meses Antes</span> · 
+					<span style="display: inline-block; background: #eff6ff; border: 1px solid #3b82f6; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #1e40af; margin: 2px 4px;">Convite Oficial Digital = 6–8 Semanas Antes</span> · 
+					<span style="display: inline-block; background: #f0fdf4; border: 1px solid #22c55e; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #166534; margin: 2px 4px;">Lembrete de RSVP = 2 Semanas Antes do Prazo</span>
+				</p>
+				<p class="font-body" style="font-size: 0.9rem; margin: 0; color: var(--text-secondary); line-height: 1.5;">
+					<strong>Etiqueta de Mensagem:</strong> Nunca envie apenas a imagem isolada. Acompanhe sempre o cartão com uma mensagem simpática que inclua o link direto para confirmação de presença (RSVP) e direções do local.
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto;">
+				<table style="width: 100%; border-collapse: collapse; background: #fff; border: 2px solid var(--fg-pencil); font-family: var(--font-body); font-size: 0.92rem; text-align: left;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Comunicação Digital</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-blue);">Momento Ideal de Envio</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Canal Principal</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-red);">Taxa Média de Abertura</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Boas Práticas de Etiqueta</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Save-the-Date Digital</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">6 a 8 Meses Antes</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">WhatsApp / SMS / Email</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">94% (Primeiras 48h)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Indicar cidade e link do site</td>
+						</tr>
+						<tr style="background: #faf8f3;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Convite Oficial Digital</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">6 a 8 Semanas Antes</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Mensagem Direta + PNG HD</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">65% RSVP na 1.ª semana</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Enviar personalizado individualmente</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Lembrete de Confirmação</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">2 Semanas Antes do Prazo</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">WhatsApp amigável</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">+25% Respostas Imediatas</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Lembrar escolhas de prato e menu</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Manual de Convites Digitais</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Guia Completo para Convites de Casamento Digitais
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Vantagens ecológicas, poupança substancial de orçamento e modelos prontos a enviar por WhatsApp.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/rsvp_envelopes.webp" 
+					alt="Gerador de Convites de Casamento Digitais" 
+					loading="lazy"
+					decoding="async"
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Os convites digitais eliminam perdas nos correios e facilitam a recolha de respostas no telemóvel.
+				</p>
+			</div>
+
+			<!-- Section 1: Ready-to-Send Text Message Templates -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Modelos de Texto Prontos a Enviar por WhatsApp
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin: 1.5rem 0;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.15rem; color: var(--accent-blue); margin-bottom: 0.4rem; text-align: center;">
+							Mensagem Elegante & Formal
+						</h4>
+						<p class="font-body" style="font-size: 0.9rem; line-height: 1.5; margin: 0; background: #fff; padding: 0.75rem; border: 1px solid var(--fg-pencil); border-radius: 4px;">
+							"Querido(a) [Nome], a Sara e o Gonçalo têm a honra de o(a) convidar para o seu casamento no dia 17 de Outubro de 2026 na Quinta da Serra. Por favor consulte o convite em anexo e confirme a sua presença aqui: [Link]"
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.15rem; color: #16a34a; margin-bottom: 0.4rem; text-align: center;">
+							Mensagem Próxima & Descontraída
+						</h4>
+						<p class="font-body" style="font-size: 0.9rem; line-height: 1.5; margin: 0; background: #fff; padding: 0.75rem; border: 1px solid var(--fg-pencil); border-radius: 4px;">
+							"Vamos dar o nó! 💍 Gostaríamos muito de contar com a tua presença no dia 17 de Outubro para celebrar connosco. Vê o teu convite acima e confirma se podes vir e a tua escolha de ementa aqui: [Link]"
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem; text-align: center;">
+					🔗 Ferramentas de Planeamento Integradas
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/pt/guest-list-manager" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Gestor de Convidados</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Faça a gestão de moradas, grupos e contactos.</span>
+					</a>
+					<a href="/pt/rsvp-tracker" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Controlo de RSVP</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Acompanhe respostas e opções de prato em tempo real.</span>
+					</a>
+					<a href="/pt/table-place-cards" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Marcadores de Lugar</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Gere marcadores em tenda com ícones de menu.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Perguntas Frequentes
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Como descarregar todas as mensagens personalizadas para o Word?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Clique em <strong>"📝 Exportar Mensagens Word (.doc)"</strong> no topo da página. O gerador cria um ficheiro Word pronto a copiar e colar com os textos de WhatsApp adaptados ao nome de cada convidado.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.theme-classic {
+		background: #faf8f5 !important;
+	}
+	.theme-botanical {
+		background: #f4f8f3 !important;
+		border-color: #2d5a27 !important;
+	}
+	.theme-romantic {
+		background: #fdf5f2 !important;
+		border-color: #9f4d36 !important;
+	}
+	.theme-modern {
+		background: #ffffff !important;
+		border-color: #000000 !important;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let guestList = [];
+
+	const couplesNamesInput = document.getElementById('input-couples-names');
+	const weddingDateInput = document.getElementById('input-wedding-date');
+	const weddingLocationInput = document.getElementById('input-wedding-location');
+	const rsvpDeadlineInput = document.getElementById('input-rsvp-deadline');
+	const dressCodeSelect = document.getElementById('input-dress-code');
+	const rsvpLinkInput = document.getElementById('input-rsvp-link');
+	const weddingMessageInput = document.getElementById('input-wedding-message');
+	const cardThemeSelect = document.getElementById('select-card-theme');
+
+	// Preview Elements
+	const prevGuestName = document.getElementById('prev-guest-name');
+	const prevCouplesNames = document.getElementById('prev-couples-names');
+	const prevWeddingDate = document.getElementById('prev-wedding-date');
+	const prevWeddingLocation = document.getElementById('prev-wedding-location');
+	const prevWeddingMessage = document.getElementById('prev-wedding-message');
+	const prevDressCode = document.getElementById('prev-dress-code');
+	const prevRsvpDeadline = document.getElementById('prev-rsvp-deadline');
+	const prevRsvpLink = document.getElementById('prev-rsvp-link');
+	const previewCard = document.getElementById('preview-invite-card');
+
+	const guestCountBadge = document.getElementById('guest-count-badge');
+	const invitesStreamContainer = document.getElementById('invites-stream-container');
+
+	const chkIncludeGuestName = document.getElementById('chk-include-guest-name');
+
+	function loadGuests() {
+		try {
+			const saved = localStorage.getItem('manage_wedding_guests');
+			if (saved) {
+				guestList = JSON.parse(saved);
+			}
+		} catch (e) {
+			guestList = [];
+		}
+
+		if (!guestList || guestList.length === 0) {
+			guestList = [
+				{ name: "Helena & Tiago Santos", group: "Família da Noiva" },
+				{ name: "Mariana & David Martins", group: "Amigos do Noivo" },
+				{ name: "Inês Henriques", group: "Colegas de Trabalho" },
+				{ name: "Avó Luísa & Avô António", group: "VIPs" }
+			];
+		}
+		renderAll();
+	}
+
+	function renderAll() {
+		const names = couplesNamesInput.value || 'Sara & Gonçalo';
+		const date = weddingDateInput.value || 'Sábado, 17 de Outubro de 2026 às 16:30';
+		const location = weddingLocationInput.value || 'Quinta da Serra, Sintra';
+		const rsvpDeadline = rsvpDeadlineInput.value || '15 de Setembro de 2026';
+		const dressCode = dressCodeSelect.value || 'Fato Escuro / Gala';
+		const rsvpLink = rsvpLinkInput.value || 'https://manage.wedding/pt/rsvp';
+		const msg = weddingMessageInput.value || "Copo-d'água, animação e festa logo a seguir à cerimónia!";
+		const theme = cardThemeSelect.value || 'classic';
+		const isPersonalized = chkIncludeGuestName.checked;
+
+		// Update Preview Card
+		prevCouplesNames.textContent = names;
+		prevWeddingDate.textContent = date;
+		prevWeddingLocation.textContent = location;
+		prevRsvpDeadline.textContent = rsvpDeadline;
+		prevDressCode.textContent = dressCode;
+		prevRsvpLink.textContent = `Confirmação & Lista: ${rsvpLink}`;
+		prevWeddingMessage.textContent = msg ? `"${msg}"` : '';
+
+		if (isPersonalized && guestList.length > 0) {
+			prevGuestName.style.display = 'block';
+			if (!prevGuestName.textContent.startsWith('Querido') && !prevGuestName.textContent.startsWith('Estimado')) {
+				prevGuestName.textContent = `Queridos ${guestList[0].name},`;
+			}
+		} else {
+			prevGuestName.style.display = 'none';
+		}
+
+		previewCard.className = `theme-${theme}`;
+
+		// Guest Count
+		guestCountBadge.textContent = `${guestList.length} Convites`;
+
+		// Stream rendering
+		invitesStreamContainer.innerHTML = '';
+		if (guestList.length === 0) {
+			invitesStreamContainer.innerHTML = `
+				<div style="text-align: center; padding: 1rem; color: var(--text-secondary); font-style: italic; font-size: 0.9rem;">
+					Nenhum convidado individual. O cartão está em <strong>Modo Universal</strong> (Ideal para grupos de WhatsApp ou redes sociais).
+				</div>
+			`;
+		} else {
+			guestList.forEach((guest, idx) => {
+				const item = document.createElement('div');
+				item.style.cssText = `display: flex; justify-content: space-between; align-items: center; background: var(--bg-paper); border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.5rem 0.75rem;`;
+				item.innerHTML = `
+					<div>
+						<strong class="font-heading" style="font-size: 0.95rem; color: var(--fg-pencil);">${guest.name}</strong>
+						<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">${guest.group || 'Convidado'}</span>
+					</div>
+					<div style="display: flex; gap: 0.25rem;">
+						<button type="button" class="btn-preview-guest hand-btn" data-idx="${idx}" style="padding: 0.2rem 0.45rem; font-size: 0.75rem; background: #eff6ff;" title="Ver Convite">
+							👁️ Ver
+						</button>
+						<button type="button" class="btn-download-guest hand-btn" data-idx="${idx}" style="padding: 0.2rem 0.45rem; font-size: 0.75rem; background: #f0fdf4;" title="Descarregar PNG">
+							📸 PNG
+						</button>
+						<button type="button" class="btn-delete-guest hand-btn secondary" data-idx="${idx}" style="padding: 0.2rem 0.45rem; font-size: 0.75rem; color: #b91c1c;" title="Remover">
+							🗑️ Del
+						</button>
+					</div>
+				`;
+				invitesStreamContainer.appendChild(item);
+			});
+		}
+
+		// Attach Guest Listeners
+		document.querySelectorAll('.btn-preview-guest').forEach(btn => {
+			btn.addEventListener('click', () => {
+				const idx = parseInt(btn.getAttribute('data-idx'));
+				if (guestList[idx]) {
+					chkIncludeGuestName.checked = true;
+					prevGuestName.style.display = 'block';
+					prevGuestName.textContent = `Queridos ${guestList[idx].name},`;
+				}
+			});
+		});
+
+		document.querySelectorAll('.btn-download-guest').forEach(btn => {
+			btn.addEventListener('click', () => {
+				const idx = parseInt(btn.getAttribute('data-idx'));
+				if (guestList[idx]) {
+					chkIncludeGuestName.checked = true;
+					prevGuestName.style.display = 'block';
+					prevGuestName.textContent = `Queridos ${guestList[idx].name},`;
+					captureCardPNG(guestList[idx].name);
+				}
+			});
+		});
+
+		document.querySelectorAll('.btn-delete-guest').forEach(btn => {
+			btn.addEventListener('click', () => {
+				const idx = parseInt(btn.getAttribute('data-idx'));
+				guestList.splice(idx, 1);
+				renderAll();
+			});
+		});
+	}
+
+	function captureCardPNG(filenamePrefix) {
+		if (window.html2canvas) {
+			window.html2canvas(previewCard, {
+				scale: 3,
+				backgroundColor: null,
+				useCORS: true
+			}).then(canvas => {
+				const link = document.createElement('a');
+				const safeName = (filenamePrefix || 'convite-casamento').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+				link.download = `Convite_${safeName}.png`;
+				link.href = canvas.toDataURL("image/png");
+				link.click();
+			});
+		} else {
+			alert("A inicializar captura de imagem. Por favor tente novamente dentro de instantes.");
+		}
+	}
+
+	// Quick Add Guest
+	document.getElementById('btn-quick-add-guest').addEventListener('click', () => {
+		const input = document.getElementById('input-quick-add-guest');
+		const val = input.value.trim();
+		if (val) {
+			guestList.push({ name: val, group: 'Convidado Adicionado' });
+			input.value = '';
+			renderAll();
+		}
+	});
+
+	// Clear All Guests
+	document.getElementById('btn-clear-all-guests').addEventListener('click', () => {
+		guestList = [];
+		renderAll();
+	});
+
+	// Load Sample Guests
+	document.getElementById('btn-load-sample-guests').addEventListener('click', () => {
+		guestList = [
+			{ name: "Helena & Tiago Santos", group: "Família da Noiva" },
+			{ name: "Mariana & David Martins", group: "Amigos do Noivo" },
+			{ name: "Inês Henriques & Acompanhante", group: "Colegas de Trabalho" },
+			{ name: "Avó Luísa & Avô António", group: "VIPs" },
+			{ name: "Tia Clara & Tio Manuel", group: "Família" }
+		];
+		chkIncludeGuestName.checked = true;
+		renderAll();
+	});
+
+	// Inputs Listener
+	[couplesNamesInput, weddingDateInput, weddingLocationInput, rsvpDeadlineInput, dressCodeSelect, rsvpLinkInput, weddingMessageInput, cardThemeSelect, chkIncludeGuestName].forEach(el => {
+		el.addEventListener('input', renderAll);
+		el.addEventListener('change', renderAll);
+	});
+
+	document.getElementById('btn-download-sample-png').addEventListener('click', () => {
+		captureCardPNG('Convite_Exemplo');
+	});
+
+	// 📝 Export Word Messages (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		let sections = '';
+		guestList.forEach(guest => {
+			sections += `
+				<div style="margin-bottom: 25px; padding: 15px; border: 1px solid #ccc; background: #fafafa;">
+					<h3 style="margin: 0 0 8px 0; color: #1e3a8a;">Mensagem de Convite para: ${guest.name}</h3>
+					<p style="margin: 0; font-family: monospace; font-size: 13px; line-height: 1.5; color: #333;">
+						"Querido(a) ${guest.name}, ${couplesNamesInput.value} têm a honra de o(a) convidar para o seu casamento no dia ${weddingDateInput.value} em ${weddingLocationInput.value}! Código de vestuário: ${dressCodeSelect.value}. Por favor consulte o convite digital em anexo e confirme a sua presença até ${rsvpDeadlineInput.value} através do link: ${rsvpLinkInput.value}"
+					</p>
+				</div>
+			`;
+		});
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Textos de Convites de Casamento</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Mensagens de Convite para WhatsApp & SMS</h1>
+				<p>Gerado em ${new Date().toLocaleDateString('pt-PT')} | Noivos: <strong>${couplesNamesInput.value}</strong> | Total de Convites: <strong>${guestList.length}</strong></p>
+				
+				<h2>Textos Prontos a Enviar por WhatsApp / SMS:</h2>
+				${sections}
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Mensagens_Convites_Casamento_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print All
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('pt-PT');
+		document.getElementById('print-couple').textContent = couplesNamesInput.value;
+
+		const grid = document.getElementById('print-invites-grid');
+		grid.innerHTML = '';
+
+		guestList.forEach(guest => {
+			const card = document.createElement('div');
+			card.style.cssText = `border: 2px solid #000; padding: 20px; text-align: center; font-family: 'Times New Roman', serif; margin-bottom: 15px;`;
+			card.innerHTML = `
+				<p style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 5px 0;">Temos a honra de convidar</p>
+				<h3 style="font-size: 18px; margin: 0 0 10px 0;">Queridos ${guest.name},</h3>
+				<p style="font-size: 12px; margin: 0 0 5px 0;">Para celebrar o casamento de</p>
+				<h2 style="font-size: 26px; margin: 0 0 10px 0;">${couplesNamesInput.value}</h2>
+				<p style="font-size: 14px; font-weight: bold; margin: 10px 0 5px 0;">${weddingDateInput.value}</p>
+				<p style="font-size: 12px; color: #444; margin: 0 0 10px 0;">${weddingLocationInput.value}</p>
+				<p style="font-size: 11px; margin: 0;">Dress Code: ${dressCodeSelect.value} | RSVP: ${rsvpLinkInput.value}</p>
+			`;
+			grid.appendChild(card);
+		});
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Nome do Convidado,Grupo,Link de RSVP,Estado\n";
+		guestList.forEach(guest => {
+			csv += `"${guest.name}","${guest.group || 'Geral'}","${rsvpLinkInput.value}","Convite Pronto"\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Convites_Digitais_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	loadGuests();
+</script>

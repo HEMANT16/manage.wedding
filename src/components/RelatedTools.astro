@@ -6,11 +6,23 @@ export interface Props {
 
 const { currentPath = Astro.url.pathname, category } = Astro.props;
 
+// Dynamic Language Detection
+const pathname = currentPath.replace(/\/$/, "");
+let currentLang = 'en';
+if (pathname.startsWith('/es')) currentLang = 'es';
+else if (pathname.startsWith('/fr')) currentLang = 'fr';
+else if (pathname.startsWith('/de')) currentLang = 'de';
+else if (pathname.startsWith('/it')) currentLang = 'it';
+else if (pathname.startsWith('/pt')) currentLang = 'pt';
+
+const langPrefix = currentLang === 'en' ? '' : `/${currentLang}`;
+const cleanCurrent = pathname.replace(/^\/(es|fr|de|it|pt)/, '');
+
 interface ToolItem {
-  title: string;
+  title: Record<string, string>;
   url: string;
-  desc: string;
-  badge: string;
+  desc: Record<string, string>;
+  badge: Record<string, string>;
   icon: string;
   category: 'stationery' | 'food-beverage' | 'budget' | 'logistics';
 }
@@ -18,239 +30,662 @@ interface ToolItem {
 const allTools: ToolItem[] = [
   // Stationery & Print
   {
-    title: "Envelope Address Formatter",
+    title: {
+      en: "Envelope Address Formatter",
+      de: "Briefumschlag Adressierung",
+      es: "Direcciones de Sobres",
+      fr: "Formatage des Enveloppes",
+      it: "Intestazione Buste",
+      pt: "Endereçamento de Envelopes"
+    },
     url: "/wedding-envelope-addressing",
-    desc: "Format A7 outer envelopes and A2 RSVP cards with formal doctor and family titles.",
-    badge: "Etiquette & A7",
+    desc: {
+      en: "Format A7 outer envelopes and A2 RSVP cards with formal etiquette titles.",
+      de: "Gestalten Sie DIN C5 / A7 Briefumschläge & Einlegekarten nach Knigge-Etikette.",
+      es: "Formatea sobres A7 y tarjetas de confirmación según el protocolo.",
+      fr: "Formatez vos enveloppes de faire-part selon les règles d'étiquette.",
+      it: "Formatta buste A7 e partecipazioni secondo il galateo nuziale.",
+      pt: "Formate envelopes e cartões de confirmação segundo a etiqueta formal."
+    },
+    badge: {
+      en: "Etiquette & Print",
+      de: "Etikette & Druck",
+      es: "Protocolo & Impresión",
+      fr: "Étiquette & Impression",
+      it: "Galateo & Stampa",
+      pt: "Etiqueta & Impressão"
+    },
     icon: "💌",
     category: "stationery"
   },
   {
-    title: "Invitation Suite Sizer",
+    title: {
+      en: "Invitation Suite Sizer",
+      de: "Einladungsformate (A6 / B6 / A7)",
+      es: "Dimensiones de Invitaciones",
+      fr: "Dimensions des Faire-part",
+      it: "Formati Partecipazioni",
+      pt: "Dimensões dos Convites"
+    },
     url: "/wedding-invitation-suite-sizer",
-    desc: "Calculate layered card mat margins, tolerances, and 300 DPI Canva print bleeds.",
-    badge: "300 DPI Specs",
+    desc: {
+      en: "Calculate layered card mat margins, tolerances, and 300 DPI print bleeds.",
+      de: "Berechnen Sie Randbeschnitt, Papiergewichte (g/m²) und Druckmaße in 300 DPI.",
+      es: "Calcula márgenes de tarjetas, tolerancias y sangrado de impresión a 300 DPI.",
+      fr: "Calculez les marges et fonds perdus pour impression 300 DPI.",
+      it: "Calcola margini, tolleranze e abbondanze di stampa a 300 DPI.",
+      pt: "Calcule margens e sangrias para impressão em alta resolução 300 DPI."
+    },
+    badge: {
+      en: "300 DPI Specs",
+      de: "300 DPI Maße",
+      es: "Specs 300 DPI",
+      fr: "Formats 300 DPI",
+      it: "Specifiche 300 DPI",
+      pt: "Specs 300 DPI"
+    },
     icon: "📐",
     category: "stationery"
   },
   {
-    title: "Invitation Postage & Weight",
+    title: {
+      en: "Invitation Postage Calculator",
+      de: "Portorechner für Hochzeitspost",
+      es: "Franqueo Postal de Invitaciones",
+      fr: "Affranchissement Postal",
+      it: "Spese Postali Partecipazioni",
+      pt: "Porte Postal de Convites"
+    },
     url: "/wedding-invitation-postage-calculator",
-    desc: "Compute paper weight, wax seal fees, square envelopes, and USPS 2026 rates.",
-    badge: "USPS 2026 Rates",
+    desc: {
+      en: "Compute paper weight, wax seal fees, square envelopes, and postal rates.",
+      de: "Berechnen Sie Briefgewicht, Wachssiegel-Aufschläge und Portostufen der Post.",
+      es: "Calcula peso del papel, sellos de cera y tarifas postales vigentes.",
+      fr: "Calculez le poids total, les cachets de cire et tarifs postaux.",
+      it: "Calcola peso carta, ceralacca e tariffe postali per partecipazioni.",
+      pt: "Calcule peso do papel, lacre de cera e tarifas dos Correios."
+    },
+    badge: {
+      en: "Postage Rates",
+      de: "Portostufen 2026",
+      es: "Tarifas Postales",
+      fr: "Tarifs Postaux",
+      it: "Tariffe Postali",
+      pt: "Tarifas Postais"
+    },
     icon: "📮",
     category: "stationery"
   },
   {
-    title: "Thank-You Note Generator",
+    title: {
+      en: "Thank-You Note Generator",
+      de: "Danksagungstexte & Vorlagen",
+      es: "Notas de Agradecimiento",
+      fr: "Cartes de Remerciement",
+      it: "Biglietti di Ringraziamento",
+      pt: "Cartões de Agradecimento"
+    },
     url: "/wedding-thank-you-cards",
-    desc: "Generate personalized thank-you wording for cash, honeymoon funds, and registry gifts.",
-    badge: "Cash & Registry",
+    desc: {
+      en: "Generate personalized thank-you wording for cash and gifts.",
+      de: "Persönliche Dankestexte für Geldgeschenke, Flitterwochen-Beiträge & Geschenke.",
+      es: "Genera textos de agradecimiento para regalos y aportes en efectivo.",
+      fr: "Générez des messages de remerciement pour cadeaux et enveloppes.",
+      it: "Genera testi di ringraziamento per buste in denaro e regali.",
+      pt: "Gere mensagens de agradecimento para presentes e dinheiro."
+    },
+    badge: {
+      en: "Text Templates",
+      de: "Textvorlagen",
+      es: "Plantillas",
+      fr: "Modèles de Texte",
+      it: "Modelli di Testo",
+      pt: "Modelos de Texto"
+    },
     icon: "✍️",
     category: "stationery"
   },
   {
-    title: "Folded Table Place Cards",
+    title: {
+      en: "Folded Table Place Cards",
+      de: "Tisch- & Platzkarten Drucken",
+      es: "Marcasitios Plegables",
+      fr: "Marque-places Imprimables",
+      it: "Segnaposto da Tavolo",
+      pt: "Marcadores de Lugar"
+    },
     url: "/table-place-cards",
-    desc: "Generate printable tent place cards with guest names and meal icons.",
-    badge: "Printable PDF",
+    desc: {
+      en: "Generate printable tent place cards with guest names and meal icons.",
+      de: "Druckfertige Tisch-Aufsteller mit Gästenamen und Menü-Symbolen generieren.",
+      es: "Genera marcasitios plegables con nombres de invitados e iconos de menú.",
+      fr: "Créez des marque-places chevalets avec noms et choix de menu.",
+      it: "Genera segnaposto a cavalletto pronti da stampare con nomi e menù.",
+      pt: "Gere marcadores de mesa dobráveis com nomes e opções de prato."
+    },
+    badge: {
+      en: "Printable PDF",
+      de: "Druckfertiges PDF",
+      es: "PDF Imprimible",
+      fr: "PDF Imprimable",
+      it: "PDF da Stampare",
+      pt: "PDF para Imprimir"
+    },
     icon: "📇",
     category: "stationery"
   },
   {
-    title: "Reception Menu Maker",
+    title: {
+      en: "Reception Menu Maker",
+      de: "Menükarten Gestalter (4x9 DL)",
+      es: "Creador de Menús de Boda",
+      fr: "Créateur de Menus (4x9 DL)",
+      it: "Crea Menù da Stampare",
+      pt: "Criador de Cardápios"
+    },
     url: "/reception-menu-maker",
-    desc: "Design 4x9 DL and 5x7 table menus with luxury fonts, botanical borders, and dietary tags.",
-    badge: "Luxury Fonts",
+    desc: {
+      en: "Design table menus with luxury fonts, botanical borders, and dietary tags.",
+      de: "Gestalten Sie elegante Menükarten mit botanischen Rahmen und Allergen-Hinweisen.",
+      es: "Diseña minutas de banquete con tipografías elegantes y notas dietéticas.",
+      fr: "Créez des menus de table avec polices élégantes et options végétariennes.",
+      it: "Crea menù con caratteri eleganti, bordi botanici e indicazioni dietetiche.",
+      pt: "Crie cardápios elegantes com tipografias requintadas e detalhes de pratos."
+    },
+    badge: {
+      en: "Luxury Layouts",
+      de: "Elegante Vorlagen",
+      es: "Diseño Elegante",
+      fr: "Mise en Page Pro",
+      it: "Layout Elegante",
+      pt: "Design Elegante"
+    },
     icon: "📜",
     category: "stationery"
   },
 
   // Food, Drinks & Bar
   {
-    title: "Open Bar Drink Calculator",
+    title: {
+      en: "Open Bar Drink Calculator",
+      de: "Getränkerechner & Sektempfang",
+      es: "Calculadora de Bebidas y Barra Libre",
+      fr: "Calculateur de Boissons & Bar",
+      it: "Calcolatore Open Bar & Vino",
+      pt: "Calculadora de Bebidas e Bar"
+    },
     url: "/wedding-drink-calculator",
-    desc: "Calculate total wine, beer, champagne, and spirit bottles for 50 to 300+ guests.",
-    badge: "Bar Estimator",
+    desc: {
+      en: "Calculate total wine, beer, champagne, and spirit bottles for 50 to 300+ guests.",
+      de: "Exakte Flaschenmengen für Wein, Bier, Sekt und Spirituosen für 50 bis 300+ Gäste.",
+      es: "Calcula botellas de vino, cerveza y champán para tus invitados.",
+      fr: "Calculez les bouteilles de vin, bière et champagne pour la réception.",
+      it: "Calcola le bottiglie di vino, birra e prosecco per il ricevimento.",
+      pt: "Calcule garrafas de vinho, cerveja e espumante para a festa."
+    },
+    badge: {
+      en: "Drink Calculator",
+      de: "Getränkebedarf",
+      es: "Barra Libre",
+      fr: "Boissons",
+      it: "Open Bar",
+      pt: "Bar & Bebidas"
+    },
     icon: "🍾",
     category: "food-beverage"
   },
   {
-    title: "Wedding Liquor & Spirits Sizer",
-    url: "/liquor-wedding-calculator",
-    desc: "Exact 750ml vs 1.75L bottle counts for Vodka, Bourbon, Tequila, Gin, and mixers.",
-    badge: "Spirits & Handles",
-    icon: "🍸",
-    category: "food-beverage"
-  },
-  {
-    title: "Wedding Cake Pricing Sizer",
+    title: {
+      en: "Wedding Cake Pricing Sizer",
+      de: "Hochzeitstorten Preisrechner",
+      es: "Precios de Pastel de Boda",
+      fr: "Prix du Wedding Cake",
+      it: "Prezzo Torta Nuziale",
+      pt: "Preço do Bolo de Casamento"
+    },
     url: "/cake-pricing-calculator",
-    desc: "Calculate cost per slice, baker labor hours, ingredient costs, and bakery margins.",
-    badge: "Price Per Slice",
-    icon: "🍰",
+    desc: {
+      en: "Calculate cost per slice, baker labor hours, ingredient costs, and margins.",
+      de: "Konditor-Kalkulation: Portionspreise, Arbeitsstunden, Zutaten und Margen.",
+      es: "Calcula costo por porción, mano de obra y presupuesto de pastelería.",
+      fr: "Calculez le coût par part, temps de travail et marges du pâtissier.",
+      it: "Calcola costo a porzione, ore di lavorazione e preventivo pasticceria.",
+      pt: "Calcule custo por fatia, mão de obra e orçamento da confeitaria."
+    },
+    badge: {
+      en: "Price Per Slice",
+      de: "Preis pro Portion",
+      es: "Precio por Porción",
+      fr: "Prix par Part",
+      it: "Prezzo a Fetta",
+      pt: "Preço por Fatia"
+    },
     category: "food-beverage"
   },
   {
-    title: "Cake Tier Serving Sizer",
-    url: "/cake-serving-calculator",
-    desc: "Match guest headcounts to stacked round and square cake tier dimensions.",
-    badge: "Tier Sizing",
-    icon: "🎂",
+    title: {
+      en: "Dessert Table & Candy Bar Sizer",
+      de: "Dessertbuffet & Candy-Bar",
+      es: "Mesa de Postres y Candy Bar",
+      fr: "Bar à Desserts & Candy Bar",
+      it: "Tavolo dei Dolci & Confettata",
+      pt: "Mesa de Doces & Candy Bar"
+    },
+    url: "/wedding-dessert-table-calculator",
+    desc: {
+      en: "Calculate bite-size dessert counts, baker dozens, candy pounds, jar staging, and printable signs.",
+      de: "Berechnen Sie Mini-Desserts, Dutzend-Bestellungen für Konditoren, Candy-Bar Kilos und Gläser.",
+      es: "Calcula bocaditos por persona, docenas de pastelería, kilos de candy bar y carteles imprimibles.",
+      fr: "Calculez mignardises par invité, douzaines pâtissières, kilos de bonbons et affiches 'L'amour est doux'.",
+      it: "Calcola pasticceria mignon, dozzine da ordinare, confetti per la confettata e cartelli stampabili.",
+      pt: "Calcule doces finos por pessoa, centos de docinhos, quilos de balas para candy bar e placas para moldura."
+    },
+    badge: {
+      en: "Dessert Table",
+      de: "Dessert-Buffet",
+      es: "Mesa de Postres",
+      fr: "Bar à Desserts",
+      it: "Tavolo Dolci",
+      pt: "Mesa de Doces"
+    },
+    icon: "🧁",
     category: "food-beverage"
   },
   {
-    title: "Catering Cost Estimator",
+    title: {
+      en: "Catering Cost Estimator",
+      de: "Menü vs. Buffet Vergleich",
+      es: "Presupuesto de Catering",
+      fr: "Menu Assis vs Buffet",
+      it: "Catering: Menù vs Buffet",
+      pt: "Orçamento de Buffet"
+    },
     url: "/catering-cost-estimator",
-    desc: "Compare plated dinner vs buffet vs family-style per-head catering budgets.",
-    badge: "Per-Head Budget",
+    desc: {
+      en: "Compare plated dinner vs buffet vs family-style per-head catering budgets.",
+      de: "Kostenvergleich pro Kopf für gesetztes Menü, Hochzeitsbuffet und Food-Stations.",
+      es: "Compara cena servida en mesa vs buffet libre por comensal.",
+      fr: "Comparez repas assis servi à table et buffet traiteur par invité.",
+      it: "Confronta pranzo/cena servita a tavola vs buffet per persona.",
+      pt: "Compare jantar empratado e buffet livre por convidado."
+    },
+    badge: {
+      en: "Per-Head Math",
+      de: "Pro-Kopf-Kosten",
+      es: "Por Persona",
+      fr: "Par Invité",
+      it: "A Persona",
+      pt: "Por Convidado"
+    },
     icon: "🍽️",
     category: "food-beverage"
   },
 
   // Budget & Finance
   {
-    title: "Venue True Cost & Fee Sizer",
+    title: {
+      en: "Venue True Cost & Hidden Fees",
+      de: "Versteckte Location-Kosten",
+      es: "Costos Ocultos del Salón",
+      fr: "Frais Cachés du Lieu de Réception",
+      it: "Costi Nascosti Location & Villa",
+      pt: "Custos Ocultos do Espaço"
+    },
     url: "/wedding-venue-cost-calculator",
-    desc: "Uncover $3k–$10k in hidden fees, F&B minimums, and mandatory 22% plus-plus surcharges.",
-    badge: "Plus-Plus (++) Math",
+    desc: {
+      en: "Uncover hidden fees, F&B minimums, and mandatory service surcharges.",
+      de: "Berechnen Sie Servicepauschalen, Mindestumsatz und versteckte Raummieten.",
+      es: "Descubre recargos obligatorios, mínimos de consumo y tasas ocultas.",
+      fr: "Identifiez les frais de service, minimums de consommation et suppléments.",
+      it: "Scopri costi nascosti, minimi di spesa e supplementi di servizio.",
+      pt: "Identifique taxas de serviço, consumo mínimo e adicionais ocultos."
+    },
+    badge: {
+      en: "Hidden Fees",
+      de: "Kostenfalle Location",
+      es: "Gastos Ocultos",
+      fr: "Frais Cachés",
+      it: "Costi Nascosti",
+      pt: "Taxas Ocultas"
+    },
     icon: "🏰",
     category: "budget"
   },
   {
-    title: "Who Pays for What? Splitter",
-    url: "/who-pays-for-what-wedding",
-    desc: "Compare 1950s traditional etiquette against modern 3-way blended family contributions.",
-    badge: "1950s vs Modern",
-    icon: "👥",
-    category: "budget"
-  },
-  {
-    title: "Bachelorette Party Budget Splitter",
-    url: "/bachelorette-budget-calculator",
-    desc: "Calculate per-bridesmaid costs for Airbnb and dining while covering the bride's share.",
-    badge: "Cover the Bride",
-    icon: "👰",
-    category: "budget"
-  },
-  {
-    title: "Master Budget Allocator",
+    title: {
+      en: "Master Budget Allocator",
+      de: "Hochzeitsbudget Rechner",
+      es: "Presupuesto Maestro de Boda",
+      fr: "Budget Global de Mariage",
+      it: "Budget Matrimonio Master",
+      pt: "Orçamento Master de Casamento"
+    },
     url: "/master-budget-calculator",
-    desc: "Break down your total budget into realistic percentage milestones.",
-    badge: "Percentage Splits",
+    desc: {
+      en: "Break down your total budget into realistic percentage milestones.",
+      de: "Verteilen Sie Ihr Gesamtbudget nach realistischen Prozentsätzen auf alle Gewerke.",
+      es: "Distribuye tu presupuesto total en porcentajes recomendados por categoría.",
+      fr: "Répartissez votre enveloppe budgétaire globale par postes clés.",
+      it: "Distribuisci il budget totale secondo percentuali collaudate.",
+      pt: "Distribua seu orçamento total em percentuais ideais para cada item."
+    },
+    badge: {
+      en: "Master Budget",
+      de: "Gesamtbudget",
+      es: "Presupuesto",
+      fr: "Budget Global",
+      it: "Budget Master",
+      pt: "Orçamento Total"
+    },
     icon: "💰",
     category: "budget"
   },
   {
-    title: "Vendor Gratuity Calculator",
-    url: "/vendor-tipping-calculator",
-    desc: "Standard tipping etiquette and envelopes for DJs, photographers, and hair/makeup.",
-    badge: "Tip Envelopes",
-    icon: "💵",
+    title: {
+      en: "Bachelor Party Budget & Splitter",
+      de: "JGA Budget Rechner (Männer)",
+      es: "Despedida de Soltero Presupuesto",
+      fr: "Calculateur Budget EVG",
+      it: "Budget Addio al Celibato",
+      pt: "Orçamento Despedida de Solteiro"
+    },
+    url: "/bachelor-party-budget-calculator",
+    desc: {
+      en: "Calculate per-guy costs for Airbnb, golf, dinners, and nightlife while covering the groom.",
+      de: "Kalkulieren Sie Kosten für Ferienhaus, Brauhaus, Aktivitäten und Club inkl. Bräutigam-Umlage.",
+      es: "Calcula el coste por amigo para casa rural, barco, cenas y fiesta cubriendo al novio.",
+      fr: "Calculez le coût par participant pour le logement, les activités et soirées en invitant le marié.",
+      it: "Calcola la quota per villa, barca, cene e serate offrendo la parte dello sposo.",
+      pt: "Calcule o valor por amigo para alojamento, barco, churrasco e noite cobrindo o noivo."
+    },
+    badge: {
+      en: "Cover the Groom",
+      de: "Bräutigam Umlage",
+      es: "Invitar al Novio",
+      fr: "Inviter le Marié",
+      it: "Offrire allo Sposo",
+      pt: "Oferecer ao Noivo"
+    },
+    icon: "🍻",
+    category: "budget"
+  },
+  {
+    title: {
+      en: "Name Change Checklist & Fees",
+      de: "Namensänderung & Behörden",
+      es: "Trámites y Cambio de Apellido",
+      fr: "Changement de Nom & Démarches",
+      it: "Cambio Cognome & Pratiche",
+      pt: "Mudança de Apelidos & Trâmites"
+    },
+    url: "/wedding-name-change-calculator",
+    desc: {
+      en: "Format new surnames, compute vital paperwork filing fees, and execute legal steps.",
+      de: "Namensmodelle konfigurieren, amtliche Gebühren für Ausweis/Pass berechnen und Amtsgänge planen.",
+      es: "Calcula tasas de DNI, pasaporte, DGT y organiza los trámites oficiales tras casarte.",
+      fr: "Simulez votre nom d'usage, calculez les timbres fiscaux et organisez vos démarches.",
+      it: "Configura il cognome maritale, calcola le marche da bollo e organizza le pratiche.",
+      pt: "Configure apelidos, calcule taxas de Cartão de Cidadão, Passaporte e IMT."
+    },
+    badge: {
+      en: "Legal & Fees",
+      de: "Amtliche Gebühren",
+      es: "Tasas Oficiales",
+      fr: "Démarches & Frais",
+      it: "Pratiche & Bolli",
+      pt: "Taxas & Trâmites"
+    },
+    icon: "💍",
     category: "budget"
   },
 
   // Logistics & Seating
   {
-    title: "Floor Plan & Dance Floor Sizer",
-    url: "/seating-clearance-calculator",
-    desc: "Calculate dance floor square footage, 60\" table counts, and 60-inch server clearances.",
-    badge: "Floor Plan Sizer",
-    icon: "🕺",
-    category: "logistics"
-  },
-  {
-    title: "Processional Ceremony Builder",
-    url: "/wedding-processional-order",
-    desc: "Build customized ceremony walking lineups for Christian, Jewish, Catholic, and LGBTQ+ vows.",
-    badge: "Ceremony Lineup",
-    icon: "⛪",
-    category: "logistics"
-  },
-  {
-    title: "Rehearsal Dinner Planner",
-    url: "/rehearsal-dinner-planner",
-    desc: "Manage rehearsal guest headcounts, out-of-towners, and minute-by-minute schedules.",
-    badge: "Rehearsal Timeline",
-    icon: "🍷",
-    category: "logistics"
-  },
-  {
-    title: "Day-of Timeline Generator",
+    title: {
+      en: "Day-of Timeline Generator",
+      de: "Tagesablauf & Zeitplan Generator",
+      es: "Cronograma del Día de la Boda",
+      fr: "Planning Déroulé du Jour J",
+      it: "Timeline & Programma del Giorno",
+      pt: "Cronograma do Dia do Casamento"
+    },
     url: "/day-of-timeline-generator",
-    desc: "Build a minute-by-minute vendor itinerary from morning hair/makeup to grand sparkler exit.",
-    badge: "Master Itinerary",
+    desc: {
+      en: "Build a minute-by-minute vendor itinerary from morning hair/makeup to grand exit.",
+      de: "Minutengenauer Ablaufplan vom Getting Ready über Trauung bis zum Mitternachtssnack.",
+      es: "Crea el minutero completo desde el maquillaje matutino hasta la fiesta final.",
+      fr: "Générez le planning minuté des préparatifs à la fin de la soirée.",
+      it: "Crea il programma minuto per minuto dai preparativi fino al taglio torta.",
+      pt: "Crie o roteiro minuto a minuto dos preparativos até o encerramento da festa."
+    },
+    badge: {
+      en: "Minute-by-Minute",
+      de: "Minutengenau",
+      es: "Minuto a Minuto",
+      fr: "Planning Jour J",
+      it: "Programma Giorno",
+      pt: "Minuto a Minuto"
+    },
     icon: "⏱️",
     category: "logistics"
   },
   {
-    title: "Seating Chart Maker",
+    title: {
+      en: "Seating Chart Maker",
+      de: "Interaktiver Tisch- & Sitzplaner",
+      es: "Organizador de Mesas y Asientos",
+      fr: "Plan de Table Interactif",
+      it: "Tableau de Mariage & Piantina",
+      pt: "Organizador de Mesas e Lugares"
+    },
     url: "/seating-chart-maker",
-    desc: "Drag-and-drop table layouts with instant guest assignment and printable seating cards.",
-    badge: "Drag & Drop",
+    desc: {
+      en: "Drag-and-drop table layouts with instant guest assignment and printable cards.",
+      de: "Interaktive Tischordnung per Drag & Drop mit druckfähiger Gästeliste.",
+      es: "Distribución de mesas por arrastrar y soltar con asignación de comensales.",
+      fr: "Placez vos invités facilement par glisser-déposer sur les tables.",
+      it: "Disponi gli invitati ai tavoli con drag & drop e stampa la lista.",
+      pt: "Organize seus convidados nas mesas com facilidade e imprima o mapa."
+    },
+    badge: {
+      en: "Drag & Drop",
+      de: "Drag & Drop",
+      es: "Interactivo",
+      fr: "Glisser-Déposer",
+      it: "Interattivo",
+      pt: "Arrastar e Soltar"
+    },
     icon: "🪑",
+    category: "logistics"
+  },
+  {
+    title: {
+      en: "Wedding Playlist & DJ Sizer",
+      de: "Hochzeitsmusik & DJ Playlist",
+      es: "Calculadora de Música y DJ",
+      fr: "Playlist & Musique de Mariage",
+      it: "Playlist e Brani DJ Matrimonio",
+      pt: "Calculadora de Playlist e DJ"
+    },
+    url: "/wedding-playlist-duration-calculator",
+    desc: {
+      en: "Calculate exact song counts, special moment cues, must-play/blacklist, and DJ brief PDF.",
+      de: "Berechnen Sie Songanzahl, Eröffnungstanz-Cues, No-Go-Listen und DJ-Briefing PDF.",
+      es: "Calcula canciones exactas, momentos clave, lista negra y briefing para DJ en PDF.",
+      fr: "Calculez le nombre de morceaux, les danses clés, la liste noire et le brief DJ en PDF.",
+      it: "Calcola brani esatti per DJ, momenti speciali con sfumatura, blacklist e briefing PDF.",
+      pt: "Calcule músicas para DJ, momentos especiais com minutagem, lista proibida e briefing PDF."
+    },
+    badge: {
+      en: "DJ Brief PDF",
+      de: "DJ-Briefing",
+      es: "Briefing DJ",
+      fr: "Brief DJ PDF",
+      it: "Scheda DJ PDF",
+      pt: "Briefing DJ"
+    },
+    icon: "🎵",
+    category: "logistics"
+  },
+  {
+    title: {
+      en: "Speech Time & Words Sizer",
+      de: "Hochzeitsreden Zeitrechner",
+      es: "Calculadora de Discursos de Boda",
+      fr: "Durée & Mots Discours de Mariage",
+      it: "Calcolatore Discorsi Matrimonio",
+      pt: "Calculadora de Discursos de Casamento"
+    },
+    url: "/wedding-speech-calculator",
+    desc: {
+      en: "Calculate speech time from word count with speaking pace controls and teleprompter.",
+      de: "Berechnen Sie Rededauer nach Wörtern mit Sprechtempo-Regler und Teleprompter.",
+      es: "Calcula la duración del discurso según las palabras con teleprompter interactivo.",
+      fr: "Calculez la durée du discours selon les mots avec téléprompteur intégré.",
+      it: "Calcola la durata del discorso dal numero di parole con teleprompter.",
+      pt: "Calcule o tempo do discurso a partir das palavras com teleprompter interativo."
+    },
+    badge: {
+      en: "Teleprompter",
+      de: "Teleprompter",
+      es: "Teleprompter",
+      fr: "Téléprompteur",
+      it: "Teleprompter",
+      pt: "Teleprompter"
+    },
+    icon: "🎙️",
+    category: "logistics"
+  },
+  {
+    title: {
+      en: "Wedding Sparkler Send-Off Sizer",
+      de: "Wunderkerzen Auszug Rechner",
+      es: "Calculadora de Bengalas de Boda",
+      fr: "Feux de Bengale & Sortie des Mariés",
+      it: "Stelline Scintillanti Uscita Sposi",
+      pt: "Sparklers e Luzinhas de Saída"
+    },
+    url: "/wedding-sparkler-calculator",
+    desc: {
+      en: "Calculate 20\" vs 36\" sparkler count, burn time, torch stations, sand buckets & printable signs.",
+      de: "Berechnen Sie 20\" vs. 36\" Wunderkerzen, Brenndauer, Butan-Brenner, Sandeimer & Schilder.",
+      es: "Calcula bengalas de 50cm vs 90cm, tiempo de combustión, mecheros, cubos de arena y carteles.",
+      fr: "Calculez les étincelles de 50cm vs 90cm, durée de combustion, torches, seaux de sable et panneaux.",
+      it: "Calcola stelline 50cm vs 90cm, tempo di accensione, torce antivento, secchi di sabbia e cartelli.",
+      pt: "Calcule sparklers de 50cm vs 90cm, tempo de queima, maçaricos, baldes de areia e placas."
+    },
+    badge: {
+      en: "Send-Off Sizer",
+      de: "Auszug & Funkeln",
+      es: "Despedida Mágica",
+      fr: "Sortie Étincelante",
+      it: "Uscita Luminosa",
+      pt: "Saída Iluminada"
+    },
+    icon: "✨",
     category: "logistics"
   }
 ];
 
-// Clean path comparison
-const cleanCurrent = currentPath.replace(/\/$/, "");
+// UI Texts Localization
+const uiText: Record<string, { keepPlanning: string; heading: string; subtitle: string; launch: string; exploreAll: string }> = {
+  en: {
+    keepPlanning: "Keep Planning",
+    heading: "Recommended Next Steps & Related Tools",
+    subtitle: "Every calculation stays 100% free, private in your browser, and instantly exportable to PDF/Word.",
+    launch: "Launch Free Tool",
+    exploreAll: "✨ Explore All 38+ Free Wedding Planning Calculators & Tools →"
+  },
+  de: {
+    keepPlanning: "Weiterplanen",
+    heading: "Empfohlene nächste Schritte & Tools",
+    subtitle: "Alle Berechnungen bleiben 100% kostenlos, privat in Ihrem Browser und druckfertig exportierbar.",
+    launch: "Kostenloses Tool öffnen",
+    exploreAll: "✨ Alle 38+ kostenlosen Hochzeitsrechner & Tools entdecken →"
+  },
+  es: {
+    keepPlanning: "Sigue Planificando",
+    heading: "Herramientas Relacionadas Recomendadas",
+    subtitle: "Cálculos 100% gratuitos, privados en tu navegador y exportables a PDF/Word.",
+    launch: "Abrir Herramienta Gratis",
+    exploreAll: "✨ Explorar Todas las 38+ Calculadoras Gratuitas de Boda →"
+  },
+  fr: {
+    keepPlanning: "Continuer la Planification",
+    heading: "Outils Recommandés & Prochaines Étapes",
+    subtitle: "Calculs 100% gratuits, confidentiels dans votre navigateur et exportables en PDF/Word.",
+    launch: "Ouvrir l'Outil Gratuit",
+    exploreAll: "✨ Découvrir Tous les 38+ Outils et Simulateurs de Mariage →"
+  },
+  it: {
+    keepPlanning: "Continua a Pianificare",
+    heading: "Strumenti e Passi Consigliati",
+    subtitle: "Calcoli 100% gratuiti, riservati nel tuo browser ed esportabili in PDF/Word.",
+    launch: "Apri Strumento Gratuito",
+    exploreAll: "✨ Scopri Tutti i 38+ Calcolatori Gratuiti per il Matrimonio →"
+  },
+  pt: {
+    keepPlanning: "Continuar Planejamento",
+    heading: "Próximos Passos e Ferramentas Recomendadas",
+    subtitle: "Cálculos 100% gratuitos, privados no seu navegador e exportáveis em PDF/Word.",
+    launch: "Abrir Ferramenta Grátis",
+    exploreAll: "✨ Explorar Todas as 38+ Calculadoras Gratuitas de Casamento →"
+  }
+};
+
+const currentUI = uiText[currentLang] || uiText['en'];
+
+// Normalize Category Aliases (e.g. dining -> food-beverage, guests/planning -> logistics)
+let targetCategory = category;
+if (category === 'dining' as any) targetCategory = 'food-beverage';
+else if (category === 'guests' as any || category === 'guests-logistics' as any || category === 'planning' as any) targetCategory = 'logistics';
 
 // Filter out current tool
 let filtered = allTools.filter(t => t.url !== cleanCurrent);
 
-// If category specified or inferrable
-if (category && category !== 'all') {
-  filtered = filtered.filter(t => t.category === category);
-} else {
-  // Infer category from current path
-  const currentTool = allTools.find(t => t.url === cleanCurrent);
-  if (currentTool) {
-    const sameCat = filtered.filter(t => t.category === currentTool.category);
-    const otherCat = filtered.filter(t => t.category !== currentTool.category);
-    filtered = [...sameCat, ...otherCat];
-  }
+if (targetCategory && targetCategory !== 'all') {
+  const matching = filtered.filter(t => t.category === targetCategory);
+  if (matching.length > 0) filtered = matching;
 }
 
-// Take top 3 or 4 relevant tools
 const displayedTools = filtered.slice(0, 3);
 ---
 
-<section style="margin: 3.5rem auto; padding: 2.5rem 1.5rem; background: var(--bg-paper); border: 2.5px solid var(--fg-pencil); border-radius: 8px; box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+<section class="related-tools-section no-print" style="margin: 3.5rem auto; padding: 2.5rem 1.5rem; background: var(--bg-paper); border: 2.5px solid var(--fg-pencil); border-radius: 8px; box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
   <div class="tape" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);"></div>
 
   <div style="text-align: center; margin-bottom: 2rem;">
     <span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">
-      Keep Planning
+      {currentUI.keepPlanning}
     </span>
     <h2 class="font-heading" style="font-size: clamp(1.6rem, 3.5vw, 2.3rem); color: var(--fg-pencil); margin: 0.25rem 0 0.4rem 0;">
-      Recommended Next Steps & Related Tools
+      {currentUI.heading}
     </h2>
     <p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto;">
-      Every calculation stays 100% free, private in your browser, and instantly exportable to PDF/Word.
+      {currentUI.subtitle}
     </p>
   </div>
 
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
     {displayedTools.map(tool => (
-      <a href={tool.url} style="text-decoration: none; color: inherit; display: flex;">
+      <a href={`${langPrefix}${tool.url}`} style="text-decoration: none; color: inherit; display: flex;">
         <div class="hand-card" style="padding: 1.5rem; width: 100%; display: flex; flex-direction: column; justify-content: space-between; background: #fff; border: 2px solid var(--fg-pencil); transition: transform 0.2s, box-shadow 0.2s;">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
               <span style="font-size: 2rem;">{tool.icon}</span>
               <span style="font-size: 0.78rem; font-weight: 700; background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 2px 7px; border-radius: 4px;">
-                {tool.badge}
+                {tool.badge[currentLang] || tool.badge['en']}
               </span>
             </div>
             <h3 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.5rem 0; line-height: 1.25;">
-              {tool.title}
+              {tool.title[currentLang] || tool.title['en']}
             </h3>
             <p class="font-body" style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin: 0 0 1rem 0;">
-              {tool.desc}
+              {tool.desc[currentLang] || tool.desc['en']}
             </p>
           </div>
           <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.92rem; font-weight: 700; color: var(--accent-blue);">
-            <span>Launch Free Tool</span>
+            <span>{currentUI.launch}</span>
             <span>→</span>
           </div>
         </div>
@@ -259,8 +694,8 @@ const displayedTools = filtered.slice(0, 3);
   </div>
 
   <div style="text-align: center; margin-top: 1.75rem;">
-    <a href="/#all-tools-section" style="font-size: 0.95rem; font-weight: 700; color: var(--fg-pencil); text-decoration: underline;">
-      ✨ Explore All 38+ Free Wedding Planning Calculators & Tools →
+    <a href={`${langPrefix}/#featured-favorites`} style="font-size: 0.95rem; font-weight: 700; color: var(--fg-pencil); text-decoration: underline;">
+      {currentUI.exploreAll}
     </a>
   </div>
 </section>

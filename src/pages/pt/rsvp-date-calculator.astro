@@ -1,0 +1,309 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Calculadora de Datas de Convite e RSVP de Casamento | Manage.Wedding";
+const description = "Calcule exatamente quando enviar os Save-the-Dates, os convites de casamento e a data limite de resposta de RSVP com a nossa calculadora gratuita.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/pt/rsvp-date-calculator/#webapp",
+      "name": "Calculadora de Datas de Convites e Prazo de RSVP",
+      "url": "https://manage.wedding/pt/rsvp-date-calculator",
+      "inLanguage": "pt",
+      "description": "Calcule as datas exatas de envio de Save-the-Dates, convites formais de casamento e prazos de RSVP.",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Como Calcular as Datas de Envio de Convites e Confirmação de Casamento",
+      "description": "Determine os marcos temporais para Save-the-Dates, convites em papel e prazo final de respostas dos convidados.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Passo 1: Introduza a Data do Casamento",
+          "text": "Selecione a data da cerimónia e copo-d'água no calendário."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 2: Indique se é Casamento Fora / Destination Wedding",
+          "text": "Assinale a opção caso os convidados precisem de reservar voos e alojamento hoteleiro com antecedência."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 3: Reveja o Calendário de Envio Gerado",
+          "text": "Consulte a data recomendada para Save-the-Dates (6 a 8 meses antes), convites formais (6 a 8 semanas antes) e prazo de RSVP (3 a 4 semanas antes)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 4: Assegure Margem para o Catering",
+          "text": "Garanta que o prazo de confirmação de RSVP fica marcado pelo menos 10 a 14 dias antes do fecho final da ementa com a quinta."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Como funciona a calculadora de datas de RSVP e convites?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A ferramenta calcula os prazos ideais subtraindo intervalos padrão à data do casamento: 6 meses para Save-the-Dates, 8 semanas para convites formais e 4 semanas antes para o limite de confirmação de presença."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quando devo marcar a data limite de RSVP se a quinta pedir 2 semanas?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A nossa calculadora fixa o prazo 4 semanas antes do casamento. Isso concede 2 semanas de margem para contactar convidados atrasados antes de entregar o número final ao catering."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "É mesmo necessário enviar Save-the-Date?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Se o casamento for num feriado, em meses de férias de verão (julho/agosto) ou num destino fora da cidade, o Save-the-Date é essencial para que os convidados reservem o dia na agenda."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+    <div class="home-grid" style="display: block; max-width: 800px;">
+      
+      <div class="hand-card wobbly-border fade-in">
+        <div class="tape"></div>
+        <div class="badge-postit">Ferramenta Gratuita</div>
+        <h1 class="font-heading" style="font-size: 2.5rem; color: var(--accent-red); margin-bottom: 0.5rem; text-align: center;">Calculadora de Datas de RSVP</h1>
+        <p style="text-align: center; margin-bottom: 2rem;">Descubra quando enviar os convites e definir a data de confirmação sem atrasos nem stress.</p>
+
+        <form id="calculator-form">
+          <div class="form-group">
+            <label for="wedding-date" class="form-label">Quando é o grande dia? (Data do Casamento)</label>
+            <input type="date" id="wedding-date" class="form-input" required />
+          </div>
+
+          <div class="form-group" style="display: flex; align-items: center; gap: 1rem; margin-top: 2rem; margin-bottom: 2rem;">
+            <input type="checkbox" id="destination-wedding" style="width: 24px; height: 24px; cursor: pointer; accent-color: var(--accent-blue);" />
+            <label for="destination-wedding" class="form-label" style="margin: 0; cursor: pointer;">É um Casamento Fora / Destination Wedding? (Marque se sim)</label>
+          </div>
+
+          <div style="text-align: center;">
+            <button type="submit" class="hand-btn">Calcular Datas de Envio!</button>
+          </div>
+        </form>
+
+        <div id="result-box" class="result-box wobbly-border-dashed" style="margin-top: 3rem;">
+          <h3 class="font-heading" style="text-align: center; font-size: 2rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">O Seu Calendário de Envio</h3>
+          
+          <div class="result-item">
+            <div class="item-label">Enviar Save-the-Dates</div>
+            <div class="item-value" id="res-std">--</div>
+          </div>
+          <div class="result-item">
+            <div class="item-label">Enviar Convites Formais</div>
+            <div class="item-value" id="res-inv">--</div>
+          </div>
+          <div class="result-item">
+            <div class="item-label">Data Limite de Resposta (RSVP)</div>
+            <div class="item-value" id="res-rsvp">--</div>
+          </div>
+
+          <!-- Dynamic Graph -->
+          <div style="margin-top: 3rem; position: relative; padding-top: 2rem;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; border-top: 2px dashed var(--fg-pencil);"></div>
+            <h4 class="font-heading" style="text-align: center; margin-bottom: 1rem; color: var(--fg-pencil);">Linha do Tempo Visual</h4>
+            <div style="display: flex; height: 40px; border: 3px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #fff;">
+              <div id="bar-std" style="width: 33.3%; background-color: var(--post-it); border-right: 3px solid var(--fg-pencil); transition: width 0.5s ease; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.9rem;" title="Save-the-Dates">Save-the-Date</div>
+              <div id="bar-inv" style="width: 33.3%; background-color: var(--accent-blue); color: white; border-right: 3px solid var(--fg-pencil); transition: width 0.5s ease; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.9rem;" title="Convites">Convites</div>
+              <div id="bar-rsvp" style="width: 33.4%; background-color: var(--accent-red); color: white; transition: width 0.5s ease; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.9rem;" title="RSVP até ao Casamento">RSVP ao Casamento</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+      <div class="hand-card" style="margin: 3rem auto 0 auto; max-width: 800px; background: var(--post-it); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+        <div class="tape" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);"></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+          <h2 class="font-heading" style="font-size: clamp(1.3rem, 2.5vw, 1.7rem); color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+            <span>⚡</span> Resumo Direto ao Assunto (BLUF)
+          </h2>
+          <span style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(0,0,0,0.06); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid var(--fg-pencil);">
+            Calendário de Papelaria em 1 Minuto
+          </span>
+        </div>
+        
+        <!-- Core Formula Banner -->
+        <div style="background: rgba(255, 255, 255, 0.9); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+          <p class="font-body" style="font-size: 1.05rem; line-height: 1.6; margin: 0 0 0.5rem 0; color: var(--fg-pencil);">
+            <strong>Fórmula Padrão de Prazos:</strong> 
+            <span style="display: inline-block; background: #fef3c7; border: 1px solid #d97706; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #92400e; margin: 2px 4px;">Save-the-Date = 6–8 Meses Antes</span> · 
+            <span style="display: inline-block; background: #eff6ff; border: 1px solid #3b82f6; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #1e40af; margin: 2px 4px;">Convites Formais = 6–8 Semanas Antes</span> · 
+            <span style="display: inline-block; background: #f0fdf4; border: 1px solid #22c55e; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #166534; margin: 2px 4px;">Prazo de RSVP = 3–4 Semanas Antes</span>
+          </p>
+          <p class="font-body" style="font-size: 0.9rem; margin: 0; color: var(--text-secondary); line-height: 1.5;">
+            <strong>Regra para Casamentos Fora:</strong> Envie o Save-the-Date <strong>8 a 12 meses</strong> antes, os convites <strong>12 a 16 semanas</strong> antes e estabeleça a confirmação <strong>6 a 8 semanas</strong> antes da data.
+          </p>
+        </div>
+
+        <!-- Semantic Benchmark Table -->
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; background: #fff; border: 2px solid var(--fg-pencil); font-family: var(--font-body); font-size: 0.92rem; text-align: left;">
+            <thead>
+              <tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+                <th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Etapa de Comunicação</th>
+                <th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-blue);">Casamento Local</th>
+                <th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-red);">Casamento Fora / Férias</th>
+                <th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Ação do Convidado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Save-the-Dates</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">6 a 8 Meses Antes</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">9 a 12 Meses Antes</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Reservar o dia na agenda</td>
+              </tr>
+              <tr style="background: #faf8f3;">
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Reserva de Quartos / Hotel</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">5 a 6 Meses Antes</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">8 a 10 Meses Antes</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Bloquear quartos com desconto</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Convites Oficiais</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">6 a 8 Semanas Antes</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">12 a 16 Semanas Antes</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Confirmar e escolher pratos</td>
+              </tr>
+              <tr style="background: #faf8f3;">
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Prazo de Resposta (RSVP)</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">3 a 4 Semanas Antes</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">6 a 8 Semanas Antes</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Data limite de resposta</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Fecho com o Catering</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">10 a 14 Dias Antes</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">21 a 30 Dias Antes</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Entrega de contagem e dietas</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SEO Article -->
+      <article class="hand-card fade-in" style="margin-top: 3rem; background-color: #fff;">
+        <h2 class="font-heading" style="font-size: 2rem; color: var(--accent-blue); margin-bottom: 1.5rem;">Guia Completo para os Prazos de Convites e Confirmações</h2>
+        
+        <p>Planear um casamento requer uma coordenação impecável entre gráfica, correios e fornecedores. Enviar os convites demasiado cedo faz com que fiquem esquecidos; enviar demasiado tarde gera ansiedade e atrasos nas encomendas de catering.</p>
+        
+        <div style="text-align: center; margin: 2rem 0;">
+          <img src="/images/postbox-sketch.webp" alt="Calculadora de Datas de Convite e RSVP de Casamento" loading="lazy" decoding="async" style="max-width: 100%; border: 3px solid var(--fg-pencil); border-radius: 4px; box-shadow: 4px 4px 0px 0px var(--fg-pencil); width: 300px; height: auto; margin: 0 auto; display: block;" />
+        </div>
+
+        <h3 class="font-heading" style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;">A Importância da Margem de Segurança</h3>
+        <p>A maioria das quintas exige a contagem final exata entre 10 e 14 dias antes do evento. Ao fixar o prazo de RSVP 4 semanas antes, o casal ganha uma margem de duas semanas para ligar confortavelmente aos convidados que ainda não responderam.</p>
+
+        <h3 class="font-heading" style="font-size: 1.8rem; margin-top: 3rem; margin-bottom: 1.5rem; color: var(--accent-red);">Perguntas Frequentes (FAQs)</h3>
+        
+        <div class="faq-container">
+          <details style="margin-bottom: 1rem; border: 2px dashed var(--fg-pencil); padding: 1rem; background: var(--post-it); border-radius: 4px;">
+            <summary class="font-heading" style="font-size: 1.3rem; cursor: pointer; color: var(--fg-pencil); outline: none;">Como funciona a calculadora de datas de RSVP e convites?</summary>
+            <p style="margin-top: 1rem; margin-bottom: 0;">A ferramenta calcula os prazos ideais subtraindo intervalos padrão à data do casamento: 6 meses para Save-the-Dates, 8 semanas para convites formais e 4 semanas antes para o limite de confirmação de presença.</p>
+          </details>
+          
+          <details style="margin-bottom: 1rem; border: 2px dashed var(--fg-pencil); padding: 1rem; background: var(--post-it); border-radius: 4px;">
+            <summary class="font-heading" style="font-size: 1.3rem; cursor: pointer; color: var(--fg-pencil); outline: none;">Quando devo marcar a data limite de RSVP se a quinta pedir 2 semanas?</summary>
+            <p style="margin-top: 1rem; margin-bottom: 0;">A nossa calculadora fixa o prazo 4 semanas antes do casamento. Isso concede 2 semanas de margem para contactar convidados atrasados antes de entregar o número final ao catering!</p>
+          </details>
+
+          <details style="margin-bottom: 1rem; border: 2px dashed var(--fg-pencil); padding: 1rem; background: var(--post-it); border-radius: 4px;">
+            <summary class="font-heading" style="font-size: 1.3rem; cursor: pointer; color: var(--fg-pencil); outline: none;">É mesmo necessário enviar Save-the-Date?</summary>
+            <p style="margin-top: 1rem; margin-bottom: 0;">Se o casamento for num feriado, em meses de férias de verão (julho/agosto) ou num destino fora da cidade, o Save-the-Date é essencial para que os convidados reservem o dia na agenda.</p>
+          </details>
+        </div>
+      </article>
+
+    </div>
+  </main>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('calculator-form');
+    const resStd = document.getElementById('res-std');
+    const resInv = document.getElementById('res-inv');
+    const resRsvp = document.getElementById('res-rsvp');
+    const barStd = document.getElementById('bar-std');
+    const barInv = document.getElementById('bar-inv');
+    const barRsvp = document.getElementById('bar-rsvp');
+
+    if(form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const dateInput = (document.getElementById('wedding-date') as HTMLInputElement).value;
+        const isDestination = (document.getElementById('destination-wedding') as HTMLInputElement).checked;
+        
+        if (!dateInput) return;
+
+        const parts = dateInput.split('-');
+        const weddingDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        
+        let stdDate = new Date(weddingDate.getTime());
+        let invDate = new Date(weddingDate.getTime());
+        let rsvpDate = new Date(weddingDate.getTime());
+
+        if (isDestination) {
+          stdDate.setMonth(stdDate.getMonth() - 9);
+          invDate.setDate(invDate.getDate() - (12 * 7));
+          rsvpDate.setDate(rsvpDate.getDate() - (6 * 7));
+        } else {
+          stdDate.setMonth(stdDate.getMonth() - 6);
+          invDate.setDate(invDate.getDate() - (8 * 7));
+          rsvpDate.setDate(rsvpDate.getDate() - (4 * 7));
+        }
+
+        const options: Intl.DateTimeFormatOptions = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };
+        
+        resStd!.textContent = stdDate.toLocaleDateString('pt-PT', options);
+        resInv!.textContent = invDate.toLocaleDateString('pt-PT', options);
+        resRsvp!.textContent = rsvpDate.toLocaleDateString('pt-PT', options);
+
+        const totalDuration = weddingDate.getTime() - stdDate.getTime();
+        if (totalDuration > 0) {
+          const stdToInv = invDate.getTime() - stdDate.getTime();
+          const invToRsvp = rsvpDate.getTime() - invDate.getTime();
+          const rsvpToWed = weddingDate.getTime() - rsvpDate.getTime();
+
+          const stdPct = (stdToInv / totalDuration) * 100;
+          const invPct = (invToRsvp / totalDuration) * 100;
+          const rsvpPct = (rsvpToWed / totalDuration) * 100;
+          
+          barStd!.style.width = `${stdPct}%`;
+          barInv!.style.width = `${invPct}%`;
+          barRsvp!.style.width = `${rsvpPct}%`;
+        }
+      });
+    }
+  });
+</script>

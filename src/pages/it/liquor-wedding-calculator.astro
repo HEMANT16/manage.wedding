@@ -1,0 +1,599 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/liquor-wedding-calculator/#webapp",
+      "name": "Calcolatore Superalcolici Open Bar Matrimonio",
+      "url": "https://manage.wedding/it/liquor-wedding-calculator",
+      "inLanguage": "it",
+      "description": "Calcola le quantità esatte di bottiglie di superalcolici (gin, vodka, rum, whisky, tequila), vino, birra, soft drink, agrumi e ghiaccio per l'open bar del matrimonio con stima budget in Euro.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come calcolare i superalcolici per l'open bar di nozze",
+      "description": "Guida passo dopo passo per stimare bottiglie di distillati, mixer e ghiaccio per la festa serale del matrimonio.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Inserire invitati adulti e durata dell'open bar",
+          "text": "Indica il numero di persone che consumeranno alcolici e le ore di servizio bar (solitamente 3–4 ore dopo il taglio della torta)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Scegliere la ripartizione tra cocktail, vino e birra",
+          "text": "Imposta le percentuali di preferenza dei tuoi ospiti (es. 40% cocktail miscelati, 40% vino/bollicine, 20% birra)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Calibrare i distillati per i cocktail scelti",
+          "text": "Regola le percentuali di Gin, Vodka, Rum, Whisky e Tequila in base ai cocktail della tua drink list (Gin Tonic, Moscow Mule, Mojito, Negroni)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Esportare la lista della spesa per il fornitore",
+          "text": "Stampa la lista completa di bottiglie da 700ml/1L, casse di acqua tonica, agrumi freschi e sacchi di ghiaccio."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quanti cocktail si ottengono da una bottiglia di superalcolico da 700ml?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Una bottiglia standard da 700ml contiene circa 15–16 cocktail, considerando una dose standard da 45ml (1,5 oz) di distillato per consumazione."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quali sono i distillati più richiesti a un open bar di nozze?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In Italia il Gin (per Gin Tonic e Negroni) e la Vodka (per Moscow Mule e pestati) rappresentano oltre il 55% delle richieste complessive, seguiti da Rum (20%), Whisky/Bourbon (15%) e Tequila (10%)."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calcolatore Superalcolici Open Bar Matrimonio & Bottiglie | Manage.Wedding"
+	description="Calcola le bottiglie esatte di superalcolici (gin, vodka, rum, tequila, whisky), vino, birra, soft drink, guarnizioni di agrumi e ghiaccio per l'open bar del matrimonio."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Calcolatore Superalcolici & Open Bar" category="food-dining" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Distillati, Mixer & Ghiaccio</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Calcolatore Superalcolici <span class="accent-italic">& Open Bar Nozze</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Calcola con esattezza le bottiglie di Gin, Vodka, Rum, Whisky e Tequila, oltre a fustini/casse di birra, vino, soft drink, agrumi e kg di ghiaccio.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Inputs & Controls -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Impostazioni Bar & Ospiti
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Stima in Tempo Reale
+					</span>
+				</div>
+
+				<!-- Signature Preset Picker -->
+				<div class="form-group">
+					<label class="form-label" for="bar-preset">Tipologia & Formula Open Bar</label>
+					<select id="bar-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="classic-open-bar" selected>🍸 Open Bar Completo Classico (40% Vino, 40% Cocktail, 20% Birra)</option>
+						<option value="cocktail-heavy">🍹 Festa Cocktail & Dj Set (50% Cocktail, 30% Vino, 20% Birra)</option>
+						<option value="margarita-bourbon">🌿 Gin Tonic & Spritz Bar (Focus Gin, Aperol & Bollicine)</option>
+						<option value="beer-wine-light-liquor">🍺 Prevalenza Vino & Birra (45% Vino, 35% Birra, 20% Superalcolici)</option>
+						<option value="custom">✏️ Personalizzazione Manuale</option>
+					</select>
+				</div>
+
+				<!-- Guest Count & Duration -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="guests">Invitati Adulti (Drinkers)</label>
+						<input type="number" id="guests" class="form-input" value="120" min="10" max="600" step="5" style="font-size: 1.1rem; font-weight: 700;" />
+					</div>
+					<div>
+						<label class="form-label" for="hours">Durata Open Bar (Ore)</label>
+						<input type="number" id="hours" class="form-input" value="4" min="1" max="10" step="0.5" style="font-size: 1.1rem; font-weight: 700;" />
+					</div>
+				</div>
+
+				<!-- Crowd Drinking Vibe & Bottle Size Format -->
+				<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="vibe">Ritmo di Consumo</label>
+						<select id="vibe" class="form-input" style="cursor: pointer;">
+							<option value="light">Moderato (-25% Consumazioni)</option>
+							<option value="average" selected>Standard (1 Drink / Ora)</option>
+							<option value="heavy">Festaiolo (+25% Consumazioni)</option>
+						</select>
+					</div>
+					<div>
+						<label class="form-label" for="bottle-size">Formato Bottiglie</label>
+						<select id="bottle-size" class="form-input" style="cursor: pointer; font-weight: 600;">
+							<option value="750" selected>Standard 700/750ml (16 drink)</option>
+							<option value="1750">Formato Magnum 1.5L/1.75L (38 drink)</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Category Preference Sliders (Beer / Wine / Liquor) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+						<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil);">
+							Ripartizione Categorie (%)
+						</strong>
+						<span id="sum-pref-check" style="font-size: 0.82rem; font-weight: 700; color: #16a34a; background: #f0fdf4; padding: 2px 6px; border-radius: 4px;">
+							Totale: 100%
+						</span>
+					</div>
+
+					<div class="form-group" style="margin-bottom: 0.85rem;">
+						<div style="display: flex; justify-content: space-between; font-size: 0.92rem; font-weight: 600; margin-bottom: 0.2rem;">
+							<span>🍷 Vino & Bollicine</span>
+							<span id="val-pref-wine">40%</span>
+						</div>
+						<input type="range" id="pref-wine" min="0" max="100" value="40" style="width: 100%; cursor: pointer;" />
+					</div>
+
+					<div class="form-group" style="margin-bottom: 0.85rem;">
+						<div style="display: flex; justify-content: space-between; font-size: 0.92rem; font-weight: 600; margin-bottom: 0.2rem;">
+							<span>🍸 Superalcolici & Cocktail</span>
+							<span id="val-pref-liquor">40%</span>
+						</div>
+						<input type="range" id="pref-liquor" min="0" max="100" value="40" style="width: 100%; cursor: pointer;" />
+					</div>
+
+					<div class="form-group" style="margin-bottom: 0.85rem;">
+						<div style="display: flex; justify-content: space-between; font-size: 0.92rem; font-weight: 600; margin-bottom: 0.2rem;">
+							<span>🍺 Birra</span>
+							<span id="val-pref-beer">20%</span>
+						</div>
+						<input type="range" id="pref-beer" min="0" max="100" value="20" style="width: 100%; cursor: pointer;" />
+					</div>
+				</div>
+
+				<!-- Spirit Type Allocation Sliders -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.75rem;">
+						Suddivisione Distillati per i Cocktail (%)
+					</strong>
+
+					<div class="form-group" style="margin-bottom: 0.75rem;">
+						<div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem;">
+							<span>🌿 Gin (Gin Tonic, Gin Lemon, Negroni)</span>
+							<span id="val-liq-gin">30%</span>
+						</div>
+						<input type="range" id="liq-gin" min="0" max="100" value="30" style="width: 100%; cursor: pointer;" />
+					</div>
+
+					<div class="form-group" style="margin-bottom: 0.75rem;">
+						<div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem;">
+							<span>🍸 Vodka (Moscow Mule, Vodka Lemon)</span>
+							<span id="val-liq-vodka">25%</span>
+						</div>
+						<input type="range" id="liq-vodka" min="0" max="100" value="25" style="width: 100%; cursor: pointer;" />
+					</div>
+
+					<div class="form-group" style="margin-bottom: 0.75rem;">
+						<div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem;">
+							<span>🌴 Rum (Mojito, Cuba Libre, Daiquiri)</span>
+							<span id="val-liq-rum">20%</span>
+						</div>
+						<input type="range" id="liq-rum" min="0" max="100" value="20" style="width: 100%; cursor: pointer;" />
+					</div>
+
+					<div class="form-group" style="margin-bottom: 0.75rem;">
+						<div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem;">
+							<span>🥃 Whisky / Bourbon (Old Fashioned, Whisky & Cola)</span>
+							<span id="val-liq-whiskey">15%</span>
+						</div>
+						<input type="range" id="liq-whiskey" min="0" max="100" value="15" style="width: 100%; cursor: pointer;" />
+					</div>
+
+					<div class="form-group" style="margin-bottom: 0.75rem;">
+						<div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem;">
+							<span>🌵 Tequila (Margarita, Paloma)</span>
+							<span id="val-liq-tequila">10%</span>
+						</div>
+						<input type="range" id="liq-tequila" min="0" max="100" value="10" style="width: 100%; cursor: pointer;" />
+					</div>
+				</div>
+
+				<!-- Champagne Toast Option -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.95rem; font-weight: 600;">
+						<input type="checkbox" id="check-champagne-toast" checked style="width: 18px; height: 18px;" />
+						<span>Includi Spumante per il Taglio Torta (+1 flûte a persona)</span>
+					</label>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results & Shopping List -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Primary Results Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Consumazioni Totali Stimate
+						</span>
+						<span id="vibe-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							Consumo Standard
+						</span>
+					</div>
+
+					<div id="res-total" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						480 Drink
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.25rem 0;">
+						Calcolato per <strong id="res-guest-count-label" style="color: var(--fg-pencil);">120 invitati</strong> durante <strong id="res-hours-label" style="color: var(--fg-pencil);">4 ore</strong> di servizio.
+					</p>
+
+					<!-- Visual Split Bar -->
+					<div style="display: flex; height: 28px; border: 2px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; margin-bottom: 1.5rem; font-size: 0.82rem; font-weight: 800; color: #fff; text-align: center; line-height: 28px;">
+						<div id="chart-wine" style="background-color: var(--accent-red); width: 40%; transition: width 0.2s;">Vino (40%)</div>
+						<div id="chart-liquor" style="background-color: var(--fg-pencil); width: 40%; transition: width 0.2s;">Cocktail (40%)</div>
+						<div id="chart-beer" style="background-color: var(--accent-blue); width: 20%; transition: width 0.2s;">Birra (20%)</div>
+					</div>
+
+					<!-- Estimated Retail Cost Callout -->
+					<div style="background: #fdf6e2; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+						<div>
+							<strong style="display: block; font-size: 0.92rem; color: var(--fg-pencil);">Budget Stimato Alcolici & Beverage:</strong>
+							<span style="font-size: 0.82rem; color: #64748b;">(Prezzi medi cantine e ingrosso bevande)</span>
+						</div>
+						<span id="res-est-cost" class="font-heading" style="font-size: 1.6rem; color: var(--accent-red); font-weight: 800;">
+							1.350 €
+						</span>
+					</div>
+
+					<!-- Itemized Shopping List Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						
+						<!-- Spirits Section -->
+						<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--fg-pencil); padding-bottom: 0.4rem; margin-bottom: 0.6rem;">
+							<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+								🥃 Superalcolici & Distillati (<span id="bottle-size-label">700ml</span>)
+							</strong>
+							<strong id="res-total-liquor-bottles" style="color: var(--accent-red);">12 Bottiglie</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>Gin:</span>
+							<strong id="res-gin">4 btg</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>Vodka:</span>
+							<strong id="res-vodka">3 btg</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>Rum:</span>
+							<strong id="res-rum">2 btg</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>Whisky / Bourbon:</span>
+							<strong id="res-whiskey">2 btg</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>Tequila:</span>
+							<strong id="res-tequila">1 btg</strong>
+						</div>
+
+						<!-- Wine & Beer Section -->
+						<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--fg-pencil); padding-bottom: 0.4rem; margin: 1rem 0 0.6rem 0;">
+							<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+								🍷 Vino, Birra & Spumante
+							</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>Vino da Tavola (750ml):</span>
+							<strong id="res-wine">38 btg (20 Bianchi / 18 Rossi)</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>Birra (Casse da 24 bottiglie 33cl):</span>
+							<strong id="res-beer">4 Casse (96 Birre)</strong>
+						</div>
+						<div id="row-champagne" style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>Spumante Brindisi Torta (750ml):</span>
+							<strong id="res-champagne" style="color: var(--accent-red);">20 btg</strong>
+						</div>
+
+						<!-- Mixers & Garnishes -->
+						<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--fg-pencil); padding-bottom: 0.4rem; margin: 1rem 0 0.6rem 0;">
+							<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+								🍋 Soft Drink, Agrumi & Ghiaccio
+							</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>Mixer (Acqua Tonica, Soda, Cola, Ginger Beer):</span>
+							<strong id="res-mixers">40 Bottiglie (1L)</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>Guarnizioni Fresche (Lime, Limoni, Arance):</span>
+							<strong id="res-garnishes">30 Lime • 20 Limoni • 15 Arance</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.92rem;">
+							<span>Ghiaccio Alimentare in Cubetti:</span>
+							<strong id="res-ice">120 kg (6 sacchi da 20kg)</strong>
+						</div>
+
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-shopping-list" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Stampa Lista Spesa (PDF)
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Esporta Documento Word
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Bartending Pro Tip Callout -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						💡 Consiglio del Barman:
+					</strong>
+					<p style="margin: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						Prepara i cocktail più gettonati (come il Gin Tonic o lo Spritz) con bicchieri colmi di ghiaccio: oltre a mantenere il drink fresco, evita che l'alcol risulti troppo pesante durante i balli.
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- SEO Article -->
+		<article class="hand-card" style="margin: 4rem auto; max-width: 800px; padding: 3rem;">
+			<h2 class="font-heading" style="font-size: 2.2rem; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				Guida Completa alla Gestione dell'Open Bar di Nozze
+			</h2>
+			<p class="font-body" style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem;">
+				L'open bar è il momento clou della festa nuziale serale. Pianificare le scorte con precisione ti permette di non sprecare budget in bottiglie aperte non consumabili e di evitare che i cocktail terminino a metà serata.
+			</p>
+		</article>
+
+		<RelatedTools currentPath="/it/liquor-wedding-calculator" category="food-beverage" />
+	</main>
+</Layout>
+
+<script is:inline>
+	const guestsInput = document.getElementById('guests');
+	const hoursInput = document.getElementById('hours');
+	const vibeSelect = document.getElementById('vibe');
+	const bottleSizeSelect = document.getElementById('bottle-size');
+	const barPresetSelect = document.getElementById('bar-preset');
+
+	const prefWineInput = document.getElementById('pref-wine');
+	const prefLiquorInput = document.getElementById('pref-liquor');
+	const prefBeerInput = document.getElementById('pref-beer');
+
+	const liqGinInput = document.getElementById('liq-gin');
+	const liqVodkaInput = document.getElementById('liq-vodka');
+	const liqRumInput = document.getElementById('liq-rum');
+	const liqWhiskeyInput = document.getElementById('liq-whiskey');
+	const liqTequilaInput = document.getElementById('liq-tequila');
+
+	const checkChampagne = document.getElementById('check-champagne-toast');
+
+	function updateLiquorCalc() {
+		const guests = parseInt(guestsInput.value, 10) || 100;
+		const hours = parseFloat(hoursInput.value) || 4;
+		const vibe = vibeSelect.value;
+		const bottleSize = parseInt(bottleSizeSelect.value, 10) || 750;
+
+		let multiplier = 1.0;
+		let vibeText = "Consumo Standard";
+		if (vibe === 'light') { multiplier = 0.75; vibeText = "Consumo Moderato (-25%)"; }
+		else if (vibe === 'heavy') { multiplier = 1.25; vibeText = "Consumo Festaiolo (+25%)"; }
+
+		document.getElementById('vibe-badge').textContent = vibeText;
+		document.getElementById('res-guest-count-label').textContent = `${guests} invitati`;
+		document.getElementById('res-hours-label').textContent = `${hours} ore`;
+
+		const totalDrinks = Math.ceil(guests * hours * multiplier);
+		document.getElementById('res-total').textContent = `${totalDrinks} Drink`;
+
+		const pWine = parseInt(prefWineInput.value, 10) || 40;
+		const pLiq = parseInt(prefLiquorInput.value, 10) || 40;
+		const pBeer = parseInt(prefBeerInput.value, 10) || 20;
+
+		document.getElementById('val-pref-wine').textContent = `${pWine}%`;
+		document.getElementById('val-pref-liquor').textContent = `${pLiq}%`;
+		document.getElementById('val-pref-beer').textContent = `${pBeer}%`;
+
+		document.getElementById('chart-wine').style.width = `${pWine}%`;
+		document.getElementById('chart-wine').textContent = `Vino (${pWine}%)`;
+		document.getElementById('chart-liquor').style.width = `${pLiq}%`;
+		document.getElementById('chart-liquor').textContent = `Cocktail (${pLiq}%)`;
+		document.getElementById('chart-beer').style.width = `${pBeer}%`;
+		document.getElementById('chart-beer').textContent = `Birra (${pBeer}%)`;
+
+		const drinksWine = Math.ceil(totalDrinks * (pWine / 100));
+		const drinksLiq = Math.ceil(totalDrinks * (pLiq / 100));
+		const drinksBeer = Math.ceil(totalDrinks * (pBeer / 100));
+
+		const wineBottles = Math.ceil(drinksWine / 5);
+		const whiteWine = Math.ceil(wineBottles * 0.55);
+		const redWine = wineBottles - whiteWine;
+		document.getElementById('res-wine').textContent = `${wineBottles} btg (${whiteWine} Bianchi / ${redWine} Rossi)`;
+
+		const beerCases = Math.ceil(drinksBeer / 24);
+		document.getElementById('res-beer').textContent = `${beerCases} Casse (${beerCases * 24} Birre)`;
+
+		// Champagne toast
+		const hasToast = checkChampagne.checked;
+		const rowChampagne = document.getElementById('row-champagne');
+		let champBottles = 0;
+		if (hasToast) {
+			rowChampagne.style.display = 'flex';
+			champBottles = Math.ceil(guests / 6);
+			document.getElementById('res-champagne').textContent = `${champBottles} btg`;
+		} else {
+			rowChampagne.style.display = 'none';
+		}
+
+		// Spirits
+		const drinksPerBottle = bottleSize === 1750 ? 38 : 16;
+		document.getElementById('bottle-size-label').textContent = bottleSize === 1750 ? 'Magnum 1.5L/1.75L' : '700/750ml';
+
+		const gGin = parseInt(liqGinInput.value, 10) || 30;
+		const gVodka = parseInt(liqVodkaInput.value, 10) || 25;
+		const gRum = parseInt(liqRumInput.value, 10) || 20;
+		const gWhiskey = parseInt(liqWhiskeyInput.value, 10) || 15;
+		const gTequila = parseInt(liqTequilaInput.value, 10) || 10;
+
+		document.getElementById('val-liq-gin').textContent = `${gGin}%`;
+		document.getElementById('val-liq-vodka').textContent = `${gVodka}%`;
+		document.getElementById('val-liq-rum').textContent = `${gRum}%`;
+		document.getElementById('val-liq-whiskey').textContent = `${gWhiskey}%`;
+		document.getElementById('val-liq-tequila').textContent = `${gTequila}%`;
+
+		const ginBottles = Math.ceil((drinksLiq * (gGin / 100)) / drinksPerBottle);
+		const vodkaBottles = Math.ceil((drinksLiq * (gVodka / 100)) / drinksPerBottle);
+		const rumBottles = Math.ceil((drinksLiq * (gRum / 100)) / drinksPerBottle);
+		const whiskeyBottles = Math.ceil((drinksLiq * (gWhiskey / 100)) / drinksPerBottle);
+		const tequilaBottles = Math.ceil((drinksLiq * (gTequila / 100)) / drinksPerBottle);
+
+		const totalLiqBottles = ginBottles + vodkaBottles + rumBottles + whiskeyBottles + tequilaBottles;
+
+		document.getElementById('res-total-liquor-bottles').textContent = `${totalLiqBottles} Bottiglie`;
+		document.getElementById('res-gin').textContent = `${ginBottles} btg`;
+		document.getElementById('res-vodka').textContent = `${vodkaBottles} btg`;
+		document.getElementById('res-rum').textContent = `${rumBottles} btg`;
+		document.getElementById('res-whiskey').textContent = `${whiskeyBottles} btg`;
+		document.getElementById('res-tequila').textContent = `${tequilaBottles} btg`;
+
+		// Mixers, garnishes, ice in kg
+		const mixersBottles = Math.ceil(drinksLiq / 8);
+		document.getElementById('res-mixers').textContent = `${mixersBottles} Bottiglie (1L)`;
+
+		const limes = Math.ceil(drinksLiq * 0.25);
+		const lemons = Math.ceil(drinksLiq * 0.15);
+		const oranges = Math.ceil(drinksLiq * 0.10);
+		document.getElementById('res-garnishes').textContent = `${limes} Lime • ${lemons} Limoni • ${oranges} Arance`;
+
+		const iceKg = Math.ceil(guests * 1.0);
+		const iceBags = Math.ceil(iceKg / 20);
+		document.getElementById('res-ice').textContent = `${iceKg} kg (${iceBags} sacchi da 20kg)`;
+
+		// Estimated cost in Euro
+		const avgWinePrice = 9.0;
+		const avgBeerCasePrice = 28.0;
+		const avgChampPrice = 12.0;
+		const avgSpiritPrice = bottleSize === 1750 ? 32.0 : 18.0;
+		const avgMixerPrice = 1.8;
+
+		const estCost = Math.round(
+			(wineBottles * avgWinePrice) +
+			(beerCases * avgBeerCasePrice) +
+			(champBottles * avgChampPrice) +
+			(totalLiqBottles * avgSpiritPrice) +
+			(mixersBottles * avgMixerPrice) +
+			(iceBags * 8.0)
+		);
+
+		document.getElementById('res-est-cost').textContent = `${estCost.toLocaleString('it-IT')} €`;
+	}
+
+	[guestsInput, hoursInput, vibeSelect, bottleSizeSelect, prefWineInput, prefLiquorInput, prefBeerInput, liqGinInput, liqVodkaInput, liqRumInput, liqWhiskeyInput, liqTequilaInput, checkChampagne].forEach(el => {
+		el.addEventListener('input', updateLiquorCalc);
+		el.addEventListener('change', updateLiquorCalc);
+	});
+
+	barPresetSelect.addEventListener('change', () => {
+		const val = barPresetSelect.value;
+		if (val === 'classic-open-bar') {
+			prefWineInput.value = 40; prefLiquorInput.value = 40; prefBeerInput.value = 20;
+			liqGinInput.value = 30; liqVodkaInput.value = 25; liqRumInput.value = 20; liqWhiskeyInput.value = 15; liqTequilaInput.value = 10;
+		} else if (val === 'cocktail-heavy') {
+			prefWineInput.value = 30; prefLiquorInput.value = 50; prefBeerInput.value = 20;
+			liqGinInput.value = 35; liqVodkaInput.value = 30; liqRumInput.value = 20; liqWhiskeyInput.value = 10; liqTequilaInput.value = 5;
+		} else if (val === 'margarita-bourbon') {
+			prefWineInput.value = 35; prefLiquorInput.value = 45; prefBeerInput.value = 20;
+			liqGinInput.value = 35; liqVodkaInput.value = 20; liqRumInput.value = 15; liqWhiskeyInput.value = 15; liqTequilaInput.value = 15;
+		} else if (val === 'beer-wine-light-liquor') {
+			prefWineInput.value = 45; prefLiquorInput.value = 20; prefBeerInput.value = 35;
+			liqGinInput.value = 30; liqVodkaInput.value = 30; liqRumInput.value = 20; liqWhiskeyInput.value = 10; liqTequilaInput.value = 10;
+		}
+		updateLiquorCalc();
+	});
+
+	// Print / Export listeners
+	document.getElementById('btn-print-shopping-list').addEventListener('click', () => {
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head><meta charset="utf-8"><title>Lista Spesa Open Bar Matrimonio</title></head>
+			<body style="font-family: Arial, sans-serif; padding: 20px;">
+				<h1>Manage.Wedding — Lista Spesa Open Bar</h1>
+				<p>Data: ${new Date().toLocaleDateString('it-IT')} | Ospiti: ${guestsInput.value} | Totale Consumazioni: ${document.getElementById('res-total').textContent}</p>
+				<h3>Superalcolici:</h3>
+				<p>${document.getElementById('res-total-liquor-bottles').textContent} (Gin: ${document.getElementById('res-gin').textContent}, Vodka: ${document.getElementById('res-vodka').textContent}, Rum: ${document.getElementById('res-rum').textContent}, Whisky: ${document.getElementById('res-whiskey').textContent}, Tequila: ${document.getElementById('res-tequila').textContent})</p>
+				<h3>Vino & Birra:</h3>
+				<p>Vino: ${document.getElementById('res-wine').textContent} | Birra: ${document.getElementById('res-beer').textContent} | Spumante: ${document.getElementById('res-champagne').textContent}</p>
+				<h3>Mixer & Ghiaccio:</h3>
+				<p>Mixer: ${document.getElementById('res-mixers').textContent} | Ghiaccio: ${document.getElementById('res-ice').textContent}</p>
+				<p><strong>Budget Stimato: ${document.getElementById('res-est-cost').textContent}</strong></p>
+			</body>
+			</html>
+		`;
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Lista_Open_Bar_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	updateLiquorCalc();
+</script>

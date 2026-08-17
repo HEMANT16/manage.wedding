@@ -1,0 +1,415 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/alcohol-dilution-calculator/#webapp",
+      "name": "Alkohol-Verdünnungsrechner | Alkoholgehalt (Vol.-%) & Mischungsrechner",
+      "url": "https://manage.wedding/de/alcohol-dilution-calculator",
+      "inLanguage": "de",
+      "description": "Berechnen Sie die exakte Menge an Wasser oder Fillern, um hochprozentigen Alkohol auf die gewünschte Trinkstärke (Vol.-%) für Hochzeits-Cocktails, Bowlen oder selbstgemachte Liköre zu verdünnen.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie verdünnt man Alkohol auf einen Ziel-Alkoholgehalt (Vol.-%)?",
+      "description": "Schritt-für-Schritt-Anleitung zur Berechnung der Verdünnung von Spirituosen und Batch-Cocktails mit der Mischungsformel.",
+      "inLanguage": "de",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 1: Ausgangsvolumen (ml) eingeben",
+          "text": "Tragen Sie die Ausgangsmenge des Alkohols in Millilitern ein (z. B. 750 ml oder 1.000 ml Weingeist/Primasprit oder Wodka)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 2: Ausgangs-Alkoholgehalt (Vol.-%) angeben",
+          "text": "Geben Sie die aktuelle Stärke der Spirituose in Prozent an (z. B. 96% für Weingeist/Primasprit, 40% für Standard-Wodka oder 54% für Rum)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 3: Ziel-Alkoholgehalt (Vol.-%) festlegen",
+          "text": "Wählen Sie die gewünschte Trinkstärke (z. B. 20% für servierfertige Hochzeits-Cocktails, 15% für Sommer-Bowlen oder 30% für hausgemachten Hochzeitslikör)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 4: Exakte Wassermenge & Endvolumen ablesen",
+          "text": "Der Rechner ermittelt über das Mischungskreuz (C1 × V1 = C2 × V2) exakt, wie viele Milliliter destilliertes Wasser oder Filler hinzugefügt werden müssen."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "de",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wie funktioniert die Formel für die Alkohol-Verdünnung?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die Berechnung basiert auf dem Gesetz der Massenerhaltung: C1 × V1 = C2 × V2. Die benötigte Wassermenge ergibt sich aus: [(Ausgangsgehalt × Ausgangsvolumen) ÷ Zielgehalt] − Ausgangsvolumen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Welches Wasser sollte man zum Verdünnen von Alkohol verwenden?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Verwenden Sie für Liköre und Spirituosen ausschließlich destilliertes Wasser oder hochreines, gefiltertes Quellwasser. Leitungswasser enthält Mineralien und Kalk, die das Destillat eintrüben und den Geschmack verfälschen können."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Warum wird der Alkohol nach der Verdünnung manchmal milchig trüb?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Diese Trübung (Louche-Effekt) entsteht, wenn ätherische Öle (z. B. aus Anis, Wacholder oder Zitrusschalen) in geringerer Alkoholkonzentration nicht mehr vollständig löslich sind. Um Trübungen zu minimieren, sollten beide Flüssigkeiten Raumtemperatur haben und der Alkohol langsam in das Wasser gegossen werden."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Eignet sich dieser Rechner für Gastgeschenke wie Hochzeitslikör?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja, absolut. Viele Brautpaare setzen eigene Liköre (wie Limoncello, Johannisbeer- oder Kaffeelikör) mit 96% Primasprit an und verdünnen ihn nach dem Mazerieren exakt auf die gewünschte Likörstärke (ca. 25–30 Vol.-%)."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Alkohol-Verdünnungsrechner | Alkoholgehalt (Vol.-%) & Mischungsrechner"
+	description="Kostenloser Alkohol-Verdünnungsrechner: Berechnen Sie die exakte Zugabe von Wasser oder Fillern zur perfekten Trinkstärke für Batch-Cocktails, Hochzeitsbowlen und Liköre."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Alkohol-Verdünnungsrechner" category="dining" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Mischungsrechner & Trinkstärke</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Alkohol-Verdünnungsrechner <span class="accent-italic">& Mischungsplaner</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 650px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Berechnen Sie präzise, wie viel Wasser, Saft oder Filler Sie hinzufügen müssen, um Spirituosen für Batch-Cocktails, Hochzeitsliköre oder Sommerbowlen auf den perfekten Alkoholgehalt (Vol.-%) einzustellen.
+			</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 960px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin: 0 auto 3.5rem;">
+			
+			<!-- Inputs Card -->
+			<div class="hand-card" style="background: #fff; padding: clamp(1.5rem, 3vw, 2rem);">
+				<div style="border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem; margin-bottom: 1.25rem;">
+					<h2 class="font-heading" style="font-size: 1.4rem; margin: 0; color: var(--fg-pencil);">
+						Ausgangsbasis & Zielwerte
+					</h2>
+				</div>
+
+				<form id="calc-form">
+					<div class="form-group">
+						<label class="form-label" for="initialVolume">Ausgangsvolumen Spirituose (ml)</label>
+						<input type="number" id="initialVolume" class="form-input" value="1000" min="1" step="1" required style="font-size: 1.1rem; font-weight: 700;" />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="initialABV">Ausgangs-Alkoholgehalt (Vol.-%)</label>
+						<input type="number" id="initialABV" class="form-input" value="96" min="1" max="100" step="0.1" required style="font-size: 1.1rem; font-weight: 700;" />
+						<span style="font-size: 0.8rem; color: var(--text-secondary);">z. B. 96% Primasprit/Weingeist, 40% Wodka, 54% Rum</span>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="targetABV">Gewünschter Ziel-Alkoholgehalt (Vol.-%)</label>
+						<input type="number" id="targetABV" class="form-input" value="40" min="1" max="100" step="0.1" required style="font-size: 1.1rem; font-weight: 700;" />
+						<span style="font-size: 0.8rem; color: var(--text-secondary);">z. B. 40% Trinkstärke, 25% Likör, 15% Bowle/Cocktail</span>
+					</div>
+
+					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%; margin-top: 1rem; padding: 12px; font-size: 1.05rem;">
+						Mischungsverhältnis berechnen
+					</button>
+				</form>
+			</div>
+
+			<!-- Results Card -->
+			<div class="hand-card result-box" id="result-container" style="background: #fffcf5; padding: clamp(1.5rem, 3vw, 2rem); border: 2.5px solid var(--fg-pencil); box-shadow: 5px 5px 0px var(--fg-pencil);">
+				<div style="border-bottom: 2px solid var(--fg-pencil); padding-bottom: 0.5rem; margin-bottom: 1.25rem;">
+					<h3 class="font-heading" style="font-size: 1.4rem; margin: 0; color: var(--fg-pencil);">
+						Ergebnis der Verdünnung
+					</h3>
+				</div>
+				
+				<div class="result-item" style="margin-bottom: 1.25rem; background: #fff; padding: 1rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px;">
+					<span class="item-label" style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); display: block;">Zuzugebendes Wasser / Filler</span>
+					<span class="item-desc" style="font-size: 0.88rem; color: var(--text-secondary);">Menge an destilliertem Wasser, Saft oder Sirup:</span>
+					<span class="item-value" id="res-water" style="color: var(--accent-blue); font-size: clamp(2rem, 4vw, 2.6rem); font-weight: 800; font-family: var(--font-heading); display: block; margin-top: 0.25rem;">1.400,0 ml</span>
+				</div>
+
+				<div class="result-item" style="margin-bottom: 1.5rem; background: #fff; padding: 1rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px;">
+					<span class="item-label" style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; color: var(--fg-pencil); display: block;">Gesamtes Endvolumen</span>
+					<span class="item-desc" style="font-size: 0.88rem; color: var(--text-secondary);">Fertige Flüssigkeitsmenge nach dem Mischen:</span>
+					<span class="item-value" id="res-final" style="font-size: clamp(1.5rem, 3vw, 1.9rem); font-weight: 800; font-family: var(--font-heading); color: var(--fg-pencil); display: block; margin-top: 0.25rem;">2.400,0 ml</span>
+				</div>
+
+				<div class="chart-container" style="border: 2px solid var(--fg-pencil); padding: 1rem; border-radius: 8px; background: #fff;">
+					<p class="font-body" style="font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: bold; color: var(--fg-pencil);">Volumenaufteilung</p>
+					<div style="display: flex; height: 30px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden;">
+						<div id="chart-alcohol" style="width: 41.7%; background-color: var(--fg-pencil); color: var(--bg-paper); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; transition: width 0.3s ease;">Basis</div>
+						<div id="chart-water" style="width: 58.3%; background-color: transparent; background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, var(--fg-pencil) 5px, var(--fg-pencil) 6px); color: var(--fg-pencil); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; transition: width 0.3s ease;">Wasser / Filler</div>
+					</div>
+					<div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">
+						<span>Alkohol-Basis: <strong id="lbl-alcohol" style="color: var(--fg-pencil);">41,7%</strong></span>
+						<span>Wasser/Filler: <strong id="lbl-water" style="color: var(--accent-blue);">58,3%</strong></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 860px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape"></div>
+			
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Auf einen Blick (BLUF): Typische Mischungstabelle
+				</h3>
+				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
+					Mischungs-Mathematik
+				</span>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
+					📐 Die mathematische Formel für die Verdünnung:
+				</div>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
+					<strong>C₁ × V₁ = C₂ × V₂</strong><br />
+					<strong>Zuzugebendes Wasser (ml) = [(Ausgangsgehalt × Ausgangsvolumen) ÷ Zielgehalt] − Ausgangsvolumen</strong><br />
+					<em>Legende:</em> C₁ = Ausgangs-Vol.-%, V₁ = Ausgangsvolumen (ml), C₂ = Ziel-Vol.-%, V₂ = Endvolumen (ml).
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.90rem; min-width: 560px;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Ausgangs-Spirituose</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Ausgangsmenge</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Zielstärke</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue); text-align: center;">Wasserzugabe</th>
+							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--fg-pencil); text-align: right;">Gesamtmenge</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ 96% Primasprit / Weingeist</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1.000 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">40 Vol.-% (Schnaps)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+1.400,0 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">2.400,0 ml</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">96% Weingeist (Liköransatz)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">28 Vol.-% (Limoncello)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+1.821,4 ml (Sirup)</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">2.571,4 ml</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ 40% Wodka (Batch-Cocktail)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">20 Vol.-% (Moscow Mule)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+750,0 ml (1:1)</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">1.500,0 ml</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">40% Gin (Sommer-Punch)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">12 Vol.-% (Leichte Bowle)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+1.750,0 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">2.500,0 ml</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">54% Übersee-Rum</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">38 Vol.-% (Trinkstärke)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+315,8 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">1.065,8 ml</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p class="font-body" style="font-size: 0.85rem; color: var(--fg-pencil); margin: 0; line-height: 1.4;">
+				💡 <strong>Profi-Mischhinweis:</strong> Nutzen Sie für Liköre und klare Brände stets destilliertes Wasser oder Quellwasser und gießen Sie den Alkohol langsam ins Wasser, um eine Eintrübung (Louche-Effekt) zu verhindern.
+			</p>
+		</div>
+
+		<article class="hand-card" style="margin: 4rem auto; max-width: 860px; padding: clamp(1.5rem, 3.5vw, 2.5rem);">
+			<h2 class="font-heading" style="font-size: 2.2rem; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				Alkohol verdünnen: Tipps für Hochzeits-Cocktails & Gastgeschenke
+			</h2>
+			
+			<p class="font-body" style="margin-bottom: 1.5rem; line-height: 1.7; color: var(--fg-pencil);">
+				Ob für die Vorbereitung von großen <strong>Getränkespendern (Batch-Cocktails)</strong>, hausgemachten Hochzeitslikören als Gastgeschenk oder das Einstellen von hochprozentigem Weingeist auf perfekte Trinkstärke: Ein exaktes Mischungsverhältnis ist entscheidend. Zu viel Wasser lässt den Drink wässrig und fad schmecken, während zu wenig Verdünnung für einen scharfen, alkoholischen Beigeschmack sorgt.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 1.6rem; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--accent-red);">
+				1. Batch-Cocktails für die Hochzeitsfeier vorbereiten
+			</h3>
+			<p class="font-body" style="margin-bottom: 1.5rem; line-height: 1.7; color: var(--fg-pencil);">
+				Bei großen Hochzeiten mit über 80 Gästen sind vorgemixte Cocktails in stilvollen Glas-Dispensern der beste Weg, um Stau an der Bar zu vermeiden. Wenn Sie Cocktails ohne Eis shaken und direkt im Spender servieren, müssen Sie die <strong>Schmelzwasser-Verdünnung</strong> (ca. 20–25% Wasseranteil) direkt beim Anmischen einberechnen, damit der Drink die gewohnte Harmonie entfaltet.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 1.6rem; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--accent-blue);">
+				2. Selbstgemachte Liköre als Hochzeits-Gastgeschenke
+			</h3>
+			<p class="font-body" style="margin-bottom: 1.5rem; line-height: 1.7; color: var(--fg-pencil);">
+				Ein persönlicher Trend: Selbstgemachter Limoncello, Himbeerlikör oder Kaffeelikör in kleinen 50ml- oder 100ml-Bügelflaschen mit individuellem Namensanhänger. Durch Ansetzen von Früchten in 96%igem Agraralkohol/Primasprit und anschließendes Verdünnen mit Zuckersirup auf 25–30 Vol.-% erhalten Sie ein kristallklares, aromatisches Gastgeschenk.
+			</p>
+		</article>
+
+		<section class="hand-card" style="margin: 4rem auto; max-width: 860px; padding: clamp(1.5rem, 3.5vw, 2.5rem);">
+			<h2 class="font-heading" style="font-size: 2.2rem; margin-bottom: 1.5rem; text-align: center; color: var(--fg-pencil);">
+				Häufig gestellte Fragen (FAQ)
+			</h2>
+			
+			<div class="faq-container">
+				<details class="faq-item" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1rem; cursor: pointer;">
+					<summary class="font-heading" style="font-size: 1.15rem; list-style-type: none; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--fg-pencil);">
+						Wie funktioniert die mathematische Formel für die Verdünnung?
+						<span style="font-size: 1.4rem;">+</span>
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; color: var(--text-secondary); line-height: 1.6;">
+						Die Berechnung beruht auf dem einfachen Mischungskreuz: C1 × V1 = C2 × V2. Wenn Sie 1.000 ml Alkohol mit 96 Vol.-% auf 40 Vol.-% verdünnen möchten, rechnen Sie: (96 × 1000) ÷ 40 = 2.400 ml Endvolumen. Zieht man das Ausgangsvolumen von 1.000 ml ab, ergibt sich ein Wasserbedarf von 1.400 ml.
+					</p>
+				</details>
+
+				<details class="faq-item" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1rem; cursor: pointer;">
+					<summary class="font-heading" style="font-size: 1.15rem; list-style-type: none; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--fg-pencil);">
+						Welches Wasser eignet sich am besten zum Verdünnen?
+						<span style="font-size: 1.4rem;">+</span>
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; color: var(--text-secondary); line-height: 1.6;">
+						Verwenden Sie am besten destilliertes Wasser in Lebensmittelqualität oder hochreines Quellwasser. Leitungswasser enthält Mineralien wie Calcium und Magnesium, die bei Kontakt mit hochprozentigem Alkohol Ausfällungen und weiße Trübungen verursachen können.
+					</p>
+				</details>
+
+				<details class="faq-item" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1rem; cursor: pointer;">
+					<summary class="font-heading" style="font-size: 1.15rem; list-style-type: none; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--fg-pencil);">
+						Warum wird der Likör nach Zugabe von Wasser trüb (Louche-Effekt)?
+						<span style="font-size: 1.4rem;">+</span>
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; color: var(--text-secondary); line-height: 1.6;">
+						Ätherische Öle (z. B. Limonene aus Zitrusschalen oder Anethol aus Anis) sind in starkem Alkohol vollständig gelöst. Sinkt der Alkoholgehalt durch Wasserzugabe unter ca. 45%, fallen mikroskopisch kleine Öltröpfchen aus und streuen das Licht. Um Trübungen zu vermeiden, lassen Sie beide Flüssigkeiten abkühlen und gießen Sie den Alkohol langsam unter ständigem Rühren in das Wasser.
+					</p>
+				</details>
+
+				<details class="faq-item" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1rem; cursor: pointer;">
+					<summary class="font-heading" style="font-size: 1.15rem; list-style-type: none; display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--fg-pencil);">
+						Wie viel Alkohol enthält eine typische Hochzeitsbowle?
+						<span style="font-size: 1.4rem;">+</span>
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; color: var(--text-secondary); line-height: 1.6;">
+						Eine klassische Hochzeits-Sommerbowle (z. B. Erdbeer-Hugo oder Pfirsich-Sangria) hat idealerweise eine Trinkstärke von 8 bis 12 Vol.-%. So bleibt das Getränk auch an heißen Sommertagen bekömmlich und erfrischend.
+					</p>
+				</details>
+			</div>
+		</section>
+
+		<RelatedTools currentPath="/de/alcohol-dilution-calculator" category="dining" />
+	</main>
+
+	<script>
+		const form = document.getElementById('calc-form') as HTMLFormElement;
+		const resWater = document.getElementById('res-water');
+		const resFinal = document.getElementById('res-final');
+		
+		const chartAlcohol = document.getElementById('chart-alcohol');
+		const chartWater = document.getElementById('chart-water');
+		const lblAlcohol = document.getElementById('lbl-alcohol');
+		const lblWater = document.getElementById('lbl-water');
+
+		function calculate() {
+			const initialVolume = parseFloat((document.getElementById('initialVolume') as HTMLInputElement).value);
+			const initialABV = parseFloat((document.getElementById('initialABV') as HTMLInputElement).value) / 100;
+			const targetABV = parseFloat((document.getElementById('targetABV') as HTMLInputElement).value) / 100;
+
+			if (targetABV >= initialABV) {
+				alert("Der gewünschte Ziel-Alkoholgehalt muss kleiner sein als der Ausgangsgehalt.");
+				return;
+			}
+			
+			if (isNaN(initialVolume) || isNaN(initialABV) || isNaN(targetABV) || initialVolume <= 0 || initialABV <= 0 || targetABV <= 0) {
+				return;
+			}
+
+			// C1V1 = C2V2 => V2 = (C1V1) / C2
+			const finalVolume = (initialABV * initialVolume) / targetABV;
+			const waterToAdd = finalVolume - initialVolume;
+
+			// Update DOM
+			if (resWater && resFinal) {
+				resWater.textContent = `${waterToAdd.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ml`;
+				resFinal.textContent = `${finalVolume.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ml`;
+			}
+
+			// Update Chart
+			if (chartAlcohol && chartWater && lblAlcohol && lblWater) {
+				const alcoholPct = (initialVolume / finalVolume) * 100;
+				const waterPct = (waterToAdd / finalVolume) * 100;
+
+				chartAlcohol.style.width = `${alcoholPct}%`;
+				chartWater.style.width = `${waterPct}%`;
+				lblAlcohol.textContent = `${alcoholPct.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+				lblWater.textContent = `${waterPct.toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
+			}
+		}
+
+		form?.addEventListener('submit', (e) => {
+			e.preventDefault();
+			calculate();
+		});
+
+		// Trigger initial calculation
+		calculate();
+	</script>
+	
+	<style>
+		@media (max-width: 768px) {
+			.home-grid {
+				grid-template-columns: 1fr !important;
+			}
+		}
+		
+		details.faq-item summary::-webkit-details-marker {
+			display: none;
+		}
+		
+		details.faq-item[open] summary span {
+			transform: rotate(45deg);
+			transition: transform 0.2s ease;
+		}
+		
+		details.faq-item summary span {
+			display: inline-block;
+			transition: transform 0.2s ease;
+		}
+	</style>
+</Layout>

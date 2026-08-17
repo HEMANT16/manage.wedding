@@ -1,0 +1,279 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/alcohol-dilution-calculator/#webapp",
+      "name": "Calcolatore Diluizione Alcolica & Batch Cocktail",
+      "url": "https://manage.wedding/it/alcohol-dilution-calculator",
+      "inLanguage": "it",
+      "description": "Calcola la quantità esatta di acqua o mixer necessaria per diluire distillati o alcol puro a 95° (% Vol) fino alla gradazione target per cocktail di nozze e liquori artigianali.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come calcolare la diluizione dell'alcol per cocktail e liquori",
+      "description": "Formula matematica e passaggi per abbassare la gradazione alcolica (% Vol) di una miscela.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Inserire il volume iniziale in ml",
+          "text": "Indica i millilitri della base alcolica di partenza (es. 1.000 ml di alcol puro a 95° o 750 ml di gin)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Inserire la gradazione alcolica iniziale (% Vol)",
+          "text": "Specifica la percentuale di alcol iniziale (es. 95% per alcol buongusto o 40% per vodka/gin)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Impostare la gradazione target desiderata",
+          "text": "Indica il grado finale voluto (es. 28% per limoncello fatto in casa, 15% per punch/cocktail d'accoglienza)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Leggere la quantità di acqua o sciroppo da aggiungere",
+          "text": "Il calcolatore applica la formula C1 × V1 = C2 × V2 per indicare i millilitri esatti di liquido da unire alla base."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Come si calcola la quantità di acqua da aggiungere per diluire l'alcol?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Si utilizza la formula: Acqua da aggiungere (ml) = [(Gradazione iniziale × Volume iniziale) ÷ Gradazione desiderata] - Volume iniziale."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quale acqua è consigliabile utilizzare per la diluizione di liquori e cocktail?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "È consigliabile usare acqua oligominerale naturale a basso residuo fisso o acqua distillata per alimenti, così da evitare che i sali minerali e il cloro alterino la trasparenza e il sapore del liquore."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calcolatore Diluizione Alcolica & Batch Cocktail | Manage.Wedding"
+	description="Calcola la quantità esatta di acqua o mixer per diluire alcolici ad alta gradazione (% Vol) e preparare batch cocktail o liquori fatti in casa per il matrimonio."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<Breadcrumb title="Calcolatore Diluizione Alcolica" category="food-dining" />
+		
+		<header class="fade-in category-header" style="text-align: center;">
+			<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); margin-bottom: 0.5rem; font-weight: 500;">
+				Calcolatore Diluizione <span class="accent-italic">Alcolica & Cocktail</span>
+			</h1>
+			<p class="font-body" style="color: var(--secondary-ink); max-width: 650px; margin: 0 auto;">
+				Devi calibrare la gradazione dei cocktail pre-batch per l'aperitivo o preparare il limoncello fatto in casa come bomboniera? Calcola all'istante l'acqua esatta da aggiungere.
+			</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 900px; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem auto;">
+			<div class="hand-card">
+				<form id="calc-form">
+					<div class="form-group">
+						<label class="form-label" for="initialVolume">Volume Iniziale (ml)</label>
+						<input type="number" id="initialVolume" class="form-input" value="1000" min="1" step="0.1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="initialABV">Gradazione Iniziale (% Vol / Gradi)</label>
+						<input type="number" id="initialABV" class="form-input" value="95" min="1" max="100" step="0.1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="targetABV">Gradazione Finale Desiderata (% Vol)</label>
+						<input type="number" id="targetABV" class="form-input" value="30" min="1" max="100" step="0.1" required />
+					</div>
+
+					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%; margin-top: 1rem;">Calcola Diluizione</button>
+				</form>
+			</div>
+
+			<div class="hand-card result-box" id="result-container">
+				<h3 class="font-heading" style="margin-bottom: 1.5rem; text-align: center;">Risultati Diluizione</h3>
+				
+				<div class="result-item" style="margin-bottom: 1rem;">
+					<span class="item-label">ACQUA / MIXER</span>
+					<span class="item-desc">Quantità da aggiungere (ml)</span>
+					<span class="item-value" id="res-water" style="color: var(--accent-blue); font-size: 2.5rem; display: block; margin-top: 0.5rem;">2166.67</span>
+				</div>
+
+				<div class="result-item" style="margin-bottom: 2rem;">
+					<span class="item-label">VOLUME TOTALE</span>
+					<span class="item-desc">Volume finale della miscela (ml)</span>
+					<span class="item-value" id="res-final" style="font-size: 1.5rem; display: block; margin-top: 0.5rem;">3166.67</span>
+				</div>
+
+				<div class="chart-container" style="border: 2px solid var(--fg-pencil); padding: 1rem; border-radius: 6px;">
+					<p class="font-body" style="font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: bold;">Ripartizione Volumetrica</p>
+					<div style="display: flex; height: 30px; border: 1px solid var(--fg-pencil); border-radius: 4px; overflow: hidden;">
+						<div id="chart-alcohol" style="width: 31.6%; background-color: var(--fg-pencil); color: var(--bg-paper); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; transition: width 0.3s ease;">Base</div>
+						<div id="chart-water" style="width: 68.4%; background-color: transparent; background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, var(--fg-pencil) 5px, var(--fg-pencil) 6px); color: var(--fg-pencil); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; transition: width 0.3s ease;">Acqua</div>
+					</div>
+					<div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem; color: var(--secondary-ink);">
+						<span>Base Alcolica: <span id="lbl-alcohol">31.6%</span></span>
+						<span>Acqua/Mixer: <span id="lbl-water">68.4%</span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 800px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape"></div>
+			
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Regola della Diluizione Alcolica (BLUF)
+				</h3>
+				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
+					Formula C₁ × V₁ = C₂ × V₂
+				</span>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px rgba(0,0,0,0.06);">
+				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
+					📐 La Formula di Calcolo:
+				</div>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
+					<strong>Acqua da Aggiungere (ml) = [(Grado Iniziale × Volume Iniziale) ÷ Grado Finale] - Volume Iniziale</strong>
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px rgba(0,0,0,0.06);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.90rem; min-width: 560px;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Base Alcolica</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Vol. Iniziale</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Grado Target</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue); text-align: center;">Acqua/Mixer</th>
+							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--fg-pencil); text-align: right;">Volume Finale</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ Alcol Puro Buongusto (95° Vol)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1.000 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">30° (Limoncello)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+2.166 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">3.166 ml</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Alcol Puro Buongusto (95° Vol)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1.000 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">40° (Liquore Secco)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+1.375 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">2.375 ml</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ Gin / Vodka (40° Vol)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">20° (Premix Cocktail)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+750 ml (1:1)</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">1.500 ml</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Gin / Vodka (40° Vol)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">15° (Punch Leggero)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+1.250 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">2.000 ml</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article -->
+		<article class="hand-card" style="margin: 4rem auto; max-width: 800px; padding: 3rem;">
+			<h2 class="font-heading" style="font-size: 2.2rem; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				Come Preparare Batch Cocktail e Liquori per il Matrimonio
+			</h2>
+			<p class="font-body" style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem;">
+				I cocktail pre-miscelati (batch cocktail) sono la soluzione perfetta per servire drink di benvenuto all'aperitivo senza creare code al banco bar. Calcolare la corretta diluizione evita che il cocktail risulti sbilanciato o eccessivamente alcolico per gli invitati a stomaco vuoto.
+			</p>
+		</article>
+
+		<RelatedTools currentPath="/it/alcohol-dilution-calculator" category="food-beverage" />
+	</main>
+</Layout>
+
+<script is:inline>
+	const form = document.getElementById('calc-form');
+	const resWater = document.getElementById('res-water');
+	const resFinal = document.getElementById('res-final');
+	
+	const chartAlcohol = document.getElementById('chart-alcohol');
+	const chartWater = document.getElementById('chart-water');
+	const lblAlcohol = document.getElementById('lbl-alcohol');
+	const lblWater = document.getElementById('lbl-water');
+
+	function calculate() {
+		const initialVolume = parseFloat(document.getElementById('initialVolume').value);
+		const initialABV = parseFloat(document.getElementById('initialABV').value) / 100;
+		const targetABV = parseFloat(document.getElementById('targetABV').value) / 100;
+
+		if (targetABV >= initialABV) {
+			alert("La gradazione target deve essere inferiore a quella iniziale per calcolare la diluizione.");
+			return;
+		}
+		
+		if (isNaN(initialVolume) || isNaN(initialABV) || isNaN(targetABV) || initialVolume <= 0 || initialABV <= 0 || targetABV <= 0) {
+			return;
+		}
+
+		// C1V1 = C2V2 => V2 = (C1V1) / C2
+		const finalVolume = (initialABV * initialVolume) / targetABV;
+		const waterToAdd = finalVolume - initialVolume;
+
+		if (resWater && resFinal) {
+			resWater.textContent = waterToAdd.toFixed(2);
+			resFinal.textContent = finalVolume.toFixed(2);
+		}
+
+		if (chartAlcohol && chartWater && lblAlcohol && lblWater) {
+			const alcoholPct = (initialVolume / finalVolume) * 100;
+			const waterPct = (waterToAdd / finalVolume) * 100;
+
+			chartAlcohol.style.width = `${alcoholPct}%`;
+			chartWater.style.width = `${waterPct}%`;
+			lblAlcohol.textContent = `${alcoholPct.toFixed(1)}%`;
+			lblWater.textContent = `${waterPct.toFixed(1)}%`;
+		}
+	}
+
+	form?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		calculate();
+	});
+
+	calculate();
+</script>

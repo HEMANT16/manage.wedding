@@ -1,0 +1,908 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/vendor-tipping-calculator/#webapp",
+      "name": "Calculateur de Pourboires & Enveloppes Prestataires de Mariage",
+      "url": "https://manage.wedding/fr/vendor-tipping-calculator",
+      "description": "Calculateur gratuit de pourboires pour prestataires de mariage. Calculez les gratifications d'usage pour le traiteur, le DJ, le photographe, la wedding planner et la mise en beauté. Export d'enveloppes au format Word, PDF et CSV.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Calculer et Distribuer les Pourboires aux Prestataires de Mariage",
+      "description": "Guide d'étiquette pour gratifier les équipes le jour J et préparer les enveloppes nominatives.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Vérifier les Contrats Traiteur et Lieu",
+          "text": "Vérifiez si le service ou les frais de personnel incluent déjà une gratification obligatoire pour les serveurs et barmans."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Définir les Pourboires aux Prestataires Clés",
+          "text": "Fixez un montant forfaitaire (50 € à 150 €) pour le DJ, le photographe, la maquilleuse ou la coordinatrice en cas d'implication exceptionnelle."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Préparer les Enveloppes d'Espèces à l'Avance",
+          "text": "Glissez les espèces dans des enveloppes étiquetées nominativement 3 jours avant le mariage."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Déléguer la Remise au Témoin ou à la Wedding Planner",
+          "text": "Confiez les enveloppes à un témoin de confiance pour les distribuer en fin de prestation sans perturber votre soirée."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Le pourboire est-il obligatoire pour les prestataires de mariage en France ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Non, en France et en Europe, le pourboire reste facultatif et constitue une marque d'appréciation pour un service exceptionnel (notamment pour l'équipe de service du traiteur ou les livreurs)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Faut-il donner un pourboire à un prestataire qui est le gérant de son entreprise ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Selon la coutume, un artisan indépendant ou gérant (comme un photographe indépendant) fixe librement ses tarifs. Un pourboire en espèces n'est pas attendu, mais un avis 5 étoiles élogieux ou un cadeau symbolique est toujours très apprécié."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qui doit remettre les enveloppes de pourboires le jour J ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Les mariés ne doivent pas s'encombrer d'espèces le jour du mariage. Confiez toutes les enveloppes étiquetées au témoin principal ou à votre coordinatrice le matin même."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Guide & Calculateur de Pourboires Prestataires de Mariage (Enveloppes Jour J) | Manage.Wedding"
+	description="Calculez les pourboires d'usage pour vos prestataires de mariage : traiteur, DJ, photographe, wedding planner, coiffure et maquillage. Export PDF et Word."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Pourboires & Enveloppes Prestataires" category="budget-finance" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Calculateur de Pourboires Prestataires
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Estimez les gratifications d'usage pour remercier vos professionnels du mariage. Personnalisez les montants et exportez vos <strong>Enveloppes d'Espèces</strong> vers <strong>Word (.doc)</strong> ou <strong>PDF</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Organiser les Pourboires en 3 Étapes Simples
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Indiquez vos Prestataires
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Sélectionnez les professionnels engagés (traiteur, DJ, photographe, mise en beauté, chauffeur).
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Ajustez les Montants Conseillés
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						L'outil applique les forfaits d'usage (30 € à 100 € par équipe ou 5% à 10% selon l'engagement).
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Imprimez la Fiche de Remise Jour J
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Exportez le tableau récapitulatif pour votre témoin avec les heures recommandées de remise des enveloppes.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="tipping-calc-grid">
+			
+			<!-- Left Column: 10+ Vendor Categories Form -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							💵 Prestataires & Équipes
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							Configurez les gratifications prévues
+						</span>
+					</div>
+
+					<!-- Currency Selector -->
+					<div style="display: flex; align-items: center; gap: 0.3rem;">
+						<span style="font-size: 0.85rem; font-weight: bold;">Devise :</span>
+						<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="€" selected>€ (EUR)</option>
+							<option value="$">$ (USD/CAD)</option>
+							<option value="£">£ (GBP)</option>
+							<option value="CHF">CHF (Suisse)</option>
+						</select>
+					</div>
+				</div>
+
+				<form id="tipping-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+					
+					<!-- 1. Catering & Bartenders -->
+					<div class="vendor-input-group">
+						<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
+							<label class="font-heading" style="font-size: 1rem; color: var(--accent-red);">
+								🍽️ Maître d'Hôtel & Équipe de Service Traiteur
+							</label>
+							<label style="font-size: 0.78rem; display: flex; align-items: center; gap: 0.3rem; cursor: pointer; color: var(--text-secondary);">
+								<input type="checkbox" id="chk-caterer-included"> Pourboire déjà inclus au devis
+							</label>
+						</div>
+						<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Montant Total Traiteur (€)</span>
+								<input type="number" id="input-caterer-bill" value="6500" min="0" step="100" class="tip-input">
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Mode de Gratification</span>
+								<select id="select-caterer-rate" class="tip-select">
+									<option value="flat" selected>Forfait 30 € par serveur (~8 serveurs : 240 €)</option>
+									<option value="0.05">5% de la facture globale</option>
+									<option value="0.08">8% de la facture globale</option>
+									<option value="150">Forfait global d'équipe (150 €)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2. Hair & Makeup (HMUA) -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: var(--accent-blue); display: block; margin-bottom: 0.3rem;">
+							💄 Coiffure & Maquillage (Mise en Beauté)
+						</label>
+						<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Facture Totale Beauté (€)</span>
+								<input type="number" id="input-beauty-bill" value="450" min="0" step="50" class="tip-input">
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Pourcentage / Forfait</span>
+								<select id="select-beauty-rate" class="tip-select">
+									<option value="0.10" selected>10% du montant (45 €)</option>
+									<option value="0.15">15% (Prestation haut de gamme)</option>
+									<option value="50">Forfait fixe (50 €)</option>
+									<option value="0">Aucun pourboire (0 €)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 3. Photography & Videography -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: #16a34a; display: block; margin-bottom: 0.3rem;">
+							📸 Photographe & Vidéaste
+						</label>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Photographe Principal</span>
+								<select id="select-photo-lead" class="tip-select">
+									<option value="80" selected>Photographe Principal (80 € forfait)</option>
+									<option value="100">Photographe Principal (100 €)</option>
+									<option value="50">Photographe Principal (50 €)</option>
+									<option value="0">Indépendant / Sans pourboire (0 €)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Second Photographe / Assistant</span>
+								<select id="select-photo-second" class="tip-select">
+									<option value="40" selected>Second Photographe (40 €)</option>
+									<option value="50">Second Photographe (50 €)</option>
+									<option value="0">Pas de second shooter (0 €)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 4. DJ & Entertainment -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: #7c3aed; display: block; margin-bottom: 0.3rem;">
+							🎵 DJ & Musiciens du Vin d'Honneur
+						</label>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">DJ de Soirée</span>
+								<select id="select-dj-tip" class="tip-select">
+									<option value="80" selected>DJ Principal (80 € forfait)</option>
+									<option value="100">DJ Principal (100 €)</option>
+									<option value="50">DJ Principal (50 €)</option>
+									<option value="0">Sans pourboire (0 €)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Groupe Live / Musiciens</span>
+								<select id="select-band-tip" class="tip-select">
+									<option value="30" selected>Musiciens (30 € / membre)</option>
+									<option value="50">Musiciens (50 € / membre)</option>
+									<option value="0">Pas de musiciens live (0 €)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 5. Wedding Planner & Coordinator -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: #d97706; display: block; margin-bottom: 0.3rem;">
+							📋 Wedding Planner / Coordinatrice Jour J
+						</label>
+						<div>
+							<select id="select-planner-tip" class="tip-select">
+								<option value="100" selected>Coordinatrice Jour J (100 € forfait)</option>
+								<option value="150">Wedding Planner Complète (150 €)</option>
+								<option value="50">Coordinatrice Jour J (50 €)</option>
+								<option value="0">Gérante indépendante / Cadeau personnalisé (0 €)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- 6. Drivers, Officiant & Delivery Setup Crew -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.6rem;">
+						<span class="font-heading" style="font-size: 0.9rem; color: var(--fg-pencil); display: block; text-align: center;">
+							🚐 Chauffeur, Célébrant & Livreurs
+						</span>
+						
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Chauffeur de Mariage</span>
+								<select id="select-driver-tip" class="tip-select">
+									<option value="40" selected>Chauffeur (40 € forfait)</option>
+									<option value="60">Chauffeur navette (60 €)</option>
+									<option value="0">Inclus dans la location (0 €)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Officiant / Don Église</span>
+								<select id="select-officiant-tip" class="tip-select">
+									<option value="50" selected>Officiant laïque / Quête église (50 €)</option>
+									<option value="100">Don Paroisse / Célébrant (100 €)</option>
+									<option value="0">Honoraires déjà réglés (0 €)</option>
+								</select>
+							</div>
+						</div>
+
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Livreurs Fleurs & Mobilier</span>
+								<select id="select-delivery-tip" class="tip-select">
+									<option value="30" selected>Équipe d'installation (30 €)</option>
+									<option value="50">Installation complexe (50 €)</option>
+									<option value="0">Sans pourboire (0 €)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Livreur Pièce Montée</span>
+								<select id="select-cake-tip" class="tip-select">
+									<option value="20" selected>Livreur Pâtisserie (20 €)</option>
+									<option value="0">Sans pourboire (0 €)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Gratuity Breakdown & Cash Envelope Planner -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Total Gratuity Quote Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								✉️ Budget Total Pourboires
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Espèces à prévoir pour les enveloppes Jour J
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Imprimer PDF
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Gratuity Total Highlight -->
+					<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: var(--accent-red); display: block; font-weight: bold;">Montant Total d'Espèces à Retirer</span>
+						<strong id="res-total-gratuity" class="font-heading" style="font-size: 2.6rem; color: var(--accent-red); display: block; line-height: 1.2;">685 €</strong>
+						<span id="res-envelope-count" style="font-size: 0.8rem; color: var(--accent-red);">Répartis dans 8 Enveloppes Nominatives</span>
+					</div>
+
+					<!-- Line-Item Category Breakdown Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Récapitulatif par Prestataire
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.92rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🍽️ Équipe Service Traiteur :</td>
+									<td id="res-caterer-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">240 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">💄 Coiffure & Maquillage :</td>
+									<td id="res-beauty-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">45 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">📸 Photographe & Vidéaste :</td>
+									<td id="res-photo-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">120 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🎵 DJ & Musiciens :</td>
+									<td id="res-dj-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">110 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">📋 Wedding Planner / Coordinatrice :</td>
+									<td id="res-planner-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">100 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🚐 Chauffeur & Célébrant :</td>
+									<td id="res-logistics-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">90 €</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #fafafa;">
+									<td style="padding: 0.35rem 0;">🌸 Livreurs Déco & Gâteau :</td>
+									<td id="res-delivery-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">50 €</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Gratuity Distribution Bar Chart -->
+					<div>
+						<span class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.3rem; text-align: center;">
+							Répartition des Pourboires
+						</span>
+						<div style="width: 100%; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; display: flex; background: #eee;">
+							<div id="bar-caterer" style="width: 40%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+							<div id="bar-beauty" style="width: 10%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+							<div id="bar-photo" style="width: 15%; background: #16a34a; transition: width 0.3s ease;"></div>
+							<div id="bar-dj" style="width: 15%; background: #7c3aed; transition: width 0.3s ease;"></div>
+							<div id="bar-planner" style="width: 10%; background: #d97706; transition: width 0.3s ease;"></div>
+							<div id="bar-other" style="width: 10%; background: #64748b; transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Envelope Delegation Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						📌 La Règle d'Or de la Remise :
+					</strong>
+					<ul class="font-body" style="font-size: 0.85rem; line-height: 1.5; padding-left: 1.1rem; margin: 0; color: var(--fg-pencil);">
+						<li><strong>Ne gardez pas d'argent sur vous :</strong> Confiez toutes les enveloppes cachetées à votre témoin le matin même.</li>
+						<li><strong>Moment idéal :</strong> Coiffure/maquillage à la fin des préparatifs ; DJ et traiteur pendant la dernière demi-heure de soirée.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 20px; margin: 0 0 5px 0;">Manage.Wedding — Fiche de Remise des Enveloppes de Pourboires</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exporté le : <span id="print-date"></span> | Total Espèces : <span id="print-total"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Prestataire & Rôle</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Moment Idéal de Remise</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Personne Déléguée</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 90px; text-align: right;">Montant Espèces</th>
+					</tr>
+				</thead>
+				<tbody id="print-tipping-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 2.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Repères Rapides</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Grille Indicative des Pourboires de Mariage
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 750px; margin: 0 auto; font-weight: 500;">
+					Voici les montants d'usage observés pour remercier les prestataires selon leur rôle.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 620px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Prestataire</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Fourchette Usuelle</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Caractère</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Moment de Remise</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Serveurs & Barmans Traiteur</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">20 € à 40 € par serveur (ou 150 € global)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Très apprécié</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Fin de soirée au maître d'hôtel</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Photographe & Vidéaste</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">50 € à 100 € (ou cadeau/avis élogieux)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Facultatif</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">À la fin de leur reportage</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">DJ & Musiciens</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">50 € à 100 € pour le DJ / 30 € par musicien</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Facultatif</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Fin de soirée</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Coiffure & Maquillage</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">10% du montant ou 20 € à 40 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">D'usage</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">À la fin des préparatifs</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Guide d'Étiquette</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Le Guide Complet des Pourboires de Mariage
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Usages en France, différence entre frais de service et gratification, et gestion sereine des enveloppes.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/wedding_budget_book.webp" 
+					alt="Calculateur de pourboires prestataires de mariage" 
+					loading="lazy"
+					decoding="async"
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Préparer les enveloppes d'espèces quelques jours avant le mariage évite tout stress inutile lors de la soirée.
+				</p>
+			</div>
+
+			<!-- Section 1 -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Comment Gratifier Élégamment vos Prestataires
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					En France, le pourboire n'est jamais obligatoire mais récompense un investissement humain au-delà du contrat. Une petite enveloppe avec un mot manuscrit de remerciement touche particulièrement les équipes qui restent debout plus de 12 heures pour la réussite de votre fête.
+				</p>
+			</section>
+
+			<!-- Section 2: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Foire Aux Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Que faire si une prestation n'a pas été à la hauteur ?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Le pourboire étant purement discrétionnaire, vous n'avez aucune obligation de le verser si un prestataire a manqué de professionnalisme ou est arrivé en retard.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Faut-il privilégier les espèces ou un virement ?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						<strong>Les espèces dans des enveloppes fermées sont la règle d'or</strong>. Cela permet à l'équipe de service du traiteur ou aux livreurs de partager immédiatement la gratification le soir même.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/fr/vendor-tipping-calculator" category="budget" />
+
+	</main>
+</Layout>
+
+<style>
+	.vendor-input-group {
+		background: var(--bg-paper);
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.75rem;
+	}
+	.tip-input {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.45rem;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: #fff;
+		font-family: var(--font-body);
+		font-size: 0.95rem;
+		font-weight: bold;
+	}
+	.tip-select {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.45rem;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: #fff;
+		font-family: var(--font-body);
+		font-size: 0.85rem;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '€';
+
+	const currencySelect = document.getElementById('currency-select');
+	const chkCatererIncluded = document.getElementById('chk-caterer-included');
+	const inputCatererBill = document.getElementById('input-caterer-bill');
+	const selectCatererRate = document.getElementById('select-caterer-rate');
+
+	const inputBeautyBill = document.getElementById('input-beauty-bill');
+	const selectBeautyRate = document.getElementById('select-beauty-rate');
+
+	const selectPhotoLead = document.getElementById('select-photo-lead');
+	const selectPhotoSecond = document.getElementById('select-photo-second');
+
+	const selectDjTip = document.getElementById('select-dj-tip');
+	const selectBandTip = document.getElementById('select-band-tip');
+
+	const selectPlannerTip = document.getElementById('select-planner-tip');
+	const selectDriverTip = document.getElementById('select-driver-tip');
+	const selectOfficiantTip = document.getElementById('select-officiant-tip');
+	const selectDeliveryTip = document.getElementById('select-delivery-tip');
+	const selectCakeTip = document.getElementById('select-cake-tip');
+
+	// Result Elements
+	const resTotalGratuity = document.getElementById('res-total-gratuity');
+	const resEnvelopeCount = document.getElementById('res-envelope-count');
+	const resCatererTip = document.getElementById('res-caterer-tip');
+	const resBeautyTip = document.getElementById('res-beauty-tip');
+	const resPhotoTip = document.getElementById('res-photo-tip');
+	const resDjTip = document.getElementById('res-dj-tip');
+	const resPlannerTip = document.getElementById('res-planner-tip');
+	const resLogisticsTip = document.getElementById('res-logistics-tip');
+	const resDeliveryTip = document.getElementById('res-delivery-tip');
+
+	const barCaterer = document.getElementById('bar-caterer');
+	const barBeauty = document.getElementById('bar-beauty');
+	const barPhoto = document.getElementById('bar-photo');
+	const barDj = document.getElementById('bar-dj');
+	const barPlanner = document.getElementById('bar-planner');
+	const barOther = document.getElementById('bar-other');
+
+	function formatMoney(amount) {
+		return `${Math.round(amount).toLocaleString('fr-FR')} ${currencySymbol}`;
+	}
+
+	function calculateTips() {
+		currencySymbol = currencySelect.value;
+
+		// 1. Caterer
+		let catererTip = 0;
+		if (!chkCatererIncluded.checked) {
+			const bill = parseFloat(inputCatererBill.value) || 0;
+			const rate = selectCatererRate.value;
+			if (rate === 'flat') {
+				catererTip = 30 * 8; // Approx 8 serveurs
+			} else if (rate === '150') {
+				catererTip = 150;
+			} else {
+				catererTip = bill * parseFloat(rate);
+			}
+		}
+
+		// 2. Beauty
+		const beautyBill = parseFloat(inputBeautyBill.value) || 0;
+		const beautyRateVal = selectBeautyRate.value;
+		let beautyTip = 0;
+		if (beautyRateVal === '50') {
+			beautyTip = 50;
+		} else {
+			beautyTip = beautyBill * (parseFloat(beautyRateVal) || 0);
+		}
+
+		// 3. Photo / Video
+		const photoLead = parseFloat(selectPhotoLead.value) || 0;
+		const photoSecond = parseFloat(selectPhotoSecond.value) || 0;
+		const photoTotal = photoLead + photoSecond;
+
+		// 4. DJ & Band
+		const djTip = parseFloat(selectDjTip.value) || 0;
+		const bandTip = parseFloat(selectBandTip.value) || 0;
+		const musicTotal = djTip + bandTip;
+
+		// 5. Planner
+		const plannerTip = parseFloat(selectPlannerTip.value) || 0;
+
+		// 6. Drivers & Officiant
+		const driverTip = parseFloat(selectDriverTip.value) || 0;
+		const officiantTip = parseFloat(selectOfficiantTip.value) || 0;
+		const logisticsTotal = driverTip + officiantTip;
+
+		// 7. Delivery Crews
+		const deliveryTip = parseFloat(selectDeliveryTip.value) || 0;
+		const cakeTip = parseFloat(selectCakeTip.value) || 0;
+		const deliveryTotal = deliveryTip + cakeTip;
+
+		const grandTotal = catererTip + beautyTip + photoTotal + musicTotal + plannerTip + logisticsTotal + deliveryTotal;
+
+		// Count active envelopes
+		let count = 0;
+		if (catererTip > 0) count++;
+		if (beautyTip > 0) count++;
+		if (photoLead > 0) count++;
+		if (photoSecond > 0) count++;
+		if (djTip > 0) count++;
+		if (bandTip > 0) count++;
+		if (plannerTip > 0) count++;
+		if (driverTip > 0) count++;
+		if (officiantTip > 0) count++;
+		if (deliveryTotal > 0) count++;
+
+		// Update UI
+		resTotalGratuity.textContent = formatMoney(grandTotal);
+		resEnvelopeCount.textContent = `Répartis dans ${count} Enveloppe${count > 1 ? 's' : ''} Nominative${count > 1 ? 's' : ''}`;
+		resCatererTip.textContent = formatMoney(catererTip);
+		resBeautyTip.textContent = formatMoney(beautyTip);
+		resPhotoTip.textContent = formatMoney(photoTotal);
+		resDjTip.textContent = formatMoney(musicTotal);
+		resPlannerTip.textContent = formatMoney(plannerTip);
+		resLogisticsTip.textContent = formatMoney(logisticsTotal);
+		resDeliveryTip.textContent = formatMoney(deliveryTotal);
+
+		// Bar Chart
+		if (grandTotal > 0) {
+			barCaterer.style.width = `${Math.round((catererTip / grandTotal) * 100)}%`;
+			barBeauty.style.width = `${Math.round((beautyTip / grandTotal) * 100)}%`;
+			barPhoto.style.width = `${Math.round((photoTotal / grandTotal) * 100)}%`;
+			barDj.style.width = `${Math.round((musicTotal / grandTotal) * 100)}%`;
+			barPlanner.style.width = `${Math.round((plannerTip / grandTotal) * 100)}%`;
+			barOther.style.width = `${Math.round(((logisticsTotal + deliveryTotal) / grandTotal) * 100)}%`;
+		}
+	}
+
+	// Listeners
+	document.querySelectorAll('.tip-input, #chk-caterer-included').forEach(el => {
+		el.addEventListener('input', calculateTips);
+		el.addEventListener('change', calculateTips);
+	});
+	document.querySelectorAll('.tip-select, #currency-select').forEach(el => {
+		el.addEventListener('change', calculateTips);
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		let rows = '';
+		if (parseFloat(resCatererTip.textContent.replace(/[^0-9.]/g, '')) > 0) {
+			rows += `<tr><td><strong>Équipe Service Traiteur</strong></td><td>Fin de Soirée</td><td>Témoin / Coordinatrice</td><td style="text-align:right; font-weight:bold;">${resCatererTip.textContent}</td></tr>`;
+		}
+		if (parseFloat(resBeautyTip.textContent.replace(/[^0-9.]/g, '')) > 0) {
+			rows += `<tr><td><strong>Coiffure & Maquillage</strong></td><td>Fin des Préparatifs</td><td>Témoin / Mariée</td><td style="text-align:right; font-weight:bold;">${resBeautyTip.textContent}</td></tr>`;
+		}
+		if (parseFloat(selectPhotoLead.value) > 0) {
+			rows += `<tr><td><strong>Photographe Principal</strong></td><td>Fin du Reportage</td><td>Témoin / Marié</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectPhotoLead.value)}</td></tr>`;
+		}
+		if (parseFloat(selectPhotoSecond.value) > 0) {
+			rows += `<tr><td><strong>Second Photographe / Assistant</strong></td><td>Fin du Reportage</td><td>Témoin</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectPhotoSecond.value)}</td></tr>`;
+		}
+		if (parseFloat(selectDjTip.value) > 0) {
+			rows += `<tr><td><strong>DJ de Soirée</strong></td><td>Fin de Soirée</td><td>Témoin</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectDjTip.value)}</td></tr>`;
+		}
+		if (parseFloat(selectPlannerTip.value) > 0) {
+			rows += `<tr><td><strong>Wedding Planner / Coordinatrice</strong></td><td>Fin de Réception</td><td>Parents / Mariés</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectPlannerTip.value)}</td></tr>`;
+		}
+		if (parseFloat(selectDriverTip.value) > 0) {
+			rows += `<tr><td><strong>Chauffeur</strong></td><td>Après le Dernier Trajet</td><td>Témoin</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectDriverTip.value)}</td></tr>`;
+		}
+		if (parseFloat(selectOfficiantTip.value) > 0) {
+			rows += `<tr><td><strong>Célébrant / Quête Paroisse</strong></td><td>Avant la Cérémonie</td><td>Témoin</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectOfficiantTip.value)}</td></tr>`;
+		}
+		if (parseFloat(resDeliveryTip.textContent.replace(/[^0-9.]/g, '')) > 0) {
+			rows += `<tr><td><strong>Livreurs Déco & Pièce Montée</strong></td><td>Lors de la Livraison</td><td>Coordinatrice</td><td style="text-align:right; font-weight:bold;">${resDeliveryTip.textContent}</td></tr>`;
+		}
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Planning des Pourboires Prestataires</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Planning de Remise des Pourboires</h1>
+				<p>Généré le ${new Date().toLocaleDateString('fr-FR')} | Total Espèces : <strong>${resTotalGratuity.textContent}</strong> (${resEnvelopeCount.textContent})</p>
+				
+				<h3>Tableau des Enveloppes par Prestataire :</h3>
+				<table>
+					<thead>
+						<tr>
+							<th>Prestataire & Rôle</th>
+							<th>Moment Conseillé</th>
+							<th>Personne Déléguée</th>
+							<th style="text-align:right;">Montant Espèces</th>
+						</tr>
+					</thead>
+					<tbody>
+						${rows}
+						<tr style="background:#f2f2f2; font-weight:bold; font-size:15px;">
+							<td colspan="3">Total Espèces à Prévoir</td>
+							<td style="text-align:right; color:#b91c1c;">${resTotalGratuity.textContent}</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 style="margin-top:25px;">Conseils pour le Jour J :</h3>
+				<p>• Préparez les enveloppes nominatives fermées 3 jours avant le mariage.</p>
+				<p>• Confiez l'ensemble des enveloppes à votre témoin principal le matin même.</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Pourboires_Prestataires_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('fr-FR');
+		document.getElementById('print-total').textContent = resTotalGratuity.textContent;
+
+		const tbody = document.getElementById('print-tipping-body');
+		tbody.innerHTML = `
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Équipe Service Traiteur</td><td style="border:1px solid #ccc; padding:6px;">Fin de Soirée</td><td style="border:1px solid #ccc; padding:6px;">Témoin / Coordinatrice</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resCatererTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Coiffure & Maquillage</td><td style="border:1px solid #ccc; padding:6px;">Fin des Préparatifs</td><td style="border:1px solid #ccc; padding:6px;">Témoin / Mariée</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resBeautyTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Photographe & Vidéaste</td><td style="border:1px solid #ccc; padding:6px;">Fin du Reportage</td><td style="border:1px solid #ccc; padding:6px;">Témoin</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resPhotoTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">DJ & Musiciens</td><td style="border:1px solid #ccc; padding:6px;">Fin de Soirée</td><td style="border:1px solid #ccc; padding:6px;">Témoin</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resDjTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Wedding Planner / Coordinatrice</td><td style="border:1px solid #ccc; padding:6px;">Fin de Réception</td><td style="border:1px solid #ccc; padding:6px;">Parents / Mariés</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resPlannerTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Chauffeur & Célébrant</td><td style="border:1px solid #ccc; padding:6px;">Après la Prestation</td><td style="border:1px solid #ccc; padding:6px;">Témoin</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resLogisticsTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Livreurs Déco & Pièce Montée</td><td style="border:1px solid #ccc; padding:6px;">À la Livraison</td><td style="border:1px solid #ccc; padding:6px;">Coordinatrice</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resDeliveryTip.textContent}</td></tr>
+			<tr style="background:#f2f2f2;"><td colspan="3" style="border:1px solid #ccc; padding:6px; font-weight:bold; font-size:13px;">Total Gratifications Prévues</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold; font-size:13px; color:#b91c1c;">${resTotalGratuity.textContent}</td></tr>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Prestataire & Role,Moment de Remise,Delegue Responsable,Montant Especes\n";
+		csv += `"Equipe Service Traiteur","Fin de Soiree","Temoin / Coordinatrice","${resCatererTip.textContent}"\n`;
+		csv += `"Coiffure & Maquillage","Fin des Preparatifs","Temoin / Mariee","${resBeautyTip.textContent}"\n`;
+		csv += `"Photographe & Videaste","Fin du Reportage","Temoin","${resPhotoTip.textContent}"\n`;
+		csv += `"DJ & Musiciens","Fin de Soiree","Temoin","${resDjTip.textContent}"\n`;
+		csv += `"Wedding Planner","Fin de Reception","Parents / Maries","${resPlannerTip.textContent}"\n`;
+		csv += `"Chauffeur & Celebrant","Apres Prestation","Temoin","${resLogisticsTip.textContent}"\n`;
+		csv += `"Livreurs Deco & Gateau","A la Livraison","Coordinatrice","${resDeliveryTip.textContent}"\n`;
+		csv += `"Total Gratifications","--","--","${resTotalGratuity.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Pourboires_Prestataires_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateTips();
+</script>

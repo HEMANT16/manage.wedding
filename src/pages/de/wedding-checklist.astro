@@ -1,0 +1,424 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/wedding-checklist/#webapp",
+      "name": "Hochzeits-Checkliste & 12-Monats-Planer | Manage.Wedding",
+      "url": "https://manage.wedding/de/wedding-checklist",
+      "inLanguage": "de",
+      "description": "Kostenlose interaktive 12-Monats-Hochzeits-Checkliste. Behalten Sie alle Meilensteine von Location und Budget bis Trauringe und Sitzplan im Blick. Automatischer Fortschrittsspeicher im Browser.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "de",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wann sollte man mit der Hochzeits-Checkliste beginnen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Idealerweise starten Sie 12 bis 14 Monate vor dem gewünschten Hochzeitstermin. So sichern Sie sich begehrte Samstage bei Locations, Fotografen und Caterern ohne Zeitdruck."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Speichert diese Hochzeits-Checkliste meinen Fortschritt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja! Alle abgehakten Aufgaben und Ihr Fortschrittsbalken werden automatisch im lokalen Speicher (LocalStorage) Ihres Browsers gesichert. Wenn Sie zurückkehren, ist alles genau so, wie Sie es hinterlassen haben."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was sind die ersten Aufgaben bei der Hochzeitsplanung?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die drei wichtigsten ersten Schritte sind: 1. Gesamtbudget festlegen, 2. Gästeliste grob schätzen und 3. Hochzeitslocation anfragen und fest buchen, da die Verfügbarkeit der Location meist das finale Datum bestimmt."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie plant man eine Hochzeit mit der 12-Monats-Checkliste?",
+      "description": "Schritt-für-Schritt-Leitfaden für die Hochzeitsplanung vom Verlobungstag bis zum Hochzeitstag.",
+      "inLanguage": "de",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Phase 1 (12+ Monate): Fundament, Budget & Location",
+          "text": "Gesamtbudget festlegen, grobe Gästeanzahl schätzen, Wunschdatum wählen und die Hochzeitslocation verbindlich buchen."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Phase 2 (9–10 Monate): Wichtige Dienstleister & Brautkleid",
+          "text": "Fotograf, Videograf, Trauredner/Pfarrer und DJ/Band anfragen sowie Brautkleid-Suche starten (Lieferzeit 6–9 Monate)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Phase 3 (6–7 Monate): Save-the-Dates & Floristik",
+          "text": "Save-the-Date-Karten verschicken, Florist/Dekoration beauftragen und Hotelkontingente reservieren."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Phase 4 (3–4 Monate): Einladungen, Torte & Trauringe",
+          "text": "Hochzeitseinladungen bestellen, Hochzeitstorte planen, Trauringe schmieden lassen und Probetermin für Styling vereinbaren."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Phase 5 (1–2 Monate): RSVPs, Standesamt & Sitzplan",
+          "text": "Einladungen versenden, Rückmeldungen erfassen, Standesamt-Unterlagen einreichen und Sitzordnung finalisieren."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Phase 6 (Woche der Hochzeit & Tag X): Finale Abstimmung & Feier",
+          "text": "Ablaufplan an Trauzeugen übergeben, Koffer packen, Probe durchführen und den Tag genießen!"
+        }
+      ]
+    }
+  ]
+};
+
+const tasks = [
+  {
+    month: "12+ Monate vorher (Fundament)",
+    items: [
+      "Gesamtbudget festlegen und Kostenpuffer von 10–15% einplanen",
+      "Grobe Gästeliste erstellen (Schätzwert für Raumgröße)",
+      "Wunschtermin & Alternativdaten festlegen",
+      "Location für Trauung und Hochzeitsfeier besichtigen & buchen",
+      "Save-the-Date-Ideen sammeln"
+    ]
+  },
+  {
+    month: "10–11 Monate vorher (Wichtige Dienstleister)",
+    items: [
+      "Trauzeugen, Brautjungfern & Groomsmen ernennen",
+      "Hochzeitsfotograf & Videograf verbindlich anfragen und buchen",
+      "Standesamt-Termin vormerken & Pfarrer oder Freien Redner buchen",
+      "Brautkleid-Suche starten (Lieferzeiten bis zu 9 Monate)"
+    ]
+  },
+  {
+    month: "8–9 Monate vorher (Kulinarik & Musik)",
+    items: [
+      "Catering & Probeessen vereinbaren (oder Menü mit Location abstimmen)",
+      "DJ oder Live-Band für den Abend buchen",
+      "Hochzeits-Wunschliste / Geschenketisch online anlegen",
+      "Hotelzimmerkontingente für auswärtige Gäste blockieren"
+    ]
+  },
+  {
+    month: "6–7 Monate vorher (Papeterie & Floristik)",
+    items: [
+      "Brautkleid & Schleier verbindlich bestellen",
+      "Florist & Dekorateur für Brautstrauß und Raumdeko beauftragen",
+      "Save-the-Date-Karten drucken und verschicken",
+      "Flitterwochen planen, Urlaub beantragen & Flüge buchen",
+      "Kleider für Brautjungfern auswählen"
+    ]
+  },
+  {
+    month: "4–5 Monate vorher (Details & Ringe)",
+    items: [
+      "Location für Polterabend oder Sektempfang festlegen",
+      "Konditor für die Hochzeitstorte auswählen & probieren",
+      "Trauringe auswählen, anpassen und gravieren lassen",
+      "Probetermin für Braut-Haare & Make-up (H&M) vereinbaren",
+      "Gästeliste mit genauen Adressen finalisieren"
+    ]
+  },
+  {
+    month: "3 Monate vorher (Papeterie & Anzug)",
+    items: [
+      "Hochzeitseinladungen und Papeterie-Set drucken lassen",
+      "Menü- und Getränkeauswahl (Wein, Cocktails) festlegen",
+      "Bräutigam-Anzug, Schuhe und Accessoires kaufen/anpassen",
+      "Gastgeschenke (Giveaways) bestellen oder basteln"
+    ]
+  },
+  {
+    month: "2 Monate vorher (Einladungen & Gelübde)",
+    items: [
+      "Hochzeitseinladungen versenden (Rückmeldefrist: 4–6 Wochen vor Feier)",
+      "Persönliche Ehegelübde oder Fürbitten schreiben",
+      "Geschenke für Trauzeugen und Brautjungfern besorgen",
+      "Letzte Details mit Musikern (Liedauswahl für Einzug & Eröffnungstanz) klären"
+    ]
+  },
+  {
+    month: "1 Monat vorher (Behörden & Sitzplan)",
+    items: [
+      "Unterlagen beim Standesamt final einreichen & Trauzeugen-Ausweise prüfen",
+      "Finale Anprobe des Brautkleids mit Schuhen und Schmuck",
+      "Sitzordnung und Tischplan erstellen",
+      "Detaillierten Tagesablaufplan an Dienstleister und Trauzeugen senden"
+    ]
+  },
+  {
+    month: "2 Wochen vorher (Feinschliff)",
+    items: [
+      "Finale Gästeanzahl verbindlich an Caterer und Location melden",
+      "Fotoliste für Gruppenfotos mit dem Fotografen absprechen",
+      "Friseurtermin & Pflege für den Bräutigam"
+    ]
+  },
+  {
+    month: "1 Woche vorher (Endspurt)",
+    items: [
+      "Koffer für die Flitterwochen packen & Reisedokumente prüfen",
+      "Eheversprechen laut üben (mit Stoppuhr)",
+      "Trinkgelder in beschriftete Umschläge stecken und an Trauzeugen übergeben",
+      "Maniküre, Pediküre & Beauty-Tag"
+    ]
+  },
+  {
+    month: "Am Vortag (Entspannung)",
+    items: [
+      "Deko-Elemente, Gastgeschenke und Papeterie zur Location bringen",
+      "Probe der Trauung / Generalprobe durchführen",
+      "Guten Schlaf finden und rechtzeitig zur Ruhe kommen"
+    ]
+  },
+  {
+    month: "Am Hochzeitstag (Der große Tag)",
+    items: [
+      "Ausgiebiges, stärkendes Frühstück mit den Trauzeugen",
+      "Trauringe an Trauzeugen / Best Man übergeben",
+      "Tief durchatmen, Ja sagen und den Tag in vollen Zügen genießen!"
+    ]
+  }
+];
+---
+
+<Layout 
+	title="Hochzeits-Checkliste & 12-Monats-Planer | Interaktiv & Kostenlos"
+	description="Kostenlose interaktive 12-Monats-Hochzeits-Checkliste. Behalten Sie alle Meilensteine von Location und Budget bis Trauringe und Sitzplan im Blick. Automatischer Fortschrittsspeicher im Browser."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<Breadcrumb title="Hochzeits-Checkliste" category="stationery-creative" />
+
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Interaktiver Projektmanager</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.5rem); margin: 0.5rem 0; color: var(--fg-pencil); font-weight: 500;">
+				Hochzeits- <span class="accent-italic">Checkliste & 12-Monats-Planer</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 650px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Behalten Sie alle Meilensteine vom Verlobungstag bis zum Ja-Wort im Blick. Ihr Fortschritt wird automatisch in Ihrem Browser gespeichert.
+			</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 900px; margin: 0 auto;">
+            
+			<!-- Total Completion Progress Bar -->
+			<div class="hand-card result-box" style="margin-bottom: 2rem; background: #fff;">
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+					<h3 class="font-heading" style="margin: 0; font-size: 1.3rem; color: var(--fg-pencil);">
+						Gesamtfortschritt der Hochzeitsplanung
+					</h3>
+					<button type="button" id="btn-reset-checklist" class="hand-btn secondary" style="padding: 3px 8px; font-size: 0.75rem; color: var(--accent-red);">
+						🔄 Zurücksetzen
+					</button>
+				</div>
+				
+                <div style="width: 100%; border: 2.5px solid var(--fg-pencil); height: 32px; position: relative; overflow: hidden; background: var(--bg-paper); border-radius: 4px;">
+                    <div id="progress-bar-fill" style="width: 0%; height: 100%; background-color: #16a34a; transition: width 0.3s ease;"></div>
+                    <div id="progress-text" class="font-heading" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1.05rem; font-weight: bold; color: var(--fg-pencil);">0% Erledigt</div>
+                </div>
+			</div>
+
+			<!-- Interactive Checklist Form -->
+			<div class="hand-card" style="background: #fff; padding: 2rem;">
+				<form id="checklist-form">
+                    {tasks.map((category, catIndex) => (
+                        <div class="checklist-category" style="margin-bottom: 2.25rem;">
+                            <h3 class="font-heading" style="margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; font-size: 1.3rem; color: var(--fg-pencil); display: flex; align-items: center; gap: 0.5rem;">
+								<span>📌</span> {category.month}
+							</h3>
+                            {category.items.map((item, itemIndex) => (
+                                <label style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem; cursor: pointer; font-family: var(--font-body); font-size: 0.98rem; line-height: 1.4; color: var(--fg-pencil);">
+                                    <input 
+                                        type="checkbox" 
+                                        class="task-checkbox" 
+                                        data-id={`task-${catIndex}-${itemIndex}`}
+                                        style="width: 1.25rem; height: 1.25rem; accent-color: var(--accent-blue); cursor: pointer; margin-top: 2px; flex-shrink: 0;"
+                                    />
+                                    <span>{item}</span>
+                                </label>
+                            ))}
+                        </div>
+                    ))}
+				</form>
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="result-box" style="max-width: 900px; margin: 3rem auto 2.5rem; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); padding: 1.5rem 1.75rem; position: relative;">
+			<div class="badge-postit" style="top: -12px; right: 15px;">⚡ Auf einen Blick (BLUF)</div>
+			<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+				<span>⚡</span> Die 6 Kern-Meilensteine der Hochzeitsplanung
+			</h3>
+			<p class="font-body" style="font-size: 1rem; line-height: 1.6; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				<strong>Die goldene Regel:</strong> Teilen Sie Ihre Hochzeitsreise in <strong>6 Phasen</strong> ein: <strong>12+ Monate</strong> (Location & Budget), <strong>9–10 Monate</strong> (Fotograf & Brautkleid), <strong>6–7 Monate</strong> (Save-the-Dates & Floristik), <strong>3–4 Monate</strong> (Einladungen & Ringe), <strong>1–2 Monate</strong> (Standesamt & RSVPs) und <strong>Tag X</strong> (Entspannung & Feier).
+			</p>
+			
+			<!-- Benchmark Milestone Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Planungsphase</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Zeitfenster</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Wichtigste Kernaufgaben</th>
+							<th style="padding: 0.65rem 0.8rem; font-family: var(--font-heading); color: var(--fg-pencil);">Risiko bei Verzögerung</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">1. Fundament</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">12+ Monate vorher</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Budget festlegen, Gästeliste schätzen, Location buchen</td>
+							<td style="padding: 0.6rem 0.8rem; color: var(--accent-red); font-weight: 600;">Beliebte Samstage 12–18 Monate im Voraus ausgebucht</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">2. Hauptdienstleister</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">9–10 Monate vorher</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Foto/Video, Caterer, DJ, Brautkleid-Suche</td>
+							<td style="padding: 0.6rem 0.8rem;">Brautkleider haben 6–9 Monate Produktionszeit</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">3. Vorankündigung</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">6–7 Monate vorher</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Save-the-Dates versenden, Florist buchen, Hotels blocken</td>
+							<td style="padding: 0.6rem 0.8rem;">Gäste buchen andere Urlaube oder Hotelpreise steigen</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">4. Details & Ringe</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">3–4 Monate vorher</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Einladungen bestellen, Torte, Trauringe, H&M Probe</td>
+							<td style="padding: 0.6rem 0.8rem;">Express-Aufschläge für Ring-Anfertigung & Druck</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">5. Einladungen & Behörden</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">1–2 Monate vorher</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Einladungen versenden, Standesamt-Unterlagen, Sitzplan</td>
+							<td style="padding: 0.6rem 0.8rem;">Fristen für Standesamt oder Caterer-Kopfzahlen</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">6. Woche der Feier & Tag X</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Letzte 1–2 Wochen</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Tagesablauf übergeben, Trinkgelder vorbereiten, Ja sagen!</td>
+							<td style="padding: 0.6rem 0.8rem; color: #16a34a; font-weight: 600;">Stressfreie Feier & unvergessliche Momente</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+        <article class="hand-card" style="max-width: 900px; margin: 3rem auto; padding: 2.5rem;">
+            <h2 class="font-heading" style="font-size: 2.2rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Der ultimative 12-Monats-Leitfaden für Ihre Hochzeitsplanung</h2>
+            
+            <p class="font-body" style="margin-bottom: 1.5rem; line-height: 1.6; font-size: 1.05rem;">Eine Hochzeit zu planen ist ein großes Abenteuer. Mit einem klaren Zeitplan und unserem interaktiven Aufgabenmanager behalten Sie jederzeit den vollen Überblick, ohne sich von Kleinigkeiten überwältigen zu lassen.</p>
+            
+            <h3 class="font-heading" style="font-size: 1.6rem; margin-bottom: 0.75rem; color: var(--fg-pencil);">Automatische Fortschritts-Speicherung</h3>
+            <p class="font-body" style="margin-bottom: 1.5rem; line-height: 1.6; font-size: 1.05rem;">Ihr Browser speichert jede abgehakte Aufgabe automatisch. Sie können die Seite jederzeit schließen und später nahtlos dort weiterplanen, wo Sie aufgehört haben.</p>
+
+            <div style="margin-top: 3rem;">
+                <h3 class="font-heading" style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Häufig gestellte Fragen (FAQ)</h3>
+                
+                <details style="margin-bottom: 1rem; border-bottom: 1px solid var(--fg-pencil); padding-bottom: 0.5rem;">
+                    <summary class="font-heading" style="font-size: 1.15rem; cursor: pointer; color: var(--accent-blue); margin-bottom: 0.5rem;">Was tun, wenn wir nur 6 Monate Zeit für die Planung haben?</summary>
+                    <p class="font-body" style="padding-left: 1.5rem; margin-top: 0.5rem; line-height: 1.5;">Keine Panik! Konzentrieren Sie sich sofort auf Location, Standesamt und Fotograf. Wählen Sie ein Brautkleid von der Stange (Sample Sale oder Outlet) oder fragen Sie nach Express-Lieferungen.</p>
+                </details>
+            </div>
+        </article>
+
+		<RelatedTools currentPath="/de/wedding-checklist" category="planning" />
+	</main>
+</Layout>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const checkboxes = document.querySelectorAll('.task-checkbox');
+		const progressBarFill = document.getElementById('progress-bar-fill');
+        const progressText = document.getElementById('progress-text');
+		const btnReset = document.getElementById('btn-reset-checklist');
+        
+        const STORAGE_KEY = 'wedding_checklist_tasks_de';
+
+        const loadState = () => {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    checkboxes.forEach((cb) => {
+                        if (parsed.includes(cb.dataset.id)) {
+                            cb.checked = true;
+                        }
+                    });
+                } catch(e) {
+                    console.error("Error parsing saved checklist tasks", e);
+                }
+            }
+            updateProgress();
+        };
+
+        const saveState = () => {
+            const checkedIds = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.dataset.id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedIds));
+        };
+
+        const updateProgress = () => {
+            const total = checkboxes.length;
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            
+            if (total === 0) return;
+
+            const percentage = Math.round((checkedCount / total) * 100);
+            
+            if(progressBarFill) {
+                progressBarFill.style.width = `${percentage}%`;
+            }
+            if(progressText) {
+                progressText.textContent = `${percentage}% Erledigt (${checkedCount}/${total})`;
+            }
+        };
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                saveState();
+                updateProgress();
+            });
+        });
+
+		if (btnReset) {
+			btnReset.addEventListener('click', () => {
+				if (confirm('Möchten Sie die Checkliste wirklich zurücksetzen?')) {
+					localStorage.removeItem(STORAGE_KEY);
+					checkboxes.forEach(cb => cb.checked = false);
+					updateProgress();
+				}
+			});
+		}
+
+        loadState();
+	});
+</script>

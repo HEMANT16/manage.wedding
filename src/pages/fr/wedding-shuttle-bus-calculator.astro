@@ -1,0 +1,430 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Calculateur de Navettes et Autocars pour Mariage",
+      "url": "https://manage.wedding/fr/wedding-shuttle-bus-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calculez le nombre d'autocars, minibus ou vans nécessaires pour transporter vos invités de mariage, les horaires de rotations et les coûts.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<Layout
+	title="Calculateur de Navettes de Mariage — Bus, Rotations et Coûts"
+	description="Calculez combien d'autocars ou minibus louer pour vos invités de mariage, planning des rotations hôtel-domaine et pourboire chauffeur."
+	lang="fr"
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Fil d'Ariane" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/fr/" style="color: var(--text-secondary); text-decoration: none;">Accueil</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/fr/guests" style="color: var(--text-secondary); text-decoration: none;">Invités & Logistique</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Calculateur de Navettes</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>🚌</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Transport des Invités, Flotte de Bus & Rotations</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Calculateur de Navettes pour Mariage
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Calculez <strong>combien de navettes ou bus louer</strong>, la capacité des véhicules (autocar 55 places, minibus 28 places), les temps de trajet et le <strong>budget chauffeur</strong>.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Inputs -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>👥</span> 1. Invités & Taux d'Utilisation
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div>
+						<label for="input-total-guests" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Total Invités au Mariage :</label>
+						<input type="number" id="input-total-guests" min="20" max="500" value="140" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+					</div>
+					<div>
+						<label for="select-shuttle-rate" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">% Prenant la Navette :</label>
+						<select id="select-shuttle-rate" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="0.50">50% (Beaucoup de locaux en voiture)</option>
+							<option value="0.65" selected>65% (Moyenne classique mariage)</option>
+							<option value="0.80">80% (Nombreux hôtels / gîtes)</option>
+							<option value="0.95">95% (Domaine isolé / sans parking)</option>
+						</select>
+					</div>
+				</div>
+
+				<h2 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 1.25rem 0 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.4rem;">
+					🛣️ 2. Trajet & Type de Véhicule
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+					<div>
+						<label for="select-vehicle-type" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Type de Véhicule :</label>
+						<select id="select-vehicle-type" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="56-coach" selected>🚌 Grand Autocar Tourisme (55 places)</option>
+							<option value="28-minibus">🚐 Minibus Confort (28 places)</option>
+							<option value="14-sprinter">🚐 Van Prestige (14 places)</option>
+						</select>
+					</div>
+					<div>
+						<label for="input-drive-time" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Temps de Trajet Aller (min) :</label>
+						<input type="number" id="input-drive-time" min="5" max="60" value="15" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem;" />
+					</div>
+				</div>
+
+				<h2 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 1.25rem 0 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.4rem;">
+					⏰ 3. Forfait Horaire & Navette Anticipée
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+					<div>
+						<label for="select-charter-hours" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Forfait Heures de Service :</label>
+						<select id="select-charter-hours" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="5">5 Heures (Aller et retour simple)</option>
+							<option value="7" selected>7 Heures (Cérémonie à fin de soirée)</option>
+							<option value="9">9 Heures (Journée complète + After)</option>
+						</select>
+					</div>
+					<div>
+						<label for="select-early-run" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Navette Retour Anticipée ?</label>
+						<select id="select-early-run" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="yes" selected>Oui (Pour seniors et enfants)</option>
+							<option value="no">Non (Tous partent en fin de soirée)</option>
+						</select>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Plan de Transport</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Flotte Recommandée
+						</h2>
+					</div>
+					<span id="badge-shuttle-riders" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">91 Passagers</span>
+				</div>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Véhicules Requis</span>
+						<strong id="stat-vehicles-needed" style="font-size: 1.8rem; font-weight: 900; color: #b91c1c; line-height: 1.1;">2 Autocars</strong>
+						<span id="stat-vehicles-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(Autocar de 55 places)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Budget Estimé</span>
+						<strong id="stat-total-cost" style="font-size: 1.8rem; font-weight: 900; color: #1e40af; line-height: 1.1;">2.150 €</strong>
+						<span id="stat-cost-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">Inclus frais et pourboire chauffeur</span>
+					</div>
+				</div>
+
+				<div style="background: #f0fdf4; border: 1.5px solid #16a34a; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.85rem;">
+					<strong style="color: #166534; display: block; margin-bottom: 0.35rem;">⏱️ Planning des Rotations :</strong>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; color: #14532d;">
+						<div>• <strong id="stat-roundtrip-time">40 min</strong> Boucle Aller-Retour</div>
+						<div>• <strong id="stat-arrival-runs">1 Trajet par bus</strong> (Arrivée groupée)</div>
+						<div>• <strong id="stat-early-departure">21h30</strong> Navette Anticipée</div>
+						<div>• <strong id="stat-final-departure">02h30</strong> Navette Fin de Soirée</div>
+					</div>
+				</div>
+
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🚍 Forfait Location :</span>
+						<strong id="stat-base-charter" style="color: var(--fg-pencil);">1.850 € (7h @ 135 €/h/bus)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">💵 Indemnité Chauffeur (15%) :</span>
+						<strong id="stat-driver-tip" style="color: #b91c1c;">300 € (150 € par chauffeur)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0;">
+						<span style="color: #475569;">👥 Coût par Passager :</span>
+						<strong id="stat-cost-per-head" style="color: #15803d;">~23,60 € par invité</strong>
+					</div>
+				</div>
+
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-print-summary" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Imprimer Feuille de Route (PDF)
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Exporter Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/fr/wedding-shuttle-bus-calculator" category="guests" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-shuttle-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Feuille de Route & Transport des Invités Mariage</h1>
+				<p id="print-shuttle-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Planning des Navettes & Rotations | Manage.Wedding</p>
+			</div>
+			<div id="print-shuttle-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	const inputTotalGuests = document.getElementById('input-total-guests');
+	const selectShuttleRate = document.getElementById('select-shuttle-rate');
+	const selectVehicleType = document.getElementById('select-vehicle-type');
+	const inputDriveTime = document.getElementById('input-drive-time');
+	const selectCharterHours = document.getElementById('select-charter-hours');
+	const selectEarlyRun = document.getElementById('select-early-run');
+
+	const badgeShuttleRiders = document.getElementById('badge-shuttle-riders');
+	const statVehiclesNeeded = document.getElementById('stat-vehicles-needed');
+	const statVehiclesSub = document.getElementById('stat-vehicles-sub');
+	const statTotalCost = document.getElementById('stat-total-cost');
+	const statCostSub = document.getElementById('stat-cost-sub');
+
+	const statRoundtripTime = document.getElementById('stat-roundtrip-time');
+	const statArrivalRuns = document.getElementById('stat-arrival-runs');
+	const statEarlyDeparture = document.getElementById('stat-early-departure');
+	const statFinalDeparture = document.getElementById('stat-final-departure');
+
+	const statBaseCharter = document.getElementById('stat-base-charter');
+	const statDriverTip = document.getElementById('stat-driver-tip');
+	const statCostPerHead = document.getElementById('stat-cost-per-head');
+
+	function calculateShuttle() {
+		const totalGuests = Math.max(10, parseInt(inputTotalGuests.value, 10) || 140);
+		const shuttleRate = parseFloat(selectShuttleRate.value) || 0.65;
+		const riders = Math.round(totalGuests * shuttleRate);
+		const driveTime = Math.max(5, parseInt(inputDriveTime.value, 10) || 15);
+		const charterHours = parseInt(selectCharterHours.value, 10) || 7;
+		const vehicleType = selectVehicleType.value;
+		const hasEarly = selectEarlyRun.value === 'yes';
+
+		badgeShuttleRiders.textContent = `${riders} Passagers`;
+
+		const roundtripMins = (driveTime * 2) + 10;
+		statRoundtripTime.textContent = `${roundtripMins} min Aller-Retour`;
+
+		let capacity = 55;
+		let hourlyRate = 135;
+		let vehicleLabel = 'Autocar de 55 places';
+
+		if (vehicleType === '56-coach') {
+			capacity = 55;
+			hourlyRate = 135;
+			vehicleLabel = 'Autocar de 55 places';
+		} else if (vehicleType === '28-minibus') {
+			capacity = 28;
+			hourlyRate = 110;
+			vehicleLabel = 'Minibus de 28 places';
+		} else {
+			capacity = 14;
+			hourlyRate = 85;
+			vehicleLabel = 'Van Prestige de 14 places';
+		}
+
+		let loopsPossible = 1;
+		if (roundtripMins <= 35) loopsPossible = 2;
+
+		const capacityPerVehicle = capacity * loopsPossible;
+		const vehiclesNeeded = Math.max(1, Math.ceil(riders / capacityPerVehicle));
+
+		statVehiclesNeeded.textContent = `${vehiclesNeeded} ${vehiclesNeeded > 1 ? 'Autocars' : 'Autocar'}`;
+		statVehiclesSub.textContent = `(${vehicleLabel})`;
+
+		if (loopsPossible === 1) {
+			statArrivalRuns.textContent = '1 Trajet par bus (Arrivée groupée)';
+		} else {
+			statArrivalRuns.textContent = '2 Rotations décalées par bus';
+		}
+
+		statEarlyDeparture.textContent = hasEarly ? '21h30 Navette Anticipée' : 'Pas de navette anticipée';
+		statFinalDeparture.textContent = '02h30 Navette Fin de Soirée';
+
+		const baseCost = vehiclesNeeded * charterHours * hourlyRate;
+		const driverTip = Math.round(baseCost * 0.15);
+		const totalCost = baseCost + driverTip;
+
+		statBaseCharter.textContent = `${baseCost.toLocaleString()} € (${charterHours}h @ ${hourlyRate} €/h/bus)`;
+		statDriverTip.textContent = `${driverTip.toLocaleString()} € (${Math.round(driverTip / vehiclesNeeded)} € par chauffeur)`;
+		statTotalCost.textContent = `${totalCost.toLocaleString()} €`;
+		statCostSub.textContent = 'Inclus frais et pourboire chauffeur';
+		statCostPerHead.textContent = `~${(totalCost / riders).toFixed(2)} € par invité`;
+
+		document.getElementById('print-shuttle-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Élément de Transport</th>
+						<th style="padding:6pt;">Détails Logistiques</th>
+						<th style="padding:6pt; text-align:right;">Planification</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Total Passagers Navette</td>
+						<td style="padding:6pt;">${totalGuests} invités x ${Math.round(shuttleRate * 100)}% d'utilisation</td>
+						<td style="padding:6pt; text-align:right;"><strong>${riders} Passagers</strong></td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Flotte Nécessaire</td>
+						<td style="padding:6pt;">${vehicleLabel}</td>
+						<td style="padding:6pt; text-align:right; font-weight:bold; color:#b91c1c;">${vehiclesNeeded} ${vehiclesNeeded > 1 ? 'Véhicules' : 'Véhicule'}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Temps de Rotation</td>
+						<td style="padding:6pt;">${driveTime} min aller + 10 min embarquement</td>
+						<td style="padding:6pt; text-align:right;">${roundtripMins} min Aller-Retour</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Horaires de Retour</td>
+						<td style="padding:6pt;">${hasEarly ? 'Retour anticipé 21h30 & ' : ''}Fin de soirée 02h30</td>
+						<td style="padding:6pt; text-align:right;">${hasEarly ? '2 Vagues' : '1 Vague'}</td>
+					</tr>
+					<tr style="background:#eff6ff; font-weight:bold; font-size:11pt; border-top:2pt solid #000;">
+						<td style="padding:8pt;">BUDGET TOTAL ESTIMÉ</td>
+						<td style="padding:8pt;">Forfait ${charterHours} Heures (${vehiclesNeeded} chauffeurs inclus)</td>
+						<td style="padding:8pt; text-align:right; color:#1e40af;">${totalCost.toLocaleString()} €</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	[inputTotalGuests, selectShuttleRate, selectVehicleType, inputDriveTime, selectCharterHours, selectEarlyRun].forEach(el => {
+		el.addEventListener('input', calculateShuttle);
+		el.addEventListener('change', calculateShuttle);
+	});
+
+	document.getElementById('btn-print-summary').addEventListener('click', () => {
+		calculateShuttle();
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateShuttle();
+		const fleet = statVehiclesNeeded.textContent;
+		const cost = statTotalCost.textContent;
+		const riders = badgeShuttleRiders.textContent;
+		const guests = inputTotalGuests.value;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Transport Navettes Mariage</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Feuille de Route Navettes de Mariage</h1>
+				<p><strong>Invités :</strong> ${guests} | <strong>Passagers :</strong> ${riders} | <strong>Flotte :</strong> ${fleet} | <strong>Budget :</strong> ${cost}</p>
+				<hr/>
+				<p><em>Généré par Manage.Wedding</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Navettes-Mariage-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateShuttle();
+</script>

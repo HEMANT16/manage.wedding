@@ -1,0 +1,456 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Kaffeebar & Espresso-Bedarfsrechner für Hochzeiten",
+      "url": "https://manage.wedding/de/wedding-coffee-bar-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Berechnen Sie Kaffeebohnen in kg, Entkoffeiniert-Anteil, Hafermilch- und Vollmilch-Mengen, Sirup, Becher und Barista-Kosten für die Hochzeit.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<Layout
+	title="Kaffeebar-Rechner für Hochzeiten — Bohnen, Milch & Espresso-Mobil"
+	description="Berechnen Sie den Kaffeebohnen-Bedarf, normales vs. koffeinfreies Kaffeeverhältnis, Hafermilch, Sirup und Becher für die Hochzeits-Kaffeebar."
+	lang="de"
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/de/" style="color: var(--text-secondary); text-decoration: none;">Startseite</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/de/dining" style="color: var(--text-secondary); text-decoration: none;">Catering & Getränke</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Kaffeebar-Rechner</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>☕</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Kaffeebohnen, Milch-Mengen & Barista-Planung</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Kaffeebar-Rechner für Hochzeiten
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Berechnen Sie <strong>Kaffeebohnen in kg, Entkoffeiniert-Verhältnis</strong>, Hafer- und Vollmilch, Sirup-Flaschen, Becher und vergleichen Sie <strong>DIY-Perkolator vs. Espresso-Mobil</strong>.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Inputs -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>👥</span> 1. Gästezahl & Kaffeebar-Konzept
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div>
+						<label for="input-coffee-guests" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Gesamtanzahl Gäste:</label>
+						<input type="number" id="input-coffee-guests" min="20" max="500" value="130" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+					</div>
+					<div>
+						<label for="select-coffee-setup" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Kaffeestation-Typ:</label>
+						<select id="select-coffee-setup" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="diy-urn" selected>🫖 DIY Perkolator-Kaffeemaschinen & Thermobehälter</option>
+							<option value="espresso-cart">☕ Mobiles Espresso-Mobil mit Barista & Latte Art</option>
+							<option value="drip-caterer">🍽️ Standard Filterkaffee-Service vom Caterer</option>
+							<option value="iced-bar">🧊 Cold Brew & Iced Coffee Bar</option>
+						</select>
+					</div>
+				</div>
+
+				<h2 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 1.25rem 0 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.4rem;">
+					🕒 2. Einsatzzeit & Jahreszeit
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+					<div>
+						<label for="select-coffee-timing" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Servicezeitpunkt:</label>
+						<select id="select-coffee-timing" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="evening" selected>Abendessen & Hochzeitstorte (70% Normal / 30% Koffeinfrei)</option>
+							<option value="late-night">Mitternachtssnack / Party-Energie (85% Normal)</option>
+							<option value="brunch">Brunch / Vormittagshochzeit (90% Normal)</option>
+						</select>
+					</div>
+					<div>
+						<label for="select-coffee-season" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Jahreszeit & Wetter:</label>
+						<select id="select-coffee-season" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="fall-winter" selected>🍂 Herbst / Winter (Hohe Nachfrage: 75% Kaffeetrinker)</option>
+							<option value="spring-summer">☀️ Frühling / Sommer (Moderate Nachfrage: 55%)</option>
+						</select>
+					</div>
+				</div>
+
+				<h2 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 1.25rem 0 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.4rem;">
+					🍯 3. Sirup-Sorten & Kaffeegeschirr
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+					<div>
+						<label for="select-syrup-tier" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Sirup-Auswahl:</label>
+						<select id="select-syrup-tier" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="standard" selected>Klassiker (Vanille, Karamell, Haselnuss)</option>
+							<option value="deluxe">Deluxe 5er-Set (Chai, Schoko, Zimt)</option>
+							<option value="none">Schlicht (Nur Milch & Zucker)</option>
+						</select>
+					</div>
+					<div>
+						<label for="select-cup-type" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Geschirr / Becher:</label>
+						<select id="select-cup-type" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="insulated" selected>Individuelle Pappbecher mit Deckel</option>
+							<option value="ceramic">Gemietete Porzellantassen & Untertassen</option>
+							<option value="clear-iced">Transparente Kaltgetränke-Becher mit Strohhalm</option>
+						</select>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Bedarfsermittlung</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Kaffee- & Milchbedarf
+						</h2>
+					</div>
+					<span id="badge-total-cups" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">135 Tassen</span>
+				</div>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Kaffeebohnen</span>
+						<strong id="stat-coffee-lbs" style="font-size: 1.8rem; font-weight: 900; color: #b91c1c; line-height: 1.1;">2,1 kg</strong>
+						<span id="stat-coffee-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(1,5 kg Normal / 0,6 kg Entkoffeiniert)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Geschätzte Kosten</span>
+						<strong id="stat-total-cost" style="font-size: 1.8rem; font-weight: 900; color: #1e40af; line-height: 1.1;">140 € DIY</strong>
+						<span id="stat-cost-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(Spart 650 € ggü. Espresso-Mobil)</span>
+					</div>
+				</div>
+
+				<div style="background: #f0fdf4; border: 1.5px solid #16a34a; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.85rem;">
+					<strong style="color: #166534; display: block; margin-bottom: 0.35rem;">🥛 Milch & Süßungsmittel:</strong>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; color: #14532d;">
+						<div>• <strong id="stat-whole-milk">8 Liter</strong> Vollmilch / Laktosefrei</div>
+						<div>• <strong id="stat-oat-milk">6 Liter</strong> Barista-Hafermilch</div>
+						<div>• <strong id="stat-sugar-lbs">1,5 kg</strong> Rohrzucker & Süßstoff</div>
+						<div>• <strong id="stat-syrup-bottles">3 Flaschen (750ml)</strong> Sirup</div>
+					</div>
+				</div>
+
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🫖 Kaffeemaschinen:</span>
+						<strong id="stat-urn-req" style="color: var(--fg-pencil);">2 x 8L Rundfilter-Perkolatoren</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🥤 Becher & Deckel:</span>
+						<strong id="stat-cups-count" style="color: var(--fg-pencil);">155 Sets (+15% Puffer)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0;">
+						<span style="color: #475569;">🥢 Rührstäbchen & Servietten:</span>
+						<strong id="stat-stirrers-count" style="color: #15803d;">200 Holz-Rührstäbchen & Servietten</strong>
+					</div>
+				</div>
+
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-print-summary" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Einkaufsliste drucken (PDF)
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Word (.doc) exportieren
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/de/wedding-coffee-bar-calculator" category="dining" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-coffee-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Kaffeebar-Einkaufsliste Hochzeit</h1>
+				<p id="print-coffee-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Bohnen, Milchsorten, Sirup & Zubehör | Manage.Wedding</p>
+			</div>
+			<div id="print-coffee-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	const inputCoffeeGuests = document.getElementById('input-coffee-guests');
+	const selectCoffeeSetup = document.getElementById('select-coffee-setup');
+	const selectCoffeeTiming = document.getElementById('select-coffee-timing');
+	const selectCoffeeSeason = document.getElementById('select-coffee-season');
+	const selectSyrupTier = document.getElementById('select-syrup-tier');
+	const selectCupType = document.getElementById('select-cup-type');
+
+	const badgeTotalCups = document.getElementById('badge-total-cups');
+	const statCoffeeLbs = document.getElementById('stat-coffee-lbs');
+	const statCoffeeSub = document.getElementById('stat-coffee-sub');
+	const statTotalCost = document.getElementById('stat-total-cost');
+	const statCostSub = document.getElementById('stat-cost-sub');
+
+	const statWholeMilk = document.getElementById('stat-whole-milk');
+	const statOatMilk = document.getElementById('stat-oat-milk');
+	const statSugarLbs = document.getElementById('stat-sugar-lbs');
+	const statSyrupBottles = document.getElementById('stat-syrup-bottles');
+
+	const statUrnReq = document.getElementById('stat-urn-req');
+	const statCupsCount = document.getElementById('stat-cups-count');
+	const statStirrersCount = document.getElementById('stat-stirrers-count');
+
+	function calculateCoffee() {
+		const guests = Math.max(10, parseInt(inputCoffeeGuests.value, 10) || 130);
+		const setup = selectCoffeeSetup.value;
+		const timing = selectCoffeeTiming.value;
+		const season = selectCoffeeSeason.value;
+
+		let drinkRate = 0.70;
+		if (season === 'spring-summer') drinkRate = 0.55;
+		if (timing === 'brunch') drinkRate = 0.85;
+
+		const coffeeDrinkers = Math.round(guests * drinkRate);
+		const avgCupsPerPerson = timing === 'brunch' ? 1.7 : 1.4;
+		const totalCups = Math.round(coffeeDrinkers * avgCupsPerPerson);
+
+		badgeTotalCups.textContent = `${totalCups} Tassen Kaffee`;
+
+		let regRatio = 0.70;
+		let decafRatio = 0.30;
+		if (timing === 'late-night') {
+			regRatio = 0.85;
+			decafRatio = 0.15;
+		} else if (timing === 'brunch') {
+			regRatio = 0.90;
+			decafRatio = 0.10;
+		}
+
+		const totalKg = (totalCups / 65).toFixed(1);
+		const regKg = (totalKg * regRatio).toFixed(1);
+		const decafKg = (totalKg * decafRatio).toFixed(1);
+
+		statCoffeeLbs.textContent = `${totalKg} kg Bohnen`;
+		statCoffeeSub.textContent = `(${regKg} kg Normal / ${decafKg} kg Entkoffeiniert)`;
+
+		const totalLitersMilk = Math.round(totalCups * 0.09);
+		const wholeMilkLit = Math.round(totalLitersMilk * 0.60);
+		const oatMilkLit = Math.round(totalLitersMilk * 0.40);
+
+		statWholeMilk.textContent = `${Math.max(4, wholeMilkLit)} Liter Vollmilch / Laktosefrei`;
+		statOatMilk.textContent = `${Math.max(3, oatMilkLit)} Liter Barista-Hafermilch`;
+
+		const sugarWeight = Math.max(1, (totalCups * 0.012).toFixed(1));
+		statSugarLbs.textContent = `${sugarWeight} kg Zucker & Süßstoff`;
+
+		const syrupTier = selectSyrupTier.value;
+		let syrupText = '3 Flaschen (750ml)';
+		if (syrupTier === 'deluxe') syrupText = '5 Flaschen (750ml) Deluxe';
+		else if (syrupTier === 'none') syrupText = '0 (Nur Milch & Zucker)';
+		statSyrupBottles.textContent = syrupText;
+
+		const cupsTotal = Math.ceil(totalCups * 1.15);
+		statCupsCount.textContent = `${cupsTotal} Sets (${selectCupType.options[selectCupType.selectedIndex].text})`;
+		statStirrersCount.textContent = `${cupsTotal + 50} Holz-Rührstäbchen & Servietten`;
+
+		if (setup === 'espresso-cart') {
+			statUrnReq.textContent = 'Profi Siebträgermaschine (Zweikreiser)';
+		} else if (totalCups <= 80) {
+			statUrnReq.textContent = '2 Perkolatoren á 5L (1 Normal / 1 Entkoff.)';
+		} else {
+			statUrnReq.textContent = '2 Rundfilter-Kaffeemaschinen á 8L';
+		}
+
+		let cost = 140;
+
+		if (setup === 'diy-urn') {
+			cost = Math.round((totalKg * 22) + (wholeMilkLit * 1.2) + (oatMilkLit * 2.2) + 35 + 25);
+			statTotalCost.textContent = `${cost} € DIY`;
+			const savings = Math.max(300, 800 - cost);
+			statCostSub.textContent = `(Spart ~${savings} € ggü. Barista-Mobil)`;
+		} else if (setup === 'espresso-cart') {
+			cost = 750 + (guests > 150 ? 150 : 0);
+			statTotalCost.textContent = `${cost} € Mobil`;
+			statCostSub.textContent = 'Inkl. Barista & Latte Art';
+		} else if (setup === 'drip-caterer') {
+			cost = Math.round(guests * 2.80);
+			statTotalCost.textContent = `${cost} € Catering`;
+			statCostSub.textContent = 'Serviert mit dem Dessert';
+		} else {
+			cost = Math.round(110 + (totalCups * 0.70));
+			statTotalCost.textContent = `${cost} € Cold Brew`;
+			statCostSub.textContent = 'Kaltes Zapfsystem & Sahne';
+		}
+
+		document.getElementById('print-coffee-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Kaffeebar-Bedarf</th>
+						<th style="padding:6pt;">Details</th>
+						<th style="padding:6pt; text-align:right;">Benötigte Menge</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Spezialitäten-Kaffeebohnen</td>
+						<td style="padding:6pt;">${regKg} kg Normal + ${decafKg} kg Entkoffeiniert</td>
+						<td style="padding:6pt; text-align:right; font-weight:bold; color:#b91c1c;">${totalKg} kg Bohnen</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Milch & Pflanzendrinks</td>
+						<td style="padding:6pt;">60% Vollmilch, 40% Barista-Hafermilch</td>
+						<td style="padding:6pt; text-align:right;">${statWholeMilk.textContent} + ${statOatMilk.textContent}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Sirup & Zucker</td>
+						<td style="padding:6pt;">${syrupText}, Rohrzucker und Süßstoff</td>
+						<td style="padding:6pt; text-align:right;">${statSugarLbs.textContent}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Maschinen & Becher</td>
+						<td style="padding:6pt;">${statUrnReq.textContent}</td>
+						<td style="padding:6pt; text-align:right;"><strong>${statCupsCount.textContent}</strong></td>
+					</tr>
+					<tr style="background:#eff6ff; font-weight:bold; font-size:11pt; border-top:2pt solid #000;">
+						<td style="padding:8pt;">GESCHÄTZTES GESAMTBUDGET</td>
+						<td style="padding:8pt;">${selectCoffeeSetup.options[selectCoffeeSetup.selectedIndex].text}</td>
+						<td style="padding:8pt; text-align:right; color:#1e40af;">${statTotalCost.textContent}</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	[inputCoffeeGuests, selectCoffeeSetup, selectCoffeeTiming, selectCoffeeSeason, selectSyrupTier, selectCupType].forEach(el => {
+		el.addEventListener('input', calculateCoffee);
+		el.addEventListener('change', calculateCoffee);
+	});
+
+	document.getElementById('btn-print-summary').addEventListener('click', () => {
+		calculateCoffee();
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateCoffee();
+		const coffee = statCoffeeLbs.textContent;
+		const cost = statTotalCost.textContent;
+		const cups = badgeTotalCups.textContent;
+		const guests = inputCoffeeGuests.value;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Kaffeebar Einkaufsliste</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Kaffeebar-Einkaufsliste Hochzeit</h1>
+				<p><strong>Gäste:</strong> ${guests} | <strong>Tassen:</strong> ${cups} | <strong>Bohnen:</strong> ${coffee} | <strong>Kosten:</strong> ${cost}</p>
+				<hr/>
+				<p><em>Erstellt von Manage.Wedding</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Kaffeebar-Hochzeit-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateCoffee();
+</script>

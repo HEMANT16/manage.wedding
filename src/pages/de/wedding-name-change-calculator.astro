@@ -1,0 +1,862 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/wedding-name-change-calculator/#webapp",
+      "name": "Namensänderung nach der Hochzeit: Checkliste & Kostenrechner",
+      "url": "https://manage.wedding/de/wedding-name-change-calculator",
+      "inLanguage": "de",
+      "description": "Interaktiver Kostenrechner und Behörden-Checkliste für die Namensänderung nach der Hochzeit. Berechnen Sie amtliche Gebühren für Personalausweis, Reisepass, Standesamt und Führerschein.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Namensänderung nach der Hochzeit: Die richtige Reihenfolge der Behördengänge",
+      "description": "Schritt-für-Schritt-Anleitung für alle Amtsgänge in Deutschland nach der Eheschließung: Vom Standesamt über Bürgeramt bis zu Banken und Krankenkasse.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 1: Eheurkunden beim Standesamt anfordern",
+          "text": "Bestellen Sie beim Standesamt 3–4 beglaubigte Eheurkunden bzw. Auszüge aus dem Eheregister (ca. 12€ bis 15€ pro Urkunde)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 2: Personalausweis & Reisepass im Bürgeramt beantragen",
+          "text": "Beantragen Sie mit der Eheurkunde und biometrischen Passfotos einen neuen Personalausweis (37,00€) und Reisepass (70,00€)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 3: Führerschein & Kfz-Papiere bei der Zulassungsstelle ummelden",
+          "text": "Aktualisieren Sie Ihren EU-Kartenführerschein (ca. 25€) und die Zulassungsbescheinigung Teil I (Fahrzeugschein, ca. 12€)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 4: Krankenkasse und Finanzamt (Steuerklasse) informieren",
+          "text": "Reichen Sie die Urkunde bei der Krankenkasse ein (kostenlose neue eGK-Karte) und prüfen Sie beim Finanzamt einen Steuerklassenwechsel."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 5: Arbeitgeber, Banken und Versicherungen benachrichtigen",
+          "text": "Aktualisieren Sie Gehaltsabrechnung, Bankkonten, Kreditkarten, Mietvertrag und Versicherungsverträge."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Muss man den Namen bei der Hochzeit sofort ändern?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nein. In Deutschland können Sie die Namenserklärung direkt bei der Trauung abgeben oder zu jedem späteren Zeitpunkt ohne Frist beim Standesamt nachholen. Bis dahin behalten beide Ehepartner automatisch ihren bisherigen Geburtsnamen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was kostet die Namensänderung nach der Hochzeit insgesamt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die Gesamtkosten für alle amtlichen Dokumente liegen in Deutschland in der Regel zwischen 130€ und 220€. Dazu gehören: Eheurkunden (ca. 30€–45€ für 3 Stück), Personalausweis (37,00€), Reisepass (70,00€), biometrische Passfotos (~15€), Führerschein & Kfz-Schein (~37€)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Darf ich direkt nach der Hochzeit mit dem neuen Namen in die Flitterwochen fliegen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Achtung Falle! Die Flugtickets MÜSSEN zu 100% exakt mit dem Reisepass übereinstimmen, den Sie beim Boarding vorzeigen. Da die Ausstellung neuer Ausweise 3–6 Wochen dauert, buchen Sie die Flitterwochen immer auf den alten Geburtsnamen, es sei denn, Sie haben vorab einen vorläufigen Reisepass beantragt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Welche Namensoptionen gibt es im deutschen Namensrecht?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sie haben 4 Hauptoptionen: 1) Gemeinsamer Ehename (Geburtsname von Mann oder Frau); 2) Doppelname mit Bindestrich als Begleitname für einen Partner (z.B. Müller-Schmidt); 3) Getrennte Namensführung; 4) Echter gemeinsamer Doppelname für beide Partner nach dem neuen Namensrecht."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Namensänderung nach der Hochzeit: Checkliste, Behördengänge & Kosten"
+	description="Interaktiver Kostenrechner und Behörden-Checkliste für die Namensänderung nach der Hochzeit. Berechnen Sie amtliche Gebühren für Personalausweis, Reisepass, Standesamt und Führerschein."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Namensänderung & Behörden" category="budget-finance" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Behörden-Reihenfolge & Amtliche Gebühren</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Namensänderung nach der Hochzeit <span class="accent-italic">Checkliste & Kosten</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Finden Sie Ihre Namenskombination, berechnen Sie die exakten Gebühren für Personalausweis, Reisepass und Führerschein und erledigen Sie alle Amtsgänge in der richtigen Reihenfolge.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; margin-bottom: 3rem; align-items: start;">
+			
+			<!-- Left Column: Namenskonfigurator -->
+			<div class="hand-card" style="padding: clamp(1.25rem, 3vw, 2rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.45rem; margin: 0; color: var(--fg-pencil);">
+						1. Namenskonfigurator nach BGB
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Live-Vorschau
+					</span>
+				</div>
+
+				<!-- Partner 1 -->
+				<div style="margin-bottom: 1.25rem;">
+					<label class="form-label" style="font-weight: 700; font-size: 0.95rem;">Ihr bisheriger Name (Geburtsname)</label>
+					<div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 0.5rem;">
+						<div>
+							<input type="text" id="p1-first" class="form-input" value="Anna" placeholder="Vorname" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Vorname</span>
+						</div>
+						<div>
+							<input type="text" id="p1-middle" class="form-input" value="Maria" placeholder="Zweitname" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Zweitname</span>
+						</div>
+						<div>
+							<input type="text" id="p1-maiden" class="form-input" value="Weber" placeholder="Geburtsname" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Geburtsname</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Partner 2 -->
+				<div style="margin-bottom: 1.25rem;">
+					<label class="form-label" style="font-weight: 700; font-size: 0.95rem;">Name des Partners / der Partnerin</label>
+					<div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.5rem;">
+						<div>
+							<input type="text" id="p2-first" class="form-input" value="Maximilian" placeholder="Vorname" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Vorname</span>
+						</div>
+						<div>
+							<input type="text" id="p2-surname" class="form-input" value="Hoffmann" placeholder="Nachname" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Nachname</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Namensmodell Dropdown -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="naming-format-select" style="font-weight: 700;">Gewähltes Namensmodell</label>
+					<select id="naming-format-select" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600; padding: 0.65rem; width: 100%;">
+						<option value="take-spouse" selected>💍 Gemeinsamer Ehename: Name des Partners (Anna Hoffmann)</option>
+						<option value="hyphenated-1">🔗 Doppelname: Geburtsname-Partner (Anna Weber-Hoffmann)</option>
+						<option value="hyphenated-2">🔗 Doppelname: Partner-Geburtsname (Anna Hoffmann-Weber)</option>
+						<option value="keep-maiden">🏛️ Getrennte Namensführung: Bisherigen Namen behalten (Anna Weber)</option>
+						<option value="custom">✨ Eigener Ehename / Namensneurecht</option>
+					</select>
+				</div>
+
+				<!-- Vorschau-Karte -->
+				<div style="background: #f8fafc; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; box-shadow: 3px 3px 0 var(--fg-pencil); margin-top: 1rem;">
+					<div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: var(--accent-red); letter-spacing: 0.05em; margin-bottom: 0.35rem;">
+						Amtlicher Name laut Ausweis
+					</div>
+					
+					<div id="preview-full-legal" class="font-heading" style="font-size: 1.55rem; color: var(--fg-pencil); line-height: 1.2; margin-bottom: 0.75rem;">
+						Anna Maria Hoffmann
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.88rem; padding-top: 0.75rem; border-top: 1px dashed #cbd5e1;">
+						<div>
+							<span style="color: var(--text-secondary); display: block; font-size: 0.75rem;">Initialen / Monogramm:</span>
+							<strong id="preview-monogram" style="font-family: var(--font-hand); font-size: 1.3rem; color: var(--accent-blue);">A H M</strong>
+						</div>
+						<div>
+							<span style="color: var(--text-secondary); display: block; font-size: 0.75rem;">Rechtsgrundlage:</span>
+							<strong id="preview-route-badge" style="color: #16a34a; font-size: 0.82rem;">✅ Standesamtliche Erklärung</strong>
+						</div>
+						<div style="grid-column: span 2;">
+							<span style="color: var(--text-secondary); display: block; font-size: 0.75rem;">Berufliche E-Mail-Vorschau:</span>
+							<code id="preview-email" style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px; font-size: 0.85rem;">anna.hoffmann@unternehmen.de</code>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Gebühren & Zeitplan -->
+			<div class="hand-card" style="padding: clamp(1.25rem, 3vw, 2rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.45rem; margin: 0; color: var(--fg-pencil);">
+						2. Gesamtkosten & Bearbeitungsdauer
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: #e0f2fe; border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Echtzeit-Berechnung
+					</span>
+				</div>
+
+				<!-- Big Metric Hero Cards -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+					
+					<!-- Metrik 1: Gesamtkosten -->
+					<div style="background: #fef08a; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; text-align: center; box-shadow: 3px 3px 0 var(--fg-pencil);">
+						<span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--fg-pencil); display: block;">
+							Amtliche Gebühren
+						</span>
+						<div id="display-total-fee" class="font-heading" style="font-size: 2.2rem; color: var(--fg-pencil); line-height: 1.1; margin: 0.25rem 0;">
+							181,00 €
+						</div>
+						<span id="display-fee-range" style="font-size: 0.8rem; color: var(--text-secondary);">
+							Ausweis, Pass & Urkunden
+						</span>
+					</div>
+
+					<!-- Metrik 2: Dauer -->
+					<div style="background: #e0e7ff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; text-align: center; box-shadow: 3px 3px 0 var(--fg-pencil);">
+						<span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--fg-pencil); display: block;">
+							Bundesdruckerei Dauer
+						</span>
+						<div id="display-total-weeks" class="font-heading" style="font-size: 2.2rem; color: var(--accent-blue); line-height: 1.1; margin: 0.25rem 0;">
+							3–5 Wochen
+						</div>
+						<span style="font-size: 0.8rem; color: var(--text-secondary);">
+							Reguläre Ausstellungszeit
+						</span>
+					</div>
+
+				</div>
+
+				<!-- Fortschrittsbalken -->
+				<div style="margin-bottom: 1.5rem; background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem;">
+					<div style="display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.4rem;">
+						<span>Erledigte Behördengänge:</span>
+						<span id="progress-text">0 von 15 Schritten erledigt (0%)</span>
+					</div>
+					<div style="width: 100%; height: 16px; background: #e2e8f0; border-radius: 8px; border: 1.5px solid var(--fg-pencil); overflow: hidden;">
+						<div id="progress-bar-fill" style="width: 0%; height: 100%; background: #22c55e; transition: width 0.3s ease;"></div>
+					</div>
+				</div>
+
+				<!-- Filter & Aktionen -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+					<button type="button" id="btn-filter-all" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem; background: var(--fg-pencil); color: #fff;">
+						Alle Ämter
+					</button>
+					<button type="button" id="btn-filter-vital" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem;">
+						Bürgeramt & Ausweise
+					</button>
+					<button type="button" id="btn-filter-travel" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem;">
+						Reisepass & Kfz
+					</button>
+					<button type="button" id="btn-check-all" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem; margin-left: auto;">
+						Zurücksetzen
+					</button>
+				</div>
+
+				<!-- Export-Buttons -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="background: #fecdd3; border-color: var(--fg-pencil); color: var(--fg-pencil); font-size: 0.95rem; padding: 10px;">
+						🖨️ Drucken / PDF
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="background: #dbeafe; border-color: var(--fg-pencil); color: var(--fg-pencil); font-size: 0.95rem; padding: 10px;">
+						📄 Word (.doc) Export
+					</button>
+					<button type="button" id="btn-copy-checklist" class="hand-btn" style="grid-column: span 2; background: #dcfce7; border-color: var(--fg-pencil); color: var(--fg-pencil); font-size: 0.95rem; padding: 10px;">
+						📋 Behörden-Checkliste kopieren
+					</button>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Checkliste nach Phasen -->
+		<section class="hand-card" style="padding: clamp(1.25rem, 3vw, 2.5rem); background: #fff; margin-bottom: 3.5rem;">
+			
+			<div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 1rem;">
+				<div>
+					<span class="badge-postit" style="font-size: 0.85rem;">Chronologischer Ablaufplan</span>
+					<h2 class="font-heading" style="font-size: 1.85rem; margin: 0.35rem 0 0 0; color: var(--fg-pencil);">
+						Die 4 Stufen der Behördengänge
+					</h2>
+				</div>
+				<p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0; max-width: 480px;">
+					Haken Sie erledigte Dokumente ab. Die Gebühren können je nach Bundesland leicht variieren.
+				</p>
+			</div>
+
+			<!-- STUFE 1: Standesamt & Bürgeramt -->
+			<div class="checklist-stage" data-stage="vital" style="margin-bottom: 2rem;">
+				<div style="background: #f1f5f9; border-left: 5px solid var(--accent-red); padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin: 0; color: var(--fg-pencil);">
+						Stufe 1: Standesamt, Eheurkunden & Bürgeramt (Personalausweis)
+					</h3>
+					<p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary);">
+						Das Fundament für alle weiteren Ummeldungen und Namensnachweise.
+					</p>
+				</div>
+
+				<!-- Schritt 1: Eheurkunden -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-1" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-1" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									1. Eheurkunden & Beglaubigte Registerausdrucke (Standesamt)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Bestellen Sie 3–4 beglaubigte Ausfertigungen beim Standesamt der Eheschließung.
+								</div>
+								<div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+									<span style="font-size: 0.85rem;">Anzahl Urkunden:</span>
+									<input type="number" id="input-cert-copies" min="1" max="10" value="3" style="width: 55px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+									<span style="font-size: 0.85rem;">à</span>
+									<input type="number" id="input-cert-rate" min="5" max="30" value="12" style="width: 55px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+									<span style="font-size: 0.85rem;">€ / Stück</span>
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Urkunden Summe:</span>
+							<strong id="fee-item-1" class="item-cost-display" style="font-size: 1.2rem; color: var(--accent-red);">36,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 1–2 Wochen</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Schritt 2: Personalausweis -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-2" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-2" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									2. Neuer Personalausweis (Bürgeramt / Einwohnermeldeamt)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Pflichtdokument. Mitzubringen: Eheurkunde, alter Personalausweis und biometrisches Passfoto.
+								</div>
+								<div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+									<span style="font-size: 0.85rem;">Ausweisgebühr (ab 24 J.):</span>
+									<input type="number" id="input-perso-fee" min="0" max="60" value="37" style="width: 60px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+									<span style="font-size: 0.85rem;">€</span>
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Bürgeramt:</span>
+							<strong id="fee-item-2" class="item-cost-display" style="font-size: 1.2rem; color: var(--accent-red);">37,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 2–4 Wochen</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- STUFE 2: Reisepass & Führerschein -->
+			<div class="checklist-stage" data-stage="travel" style="margin-bottom: 2rem;">
+				<div style="background: #f1f5f9; border-left: 5px solid var(--accent-blue); padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin: 0; color: var(--fg-pencil);">
+						Stufe 2: Reisepass & Führerschein / Kfz-Zulassung
+					</h3>
+					<p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary);">
+						⚠️ <strong>Flitterwochen-Warnung:</strong> Nicht kurz vor Abflug neu beantragen, wenn Flugtickets auf den Mädchennamen lauten!
+					</p>
+				</div>
+
+				<!-- Schritt 3: Reisepass -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-3" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-3" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									3. eReisepass (32 Seiten / Bundesdruckerei) + Passfotos
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Amtliche Passgebühr (70,00€ ab 24 J.) zzgl. Fotografenkosten für biometrische Fotos (~15€).
+								</div>
+								<div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+									<span style="font-size: 0.85rem;">Passgebühr + Fotos:</span>
+									<input type="number" id="input-pass-fee" min="0" max="150" value="85" style="width: 60px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+									<span style="font-size: 0.85rem;">€</span>
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Reisepass:</span>
+							<strong id="fee-item-3" class="item-cost-display" style="font-size: 1.2rem; color: var(--accent-red);">85,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 3–5 Wochen</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Schritt 4: Führerschein & Kfz -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-4" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-4" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									4. Führerschein (Fahrerlaubnisbehörde) & Kfz-Schein (Teil I)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Führerscheinkarte neu ausstellen (~25€) und Fahrzeugschein bei der Kfz-Zulassungsstelle anpassen (~12€).
+								</div>
+								<div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+									<span style="font-size: 0.85rem;">Kosten Führerschein + Kfz:</span>
+									<input type="number" id="input-kfz-fee" min="0" max="80" value="37" style="width: 60px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+									<span style="font-size: 0.85rem;">€</span>
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Führerschein & Kfz:</span>
+							<strong id="fee-item-4" class="item-cost-display" style="font-size: 1.2rem; color: var(--accent-red);">37,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 2–3 Wochen</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- STUFE 3: Finanzamt & Krankenkasse -->
+			<div class="checklist-stage" data-stage="vital" style="margin-bottom: 2rem;">
+				<div style="background: #f1f5f9; border-left: 5px solid #10b981; padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin: 0; color: var(--fg-pencil);">
+						Stufe 3: Finanzamt (Steuerklassenwechsel) & Krankenkasse
+					</h3>
+					<p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary);">
+						Kostenlose behördliche Anpassungen für Steuer und Krankenversicherung.
+					</p>
+				</div>
+
+				<!-- Schritt 5: Finanzamt -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-5" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-5" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									5. Finanzamt (Steuerklassenwechsel IV/IV oder III/V / Faktor)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Über Elster.de kostenlos Antrag auf Steuerklassenwechsel einreichen.
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Finanzamt:</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 € (KOSTENLOS)</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 1–2 Wochen</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Schritt 6: Krankenkasse -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-6" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-6" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									6. Krankenkasse (eGK Gesundheitskarte) & Familienversicherung
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Eheurkunde online hochladen. Neue elektronische Gesundheitskarte wird kostenlos zugesandt.
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Krankenkasse:</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 1 Woche</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- STUFE 4: Banken, Arbeitgeber & Versicherungen -->
+			<div class="checklist-stage" data-stage="finance" style="margin-bottom: 1rem;">
+				<div style="background: #f1f5f9; border-left: 5px solid #d97706; padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin: 0; color: var(--fg-pencil);">
+						Stufe 4: Arbeitgeber (HR), Banken & Verträge
+					</h3>
+					<p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary);">
+						Mitteilung an private Vertragspartner und Begünstigte.
+					</p>
+				</div>
+
+				<!-- Schritt 7: Arbeitgeber -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-7" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-7" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									7. Arbeitgeber / Personalabteilung (Sonderurlaub & Lohnsteuer)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Eheurkunde für Gehaltsabrechnung und Anspruch auf 1–2 Tage bezahlten Sonderurlaub (§ 616 BGB).
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Arbeitgeber:</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 1 Tag</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Schritt 8: Banken -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-8" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-8" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									8. Girokonto, Sparkonto, Freistellungsauftrag & Kreditkarten
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Neuen Personalausweis in der Bankfiliale oder per Video-Ident vorlegen. Freistellungsauftrag für Eheleute anpassen (2.000€ Sparerpauschbetrag).
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Banken:</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 3–5 Tage</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</section>
+
+		<!-- SEO Ratgeber -->
+		<section class="hand-card" style="padding: clamp(1.25rem, 3vw, 2.5rem); background: #fff; margin-bottom: 3.5rem;">
+			<div class="tape" style="margin: 0 auto 1.5rem;"></div>
+			<h2 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.5rem;">
+				Rechtlicher Leitfaden zur Namensänderung
+			</h2>
+
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+				
+				<div style="border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; background: #fffbeb;">
+					<h3 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin-top: 0; display: flex; align-items: center; gap: 0.4rem;">
+						<span>🏛️</span> 1. Eheurkunde als Schlüssel
+					</h3>
+					<p class="font-body" style="font-size: 0.95rem; color: var(--text-color); margin: 0;">
+						Ohne die amtliche Eheurkunde bzw. den beglaubigten Registerausdruck des Standesamts kann weder das Bürgeramt noch eine Bank den neuen Namen eintragen.
+					</p>
+				</div>
+
+				<div style="border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; background: #fef2f2;">
+					<h3 class="font-heading" style="font-size: 1.25rem; color: var(--accent-red); margin-top: 0; display: flex; align-items: center; gap: 0.4rem;">
+						<span>✈️</span> 2. Flugtickets & Flitterwochen
+					</h3>
+					<p class="font-body" style="font-size: 0.95rem; color: var(--text-color); margin: 0;">
+						Fluggesellschaften verlangen 100%ige Namensübereinstimmung mit dem Reisepass. Bei Flügen kurz nach der Trauung immer auf den Mädchennamen buchen!
+					</p>
+				</div>
+
+				<div style="border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; background: #f0fdf4;">
+					<h3 class="font-heading" style="font-size: 1.25rem; color: #16a34a; margin-top: 0; display: flex; align-items: center; gap: 0.4rem;">
+						<span>💶</span> 3. Steuerklassen-Optimierung
+					</h3>
+					<p class="font-body" style="font-size: 0.95rem; color: var(--text-color); margin: 0;">
+						Nach der Heirat werden Eheleute automatisch in Steuerklasse IV/IV eingestuft. Bei deutlichem Einkommensunterschied lohnt sich der Wechsel in III/V oder das Faktorverfahren.
+					</p>
+				</div>
+
+			</div>
+
+			<!-- FAQ -->
+			<h3 class="font-heading" style="font-size: 1.45rem; color: var(--fg-pencil); margin-bottom: 1rem;">
+				Häufige Fragen zur Namensänderung
+			</h3>
+
+			<div style="display: flex; flex-direction: column; gap: 0.85rem;">
+				<details class="hand-card" style="padding: 1rem; background: #fafafa; border: 1.5px solid var(--fg-pencil); cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">
+						Muss man den Namen bei der Hochzeit sofort ändern?
+					</summary>
+					<p style="margin: 0.75rem 0 0 0; font-size: 0.95rem; color: var(--text-color); line-height: 1.6;">
+						<strong>Nein.</strong> In Deutschland können Sie die Namenserklärung direkt bei der Trauung abgeben oder zu jedem späteren Zeitpunkt ohne Frist beim Standesamt nachholen. Bis dahin behalten beide Ehepartner automatisch ihren bisherigen Geburtsnamen.
+					</p>
+				</details>
+
+				<details class="hand-card" style="padding: 1rem; background: #fafafa; border: 1.5px solid var(--fg-pencil); cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">
+						Was kostet die Namensänderung nach der Hochzeit insgesamt?
+					</summary>
+					<p style="margin: 0.75rem 0 0 0; font-size: 0.95rem; color: var(--text-color); line-height: 1.6;">
+						Die Gesamtkosten für alle amtlichen Dokumente liegen in Deutschland in der Regel zwischen <strong>130€ und 220€</strong>. Dazu gehören: Eheurkunden (ca. 30€–45€ für 3 Stück), Personalausweis (<strong>37,00€</strong>), Reisepass (<strong>70,00€</strong>), biometrische Passfotos (~15€), Führerschein & Kfz-Schein (~37€).
+					</p>
+				</details>
+			</div>
+
+		</section>
+
+		<!-- Ähnliche Tools -->
+		<RelatedTools currentPath="/de/wedding-name-change-calculator" category="budget" />
+
+	</main>
+
+	<!-- Skripte -->
+	<script is:inline>
+		const p1First = document.getElementById('p1-first');
+		const p1Middle = document.getElementById('p1-middle');
+		const p1Maiden = document.getElementById('p1-maiden');
+		const p2First = document.getElementById('p2-first');
+		const p2Surname = document.getElementById('p2-surname');
+		const namingFormatSelect = document.getElementById('naming-format-select');
+
+		const previewFullLegal = document.getElementById('preview-full-legal');
+		const previewMonogram = document.getElementById('preview-monogram');
+		const previewRouteBadge = document.getElementById('preview-route-badge');
+		const previewEmail = document.getElementById('preview-email');
+
+		const displayTotalFee = document.getElementById('display-total-fee');
+		const displayTotalWeeks = document.getElementById('display-total-weeks');
+		const progressText = document.getElementById('progress-text');
+		const progressBarFill = document.getElementById('progress-bar-fill');
+
+		const inputCertCopies = document.getElementById('input-cert-copies');
+		const inputCertRate = document.getElementById('input-cert-rate');
+		const feeItem1 = document.getElementById('fee-item-1');
+		const inputPersoFee = document.getElementById('input-perso-fee');
+		const feeItem2 = document.getElementById('fee-item-2');
+		const inputPassFee = document.getElementById('input-pass-fee');
+		const feeItem3 = document.getElementById('fee-item-3');
+		const inputKfzFee = document.getElementById('input-kfz-fee');
+		const feeItem4 = document.getElementById('fee-item-4');
+
+		const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+
+		const btnFilterAll = document.getElementById('btn-filter-all');
+		const btnFilterVital = document.getElementById('btn-filter-vital');
+		const btnFilterTravel = document.getElementById('btn-filter-travel');
+		const btnCheckAll = document.getElementById('btn-check-all');
+
+		const btnExportPdf = document.getElementById('btn-export-pdf');
+		const btnExportDoc = document.getElementById('btn-export-doc');
+		const btnCopyChecklist = document.getElementById('btn-copy-checklist');
+
+		function cap(str) {
+			if (!str) return '';
+			return str.trim().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+		}
+
+		function sanitizeForEmail(str) {
+			return str.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss').replace(/[^a-z0-9]/g, '');
+		}
+
+		function updatePersona() {
+			const f1 = cap(p1First.value) || 'Anna';
+			const m1 = cap(p1Middle.value) || 'Maria';
+			const maid = cap(p1Maiden.value) || 'Weber';
+			const sp = cap(p2Surname.value) || 'Hoffmann';
+			const format = namingFormatSelect.value;
+
+			let newFullName = '';
+			let monogram = '';
+
+			switch (format) {
+				case 'take-spouse':
+					newFullName = `${f1} ${m1} ${sp}`;
+					monogram = `${f1.charAt(0)} ${sp.charAt(0)} ${m1 ? m1.charAt(0) : maid.charAt(0)}`;
+					break;
+				case 'hyphenated-1':
+					newFullName = `${f1} ${m1} ${maid}-${sp}`;
+					monogram = `${f1.charAt(0)} ${maid.charAt(0)} ${sp.charAt(0)}`;
+					break;
+				case 'hyphenated-2':
+					newFullName = `${f1} ${m1} ${sp}-${maid}`;
+					monogram = `${f1.charAt(0)} ${sp.charAt(0)} ${maid.charAt(0)}`;
+					break;
+				case 'keep-maiden':
+					newFullName = `${f1} ${m1} ${maid}`;
+					monogram = `${f1.charAt(0)} ${maid.charAt(0)} ${m1 ? m1.charAt(0) : 'W'}`;
+					break;
+				default:
+					newFullName = `${f1} ${m1} ${sp}`;
+					monogram = `${f1.charAt(0)} ${sp.charAt(0)} ${maid.charAt(0)}`;
+			}
+
+			previewFullLegal.textContent = newFullName;
+			previewMonogram.textContent = monogram.toUpperCase();
+
+			const cleanFirst = sanitizeForEmail(f1);
+			const cleanLast = format === 'keep-maiden' ? sanitizeForEmail(maid) : sanitizeForEmail(sp);
+			previewEmail.textContent = `${cleanFirst}.${cleanLast}@unternehmen.de`;
+		}
+
+		function calculateFees() {
+			const copies = parseInt(inputCertCopies.value, 10) || 3;
+			const rate = parseFloat(inputCertRate.value) || 12;
+			const certTotal = copies * rate;
+			feeItem1.textContent = `${certTotal.toFixed(2).replace('.', ',')} €`;
+
+			const persoFee = parseFloat(inputPersoFee.value) || 0;
+			feeItem2.textContent = `${persoFee.toFixed(2).replace('.', ',')} €`;
+
+			const passFee = parseFloat(inputPassFee.value) || 0;
+			feeItem3.textContent = `${passFee.toFixed(2).replace('.', ',')} €`;
+
+			const kfzFee = parseFloat(inputKfzFee.value) || 0;
+			feeItem4.textContent = `${kfzFee.toFixed(2).replace('.', ',')} €`;
+
+			const total = certTotal + persoFee + passFee + kfzFee;
+			displayTotalFee.textContent = `${total.toFixed(2).replace('.', ',')} €`;
+
+			let checkedCount = 0;
+			taskCheckboxes.forEach(chk => { if (chk.checked) checkedCount++; });
+
+			const totalTasks = taskCheckboxes.length;
+			const pct = Math.round((checkedCount / totalTasks) * 100);
+			progressText.textContent = `${checkedCount} von ${totalTasks} Schritten erledigt (${pct}%)`;
+			progressBarFill.style.width = `${pct}%`;
+		}
+
+		btnFilterAll.addEventListener('click', () => {
+			document.querySelectorAll('.checklist-stage').forEach(st => st.style.display = 'block');
+			btnFilterAll.style.background = 'var(--fg-pencil)';
+			btnFilterAll.style.color = '#fff';
+			btnFilterVital.style.background = '#fff';
+			btnFilterVital.style.color = 'var(--fg-pencil)';
+			btnFilterTravel.style.background = '#fff';
+			btnFilterTravel.style.color = 'var(--fg-pencil)';
+		});
+
+		btnFilterVital.addEventListener('click', () => {
+			document.querySelectorAll('.checklist-stage').forEach(st => {
+				st.style.display = st.getAttribute('data-stage') === 'vital' ? 'block' : 'none';
+			});
+			btnFilterVital.style.background = 'var(--fg-pencil)';
+			btnFilterVital.style.color = '#fff';
+			btnFilterAll.style.background = '#fff';
+			btnFilterAll.style.color = 'var(--fg-pencil)';
+			btnFilterTravel.style.background = '#fff';
+			btnFilterTravel.style.color = 'var(--fg-pencil)';
+		});
+
+		btnFilterTravel.addEventListener('click', () => {
+			document.querySelectorAll('.checklist-stage').forEach(st => {
+				st.style.display = st.getAttribute('data-stage') === 'travel' ? 'block' : 'none';
+			});
+			btnFilterTravel.style.background = 'var(--fg-pencil)';
+			btnFilterTravel.style.color = '#fff';
+			btnFilterAll.style.background = '#fff';
+			btnFilterAll.style.color = 'var(--fg-pencil)';
+			btnFilterVital.style.background = '#fff';
+			btnFilterVital.style.color = 'var(--fg-pencil)';
+		});
+
+		btnCheckAll.addEventListener('click', () => {
+			taskCheckboxes.forEach(chk => { chk.checked = false; });
+			calculateFees();
+		});
+
+		btnCopyChecklist.addEventListener('click', () => {
+			const legalName = previewFullLegal.textContent;
+			const totalCost = displayTotalFee.textContent;
+
+			let text = `💍 BEHÖRDEN-CHECKLISTE NAMENSÄNDERUNG NACH DER HOCHZEIT\n`;
+			text += `====================================================\n`;
+			text += `Neuer Name: ${legalName}\n`;
+			text += `Amtliche Gebühren: ${totalCost}\n\n`;
+			text += `[ ] 1. Standesamt Eheurkunden (${feeItem1.textContent})\n`;
+			text += `[ ] 2. Personalausweis im Bürgeramt (${feeItem2.textContent})\n`;
+			text += `[ ] 3. Reisepass & biometrische Fotos (${feeItem3.textContent})\n`;
+			text += `[ ] 4. Führerschein & Kfz-Schein (${feeItem4.textContent})\n`;
+			text += `[ ] 5. Finanzamt (Steuerklassenwechsel)\n`;
+			text += `[ ] 6. Krankenkasse (neue eGK Karte)\n`;
+			text += `[ ] 7. Arbeitgeber & Personalabteilung\n`;
+			text += `[ ] 8. Bankkonten, Freistellungsauftrag & Verträge\n\n`;
+			text += `Erstellt auf Manage.Wedding`;
+
+			navigator.clipboard.writeText(text).then(() => {
+				const orig = btnCopyChecklist.innerHTML;
+				btnCopyChecklist.innerHTML = '<span>✅</span> In die Zwischenablage kopiert!';
+				setTimeout(() => { btnCopyChecklist.innerHTML = orig; }, 2500);
+			});
+		});
+
+		btnExportDoc.addEventListener('click', () => {
+			const legalName = previewFullLegal.textContent;
+			const totalCost = displayTotalFee.textContent;
+			const dateStr = new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+
+			const html = `
+				<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+				<head><meta charset="utf-8"><title>Namensänderung — ${legalName}</title></head>
+				<body style="font-family: Calibri, sans-serif; padding: 24px;">
+					<h1>💍 Checkliste Namensänderung & Behördengänge nach der Hochzeit</h1>
+					<p>Erstellt am ${dateStr} • Manage.Wedding</p>
+					<p><strong>Neuer Name:</strong> ${legalName}</p>
+					<p><strong>Amtliche Gesamtkosten:</strong> ${totalCost}</p>
+					<h3>Behördliche Schritte:</h3>
+					<ol>
+						<li>Standesamt Eheurkunden (${feeItem1.textContent})</li>
+						<li>Personalausweis im Bürgeramt (${feeItem2.textContent})</li>
+						<li>Reisepass (${feeItem3.textContent})</li>
+						<li>Führerschein & Kfz-Schein (${feeItem4.textContent})</li>
+						<li>Finanzamt (Steuerklassenwechsel)</li>
+						<li>Krankenkasse</li>
+						<li>Arbeitgeber / HR</li>
+						<li>Banken & Versicherungen</li>
+					</ol>
+				</body></html>
+			`;
+
+			const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `Namensaenderung_${sanitizeForEmail(legalName)}.doc`;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		});
+
+		btnExportPdf.addEventListener('click', () => { window.print(); });
+
+		[p1First, p1Middle, p1Maiden, p2First, p2Surname, namingFormatSelect, inputCertCopies, inputCertRate, inputPersoFee, inputPassFee, inputKfzFee].forEach(el => {
+			if (el) {
+				el.addEventListener('input', () => { updatePersona(); calculateFees(); });
+				el.addEventListener('change', () => { updatePersona(); calculateFees(); });
+			}
+		});
+
+		taskCheckboxes.forEach(chk => { chk.addEventListener('change', calculateFees); });
+
+		updatePersona();
+		calculateFees();
+	</script>
+</Layout>

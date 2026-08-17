@@ -1,0 +1,641 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/wedding-invitation-postage-calculator/#webapp",
+      "name": "Hochzeitseinladungen Porto- & Briefgewichts-Rechner | Manage.Wedding",
+      "url": "https://manage.wedding/de/wedding-invitation-postage-calculator",
+      "inLanguage": "de",
+      "description": "Berechnen Sie das exakte Briefporto der Deutschen Post für Hochzeitseinladungen. Berücksichtigt Papiergewicht (g/m²), Schichten, Wachssiegel, Schleifen, quadratische Formate und Portostufen (Standard-, Kompakt- und Großbrief).",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie ermittelt man das richtige Porto für Hochzeitseinladungen bei der Deutschen Post?",
+      "description": "Schritt-für-Schritt-Anleitung zum Wiegen, Vermessen von Dicke und Format sowie zur Auswahl der passenden Briefmarken ohne Nachgebühren.",
+      "inLanguage": "de",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 1: Ein Muster-Set vollständig zusammenstellen",
+          "text": "Legen Sie alle Bestandteile zusammen: Hauptumschlag, Einladungskarte, Infoblatt, Antwortkarte mit Rückumschlag, Banderole, Seidenband und Wachssiegel."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 2: Format & Quadrat-Regel prüfen",
+          "text": "Prüfen Sie die Maße. Quadratische Briefe (z. B. 15 × 15 cm) oder DIN-C5-Umschläge (für DIN A5) gelten bei der Deutschen Post automatisch als Großbrief (1,60 €)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 3: Gesamtgewicht & Dicke ermitteln",
+          "text": "Wiegen Sie das Set mit einer Küchenwaage. Bis 20 g = Standardbrief (0,85 €), bis 50 g und max. 10 mm Dicke = Kompaktbrief (1,00 €), bis 500 g oder über 10 mm Dicke (Wachssiegel) = Großbrief (1,60 €)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 4: Rückumschlag für Antwortkarten vorfrankieren",
+          "text": "Kleben Sie auf jeden beiliegenden Rückumschlag eine 0,85-€-Briefmarke (oder 0,70 € bei Postkarten), um den Gästen die Rückmeldung zu erleichtern."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "de",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wie viel Porto kostet eine Hochzeitseinladung bei der Deutschen Post?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Für eine klassische rechteckige DIN-A6- oder DIN-lang-Einladung mit Antwortkarte bis 50 Gramm zahlt man 1,00 € (Kompaktbrief). Größere DIN-A5-Einladungen (C5-Umschlag), quadratische Umschläge oder Umschläge mit erhabenem Wachssiegel kosten 1,60 € (Großbrief)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Warum kosten quadratische Briefe bei der Deutschen Post mehr Porto?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die automatischen Sortieranlagen der Deutschen Post können nur rechteckige Sendungen verarbeiten, bei denen die Länge mindestens das 1,4-fache der Breite beträgt. Quadratische Umschläge müssen von Hand sortiert werden und fallen daher immer unter den Großbrief-Tarif (1,60 €), unabhängig vom Gewicht."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Benötigen Hochzeitseinladungen mit Wachssiegel extra Porto?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja, ein Wachssiegel erhöht nicht nur das Gewicht, sondern macht den Umschlag uneben und dicker als 5 mm bzw. 10 mm. Zudem kann Wachs in Sortiermaschinen brechen. Daher sollten Briefe mit Wachssiegel als Großbrief (1,60 €) frankiert und in der Filiale zur Handsortierung aufgegeben werden."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Hochzeitseinladungen Porto-Rechner | Deutsche Post Portostufen & Briefgewicht"
+	description="Berechnen Sie das exakte Briefporto der Deutschen Post für Hochzeitseinladungen. Gewicht (Gramm), Dicke (mm), Standardbrief (0,85 €), Kompaktbrief (1,00 €), Großbrief (1,60 €), Wachssiegel & Quadrat-Zuschläge."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Porto- & Briefgewichtsrechner" category="stationery-creative" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Deutsche Post Portostufen 2026</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Hochzeitseinladungen <span class="accent-italic">Porto- & Gewichtsrechner</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Vermeiden Sie Nachporto und gelbe Rücksendeaufkleber! Berechnen Sie das genaue Gewicht in Gramm, prüfen Sie Sonderformate (Quadrat, Wachssiegel, DIN A5) und erstellen Sie Ihre Briefmarken-Einkaufsliste.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Suite Component Builder & Weight Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Bestandteile des Einladungs-Sets
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Deutsche Post Tarife
+					</span>
+				</div>
+
+				<!-- Suite Preset Picker -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="suite-preset" style="font-weight: 700; font-size: 0.95rem;">Typisches Set-Muster wählen</label>
+					<select id="suite-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600; width: 100%; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px;">
+						<option value="classic" selected>💌 Klassisches A6 / DIN-Lang Set (300 g/m² + RSVP + Umschlag / ~24 g = Kompaktbrief 1,00 €)</option>
+						<option value="din-a5">🏰 DIN A5 Großes Set (C5 Umschlag + A5 Karte + Einleger / ~38 g = Großbrief 1,60 €)</option>
+						<option value="luxury-wax">👑 Luxus-Set mit Wachssiegel & Schleife (Schwere Karte + Siegel / = Großbrief 1,60 €)</option>
+						<option value="square">🔲 Quadratisches Set 15×15 cm (Sonderformat = Automatisch Großbrief 1,60 €)</option>
+						<option value="minimalist">🌿 Minimalistische Postkarte (QR-Code RSVP / ~8 g = Standardbrief 0,85 €)</option>
+						<option value="custom">✏️ Eigene Gewichte & Bestandteile eingeben</option>
+					</select>
+				</div>
+
+				<!-- Total Households / Invitations Count -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="invitation-count" style="font-weight: 700; font-size: 0.95rem;">Anzahl der Haushalte / Briefumschläge</label>
+					<input type="number" id="invitation-count" class="form-input" value="65" min="5" max="500" style="width: 100%; padding: 0.6rem; font-size: 1.1rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 4px;" />
+				</div>
+
+				<!-- Outer Envelope Style -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="outer-envelope-type" style="font-weight: 700; font-size: 0.95rem;">Format des Briefumschlags</label>
+					<select id="outer-envelope-type" class="form-input" style="cursor: pointer; width: 100%; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px;">
+						<option value="c6-dl" selected>DIN C6 (114×162 mm) oder DIN Lang (110×220 mm) — Standardformat (5 g)</option>
+						<option value="c5-a5">DIN C5 (162×229 mm für DIN A5) — Großbrief-Format (8 g)</option>
+						<option value="square-15">Quadratisch (155×155 mm) — Sonderformat / Handsortierung (9 g)</option>
+					</select>
+				</div>
+
+				<!-- Cardstock Thickness (Main Invitation) -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="cardstock-weight" style="font-weight: 700; font-size: 0.95rem;">Papierstärke der Hauptkarte</label>
+					<select id="cardstock-weight" class="form-input" style="cursor: pointer; width: 100%; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px;">
+						<option value="300gsm" selected>Hochwertiger Feinkarton (300–350 g/m²) — ca. 8–12 g</option>
+						<option value="600gsm">Extra dicker Letterpress / Baumwollkarton (500–600 g/m²) — ca. 18–24 g</option>
+						<option value="acrylic">Acrylglas-Karte (2 mm Plexiglas / Starr) — ca. 45 g (Großbrief)</option>
+					</select>
+				</div>
+
+				<!-- Additional Inserts (Checkboxes) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Beilagen, Einleger & Veredelungen
+					</strong>
+
+					<div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.92rem;">
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-details-card" checked style="width: 18px; height: 18px;" />
+							<span>Infokarte / Ablauf & Hotelempfehlung (+ 5 g)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-rsvp-card" checked style="width: 18px; height: 18px;" />
+							<span>Antwortkarte (RSVP) + vorfrankierter C6-Rückumschlag (+ 8 g)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-vellum" style="width: 18px; height: 18px;" />
+							<span>Transparentpapier-Umschlag (Vellum Jacket) (+ 4 g)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--accent-red); font-weight: 700;">
+							<input type="checkbox" id="check-wax-seal" style="width: 18px; height: 18px;" />
+							<span>Echtes Wachssiegel (+ 4 g, unebene Dicke ➔ Großbrief)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--accent-blue); font-weight: 700;">
+							<input type="checkbox" id="check-ribbon" style="width: 18px; height: 18px;" />
+							<span>Seidenband / Kordelknoten (+ 3 g, erhabene Dicke)</span>
+						</label>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results, Stamp Shopping List & Non-Machinable Warnings -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Postage Rate & Stamp Recommendation Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Benötigte Portostufe pro Brief
+						</span>
+						<span id="stamp-category-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							Kompaktbrief (1,00 €)
+						</span>
+					</div>
+
+					<div id="display-rate-per-envelope" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						1,00 €
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Gesamtgewicht pro Einladung: <strong id="display-total-weight-g" style="color: var(--fg-pencil);">26,0 Gramm</strong> (<span id="display-total-weight-oz">0.92 oz</span>).
+					</p>
+
+					<!-- Itemized Stamp Shopping List -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<strong style="display: block; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+							📮 Porto-Einkaufsliste (<span id="shopping-household-count">65</span> Einladungen):
+						</strong>
+						
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span id="outer-stamp-desc">65 × Hauptbriefe:</span>
+							<strong id="outer-stamp-cost">65,00 €</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span id="rsvp-stamp-desc">65 × Antwort-Rückumschläge (Standardbrief 0,85 €):</span>
+							<strong id="rsvp-stamp-cost">55,25 €</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.5rem 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--accent-red);">
+							<span>GESAMTES PORTO-BUDGET:</span>
+							<strong id="display-grand-total-postage">120,25 €</strong>
+						</div>
+					</div>
+
+					<!-- Non-Machinable / Grossbrief Alert Box -->
+					<div id="non-machinable-alert" style="display: none; background: #fef2f2; border: 1.5px solid #ef4444; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.88rem; color: #991b1b; line-height: 1.5;">
+						<strong>⚠️ Großbrief-Tarif erforderlich (1,60 €):</strong><br />
+						<span id="non-machinable-reasons">Ausgelöst durch: Quadratisches Format oder Wachssiegel. Diese Sendungen müssen manuell sortiert werden.</span>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-postage" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Filial-Einkaufsliste drucken (PDF)
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Word-Export (.doc)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Deutsche Post Tips Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						💌 Wichtige Tipps für den Postversand:
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Nicht in den Straßenbriefkasten werfen:</strong> Bringen Sie Hochzeitseinladungen immer direkt an den Schalter in der Postfiliale. So vermeiden Sie Knicke durch schwere Pakete in Einwurfkästen.</li>
+						<li><strong>1 Musterbrief vorab wiegen lassen:</strong> Lassen Sie vor dem Kauf aller Briefmarken ein komplett befülltes Exemplar am Schalter wiegen und durch die Prüfschablone ziehen.</li>
+						<li><strong>Individuelle Briefmarken (Briefmarke Individuell):</strong> Bei der Deutschen Post können Sie eigene Hochzeitsfotos als echte, gültige Briefmarken drucken lassen!</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Auf einen Blick (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Deutsche Post Portostufen für Briefe im Überblick
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Hier ist die Übersicht der Portostufen für Hochzeitspapeterie innerhalb Deutschlands.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📬 Die Deutsche Post Faustregel für Einladungen:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Rechteckig ≤ 20 g (Dicke ≤ 5 mm) = 0,85 € • Rechteckig ≤ 50 g (Dicke ≤ 10 mm) = 1,00 € • DIN A5 / C5, Quadratisch oder Wachssiegel = 1,60 € (Großbrief).
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Briefformat / Set-Typ</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Max. Maße & Dicke</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Max. Gewicht</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Porto Deutschland</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Standardbrief (z. B. Postkarte / dünne Karte)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">23,5 × 12,5 cm (Dicke bis 5 mm)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Bis 20 g</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">0,85 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Kompaktbrief (Klassisches A6 / DIN-Lang Set)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">23,5 × 12,5 cm (Dicke bis 10 mm)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Bis 50 g</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">1,00 €</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Großbrief (DIN A5 / C5, Quadratisch, Wachssiegel)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">35,3 × 25,0 cm (Dicke bis 20 mm)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Bis 500 g</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">1,60 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Maxibrief (Einladungsboxen / Geschenkkarton)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">35,3 × 25,0 cm (Dicke bis 50 mm)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Bis 1.000 g</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">2,75 €</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Der vollständige Ratgeber für den Postversand von Hochzeitseinladungen
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Gewichtsstaffeln, Nachgebühren vermeiden und persönliche Briefmarken gestalten.
+				</p>
+			</div>
+
+			<!-- Section 1: Non-Machinable Explained -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Warum Wachssiegel und quadratische Umschläge als Großbrief gelten
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					In den Briefzentren der Deutschen Post rasen Briefe mit enormer Geschwindigkeit durch Rollensortieranlagen. Ein Brief kann nur dann vollautomatisch maschinell sortiert werden, wenn:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li>Die Länge mindestens das 1,4-fache der Breite beträgt (quadratische Umschläge haben ein Verhältnis von 1,0 und blockieren die Anlage).</li>
+					<li>Die Dicke gleichmäßig flach ist und nirgendwo 10 mm überschreitet.</li>
+					<li>Keine harten oder splitternden Gegenstände (Wachssiegel, Holz- oder Acryleinleger) vorhanden sind.</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Häufig gestellte Fragen (FAQ)
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Müssen Antwortumschläge frankiert beigelegt werden?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Nach gutem Hochzeitsknigge frankiert das Brautpaar den beiliegenden Rückumschlag mit einer Standardbrief-Briefmarke (0,85 €) oder Postkarten-Briefmarke (0,70 €) vor und beschriftet ihn mit der eigenen Adresse.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Was passiert bei Unterfrankierung?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Wird ein Brief zu gering frankiert (z. B. 0,85 € statt 1,00 €), sendet die Post den Brief entweder mit einem gelben Nachgebühr-Vermerk an den Absender zurück oder verlangt vom Empfänger ein Einziehungsentgelt (Nachporto).
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/de/wedding-invitation-postage-calculator" category="stationery" />
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('suite-preset');
+		const invitationCountInput = document.getElementById('invitation-count');
+		const outerEnvSelect = document.getElementById('outer-envelope-type');
+		const cardstockSelect = document.getElementById('cardstock-weight');
+
+		const checkDetails = document.getElementById('check-details-card');
+		const checkRsvp = document.getElementById('check-rsvp-card');
+		const checkVellum = document.getElementById('check-vellum');
+		const checkWax = document.getElementById('check-wax-seal');
+		const checkRibbon = document.getElementById('check-ribbon');
+
+		const displayRate = document.getElementById('display-rate-per-envelope');
+		const stampCategoryBadge = document.getElementById('stamp-category-badge');
+		const displayWeightOz = document.getElementById('display-total-weight-oz');
+		const displayWeightG = document.getElementById('display-total-weight-g');
+
+		const shoppingHouseholdCount = document.getElementById('shopping-household-count');
+		const outerStampDesc = document.getElementById('outer-stamp-desc');
+		const outerStampCost = document.getElementById('outer-stamp-cost');
+		const rsvpStampDesc = document.getElementById('rsvp-stamp-desc');
+		const rsvpStampCost = document.getElementById('rsvp-stamp-cost');
+		const displayGrandTotalPostage = document.getElementById('display-grand-total-postage');
+
+		const nonMachinableAlert = document.getElementById('non-machinable-alert');
+		const nonMachinableReasons = document.getElementById('non-machinable-reasons');
+
+		const btnPrint = document.getElementById('btn-print-postage');
+		const btnDoc = document.getElementById('btn-export-doc');
+
+		function calculatePostage() {
+			const count = parseInt(invitationCountInput.value, 10) || 1;
+			shoppingHouseholdCount.textContent = count;
+
+			// Weight Component Math (Grams)
+			let weightG = 0;
+
+			// Outer Envelope
+			if (outerEnvSelect.value === 'c6-dl') weightG += 5;
+			else if (outerEnvSelect.value === 'c5-a5') weightG += 8;
+			else if (outerEnvSelect.value === 'square-15') weightG += 9;
+
+			// Main Card
+			if (cardstockSelect.value === '300gsm') {
+				weightG += (outerEnvSelect.value === 'c5-a5' ? 14 : 9);
+			} else if (cardstockSelect.value === '600gsm') {
+				weightG += (outerEnvSelect.value === 'c5-a5' ? 28 : 18);
+			} else if (cardstockSelect.value === 'acrylic') {
+				weightG += 45;
+			}
+
+			// Inserts
+			if (checkDetails.checked) weightG += 5;
+			if (checkRsvp.checked) weightG += 8;
+			if (checkVellum.checked) weightG += 4;
+			if (checkWax.checked) weightG += 4;
+			if (checkRibbon.checked) weightG += 3;
+
+			// Check Non-Machinable / Grossbrief Triggers
+			let isGrossbrief = false;
+			const reasons = [];
+
+			if (outerEnvSelect.value === 'square-15') {
+				isGrossbrief = true;
+				reasons.push('Quadratisches Sonderformat (15×15 cm)');
+			}
+			if (outerEnvSelect.value === 'c5-a5') {
+				isGrossbrief = true;
+				reasons.push('DIN C5 Format (über 23,5 cm Länge/12,5 cm Breite)');
+			}
+			if (checkWax.checked) {
+				isGrossbrief = true;
+				reasons.push('Wachssiegel (unebene Dicke / starres Element)');
+			}
+			if (cardstockSelect.value === 'acrylic') {
+				isGrossbrief = true;
+				reasons.push('Starre Acrylkarte');
+			}
+
+			// Deutsche Post Portostufen 2026
+			let outerRate = 0.85;
+			let stampName = 'Standardbrief (0,85 €)';
+
+			if (isGrossbrief || weightG > 50) {
+				outerRate = 1.60;
+				stampName = 'Großbrief (1,60 €)';
+			} else if (weightG > 20) {
+				outerRate = 1.00;
+				stampName = 'Kompaktbrief (1,00 €)';
+			} else {
+				outerRate = 0.85;
+				stampName = 'Standardbrief (0,85 €)';
+			}
+
+			const rsvpRate = checkRsvp.checked ? 0.85 : 0; // Standardbrief für Rückumschlag
+
+			const totalOuterPostage = outerRate * count;
+			const totalRsvpPostage = rsvpRate * count;
+			const grandTotal = totalOuterPostage + totalRsvpPostage;
+
+			// Update UI
+			displayRate.textContent = `${outerRate.toFixed(2).replace('.', ',')} €`;
+			stampCategoryBadge.textContent = stampName;
+			displayWeightG.textContent = `${weightG.toFixed(1).replace('.', ',')} Gramm`;
+			displayWeightOz.textContent = `${(weightG / 28.3495).toFixed(2)} oz`;
+
+			outerStampDesc.textContent = `${count} × Hauptbrief (${stampName}):`;
+			outerStampCost.textContent = `${totalOuterPostage.toFixed(2).replace('.', ',')} €`;
+
+			if (checkRsvp.checked) {
+				rsvpStampDesc.textContent = `${count} × Antwort-Rückumschläge (Standardbrief 0,85 €):`;
+				rsvpStampCost.textContent = `${totalRsvpPostage.toFixed(2).replace('.', ',')} €`;
+			} else {
+				rsvpStampDesc.textContent = `0 × Rückumschläge (Digitale Rückmeldung):`;
+				rsvpStampCost.textContent = `0,00 €`;
+			}
+
+			displayGrandTotalPostage.textContent = `${grandTotal.toFixed(2).replace('.', ',')} €`;
+
+			if (isGrossbrief) {
+				nonMachinableAlert.style.display = 'block';
+				nonMachinableReasons.textContent = `Großbrief-Tarif (1,60 €) erforderlich durch: ${reasons.join(', ')}.`;
+			} else {
+				nonMachinableAlert.style.display = 'none';
+			}
+		}
+
+		// Preset Selector Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'classic') {
+				outerEnvSelect.value = 'c6-dl';
+				cardstockSelect.value = '300gsm';
+				checkDetails.checked = true;
+				checkRsvp.checked = true;
+				checkVellum.checked = false;
+				checkWax.checked = false;
+				checkRibbon.checked = false;
+			} else if (p === 'din-a5') {
+				outerEnvSelect.value = 'c5-a5';
+				cardstockSelect.value = '300gsm';
+				checkDetails.checked = true;
+				checkRsvp.checked = true;
+				checkVellum.checked = false;
+				checkWax.checked = false;
+				checkRibbon.checked = false;
+			} else if (p === 'luxury-wax') {
+				outerEnvSelect.value = 'c6-dl';
+				cardstockSelect.value = '600gsm';
+				checkDetails.checked = true;
+				checkRsvp.checked = true;
+				checkVellum.checked = true;
+				checkWax.checked = true;
+				checkRibbon.checked = true;
+			} else if (p === 'square') {
+				outerEnvSelect.value = 'square-15';
+				cardstockSelect.value = '300gsm';
+				checkDetails.checked = true;
+				checkRsvp.checked = true;
+				checkVellum.checked = false;
+				checkWax.checked = false;
+				checkRibbon.checked = false;
+			} else if (p === 'minimalist') {
+				outerEnvSelect.value = 'c6-dl';
+				cardstockSelect.value = '300gsm';
+				checkDetails.checked = false;
+				checkRsvp.checked = false;
+				checkVellum.checked = false;
+				checkWax.checked = false;
+				checkRibbon.checked = false;
+			}
+			calculatePostage();
+		});
+
+		// Live Listeners
+		[invitationCountInput, outerEnvSelect, cardstockSelect, checkDetails, checkRsvp, checkVellum, checkWax, checkRibbon].forEach(inp => {
+			inp.addEventListener('input', calculatePostage);
+			inp.addEventListener('change', calculatePostage);
+		});
+
+		// Print Post Office Sheet
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Deutsche Post Hochzeitseinladungen Porto-Checkliste — Manage.Wedding</title>
+					<style>
+						@page { size: A4; margin: 15mm; }
+						body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 18pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Deutsche Post Portoplan für Hochzeitseinladungen</h1>
+					<p>Anzahl Briefe: ${invitationCountInput.value} | Berechnetes Gewicht: ${displayWeightG.textContent}</p>
+					
+					<table>
+						<thead><tr><th>Porto-Posten</th><th>Portostufe</th><th>Anzahl</th><th>Gesamtbetrag (€)</th></tr></thead>
+						<tbody>
+							<tr><td><strong>Haupt-Einladungsbriefe</strong></td><td>${stampCategoryBadge.textContent}</td><td>${invitationCountInput.value}</td><td>${outerStampCost.textContent}</td></tr>
+							<tr><td><strong>Antwort-Rückumschläge</strong></td><td>Standardbrief (0,85 €)</td><td>${checkRsvp.checked ? invitationCountInput.value : 0}</td><td>${rsvpStampCost.textContent}</td></tr>
+							<tr class="total-row"><td>GESAMTES PORTO-BUDGET</td><td>—</td><td>—</td><td>${displayGrandTotalPostage.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Export Word Doc
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Deutsche Post Porto-Checkliste</title>
+				<style>body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Deutsche Post Porto-Checkliste</h2>
+					<p>Einladungen: ${invitationCountInput.value} | Gewicht: ${displayWeightG.textContent} | <strong>Gesamtporto: ${displayGrandTotalPostage.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Sendung</th><th>Portostufe</th><th>Kosten</th></tr></thead>
+						<tbody>
+							<tr><td>Hauptbriefe</td><td>${stampCategoryBadge.textContent}</td><td>${outerStampCost.textContent}</td></tr>
+							<tr><td>Antwortumschläge</td><td>Standardbrief (0,85 €)</td><td>${rsvpStampCost.textContent}</td></tr>
+							<tr style="font-weight:bold; background-color:#eee;"><td>GESAMT</td><td>—</td><td>${displayGrandTotalPostage.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'deutsche-post-porto-checkliste.doc';
+			link.click();
+		});
+
+		// Initial Calculation
+		calculatePostage();
+	</script>
+</Layout>

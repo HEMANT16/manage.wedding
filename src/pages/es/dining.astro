@@ -1,0 +1,259 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Calculadoras de Barra Libre, Banquete y Pastel de Boda (Gratis y con PDF)";
+const description = "Calculadoras gratuitas para bodas: estimador de barra libre y bebidas, botellas de licor y vino, precios de pastel nupcial y creador de minutas de menú.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://manage.wedding/es/dining/#collection",
+      "name": "Calculadoras de Barra Libre, Banquete y Pastel de Boda",
+      "url": "https://manage.wedding/es/dining",
+      "inLanguage": "es",
+      "description": "Herramientas interactivas para calcular bebidas y barra libre, porciones y pisos de tarta nupcial, presupuestos de catering y diseño de minutas de menú.",
+      "hasPart": [
+        { "@type": "WebApplication", "name": "Calculadora de Barra Libre y Bebidas", "url": "https://manage.wedding/es/wedding-drink-calculator" },
+        { "@type": "WebApplication", "name": "Calculadora de Licores y Botellas Grandes", "url": "https://manage.wedding/es/liquor-wedding-calculator" },
+        { "@type": "WebApplication", "name": "Calculadora de Precios de Tarta Nupcial", "url": "https://manage.wedding/es/cake-pricing-calculator" },
+        { "@type": "WebApplication", "name": "Calculadora de Pisos y Porciones de Tarta", "url": "https://manage.wedding/es/cake-serving-calculator" },
+        { "@type": "WebApplication", "name": "Diseñador de Minutas y Menús de Boda", "url": "https://manage.wedding/es/reception-menu-maker" },
+        { "@type": "WebApplication", "name": "Estimador de Banquete Servido vs Buffet", "url": "https://manage.wedding/es/catering-cost-estimator" },
+        { "@type": "WebApplication", "name": "Calculadora de Dilución y Cócteles", "url": "https://manage.wedding/es/alcohol-dilution-calculator" },
+        { "@type": "WebApplication", "name": "Estimador de Flores y Ramos de Boda", "url": "https://manage.wedding/es/floral-cost-estimator" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuántas bebidas por persona se deben calcular para una boda?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La fórmula estándar de la hostelería es: 2 consumiciones por invitado durante el cóctel de bienvenida (primera hora), más 1 consumición por persona por cada hora posterior de la fiesta y barra libre. Para una boda de 5 horas con 150 invitados, se calculan aproximadamente 900 consumiciones totales."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuántas botellas de vino, cerveza y licor se necesitan para 100 invitados?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Para una barra libre estándar de 4 horas con 100 invitados (unas 500 consumiciones): calcula aproximadamente 50 botellas de vino (25 tinto, 25 blanco/rosado), 150-200 cervezas, y 12-14 botellas de 750ml de destilados (o 6-7 botellas de formato grande de 1.75L)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto cuesta una tarta nupcial o pastel de boda por porción?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Las tartas nupciales artesanales personalizadas suelen costar entre 4,50€ y 10€+ por ración, dependiendo de la complejidad del diseño, flores de azúcar naturales, horas de trabajo del repostero y gastos de entrega y montaje en la finca."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const diningTools = [
+  {
+    title: "Calculadora de Barra Libre y Bebidas",
+    url: "/es/wedding-drink-calculator",
+    icon: "🍾",
+    badge: "Más Utilizada",
+    desc: "Calcula con exactitud el número de botellas de vino, cerveza, licores y refrescos según el número de invitados y horas de barra libre.",
+    tags: ["Barra Libre", "PDF en 1 Clic", "Lista de Compra"]
+  },
+  {
+    title: "Licores y Botellas Grandes (1.75L)",
+    url: "/es/liquor-wedding-calculator",
+    icon: "🍸",
+    badge: "Ahorro en Botellas",
+    desc: "Diseñada para barras de cócteles completas. Optimiza la proporción de ginebra, ron, vodka y whisky entre botellas de 70cl y botellas grandes.",
+    tags: ["Proporciones Cóctel", "70cl vs 1.75L", "Costes de Compra"]
+  },
+  {
+    title: "Diseñador de Minutas de Boda (4x9)",
+    url: "/es/reception-menu-maker",
+    icon: "📜",
+    badge: "PDF Vectorial",
+    desc: "Diseña minutas elegantes de mesa en formatos DL 4x9 y 5x7 con tipografías clásicas, marcos botánicos y distintivos para alérgenos.",
+    tags: ["Tipografías Elegantes", "PDF Listo para Imprimir", "Alérgenos"]
+  },
+  {
+    title: "Precios de Tarta Nupcial",
+    url: "/es/cake-pricing-calculator",
+    icon: "🎂",
+    badge: "Precio por Ración",
+    desc: "Para reposteros y novios: calcula costes de ingredientes, margen de mano de obra, precio por porción y presupuesto detallado para clientes.",
+    tags: ["Cálculo Repostero", "Precio por Ración", "Presupuesto PDF"]
+  },
+  {
+    title: "Pisos y Porciones de Pastel de Boda",
+    url: "/es/cake-serving-calculator",
+    icon: "🍰",
+    badge: "Visualizador de Pisos",
+    desc: "Calcula el diámetro y altura de cada piso, tamaño de corte de ración y combinación con tarta de corte trasera para 50 a 300+ comensales.",
+    tags: ["Dimensiones Pisos", "Tarta de Cocina", "Guía de Corte"]
+  },
+  {
+    title: "Mesa de Postres, Galletas & Candy Bar",
+    url: "/es/wedding-dessert-table-calculator",
+    icon: "🧁",
+    badge: "Mesa Dulce",
+    desc: "Calcula bocaditos por invitado, docenas de repostería, kilos de golosinas para candy bar y descarga carteles y pedidos en PDF.",
+    tags: ["Mesa Dulce", "Bocaditos por Persona", "Candy Bar kg"]
+  },
+  {
+    title: "Banquete Servido vs Buffet",
+    url: "/es/catering-cost-estimator",
+    icon: "🍽️",
+    badge: "Coste por Cubierto",
+    desc: "Compara el precio por persona entre menú tradicional servido en mesa, buffet libre, cóctel largo y puestos gastronómicos con ratio de camareros.",
+    tags: ["Servido vs Buffet", "Coste por Persona", "Ratios de Personal"]
+  },
+  {
+    title: "Dilución de Alcohol y Cócteles",
+    url: "/es/alcohol-dilution-calculator",
+    icon: "🧪",
+    badge: "Para Bartenders",
+    desc: "Ajusta con precisión la graduación alcohólica (% ABV) y los volúmenes de mezcla para cócteles preparados en lote o fuentes.",
+    tags: ["Grados de Alcohol", "Cócteles en Lote", "Mezclas Exactas"]
+  },
+  {
+    title: "Estimador de Flores y Decoración",
+    url: "/es/floral-cost-estimator",
+    icon: "💐",
+    badge: "Precio por Tallo",
+    desc: "Estima el presupuesto floral para ramo de novia, prendidos de solapa, centros de mesa y arco ceremonial para el 'sí, quiero'.",
+    tags: ["Coste de Flores", "Centros de Mesa", "Arco Ceremonial"]
+  }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+    
+    <!-- Hero Header -->
+    <header class="fade-in category-header" style="text-align: center; margin-bottom: 3rem; position: relative;">
+      <div class="tape" style="margin: 0 auto 1rem;"></div>
+      <span class="badge-postit">Centro de Hostelería y Banquete</span>
+      <h1 class="font-heading" style="font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+        Calculadoras de <span class="accent-italic">Banquete, Barra y Pastel</span>
+      </h1>
+      <p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+        Calcula con exactitud las bebidas de la barra libre, dimensiona la tarta nupcial, estima el coste del catering y crea minutas de menú listas para imprimir.
+      </p>
+    </header>
+
+    <!-- Category Nav Bar -->
+    <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+      <span style="font-size: 0.9rem; font-weight: 700; color: #64748b; align-self: center;">Explorar Categorías:</span>
+      <a href="/es/budget" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💰 Presupuesto</a>
+      <a href="/es/dining" class="tool-tag" style="background: var(--post-it); font-weight: 700; text-decoration: none; padding: 6px 14px; border: 2px solid var(--fg-pencil);">🍾 Banquete y Barra (Activo)</a>
+      <a href="/es/guests" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">👥 Invitados y Logística</a>
+      <a href="/es/stationery" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💌 Papelería y Recuerdos</a>
+    </div>
+
+    <!-- Tools Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem; margin-bottom: 4rem;">
+      {diningTools.map(tool => (
+        <div class="hand-card" style="padding: 1.75rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span style="font-size: 2.2rem;">{tool.icon}</span>
+              <span style="font-size: 0.78rem; font-weight: 700; background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+                {tool.badge}
+              </span>
+            </div>
+            
+            <h2 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+              {tool.title}
+            </h2>
+            
+            <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 0.75rem;">
+              {tool.tags.map(t => (
+                <span class="tool-tag" style="font-size: 0.75rem; padding: 2px 6px;">{t}</span>
+              ))}
+            </div>
+
+            <p class="font-body" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+              {tool.desc}
+            </p>
+          </div>
+
+          <a href={tool.url} class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+            Abrir Herramienta →
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- In-Depth Dining & Bar Guide -->
+    <article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+        <span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">Fórmula de Hostelería</span>
+        <h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+          Cómo Calcular la Comida y Bebida de tu Boda
+        </h2>
+        <p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+          Evita quedarte sin copas a mitad de la noche y no pagues de más por excedentes de tarta. Fórmulas probadas de catering profesional.
+        </p>
+      </div>
+
+      <section style="margin-bottom: 3rem;">
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+          1. La Regla Estándar de 1 Bebida por Hora
+        </h3>
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+          Los invitados beben con mayor rapidez durante el cóctel de bienvenida y luego el ritmo se estabiliza a una consumición por hora durante la fiesta:
+        </p>
+        
+        <div style="background: #faf8f5; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-family: var(--font-body); font-size: 1rem; line-height: 1.6;">
+          <strong>Total de Bebidas = (Nº Invitados × 2 Bebidas en Hora 1) + (Nº Invitados × 1 Bebida × Horas Restantes)</strong>
+          <br/><br/>
+          <em>Ejemplo para 150 Invitados (Boda de 5 Horas):</em> (150 × 2) + (150 × 4) = <strong>900 Consumiciones Totales</strong>.
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section>
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.25rem; text-align: center;">
+          Preguntas Frecuentes sobre el Banquete y la Barra Libre
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              ¿Cuántas bebidas por persona se deben calcular para una boda?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              La fórmula estándar de la hostelería es: 2 consumiciones por invitado durante el cóctel de bienvenida (primera hora), más 1 consumición por persona por cada hora posterior de la fiesta y barra libre. Para una boda de 5 horas con 150 invitados, se calculan aproximadamente 900 consumiciones totales.
+            </p>
+          </details>
+
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              ¿Cuántas botellas de vino, cerveza y licor se necesitan para 100 invitados?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              Para una barra libre estándar de 4 horas con 100 invitados (unas 500 consumiciones): calcula aproximadamente 50 botellas de vino (25 tinto, 25 blanco/rosado), 150-200 cervezas, y 12-14 botellas de 750ml de destilados (o 6-7 botellas de formato grande de 1.75L).
+            </p>
+          </details>
+
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              ¿Cuánto cuesta una tarta nupcial o pastel de boda por porción?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              Las tartas nupciales artesanales personalizadas suelen costar entre 4,50€ y 10€+ por ración, dependiendo de la complejidad del diseño, flores de azúcar naturales, horas de trabajo del repostero y gastos de entrega y montaje en la finca.
+            </p>
+          </details>
+        </div>
+      </section>
+
+    </article>
+
+  </main>
+</Layout>

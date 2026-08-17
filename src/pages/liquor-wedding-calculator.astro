@@ -691,11 +691,20 @@ const schema = {
 
 			// Quantities
 			const totalLiqBottles = Math.ceil(liqDrinks / drinksPerBottle);
-			const vodkaBottles = Math.ceil(totalLiqBottles * normVodka);
-			const whiskeyBottles = Math.ceil(totalLiqBottles * normWhiskey);
-			const tequilaBottles = Math.ceil(totalLiqBottles * normTequila);
-			const rumBottles = Math.ceil(totalLiqBottles * normRum);
-			const ginBottles = Math.max(1, totalLiqBottles - (vodkaBottles + whiskeyBottles + tequilaBottles + rumBottles));
+			let vodkaBottles = lVodka > 0 ? Math.round(totalLiqBottles * normVodka) : 0;
+			let whiskeyBottles = lWhiskey > 0 ? Math.round(totalLiqBottles * normWhiskey) : 0;
+			let tequilaBottles = lTequila > 0 ? Math.round(totalLiqBottles * normTequila) : 0;
+			let rumBottles = lRum > 0 ? Math.round(totalLiqBottles * normRum) : 0;
+			let ginBottles = lGin > 0 ? Math.round(totalLiqBottles * normGin) : 0;
+
+			let currentSum = vodkaBottles + whiskeyBottles + tequilaBottles + rumBottles + ginBottles;
+			if (currentSum === 0 && totalLiqBottles > 0) {
+				vodkaBottles = totalLiqBottles;
+			} else if (currentSum !== totalLiqBottles && totalLiqBottles > 0) {
+				const diff = totalLiqBottles - currentSum;
+				if (vodkaBottles > 0) vodkaBottles = Math.max(0, vodkaBottles + diff);
+				else if (whiskeyBottles > 0) whiskeyBottles = Math.max(0, whiskeyBottles + diff);
+			}
 
 			const wineBottles = Math.ceil(wineDrinks / 5);
 			const redWine = Math.ceil(wineBottles * 0.55);
@@ -783,6 +792,7 @@ const schema = {
 		// Print Shopping List
 		btnPrint.addEventListener('click', () => {
 			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
 			printWindow.document.write(`
 				<!DOCTYPE html>
 				<html>

@@ -1,0 +1,643 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/cake-pricing-calculator/#webapp",
+      "name": "Hochzeitstorten-Preisrechner & Kosten pro Portion | Konditor-Kalkulator",
+      "url": "https://manage.wedding/de/cake-pricing-calculator",
+      "inLanguage": "de",
+      "description": "Kalkulieren Sie individuelle Hochzeitstorten-Preise, Kosten pro Portion/Stück, Arbeitsstunden des Konditors, Zutatenkosten, Etagen-Zubehör, Liefergebühren und Konditorei-Margen. Inklusive druckbarem Angebot.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie berechnet man den Preis einer individuellen Hochzeitstorte?",
+      "description": "Schritt-für-Schritt-Anleitung zur fairen und wirtschaftlichen Preiskalkulation von Hochzeitstorten für Brautpaare und Konditoren.",
+      "inLanguage": "de",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 1: Portionsanzahl & Etagen wählen",
+          "text": "Geben Sie die geplante Gästezahl und den gewünschten Etagenaufbau ein (z. B. 3 Etagen für 100 bis 120 Gäste)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 2: Zutaten- & Materialkosten erfassen",
+          "text": "Kalkulieren Sie hochwertige Rohstoffe (Butter, Mehl, Eier, Edelkuvertüre, Bourbon-Vanille, Früchte) sowie Tortenplatten, Dübel (Dowels) und Transportkartons."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 3: Handwerkliche Arbeitszeit & Stundenlohn ansetzen",
+          "text": "Multiplizieren Sie die benötigten Arbeitsstunden (Backen, Füllen, Kühlen, Einstreichen, Stapeln, Dekorieren) mit einem realistischen Stundensatz (30–60 €/Std.)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 4: Design-Aufschlag & Lieferpauschale ergänzen",
+          "text": "Wählen Sie den Multiplikator für die Deko-Komplexität (von 1,1x für Naked Cakes bis 2,5x für handgefertigte Zuckerblumen) und berechnen Sie die Anfahrt zur Location."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "de",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Was kostet ein Stück Hochzeitstorte in Deutschland, Österreich und der Schweiz?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Klassische Buttercreme- und Naked Cakes kosten im Schnitt 5,50 € bis 8,00 € pro Portion. Aufwendige Fondant-Torten mit Blattgold, handmodellierten Zuckerblumen oder geometrischen Mustern kosten 8,50 € bis 14,00 €+ pro Portion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie viel spart man durch die Kombination Schautorte + Blechkuchen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Durch die Bestellung einer kleineren 2-stöckigen Schautorte für den Anschnitt und das Foto (ca. 35 Portionen) kombiniert mit passendem Blechkuchen aus der Küche (ca. 3,00 € pro Portion) sparen Paare bei 120 Gästen meist 300 € bis 500 €."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie hoch sind die Liefer- und Aufbaukosten für eine Hochzeitstorte?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Konditoreien berechnen üblicherweise 0,70 € bis 1,20 € pro gefahrenem Kilometer (Hin- und Rückfahrt) plus eine Pauschale von 40 € bis 80 € für den fachgerechten Aufbau, das Einsetzen frischer Blumen und die Übergabe an das Servicepersonal vor Ort."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Hochzeitstorten-Preisrechner | Kosten pro Portion & Konditorkalkulation"
+	description="Berechnen Sie den fairen Preis für Hochzeitstorten: Kosten pro Stück, Arbeitszeit, Zutaten, Deko-Aufschlag, Lieferkosten und Gewinnmarge für Konditoren und Brautpaare."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Torten-Preisrechner" category="dining" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Kosten pro Stück & Konditor-Preise</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Hochzeitstorten- <span class="accent-italic">Preisrechner</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Ermitteln Sie verlässliche Angebote für Hochzeitstorten basierend auf Gästeportionen, Etagenanzahl, Zutaten, Arbeitszeit, Deko-Aufwand und Lieferkosten.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Controls & Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Torten-Aufbau & Arbeitszeit
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Echtzeit-Angebot
+					</span>
+				</div>
+
+				<!-- Cake Design Archetype Presets -->
+				<div class="form-group">
+					<label class="form-label" for="cake-preset">Design- & Stilvorlage</label>
+					<select id="cake-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="textured-buttercream" selected>🌸 Strukturierte Buttercreme & Echte Blumen (Standard 1,4x)</option>
+						<option value="semi-naked">🌿 Semi-Naked & 'Naked Cake' (Rustikal 1,1x)</option>
+						<option value="smooth-fondant">👑 Glatter Fondant & Monogramm (Aufwendig 1,8x)</option>
+						<option value="sugar-art">💎 Zuckerblumen-Kunst & Blattgold (Luxus 2,5x)</option>
+						<option value="cutting-sheet">🍰 Schautorte + Blechkuchen aus der Küche (Spartrick 1,2x)</option>
+						<option value="custom">✏️ Individuelle Parameter</option>
+					</select>
+				</div>
+
+				<!-- Servings & Tier Count -->
+				<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="servings">Gästeportionen</label>
+						<input type="number" id="servings" class="form-input" value="100" min="10" max="600" step="5" style="font-size: 1.1rem; font-weight: 700;" />
+					</div>
+					<div>
+						<label class="form-label" for="tiers">Etagenanzahl</label>
+						<select id="tiers" class="form-input" style="cursor: pointer; font-weight: 700;">
+							<option value="1">1 Etage (Standesamt / Anschnitt)</option>
+							<option value="2">2 Etagen (30–60 Portionen)</option>
+							<option value="3" selected>3 Etagen (75–130 Portionen)</option>
+							<option value="4">4 Etagen (140–220 Portionen)</option>
+							<option value="5">5 Etagen (240+ Portionen)</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Ingredients & Structural Costs -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="ingredientCost">Zutatenkosten (€)</label>
+						<input type="number" id="ingredientCost" class="form-input" value="85" min="10" max="2000" step="5" style="font-weight: 600;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Butter, Mehl, Eier, Schokolade, Früchte</span>
+					</div>
+					<div>
+						<label class="form-label" for="tierSupplyCost">Etagen-Zubehör (€)</label>
+						<input type="number" id="tierSupplyCost" class="form-input" value="40" min="0" max="500" step="5" style="font-weight: 600;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Cakeboards, Dübel, Transportbox</span>
+					</div>
+				</div>
+
+				<!-- Labor Hours & Hourly Wage -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="laborHours">Handwerkliche Arbeitszeit (Std.)</label>
+						<input type="number" id="laborHours" class="form-input" value="9" min="1" max="100" step="0.5" style="font-weight: 700;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Backen, Kühlen, Einstreichen, Deko</span>
+					</div>
+					<div>
+						<label class="form-label" for="hourlyRate">Konditor-Stundenlohn (€/Std.)</label>
+						<input type="number" id="hourlyRate" class="form-input" value="38" min="15" max="150" step="2" style="font-weight: 700;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Fachgerechter Meister-/Gesellenlohn</span>
+					</div>
+				</div>
+
+				<!-- Design Complexity Markup Slider -->
+				<div class="form-group" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+						<label class="form-label" for="complexity" style="margin: 0;">
+							Künstlerischer Deko-Multiplikator:
+						</label>
+						<span id="val-complexity" style="font-size: 1.05rem; font-weight: 800; color: var(--accent-red); background: #fef2f2; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--accent-red);">
+							1,4x
+						</span>
+					</div>
+					<input type="range" id="complexity" min="1.0" max="3.0" step="0.1" value="1.4" style="width: 100%; cursor: pointer;" />
+					<div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+						<span>Schlicht / Naked (1,0x)</span>
+						<span>Strukturiert (1,5x)</span>
+						<span>Zuckerblumen & Gold (3,0x)</span>
+					</div>
+				</div>
+
+				<!-- Delivery & Setup Optional Checkbox -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">
+						<input type="checkbox" id="check-delivery" checked style="width: 18px; height: 18px;" />
+						<span>Lieferung & Vor-Ort-Aufbau berechnen</span>
+					</label>
+
+					<div id="delivery-inputs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; background: #f8fafc; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+						<div>
+							<label class="form-label" for="deliveryMiles" style="font-size: 0.85rem;">Fahrstrecke gesamt (km)</label>
+							<input type="number" id="deliveryMiles" class="form-input" value="40" min="0" max="500" step="5" />
+						</div>
+						<div>
+							<label class="form-label" for="setupFee" style="font-size: 0.85rem;">Aufbaupauschale Location (€)</label>
+							<input type="number" id="setupFee" class="form-input" value="50" min="0" max="300" step="5" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results, Slices & Profit Breakdown -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Primary Results Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Empfohlener Torten-Angebotspreis
+						</span>
+						<span id="tier-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							3 Etagen
+						</span>
+					</div>
+
+					<div id="res-total-price" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						653,80 €
+					</div>
+					
+					<!-- Price Per Slice Hero Highlight -->
+					<div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem;">
+						<span style="font-size: 1.25rem; font-weight: 800; color: var(--accent-red); background: #fee2e2; border: 1.5px solid var(--accent-red); padding: 4px 10px; border-radius: 6px;">
+							<span id="res-price-per-slice">6,54 €</span> / Portion
+						</span>
+						<span style="font-size: 0.92rem; color: var(--text-secondary);">
+							für <strong id="res-servings-label" style="color: var(--fg-pencil);">100 Gästeportionen</strong>
+						</span>
+					</div>
+
+					<!-- Visual Cost Split Bar -->
+					<h4 class="font-heading" style="font-size: 0.95rem; margin-bottom: 0.4rem; color: var(--fg-pencil);">
+						Kosten- & Margen-Aufteilung
+					</h4>
+					<div style="display: flex; height: 26px; border: 2px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; margin-bottom: 0.5rem; font-size: 0.78rem; font-weight: 800; color: #fff; text-align: center; line-height: 26px;">
+						<div id="bar-materials" style="background-color: var(--accent-blue); width: 17%; transition: width 0.2s;" title="Material">Material</div>
+						<div id="bar-labor" style="background-color: var(--fg-pencil); width: 47%; transition: width 0.2s;" title="Arbeitslohn">Lohn</div>
+						<div id="bar-profit" style="background-color: var(--accent-red); width: 25%; transition: width 0.2s;" title="Gewinnmarge">Marge</div>
+						<div id="bar-delivery" style="background-color: #16a34a; width: 11%; transition: width 0.2s;" title="Lieferung">Lieferung</div>
+					</div>
+
+					<!-- Itemized Cost Breakdown Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin: 1.25rem 0;">
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>🍰 Zutaten & Etagen-Zubehör:</span>
+							<strong id="res-materials-total">125,00 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>👩‍🍳 Handwerklicher Arbeitslohn (<span id="res-labor-hours-label">9 Std. à 38 €/Std.</span>):</span>
+							<strong id="res-labor-total">342,00 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>📈 Konditorei-Gewinnmarge (<span id="res-profit-margin-pct">29%</span>):</span>
+							<strong id="res-profit-dollars" style="color: var(--accent-red);">186,80 €</strong>
+						</div>
+						<div id="row-delivery-fee" style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>🚚 Anfahrt (40 km) & Aufbau vor Ort:</span>
+							<strong id="res-delivery-total">82,00 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.5rem 0 0 0; font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil);">
+							<span>Gesamtangebot (Inkl. Lieferung):</span>
+							<span id="res-invoice-total" style="color: var(--accent-red);">735,80 €</span>
+						</div>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-cake-quote" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Angebot drucken (PDF)
+						</button>
+						<button id="btn-export-cake-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Word-Angebot (.doc)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Cutting Cake Strategy Callout -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						💡 Der Schautorten-Spartrick:
+					</strong>
+					<p style="margin: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						Sparen Sie bis zu <strong>40–50% (300–500 €)</strong>, indem Sie eine elegante 2-stöckige Schautorte für Fotos und den Anschnitt (ca. 35 Portionen) bestellen und für die restlichen Gäste passenden Blechkuchen (ca. 3,00 €/Portion) aus der Küche servieren lassen!
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Auf einen Blick (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Tortenpreis- & Portionskosten-Matrix
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Vergleichsübersicht von Deko-Stilen, Multiplikatoren, durchschnittlichen Portionspreisen und Gesamtkosten für 100 bis 150 Gäste:
+				</p>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<strong class="font-heading" style="font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; display: block; text-align: center;">
+					📐 Die professionelle Konditor-Kalkulationsformel:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5; text-align: center; font-weight: 600;">
+					Gesamtpreis = [Zutaten + Zubehör + (Arbeitszeit in Std. × Stundensatz)] × Deko-Faktor (1,1× – 3,0×) + Lieferpauschale.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.90rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Torten-Stil & Deko-Aufwand</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Faktor</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Preis pro Stück</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">100 Gäste</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">150 Gäste</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Schautorte + Blechkuchen</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1,1× – 1,2×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: #16a34a;">3,50 € – 4,80 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">350 € – 480 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">525 € – 720 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--fg-pencil);">Naked Cake / Semi-Naked Rustikal</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1,1× – 1,3×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">5,00 € – 6,50 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">500 € – 650 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">750 € – 975 €</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">⭐ Strukturierte Buttercreme & Frische Blumen</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1,4× – 1,6×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: var(--accent-blue);">6,50 € – 8,50 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">650 € – 850 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">975 € – 1.275 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Glatter Fondant, Perlen & Drip</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1,8× – 2,2×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">8,50 € – 11,00 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">850 € – 1.100 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">1.275 € – 1.650 €</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #b45309;">Handmodellierte Zuckerblumen & Blattgold</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">2,5× – 3,0×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: var(--accent-red);">12,00 € – 16,00 €+</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">1.200 € – 1.600 €+</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">1.800 € – 2.400 €+</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Leitfaden: Hochzeitstorten wirtschaftlich & fair kalkulieren
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Transparenz für Konditoren, Cake Designer und Brautpaare bei der Budgetplanung.
+				</p>
+			</div>
+
+			<!-- Section 1: Pricing Mistake -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Der größte Kalkulationsfehler: Arbeitszeit unter Wert verkaufen
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Viele Hobbybäcker und Jungunternehmer multiplizieren lediglich die reinen Supermarkt-Zutatenkosten (Mehl, Butter, Eier) mit dem Faktor 2 oder 3. Das führt zu massiven Verlusten, da eine mehrstöckige Hochzeitstorte 8 bis 18 Stunden hochpräzise Handarbeit (Backen, Abkühlen, Schichten, Einstreichen, Kühlen, statisches Dübeln und kunstvolles Verzieren) erfordert.
+				</p>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil);">
+					<strong>Konditoren-Regel:</strong> Setzen Sie stets zuerst einen vollen handwerklichen Stundenlohn an (35–50 €/Std.) und addieren Sie danach 25% bis 35% Gewinnmarge für betriebliche Fixkosten, Equipment-Verschleiß und Steuern.
+				</p>
+			</section>
+
+			<!-- Section 2: Delivery & Stacking -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. Lieferung, Kühlkette & Vor-Ort-Aufbau
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Der Transport einer mehrstöckigen Torte ist der heikelste Teil des Auftrags. Bieten Sie die Lieferung niemals kostenlos an:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem;">
+					<li><strong>Kilometerpauschale:</strong> 0,70 € bis 1,20 € pro gefahrenem Kilometer (Hin- und Rückweg).</li>
+					<li><strong>Aufbaupauschale Location:</strong> 40 € bis 80 € für das Platzieren auf dem Tortenständer, Einstecken frischer Blüten und die Einweisung des Servicepersonals.</li>
+				</ul>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/de/cake-pricing-calculator" category="dining" />
+
+	</main>
+
+	<!-- Interactive Calculation Script -->
+	<script is:inline>
+		const presetSelect = document.getElementById('cake-preset');
+		const servingsInput = document.getElementById('servings');
+		const tiersSelect = document.getElementById('tiers');
+		const ingredientInput = document.getElementById('ingredientCost');
+		const tierSupplyInput = document.getElementById('tierSupplyCost');
+		const laborHoursInput = document.getElementById('laborHours');
+		const hourlyRateInput = document.getElementById('hourlyRate');
+		const complexityInput = document.getElementById('complexity');
+		const valComplexity = document.getElementById('val-complexity');
+
+		const chkDelivery = document.getElementById('check-delivery');
+		const deliveryBox = document.getElementById('delivery-inputs');
+		const deliveryMilesInput = document.getElementById('deliveryMiles');
+		const setupFeeInput = document.getElementById('setupFee');
+
+		const resTotalPrice = document.getElementById('res-total-price');
+		const resPricePerSlice = document.getElementById('res-price-per-slice');
+		const resServingsLabel = document.getElementById('res-servings-label');
+		const tierBadge = document.getElementById('tier-badge');
+
+		const barMaterials = document.getElementById('bar-materials');
+		const barLabor = document.getElementById('bar-labor');
+		const barProfit = document.getElementById('bar-profit');
+		const barDelivery = document.getElementById('bar-delivery');
+
+		const resMaterialsTotal = document.getElementById('res-materials-total');
+		const resLaborHoursLabel = document.getElementById('res-labor-hours-label');
+		const resLaborTotal = document.getElementById('res-labor-total');
+		const resProfitMarginPct = document.getElementById('res-profit-margin-pct');
+		const resProfitDollars = document.getElementById('res-profit-dollars');
+		const rowDeliveryFee = document.getElementById('row-delivery-fee');
+		const resDeliveryTotal = document.getElementById('res-delivery-total');
+		const resInvoiceTotal = document.getElementById('res-invoice-total');
+
+		const btnPrint = document.getElementById('btn-print-cake-quote');
+		const btnDoc = document.getElementById('btn-export-cake-doc');
+
+		function calculateCakePricing() {
+			const servings = parseInt(servingsInput.value, 10) || 1;
+			const tiers = parseInt(tiersSelect.value, 10) || 1;
+			const ingredients = parseFloat(ingredientInput.value) || 0;
+			const hardware = parseFloat(tierSupplyInput.value) || 0;
+			const laborHours = parseFloat(laborHoursInput.value) || 0;
+			const hourlyRate = parseFloat(hourlyRateInput.value) || 0;
+			const complexity = parseFloat(complexityInput.value) || 1.0;
+
+			valComplexity.textContent = `${complexity.toFixed(1).replace('.', ',')}x`;
+			tierBadge.textContent = `${tiers} Etage${tiers === 1 ? '' : 'n'}`;
+			resServingsLabel.textContent = `${servings} Gästeportionen`;
+
+			// Delivery Math (km instead of miles)
+			let deliveryFee = 0;
+			if (chkDelivery.checked) {
+				deliveryBox.style.display = 'grid';
+				rowDeliveryFee.style.display = 'flex';
+				const km = parseFloat(deliveryMilesInput.value) || 0;
+				const setup = parseFloat(setupFeeInput.value) || 0;
+				deliveryFee = (km * 0.80) + setup;
+				resDeliveryTotal.textContent = `${deliveryFee.toFixed(2).replace('.', ',')} €`;
+			} else {
+				deliveryBox.style.display = 'none';
+				rowDeliveryFee.style.display = 'none';
+				deliveryFee = 0;
+			}
+
+			// Core Cost Math
+			const materialsCost = ingredients + hardware;
+			const laborCost = laborHours * hourlyRate;
+			const baseCost = materialsCost + laborCost;
+
+			// Price with complexity markup
+			const cakePrice = baseCost * complexity;
+			const profitDollars = cakePrice - baseCost;
+			const profitPct = cakePrice > 0 ? Math.round((profitDollars / cakePrice) * 100) : 0;
+			const pricePerSlice = servings > 0 ? (cakePrice / servings) : 0;
+			const finalInvoice = cakePrice + deliveryFee;
+
+			// Update Text Displays
+			resTotalPrice.textContent = `${cakePrice.toFixed(2).replace('.', ',')} €`;
+			resPricePerSlice.textContent = `${pricePerSlice.toFixed(2).replace('.', ',')} €`;
+			resMaterialsTotal.textContent = `${materialsCost.toFixed(2).replace('.', ',')} €`;
+			resLaborHoursLabel.textContent = `${laborHours} Std. à ${hourlyRate} €/Std.`;
+			resLaborTotal.textContent = `${laborCost.toFixed(2).replace('.', ',')} €`;
+			resProfitMarginPct.textContent = `${profitPct}%`;
+			resProfitDollars.textContent = `${profitDollars.toFixed(2).replace('.', ',')} €`;
+			resInvoiceTotal.textContent = `${finalInvoice.toFixed(2).replace('.', ',')} €`;
+
+			// Update Financial Bar Graph
+			if (finalInvoice > 0) {
+				const matPct = (materialsCost / finalInvoice) * 100;
+				const labPct = (laborCost / finalInvoice) * 100;
+				const proPct = (profitDollars / finalInvoice) * 100;
+				const delPct = (deliveryFee / finalInvoice) * 100;
+
+				barMaterials.style.width = `${matPct}%`;
+				barLabor.style.width = `${labPct}%`;
+				barProfit.style.width = `${proPct}%`;
+				barDelivery.style.width = `${delPct}%`;
+			}
+		}
+
+		// Preset handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'textured-buttercream') {
+				complexityInput.value = 1.4;
+				laborHoursInput.value = 9;
+				ingredientInput.value = 85;
+				tierSupplyInput.value = 40;
+			} else if (p === 'semi-naked') {
+				complexityInput.value = 1.1;
+				laborHoursInput.value = 6.5;
+				ingredientInput.value = 70;
+				tierSupplyInput.value = 30;
+			} else if (p === 'smooth-fondant') {
+				complexityInput.value = 1.8;
+				laborHoursInput.value = 13;
+				ingredientInput.value = 115;
+				tierSupplyInput.value = 50;
+			} else if (p === 'sugar-art') {
+				complexityInput.value = 2.5;
+				laborHoursInput.value = 18;
+				ingredientInput.value = 150;
+				tierSupplyInput.value = 65;
+			} else if (p === 'cutting-sheet') {
+				complexityInput.value = 1.2;
+				laborHoursInput.value = 7.5;
+				ingredientInput.value = 75;
+				tierSupplyInput.value = 25;
+			}
+			calculateCakePricing();
+		});
+
+		// Live Listeners
+		[servingsInput, tiersSelect, ingredientInput, tierSupplyInput,
+		 laborHoursInput, hourlyRateInput, complexityInput, chkDelivery,
+		 deliveryMilesInput, setupFeeInput].forEach(elem => {
+			elem.addEventListener('input', calculateCakePricing);
+			elem.addEventListener('change', calculateCakePricing);
+		});
+
+		// Print Quote Handler
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html lang="de">
+				<head>
+					<title>Hochzeitstorten-Angebot — Manage.Wedding</title>
+					<style>
+						@page { size: A4; margin: 15mm; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; line-height: 1.4; }
+						h1 { font-size: 20pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Konditor-Angebot: Individuelle Hochzeitstorte</h1>
+					<p>Portionen: ${servingsInput.value} | Etagen: ${tiersSelect.value} | Preis pro Stück: ${resPricePerSlice.textContent}</p>
+					
+					<table>
+						<thead><tr><th>Position</th><th>Beschreibung</th><th>Betrag</th></tr></thead>
+						<tbody>
+							<tr><td><strong>Torten-Kreation & Deko</strong></td><td>${tiersSelect.value}-stöckige Hochzeitstorte (${servingsInput.value} Portionen)</td><td>${resTotalPrice.textContent}</td></tr>
+							<tr><td><strong>Zutaten & Etagenzubehör</strong></td><td>Hochwertige Backzutaten, Platten, Dübel, Box</td><td>${resMaterialsTotal.textContent}</td></tr>
+							<tr><td><strong>Handwerkliche Arbeitszeit</strong></td><td>${resLaborHoursLabel.textContent}</td><td>${resLaborTotal.textContent}</td></tr>
+							${chkDelivery.checked ? `<tr><td><strong>Lieferung & Aufbau</strong></td><td>Fahrtstrecke + Vor-Ort-Aufbau in Location</td><td>${resDeliveryTotal.textContent}</td></tr>` : ''}
+							<tr class="total-row"><td>GESAMTSUMME ANGEBOT</td><td>Preis pro Portion: ${resPricePerSlice.textContent}</td><td>${resInvoiceTotal.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Export Word Doc
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Hochzeitstorten-Angebot</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Hochzeitstorten-Angebot</h2>
+					<p>Portionen: ${servingsInput.value} | Etagen: ${tiersSelect.value} | Preis pro Portion: ${resPricePerSlice.textContent}</p>
+					<table>
+						<thead><tr><th>Position</th><th>Betrag</th></tr></thead>
+						<tbody>
+							<tr><td>Hochzeitstorte (Zutaten, Handwerkslohn, Deko)</td><td>${resTotalPrice.textContent}</td></tr>
+							<tr><td>Lieferung & Aufbau</td><td>${resDeliveryTotal.textContent}</td></tr>
+							<tr><td><strong>GESAMTBETRAG</strong></td><td><strong>${resInvoiceTotal.textContent}</strong></td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'hochzeitstorten-angebot.doc';
+			link.click();
+		});
+
+		// Initial Run
+		calculateCakePricing();
+	</script>
+</Layout>

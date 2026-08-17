@@ -1,0 +1,511 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Hochzeitsfotograf Stunden & Paket Rechner",
+      "url": "https://manage.wedding/de/wedding-photography-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Berechnen Sie die ideale Stundenanzahl für den Hochzeitsfotografen (6h, 8h, 10h oder 12h), 2. Fotograf Notwendigkeit, Anzahl bearbeiteter Fotos und Foto-Tagesplan.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<Layout
+	title="Hochzeitsfotograf Stunden & Paket Rechner — Fotoreportage Planer"
+	description="Berechnen Sie die ideale Dauer für Ihre Hochzeits-Fotoreportage (6h, 8h, 10h oder 12h), zweiten Fotografen, bearbeitete Fotos und druckbaren Foto-Tagesablauf."
+	lang="de"
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/de/" style="color: var(--text-secondary); text-decoration: none;">Startseite</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/de/budget" style="color: var(--text-secondary); text-decoration: none;">Budget</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Hochzeitsfotografie</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>📸</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Reportage-Dauer & Foto-Tagesablauf Planer</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Hochzeitsfotograf Stunden & Paket Rechner
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Ermitteln Sie die perfekte Buchungsdauer (<strong>6, 8, 10 oder 12 Stunden</strong>), prüfen Sie den Bedarf für einen Zweitfotografen, schätzen Sie die Bildanzahl und exportieren Sie Ihre Fotoliste.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Checklist -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>⏱️</span> 1. Wichtige Meilensteine des Tages
+				</h2>
+
+				<!-- Headcount & General Parameters -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div>
+						<label for="input-guest-count" style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+							Anzahl Gäste:
+						</label>
+						<input type="number" id="input-guest-count" min="10" max="600" value="120" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+					</div>
+					<div>
+						<label for="select-venue-locations" style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+							Locations / Fahrtweg:
+						</label>
+						<select id="select-venue-locations" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="single" selected>1 Gesamte Location (0 Min)</option>
+							<option value="two">2 Locations (Hotel -> Location, +30 Min)</option>
+							<option value="three">3 Locations (Hotel -> Kirche -> Feier, +60 Min)</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Milestones Checkboxes -->
+				<div style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem;">
+					
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-prep-details" checked data-minutes="90" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Getting Ready & Details (+1,5 Std)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Brautkleid, Ringe, Papeterie, Make-up & Sektmoment.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-first-look" checked data-minutes="45" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">First Look & Brautpaar-Shooting (+45 Min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Intimer Moment zu zweit und entspannte Paarfotos vor der Trauung.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-wedding-party" checked data-minutes="35" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Trauzeugen & Brautjungfern (+35 Min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Gruppenbilder, solange Styling und Blumen taufrisch sind.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-family-formals" checked data-minutes="40" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Familienfotos (+40 Min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">10–12 feste Familien-Kombinationen (Eltern, Geschwister, Großeltern).</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #fef08a;" class="milestone-label">
+						<input type="checkbox" id="chk-ceremony" checked disabled data-minutes="60" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Trauung & Auszug (+60 Min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Einzug, Ehegelübde, Ringtausch, Kuss und Auszug.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-cocktail-details" checked data-minutes="45" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Sektempfang & Unberührter Festsaal (+45 Min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Spontane Gast-Momente und festlich eingedeckter Saal vor dem Dinner.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-reception-events" checked data-minutes="90" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Einmarsch, Reden & Abendessen (+1,5 Std)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Großer Einzug, emotionale Reden, Tortenanschnitt.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-sunset-portraits" checked data-minutes="20" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Golden Hour / Sonnenuntergang (+20 Min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Traumhafte Kurzsession im warmen Abendlicht.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-dancing" checked data-minutes="45" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Eröffnungstanz & Party-Start (+45 Min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Brautwalzer, Elterntanz und Partystimmung auf der Tanzfläche.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-grand-exit" data-minutes="30" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Wunderkerzen-Spalier / Finale (+30 Min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Spalier mit Wunderkerzen zum Abschluss der Reportage.</span>
+						</div>
+					</label>
+
+				</div>
+
+				<!-- Hourly Rate Sizer -->
+				<div style="border-top: 2px dashed var(--fg-pencil); padding-top: 1rem;">
+					<label for="input-hourly-rate" style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+						Geschätzter Stundensatz des Fotografen (€/Std):
+					</label>
+					<div style="display: flex; gap: 0.5rem; align-items: center;">
+						<input type="number" id="input-hourly-rate" min="100" max="1500" step="50" value="250" style="width: 120px; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						<span style="font-size: 0.8rem; color: var(--text-muted);">(Üblicher Bereich: 200 € bis 400 € / Stunde)</span>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Empfehlung</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Ideales Reportage-Paket
+						</h2>
+					</div>
+					<span id="badge-package-tier" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">8-Stunden-Paket</span>
+				</div>
+
+				<!-- Big Number Highlights -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Empfohlene Dauer</span>
+						<strong id="stat-package-hours" style="font-size: 2rem; font-weight: 900; color: #1e40af; line-height: 1.1;">8 Stunden</strong>
+						<span id="stat-exact-time-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(7 Std 25 Min Eventdauer)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Geschätzte Kosten</span>
+						<strong id="stat-estimated-budget" style="font-size: 2rem; font-weight: 900; color: #15803d; line-height: 1.1;">2.000 €</strong>
+						<span id="stat-budget-subtext" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">Basis 250 € / Stunde</span>
+					</div>
+				</div>
+
+				<!-- Secondary Details & Second Shooter Matrix -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">📷 2. Fotograf (Second Shooter):</span>
+						<strong id="stat-second-shooter" style="color: #1e40af;">Sehr Empfehlenswert</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🖼️ Bearbeitete Fotos:</span>
+						<strong id="stat-gallery-yield" style="color: #15803d;">450 bis 600 Fotos</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🚗 Fahrzeit & Puffer:</span>
+						<strong id="stat-travel-time" style="color: var(--fg-pencil);">0 Min (1 Location)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
+						<span style="color: #475569;">🛡️ Zeitlicher Puffer:</span>
+						<strong id="stat-overtime-buffer" style="color: #16a34a;">Entspannt (35 Min Puffer)</strong>
+					</div>
+				</div>
+
+				<!-- Second Shooter Decision Box -->
+				<div style="background: #fef08a; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.85rem;" id="box-second-shooter-reason">
+					<strong style="color: var(--fg-pencil); display: block; margin-bottom: 0.25rem;">📸 Analyse Zweitfotograf:</strong>
+					<span id="stat-shooter-reason" style="color: #334155;">
+						Bei <strong>über 120 Gästen</strong> fängt ein Zweitfotograf Gäste-Reaktionen beim Sektempfang ein, während der Hauptfotograf die Familienfotos leitet.
+					</span>
+				</div>
+
+				<!-- Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> PDF drucken
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Word (.doc) exportieren
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/de/wedding-photography-calculator" category="budget" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-photo-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Tagesablauf & Briefing: Hochzeitsfotografie</h1>
+				<p id="print-photo-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Fotoreportage Ablaufplan | Erstellt von Manage.Wedding</p>
+			</div>
+			<div id="print-photo-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	const inputGuestCount = document.getElementById('input-guest-count');
+	const selectVenueLocations = document.getElementById('select-venue-locations');
+	const inputHourlyRate = document.getElementById('input-hourly-rate');
+
+	const checkboxes = [
+		document.getElementById('chk-prep-details'),
+		document.getElementById('chk-first-look'),
+		document.getElementById('chk-wedding-party'),
+		document.getElementById('chk-family-formals'),
+		document.getElementById('chk-ceremony'),
+		document.getElementById('chk-cocktail-details'),
+		document.getElementById('chk-reception-events'),
+		document.getElementById('chk-sunset-portraits'),
+		document.getElementById('chk-dancing'),
+		document.getElementById('chk-grand-exit')
+	];
+
+	const badgePackageTier = document.getElementById('badge-package-tier');
+	const statPackageHours = document.getElementById('stat-package-hours');
+	const statExactTimeSub = document.getElementById('stat-exact-time-sub');
+	const statEstimatedBudget = document.getElementById('stat-estimated-budget');
+	const statBudgetSubtext = document.getElementById('stat-budget-subtext');
+	const statSecondShooter = document.getElementById('stat-second-shooter');
+	const statGalleryYield = document.getElementById('stat-gallery-yield');
+	const statTravelTime = document.getElementById('stat-travel-time');
+	const statOvertimeBuffer = document.getElementById('stat-overtime-buffer');
+	const statShooterReason = document.getElementById('stat-shooter-reason');
+
+	function calculateCoverage() {
+		let totalMinutes = 0;
+		checkboxes.forEach(chk => {
+			if (chk.checked) {
+				totalMinutes += parseInt(chk.getAttribute('data-minutes'), 10) || 0;
+			}
+		});
+
+		const venueType = selectVenueLocations.value;
+		let travelMins = 0;
+		if (venueType === 'two') travelMins = 30;
+		else if (venueType === 'three') travelMins = 60;
+		totalMinutes += travelMins;
+
+		statTravelTime.textContent = travelMins > 0 ? `${travelMins} Min Fahrtzeit` : '0 Min (1 Location)';
+
+		const calculatedHours = totalMinutes / 60;
+		const hrs = Math.floor(totalMinutes / 60);
+		const mins = totalMinutes % 60;
+		statExactTimeSub.textContent = `(${hrs} Std ${mins} Min Eventdauer)`;
+
+		let packageHours = 8;
+		if (calculatedHours <= 6.25) packageHours = 6;
+		else if (calculatedHours <= 8.5) packageHours = 8;
+		else if (calculatedHours <= 10.5) packageHours = 10;
+		else packageHours = 12;
+
+		badgePackageTier.textContent = `${packageHours}-Stunden-Paket`;
+		statPackageHours.textContent = `${packageHours} Stunden`;
+
+		const bufferDiffMins = (packageHours * 60) - totalMinutes;
+		if (bufferDiffMins >= 0) {
+			statOvertimeBuffer.textContent = `Entspannt (${bufferDiffMins} Min Puffer)`;
+			statOvertimeBuffer.style.color = '#16a34a';
+		} else {
+			statOvertimeBuffer.textContent = `Knapp (${Math.abs(bufferDiffMins)} Min über 8h — 10h erwägen)`;
+			statOvertimeBuffer.style.color = '#dc2626';
+		}
+
+		const rate = parseFloat(inputHourlyRate.value) || 250;
+		const totalSpend = packageHours * rate;
+		statEstimatedBudget.textContent = `${totalSpend.toLocaleString('de-DE')} €`;
+		statBudgetSubtext.textContent = `Basis ${rate} € / Stunde`;
+
+		const minPhotos = packageHours * 50;
+		const maxPhotos = packageHours * 75;
+		statGalleryYield.textContent = `${minPhotos} bis ${maxPhotos} Fotos`;
+
+		const guests = parseInt(inputGuestCount.value, 10) || 120;
+		const hasMultipleLocations = venueType !== 'single';
+		const needsSecond = guests > 120 || hasMultipleLocations || packageHours >= 10;
+
+		if (needsSecond) {
+			statSecondShooter.textContent = 'Sehr Empfehlenswert';
+			statSecondShooter.style.color = '#1e40af';
+			statShooterReason.innerHTML = `Bei <strong>${guests} Gästen</strong> und <strong>${packageHours}h Reportage</strong> begleitet der 2. Fotograf den Sektempfang, während der Hauptfotograf die Familienfotos leitet.`;
+		} else {
+			statSecondShooter.textContent = 'Optional (1 Fotograf reicht aus)';
+			statSecondShooter.style.color = '#15803d';
+			statShooterReason.innerHTML = `Bei einer Feier mit <strong>${guests} Gästen</strong> an einer Location deckt ein einzelner Profi-Fotograf alle gewählten Meilensteine souverän ab.`;
+		}
+
+		document.getElementById('print-photo-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Reportage-Abschnitt</th>
+						<th style="padding:6pt; text-align:center;">Dauer</th>
+						<th style="padding:6pt;">Details & Notizen</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Empfohlenes Paket</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; font-size:12pt; color:#1e40af;">${packageHours} Stunden</td>
+						<td style="padding:6pt;">Kosten: ca. ${totalSpend.toLocaleString('de-DE')} € (${rate} €/h) | Galerie: ${minPhotos}–${maxPhotos} bearbeitete Fotos</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Zweitfotograf</td>
+						<td style="padding:6pt; text-align:center;">${statSecondShooter.textContent}</td>
+						<td style="padding:6pt;">${needsSecond ? 'Sinnvoll für Getting Ready Bräutigam & Sektempfang' : '1 Hauptfotograf ausreichend'}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Fahrtzeiten</td>
+						<td style="padding:6pt; text-align:center;">${travelMins} Min</td>
+						<td style="padding:6pt;">${venueType === 'single' ? 'Alles an 1 Location (0 Min Fahrt)' : 'Inklusive Einpacken und Location-Wechsel'}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Gesamte Programmzeit</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; color:#15803d;">${hrs}h ${mins}m</td>
+						<td style="padding:6pt;">Verbleibender Zeitpuffer: ${bufferDiffMins >= 0 ? `${bufferDiffMins} Minuten` : '0 Min'}</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	inputGuestCount.addEventListener('input', calculateCoverage);
+	selectVenueLocations.addEventListener('change', calculateCoverage);
+	inputHourlyRate.addEventListener('input', calculateCoverage);
+
+	checkboxes.forEach(chk => {
+		chk.addEventListener('change', calculateCoverage);
+	});
+
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		calculateCoverage();
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateCoverage();
+		const pkg = statPackageHours.textContent;
+		const spend = statEstimatedBudget.textContent;
+		const shooter = statSecondShooter.textContent;
+		const yieldPhotos = statGalleryYield.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Hochzeitsfotografie Briefing</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Hochzeitsfotografie Ablaufplan & Briefing</h1>
+				<p><strong>Paket:</strong> ${pkg} | <strong>Kosten:</strong> ${spend} | <strong>2. Fotograf:</strong> ${shooter}</p>
+				<hr/>
+				<h2>Paket-Übersicht</h2>
+				<table>
+					<tr style="background:#f1f5f9;">
+						<th>Parameter</th><th>Details</th>
+					</tr>
+					<tr><td><strong>Buchungsdauer:</strong></td><td><strong>${pkg}</strong></td></tr>
+					<tr><td><strong>Fotogalerie:</strong></td><td>${yieldPhotos}</td></tr>
+					<tr><td><strong>Zweitfotograf:</strong></td><td>${shooter}</td></tr>
+					<tr><td><strong>Geschätzte Kosten:</strong></td><td>${spend}</td></tr>
+				</table>
+				<hr/>
+				<p><em>Erstellt von Manage.Wedding</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Hochzeitsfotograf-Plan-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateCoverage();
+</script>

@@ -1,0 +1,507 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/rehearsal-dinner-planner/#webapp",
+      "name": "Planificador de Cena de Ensayo y Preboda",
+      "url": "https://manage.wedding/es/rehearsal-dinner-planner",
+      "inLanguage": "es",
+      "description": "Calculadora gratuita de presupuesto y lista de invitados para la cena de ensayo / preboda. Desglosa cortejo nupcial, familia directa e invitados de fuera. Genera el cronograma de la víspera y listas para imprimir.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Planificar la Cena de Ensayo o Preboda",
+      "description": "Guía de etiqueta y presupuesto para organizar la cena de la víspera del enlace.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Paso 1: Lista de Participantes de la Ceremonia (Nivel 1)",
+          "text": "Incluye a los novios, padrinos, damas de honor, testigos, padres, hermanos, oficiante y lectores de la ceremonia."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 2: Decide sobre los Invitados de Fuera (Nivel 2)",
+          "text": "Decide si los invitados que viajan desde otras ciudades asisten a la cena sentada o se unen a un cóctel de bienvenida posterior."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 3: Elige el Formato Gastronómico",
+          "text": "Selecciona entre picoteo informal de tapas/cervecería (35 €–45 €/persona), restaurante tradicional (60 €–85 €/persona) o cena formal (95 €–140 €/persona)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 4: Diseña el Horario de la Víspera",
+          "text": "Ensayo en el lugar de la ceremonia a las 18:00 h, cena a las 19:30 h, entrega de detalles a las 21:00 h y descanso temprano antes de las 23:00 h."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Quién debe ser invitado obligatoriamente a la cena de ensayo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Los asistentes indispensables son: la pareja, padres y hermanos, damas de honor, padrinos y testigos (con sus parejas), oficiante, lectores y los niños que lleven las arras o anillos con sus padres."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Es obligatorio invitar a todos los familiares que vienen de fuera a la cena?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Si viajan muchos invitados de fuera, pagar una cena completa para 60-80 personas dispararía el presupuesto. La etiqueta moderna recomienda organizar una cena íntima con el cortejo y convocar al resto a un cóctel o copa de bienvenida más tarde."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Quién suele pagar la cena de ensayo o preboda?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tradicionalmente en algunas culturas la familia del novio asume la cena de ensayo. En las bodas actuales, muchas parejas la costean directamente o se comparte el gasto entre ambas familias."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuándo se entregan los regalos para los testigos y damas de honor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La cena de ensayo o los postres de la preboda es el momento perfecto para agradecer su ayuda y entregarles los regalos personalizados en un ambiente íntimo y distendido."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Planificador de Cena de Ensayo y Preboda (Presupuesto y Horarios) | Manage.Wedding"
+	description="Calcula el presupuesto y lista de invitados para la cena de ensayo o preboda. Controla comensales del cortejo, familia, sala privada y horarios de la víspera."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Planificador de Cena de Ensayo / Preboda" category="guests-logistics" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Etiqueta de Invitados y Control de Costes</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Cena de Ensayo y <span class="accent-italic">Preboda</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				¡Evita que la lista de la preboda se dispare! Calcula comensales de la ceremonia frente a invitados de fuera, estima el coste de comida y sala privada, y genera el cronograma de la víspera.
+			</p>
+		</header>
+
+		<!-- Main Interactive Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Guest Tiers & Format Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Niveles de Invitados y Comensales
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Lista de la Preboda
+					</span>
+				</div>
+
+				<!-- Dining Style Presets -->
+				<div class="form-group" style="margin-bottom: 1.2rem;">
+					<label class="form-label" for="dinner-style-preset" style="display: block; font-weight: bold; margin-bottom: 0.3rem;">Estilo de Cena / Preboda</label>
+					<select id="dinner-style-preset" class="form-input" style="width: 100%; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="italian" selected>🍝 Trattoria Tradicional / Platos para Compartir (65 €/persona + Vino)</option>
+						<option value="brewery">🍕 Cervecería Artesanal / Picoteo Informal y Pizzas (40 €/persona)</option>
+						<option value="steakhouse">🥩 Asador / Menú Cerrado Servido en Sala Privada (95 €/persona)</option>
+						<option value="taco">🌮 Fiesta de Tapas / Food Truck al Aire Libre (30 €/persona)</option>
+						<option value="custom">✏️ Presupuesto Personalizado</option>
+					</select>
+				</div>
+
+				<!-- Tier 1: Core Mandatory Ceremony Participants -->
+				<div style="background: #faf8f5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.5rem; color: var(--accent-red);">
+						Nivel 1: Participantes en la Ceremonia (Imprescindibles)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="count-attendants" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Damas de Honor / Testigos</label>
+							<input type="number" id="count-attendants" class="form-input" value="10" min="2" max="30" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+						<div>
+							<label class="form-label" for="count-plusones" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Parejas de los Testigos</label>
+							<input type="number" id="count-plusones" class="form-input" value="8" min="0" max="30" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="count-immediate-family" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Padres y Hermanos</label>
+							<input type="number" id="count-immediate-family" class="form-input" value="8" min="2" max="20" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+						<div>
+							<label class="form-label" for="count-officiant" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Oficiante + Lectores</label>
+							<input type="number" id="count-officiant" class="form-input" value="3" min="1" max="10" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Tier 2: Extended Family & Out-of-Town Option -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.5rem; color: var(--accent-blue);">
+						Nivel 2: Familia Cercana e Invitados de Fuera
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.75rem; margin-bottom: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="count-grandparents" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Abuelos</label>
+							<input type="number" id="count-grandparents" class="form-input" value="4" min="0" max="12" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+						<div>
+							<label class="form-label" for="count-out-of-town" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Invitados que Viajan</label>
+							<input type="number" id="count-out-of-town" class="form-input" value="0" min="0" max="80" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+					</div>
+
+					<div class="form-group" style="margin-top: 0.5rem;">
+						<label class="form-label" for="out-of-town-mode" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Gestión de Invitados de Fuera</label>
+						<select id="out-of-town-mode" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1px solid var(--fg-pencil); border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+							<option value="drinks-only" selected>🥂 Solo Copa / Cóctel de Bienvenida posterior (15 €/p)</option>
+							<option value="full-dinner">🍽️ Invitación a Cena Completa Sentada (Menú completo)</option>
+							<option value="none">🚫 Cena Exclusiva para el Cortejo Nupcial</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Pricing per Person & Room Rental -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="cost-per-head" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Menú y Bodega (€/persona)</label>
+						<input type="number" id="cost-per-head" class="form-input" value="65" min="15" step="5" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1px solid var(--fg-pencil); border-radius: 4px;" />
+					</div>
+					<div>
+						<label class="form-label" for="room-fee" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Alquiler Sala Privada (€)</label>
+						<input type="number" id="room-fee" class="form-input" value="250" min="0" step="50" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1px solid var(--fg-pencil); border-radius: 4px;" />
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Budget Breakdown & Timeline Generator -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Summary Budget Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Presupuesto Total de la Cena
+						</span>
+						<span id="display-headcount-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							35 Comensales Sentados
+						</span>
+					</div>
+
+					<div id="display-grand-total" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.5rem;">
+						2.752 €
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Comida y Bodega: <strong id="display-fb-subtotal" style="color: var(--fg-pencil);">2.275 €</strong> • IVA (10%): <strong id="display-tax-tip" style="color: var(--fg-pencil);">227 €</strong> • Sala: <strong id="display-room-cost" style="color: var(--fg-pencil);">250 €</strong>.
+					</p>
+
+					<!-- Itemized Headcount List -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Los Novios:</span>
+							<strong>2</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Testigos, Damas y Parejas:</span>
+							<strong id="item-attendant-total">18</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Padres, Hermanos y Abuelos:</span>
+							<strong id="item-family-total">12</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.95rem;">
+							<span>Oficiante y Lectores:</span>
+							<strong id="item-officiant-total">3</strong>
+						</div>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-timeline" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Imprimir Horario y Lista (PDF)
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Exportar a Word (.doc)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Master Rehearsal Night Timeline Schedule -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.75rem;">
+						🕒 Horario Típico de la Víspera de Boda (18:00 h – 22:30 h):
+					</strong>
+					<div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.5;">
+						<div><strong>18:00 h – 18:45 h:</strong> Ensayo de la ceremonia en la iglesia o finca (2 pasadas con música).</div>
+						<div><strong>19:00 h – 19:45 h:</strong> Llegada al restaurante y cóctel de bienvenida con aperitivos.</div>
+						<div><strong>19:45 h – 21:00 h:</strong> Cena sentada y brindis inicial de bienvenida.</div>
+						<div><strong>21:00 h – 21:45 h:</strong> Entrega de regalos a testigos y palabras emotivas.</div>
+						<div><strong>21:45 h – 22:30 h:</strong> Postre y copa con invitados de fuera que van llegando.</div>
+						<div><strong>22:30 h:</strong> Despedida temprana para descansar bien antes del gran día.</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Resumen Rápido (Regla de Oro)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Presupuesto y Formatos de Preboda
+				</h2>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					🍷 La Fórmula de Invitados para la Preboda:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Comensales Imprescindibles = [Novios (2) + Cortejo / Testigos + Parejas + Padres + Hermanos + Oficiante] • Media: 20 a 35 personas (1.500 € a 3.000 €).
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Estilo de Celebración</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Coste / Persona</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Total 30 Invitados</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Ambiente</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Cervecería y Tapas Informales</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">35 € – 50 €/persona</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">1.050 € – 1.500 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Distendido, divertido y sin protocolo</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Trattoria o Restaurante Tradicional</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">60 € – 85 €/persona</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">1.800 € – 2.550 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Cálido, familiar y con buen vino</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Asador con Menú Cerrado</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">90 € – 130 €/persona</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">2.700 € – 3.900 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Elegante, privado y de alta calidad</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<RelatedTools currentPath="/es/rehearsal-dinner-planner" category="guests" />
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('dinner-style-preset');
+		const countAttendants = document.getElementById('count-attendants');
+		const countPlusOnes = document.getElementById('count-plusones');
+		const countImmediateFamily = document.getElementById('count-immediate-family');
+		const countOfficiant = document.getElementById('count-officiant');
+		const countGrandparents = document.getElementById('count-grandparents');
+		const countOutOfTown = document.getElementById('count-out-of-town');
+		const outOfTownMode = document.getElementById('out-of-town-mode');
+
+		const costPerHeadInput = document.getElementById('cost-per-head');
+		const roomFeeInput = document.getElementById('room-fee');
+
+		const displayHeadcountBadge = document.getElementById('display-headcount-badge');
+		const displayGrandTotal = document.getElementById('display-grand-total');
+		const displayFbSubtotal = document.getElementById('display-fb-subtotal');
+		const displayTaxTip = document.getElementById('display-tax-tip');
+		const displayRoomCost = document.getElementById('display-room-cost');
+
+		const itemAttendantTotal = document.getElementById('item-attendant-total');
+		const itemFamilyTotal = document.getElementById('item-family-total');
+		const itemOfficiantTotal = document.getElementById('item-officiant-total');
+
+		const btnPrint = document.getElementById('btn-print-timeline');
+		const btnDoc = document.getElementById('btn-export-doc');
+
+		function calculateRehearsal() {
+			const att = parseInt(countAttendants.value, 10) || 0;
+			const plus = parseInt(countPlusOnes.value, 10) || 0;
+			const fam = parseInt(countImmediateFamily.value, 10) || 0;
+			const off = parseInt(countOfficiant.value, 10) || 0;
+			const grand = parseInt(countGrandparents.value, 10) || 0;
+			const outOfTown = parseInt(countOutOfTown.value, 10) || 0;
+
+			const coreSeated = 2 + att + plus + fam + off + grand;
+			let totalSeated = coreSeated;
+			let drinksOnlyCount = 0;
+
+			if (outOfTownMode.value === 'full-dinner') {
+				totalSeated += outOfTown;
+			} else if (outOfTownMode.value === 'drinks-only') {
+				drinksOnlyCount = outOfTown;
+			}
+
+			const perHead = parseFloat(costPerHeadInput.value) || 0;
+			const roomFee = parseFloat(roomFeeInput.value) || 0;
+
+			const foodBarTotal = (totalSeated * perHead) + (drinksOnlyCount * 15);
+			const taxTip = foodBarTotal * 0.10; // 10% IVA hosteleria
+			const grandTotal = foodBarTotal + taxTip + roomFee;
+
+			// Displays
+			displayHeadcountBadge.textContent = `${totalSeated} Comensales Sentados`;
+			displayGrandTotal.textContent = `${Math.round(grandTotal).toLocaleString('es-ES')} €`;
+			displayFbSubtotal.textContent = `${Math.round(foodBarTotal).toLocaleString('es-ES')} €`;
+			displayTaxTip.textContent = `${Math.round(taxTip).toLocaleString('es-ES')} €`;
+			displayRoomCost.textContent = `${Math.round(roomFee).toLocaleString('es-ES')} €`;
+
+			itemAttendantTotal.textContent = (att + plus);
+			itemFamilyTotal.textContent = (fam + grand);
+			itemOfficiantTotal.textContent = off;
+		}
+
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'italian') {
+				costPerHeadInput.value = 65;
+				roomFeeInput.value = 250;
+			} else if (p === 'brewery') {
+				costPerHeadInput.value = 40;
+				roomFeeInput.value = 100;
+			} else if (p === 'steakhouse') {
+				costPerHeadInput.value = 95;
+				roomFeeInput.value = 400;
+			} else if (p === 'taco') {
+				costPerHeadInput.value = 30;
+				roomFeeInput.value = 0;
+			}
+			calculateRehearsal();
+		});
+
+		[countAttendants, countPlusOnes, countImmediateFamily, countOfficiant, countGrandparents, countOutOfTown, outOfTownMode, costPerHeadInput, roomFeeInput].forEach(inp => {
+			inp.addEventListener('input', calculateRehearsal);
+			inp.addEventListener('change', calculateRehearsal);
+		});
+
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Horario y Lista de la Cena de Ensayo — Manage.Wedding</title>
+					<style>
+						@page { size: 8.5in 11in; margin: 0.5in; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 20pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 20px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Plan y Horario de la Cena de Ensayo / Preboda</h1>
+					<p>Comensales: ${displayHeadcountBadge.textContent} | Presupuesto Total: ${displayGrandTotal.textContent}</p>
+					
+					<h2>Desglose de Asistentes</h2>
+					<table>
+						<thead><tr><th>Grupo</th><th>Comensales</th></tr></thead>
+						<tbody>
+							<tr><td>Los Novios</td><td>2</td></tr>
+							<tr><td>Testigos, Damas y Parejas</td><td>${itemAttendantTotal.textContent}</td></tr>
+							<tr><td>Padres, Hermanos y Abuelos</td><td>${itemFamilyTotal.textContent}</td></tr>
+							<tr><td>Oficiante y Lectores</td><td>${itemOfficiantTotal.textContent}</td></tr>
+							<tr class="total-row"><td>TOTAL COMENSALES</td><td>${displayHeadcountBadge.textContent}</td></tr>
+						</tbody>
+					</table>
+
+					<h2>Cronograma de la Víspera</h2>
+					<ul>
+						<li><strong>18:00 h:</strong> Ensayo de la ceremonia en el altar</li>
+						<li><strong>19:00 h:</strong> Llegada al restaurante y cóctel de bienvenida</li>
+						<li><strong>19:45 h:</strong> Cena sentada y brindis</li>
+						<li><strong>21:00 h:</strong> Entrega de regalos a testigos y familia</li>
+						<li><strong>21:45 h:</strong> Copa con invitados que llegan de fuera</li>
+						<li><strong>22:30 h:</strong> Cierre y descanso para el día de la boda</li>
+					</ul>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Plan de Preboda</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Plan de Cena de Ensayo y Preboda</h2>
+					<p>Comensales: ${displayHeadcountBadge.textContent} | <strong>Presupuesto: ${displayGrandTotal.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Concepto</th><th>Importe</th></tr></thead>
+						<tbody>
+							<tr><td>Comida y Bodega</td><td>${displayFbSubtotal.textContent}</td></tr>
+							<tr><td>IVA Hostelería (10%)</td><td>${displayTaxTip.textContent}</td></tr>
+							<tr><td>Sala Privada</td><td>${displayRoomCost.textContent}</td></tr>
+							<tr style="font-weight:bold; background-color:#eee;"><td>TOTAL PRESUPUESTO</td><td>${displayGrandTotal.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'plan-cena-preboda.doc';
+			link.click();
+		});
+
+		calculateRehearsal();
+	</script>
+</Layout>

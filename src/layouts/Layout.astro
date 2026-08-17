@@ -5,25 +5,60 @@ export interface Props {
 	title: string;
 	description: string;
 	schema?: object;
+	noindex?: boolean;
 }
 
-const { title, description, schema } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://manage.wedding');
+const { title, description, schema, noindex } = Astro.props;
 
-// Dynamic BreadcrumbList Schema Generation
+// Dynamic Path & Language Detection (normalized without trailing slash)
 const pathname = Astro.url.pathname.replace(/\/$/, "");
+const canonicalURL = new URL(pathname || '/', Astro.site || 'https://manage.wedding');
+const is404 = pathname === '/404' || noindex === true;
+const robotsMeta = is404 ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
+
+let currentLang = 'en';
+if (pathname.startsWith('/es')) currentLang = 'es';
+else if (pathname.startsWith('/fr')) currentLang = 'fr';
+else if (pathname.startsWith('/de')) currentLang = 'de';
+else if (pathname.startsWith('/it')) currentLang = 'it';
+else if (pathname.startsWith('/pt')) currentLang = 'pt';
+
+const langPrefix = currentLang === 'en' ? '' : `/${currentLang}`;
+const cleanPath = pathname.replace(/^\/(es|fr|de|it|pt)/, '');
+
+function getLangLink(targetLang: string) {
+	const prefix = targetLang === 'en' ? '' : `/${targetLang}`;
+	if (is404 || cleanPath === '/404') {
+		return prefix || '/';
+	}
+	const targetPath = `${prefix}${cleanPath}` || '/';
+	return targetPath;
+}
+
+// Dynamic BreadcrumbList Schema Generation (only for subpages with min 2 items)
 const pageName = title ? title.split(" — ")[0].split(" (")[0].split(" | ")[0].trim() : "Wedding Planning Tool";
+
+const homeNames: Record<string, string> = {
+	en: "Home",
+	es: "Inicio",
+	fr: "Accueil",
+	de: "Startseite",
+	it: "Home",
+	pt: "Início"
+};
+
+const isSubPage = Boolean(cleanPath && cleanPath !== "" && cleanPath !== "/");
 
 const breadcrumbItems = [
 	{
 		"@type": "ListItem",
 		"position": 1,
-		"name": "Home",
-		"item": "https://manage.wedding"
+		"name": homeNames[currentLang] || "Home",
+		"item": `https://manage.wedding${langPrefix}`
 	}
 ];
 
-if (pathname && pathname !== "") {
+if (isSubPage) {
 	breadcrumbItems.push({
 		"@type": "ListItem",
 		"position": 2,
@@ -32,40 +67,550 @@ if (pathname && pathname !== "") {
 	});
 }
 
-const breadcrumbSchema = {
+const breadcrumbSchema = isSubPage ? {
 	"@type": "BreadcrumbList",
 	"itemListElement": breadcrumbItems
-};
+} : null;
 
-// Merge BreadcrumbList into Schema @graph
-let finalSchema = schema;
+// Support both schema and jsonLd props with robust merging
+let rawSchema = schema || (Astro.props as any).jsonLd;
+let finalSchema = rawSchema;
 if (finalSchema && (finalSchema as any)["@graph"]) {
 	const hasBreadcrumb = (finalSchema as any)["@graph"].some((item: any) => item["@type"] === "BreadcrumbList");
-	if (!hasBreadcrumb && pathname !== "") {
+	if (!hasBreadcrumb && breadcrumbSchema) {
 		finalSchema = {
 			...finalSchema,
 			"@graph": [...(finalSchema as any)["@graph"], breadcrumbSchema]
 		};
 	}
-} else if (!finalSchema && pathname !== "") {
+} else if (finalSchema && typeof finalSchema === "object" && !(finalSchema as any)["@graph"]) {
+	if (breadcrumbSchema) {
+		finalSchema = {
+			"@context": "https://schema.org",
+			"@graph": [finalSchema, breadcrumbSchema]
+		};
+	}
+} else if (!finalSchema && breadcrumbSchema) {
 	finalSchema = {
 		"@context": "https://schema.org",
 		"@graph": [breadcrumbSchema]
 	};
 }
+
+// UI Localization Dictionary
+const i18n = {
+	en: {
+		nav: {
+			budget: "💰 Budget",
+			dining: "🍾 Dining",
+			guests: "👥 Guests",
+			stationery: "💌 Stationery",
+			home: "Home",
+			langLabel: "EN",
+			selectLang: "Select Language:"
+		},
+		footer: {
+			tagline: "Calculated with love, served with champagne. 100% free, private & local-first math for real couples and coordinators.",
+			badges: {
+				privacy: "🔒 Local-First Privacy",
+				noSpam: "🚫 Zero Vendor Spam",
+				free: "⚡ 100% Free Forever",
+				pdf: "📄 Vector PDF Ready"
+			},
+			columns: {
+				budget: "Budget & Finance",
+				dining: "Food, Bar & Dining",
+				guests: "Guests & Logistics",
+				stationery: "Stationery & Creative"
+			},
+			tools: {
+				masterBudget: "Master Budget Allocator",
+				venueCost: "Venue Hidden Fees (++)",
+				whoPays: "Who Pays for What?",
+				bachelorette: "Bachelorette Splitter",
+				tipping: "Vendor Tipping Envelopes",
+				honeymoon: "Honeymoon Estimator",
+				loan: "Wedding Loan Sizer",
+				giftCash: "Guest Gift Cash Sizer",
+				drink: "Open Bar Drink Calculator",
+				liquor: "Spirits & Handles (1.75L)",
+				cakePricing: "Cake Pricing & Quotes",
+				cakeServing: "Tier Dimensions & Servings",
+				menuMaker: "Reception Menu Maker (4x9)",
+				catering: "Plated vs Buffet Catering",
+				dilution: "Alcohol Proof Dilution",
+				floral: "Bouquet & Floral Costs",
+				seating: "Drag & Drop Seating Chart",
+				clearance: "Floor Plan & Dance Floor",
+				processional: "Processional Order Lineup",
+				timeline: "Day-Of Timeline Generator",
+				rehearsal: "Rehearsal Dinner Planner",
+				guestList: "Guest List Manager",
+				rsvp: "RSVP Attendance Tracker",
+				alterations: "Dress Alterations Sizer",
+				envelope: "Envelope Address Formatter",
+				suiteSizer: "A7 Suite Sizer (300 DPI)",
+				postage: "USPS Postage & Wax Seals",
+				placeCards: "Folded Place Card Maker",
+				thankYou: "Thank-You Note Generator",
+				speech: "Speech & Toast Timer",
+				hashtag: "Wedding Hashtag Generator",
+				numerology: "Date Numerology Sizer",
+				bachelor: "Bachelor Party Splitter",
+				playlist: "DJ Playlist & Song Sizer",
+				officiantScript: "Officiant Script & Timer",
+				nameChange: "Name Change Cost & Checklist",
+				sparkler: "Sparkler Exit & Send-Off Sizer",
+				dessertTable: "Dessert Table & Cookie Bar"
+			},
+			proTip: {
+				title: "Planner Pro-Tip",
+				text: '"Always order 10–15% extra invitation suites and place cards for keepsakes, calligraphy errors, and your photographer\'s flat-lay detail shots!"',
+				linkText: "Open 12-Month Checklist →"
+			},
+			legal: {
+				copyright: "© 2026 Manage.Wedding",
+				loveNote: "Made with 🥂 & ❤️ for couples & planners everywhere",
+				about: "About",
+				contact: "Contact Us",
+				privacy: "Privacy Policy",
+				terms: "Terms of Service",
+				top: "Back to Top ↑"
+			}
+		}
+	},
+	es: {
+		nav: {
+			budget: "💰 Presupuesto",
+			dining: "🍾 Banquete",
+			guests: "👥 Invitados",
+			stationery: "💌 Papelería",
+			home: "Inicio",
+			langLabel: "ES",
+			selectLang: "Cambiar Idioma:"
+		},
+		footer: {
+			tagline: "Calculado con cariño, servido con champaña. Matemáticas 100% gratuitas, privadas y locales para parejas y coordinadores.",
+			badges: {
+				privacy: "🔒 Privacidad Local",
+				noSpam: "🚫 Cero Spam",
+				free: "⚡ 100% Gratis Siempre",
+				pdf: "📄 Listo para Imprimir en PDF"
+			},
+			columns: {
+				budget: "Presupuesto y Finanzas",
+				dining: "Banquete, Barra y Pastel",
+				guests: "Invitados y Logística",
+				stationery: "Papelería y Recuerdos"
+			},
+			tools: {
+				masterBudget: "Presupuesto Maestro",
+				venueCost: "Costos Ocultos del Salón",
+				whoPays: "¿Quién Paga Qué?",
+				bachelorette: "Despedida de Soltera",
+				tipping: "Guía de Propinas",
+				honeymoon: "Presupuesto de Luna de Miel",
+				loan: "Simulador de Préstamo",
+				giftCash: "Regalo en Efectivo",
+				drink: "Barra Libre y Bebidas",
+				liquor: "Licores y Botellas Grandes",
+				cakePricing: "Precios de Pastel de Boda",
+				cakeServing: "Pisos y Porciones de Pastel",
+				menuMaker: "Diseñador de Minutas (4x9)",
+				catering: "Banquete vs Buffet",
+				dilution: "Dilución de Alcohol y Cócteles",
+				floral: "Estimador de Flores",
+				seating: "Plano y Distribución de Mesas",
+				clearance: "Espacio y Pista de Baile",
+				processional: "Orden de Cortejo y Entrada",
+				timeline: "Cronograma del Gran Día",
+				rehearsal: "Cena de Ensayo",
+				guestList: "Control de Lista de Invitados",
+				rsvp: "Control de Asistencia (RSVP)",
+				alterations: "Ajustes de Vestido de Novia",
+				envelope: "Rotulación de Sobres",
+				suiteSizer: "Dimensiones de Invitaciones A7",
+				postage: "Franqueo Postal y Sellos",
+				placeCards: "Marcadores de Asiento y Mesa",
+				thankYou: "Cartas de Agradecimiento",
+				speech: "Discursos y Brindis",
+				hashtag: "Generador de Hashtags",
+				numerology: "Numerología de Fecha",
+				bachelor: "Despedida de Soltero",
+				playlist: "Música y Lista DJ",
+				officiantScript: "Guión de Ceremonia y Oficiante",
+				nameChange: "Cambio de Nombre y Trámites",
+				sparkler: "Bengalas y Despedida Nupcial",
+				dessertTable: "Mesa de Postres y Dulces"
+			},
+			proTip: {
+				title: "Consejo de Wedding Planner",
+				text: '"¡Siempre pide entre un 10% y 15% adicional de invitaciones y tarjetas de mesa para imprevistos, recuerdos familiares y las fotos del fotógrafo!"',
+				linkText: "Ver Checklist de 12 Meses →"
+			},
+			legal: {
+				copyright: "© 2026 Manage.Wedding",
+				loveNote: "Hecho con 🥂 & ❤️ para parejas y organizadores",
+				about: "Sobre Nosotros",
+				contact: "Contacto",
+				privacy: "Privacidad",
+				terms: "Términos de Servicio",
+				top: "Volver arriba ↑"
+			}
+		}
+	},
+	fr: {
+		nav: {
+			budget: "💰 Budget",
+			dining: "🍾 Réception",
+			guests: "👥 Invités",
+			stationery: "💌 Papeterie",
+			home: "Accueil",
+			langLabel: "FR",
+			selectLang: "Changer de langue :"
+		},
+		footer: {
+			tagline: "Calculé avec amour, servi avec du champagne. Outils 100% gratuits, confidentiels et locaux pour les futurs mariés et organisateurs.",
+			badges: {
+				privacy: "🔒 Confidentialité Locale",
+				noSpam: "🚫 Zéro Spam Prestataire",
+				free: "⚡ 100% Gratuit Toujours",
+				pdf: "📄 Prêt à Imprimer en PDF"
+			},
+			columns: {
+				budget: "Budget & Financement",
+				dining: "Boissons, Traiteur & Gâteau",
+				guests: "Invités & Logistique",
+				stationery: "Papeterie & Souvenirs"
+			},
+			tools: {
+				masterBudget: "Simulateur de Budget Global",
+				venueCost: "Frais Cachés du Lieu de Réception",
+				whoPays: "Qui Paie Quoi au Mariage ?",
+				bachelorette: "Budget EVJF (Enterrement de Vie)",
+				tipping: "Guide des Pourboires Prestataires",
+				honeymoon: "Budget Voyage de Noces",
+				loan: "Simulateur de Prêt Mariage",
+				giftCash: "Calculateur de Cadeau en Argent",
+				drink: "Calculateur de Boissons & Vin d'Honneur",
+				liquor: "Spiritueux & Bouteilles de Cocktail",
+				cakePricing: "Calculateur de Prix du Gâteau",
+				cakeServing: "Portions & Étages de Wedding Cake",
+				menuMaker: "Créateur de Menus Imprimables (4x9)",
+				catering: "Menu Servi à Table vs Buffet",
+				dilution: "Dilution d'Alcool & Cocktails",
+				floral: "Budget Fleurs & Compositions",
+				seating: "Plan de Table Interactif",
+				clearance: "Dimensions de la Piste de Danse",
+				processional: "Ordre du Cortège Nupcial",
+				timeline: "Planning Déroulé du Jour J",
+				rehearsal: "Dîner de Répétition",
+				guestList: "Gestionnaire de Liste d'Invités",
+				rsvp: "Suivi des Confirmations (RSVP)",
+				alterations: "Retouches de Robe de Mariée",
+				envelope: "Adressage & Calligraphie d'Enveloppes",
+				suiteSizer: "Dimensions des Faire-part (A7 / A6)",
+				postage: "Calculateur d'Affranchissement Postal",
+				placeCards: "Marque-places & Numéros de Table",
+				thankYou: "Textes de Cartes de Remerciement",
+				speech: "Chronomètre de Discours & Vœux",
+				hashtag: "Générateur de Hashtags de Mariage",
+				numerology: "Numérologie de la Date de Mariage",
+				bachelor: "Budget EVG (Garçon)",
+				playlist: "Playlist & Musique DJ",
+				officiantScript: "Déroulé Cérémonie Laïque",
+				nameChange: "Changement de Nom & Démarches",
+				sparkler: "Feux de Bengale & Sortie",
+				dessertTable: "Bar à Desserts & Candy Bar"
+			},
+			proTip: {
+				title: "Conseil de Wedding Planner",
+				text: '« Commandez toujours 10 à 15% de faire-part et marque-places supplémentaires pour les souvenirs de famille, les corrections et les photos de détail du photographe ! »',
+				linkText: "Voir la Checklist sur 12 Mois →"
+			},
+			legal: {
+				copyright: "© 2026 Manage.Wedding",
+				loveNote: "Fait avec 🥂 & ❤️ pour les couples et organisateurs",
+				about: "À Propos",
+				contact: "Contact",
+				privacy: "Confidentialité",
+				terms: "Conditions d'Utilisation",
+				top: "Haut de Page ↑"
+			}
+		}
+	},
+	de: {
+		nav: {
+			budget: "💰 Budget",
+			dining: "🍾 Bewirtung",
+			guests: "👥 Gäste",
+			stationery: "💌 Papeterie",
+			home: "Startseite",
+			langLabel: "DE",
+			selectLang: "Sprache wählen:"
+		},
+		footer: {
+			tagline: "Mit Liebe berechnet, mit Champagner serviert. 100% kostenlose, private & lokale Planungstools für Paare und Hochzeitsplaner.",
+			badges: {
+				privacy: "🔒 Lokale Privatsphäre",
+				noSpam: "🚫 Kein Dienstleister-Spam",
+				free: "⚡ 100% Dauerhaft Kostenlos",
+				pdf: "📄 Druckfertige PDF-Dateien"
+			},
+			columns: {
+				budget: "Budget & Finanzen",
+				dining: "Getränke, Menü & Torte",
+				guests: "Gäste & Logistik",
+				stationery: "Papeterie & Erinnerungen"
+			},
+			tools: {
+				masterBudget: "Hochzeitsbudget Rechner",
+				venueCost: "Versteckte Location-Kosten",
+				whoPays: "Wer zahlt was bei der Hochzeit?",
+				bachelorette: "JGA Budget Planer (Junggesellenabschied)",
+				tipping: "Trinkgeld-Ratgeber für Dienstleister",
+				honeymoon: "Flitterwochen Budget Rechner",
+				loan: "Hochzeitskredit Rechner",
+				giftCash: "Geldgeschenke Rechner",
+				drink: "Getränkerechner & Sektempfang",
+				liquor: "Spirituosen & Barbedarfsrechner",
+				cakePricing: "Hochzeitstorten Preisrechner",
+				cakeServing: "Tortenetagen & Portionen",
+				menuMaker: "Menükarten Gestalter (4x9 DL)",
+				catering: "Menü vs. Buffet Vergleich",
+				dilution: "Alkoholgehalt & Cocktail-Verdünnung",
+				floral: "Blumen- & Deko-Kostenrechner",
+				seating: "Interaktiver Tisch- & Sitzplaner",
+				clearance: "Tanzfläche & Abstandsplaner",
+				processional: "Einzug & Ablauf der Trauung",
+				timeline: "Tagesablauf & Zeitplan Generator",
+				rehearsal: "Polterabend & Generalprobe",
+				guestList: "Gästelisten Manager",
+				rsvp: "Rückmeldungs- & RSVP-Tracker",
+				alterations: "Brautkleid Änderungsschneider",
+				envelope: "Briefumschlag Adressierung",
+				suiteSizer: "Einladungsformate (A6 / B6 / A7)",
+				postage: "Portorechner für Hochzeitspost",
+				placeCards: "Tisch- & Platzkarten Drucken",
+				thankYou: "Danksagungstexte & Vorlagen",
+				speech: "Hochzeitsrede & Timer",
+				hashtag: "Hochzeits-Hashtag Generator",
+				numerology: "Numerologie des Hochzeitsdatums",
+				bachelor: "JGA Planer (Männer)",
+				playlist: "DJ Playlist & Musiktimer",
+				officiantScript: "Freie Trauung Skript & Timer",
+				nameChange: "Namensänderung & Kosten",
+				sparkler: "Wunderkerzen & Auszug",
+				dessertTable: "Dessert- & Candy-Bar"
+			},
+			proTip: {
+				title: "Hochzeitsplaner Profi-Tipp",
+				text: '„Bestellen Sie immer 10–15% mehr Einladungen und Tischkarten für Erinnerungsstücke, spontane Zusagen und Detailfotos Ihres Fotografen!“',
+				linkText: "12-Monats-Checkliste öffnen →"
+			},
+			legal: {
+				copyright: "© 2026 Manage.Wedding",
+				loveNote: "Mit 🥂 & ❤️ für Brautpaare und Planer entwickelt",
+				about: "Über Uns",
+				contact: "Kontakt",
+				privacy: "Datenschutz",
+				terms: "Nutzungsbedingungen",
+				top: "Nach oben ↑"
+			}
+		}
+	},
+	it: {
+		nav: {
+			budget: "💰 Budget",
+			dining: "🍾 Banchetto",
+			guests: "👥 Invitati",
+			stationery: "💌 Partecipazioni",
+			home: "Home",
+			langLabel: "IT",
+			selectLang: "Seleziona lingua:"
+		},
+		footer: {
+			tagline: "Calcolato con amore, servito con prosecco. Strumenti 100% gratuiti, riservati e locali per futuri sposi e wedding planner.",
+			badges: {
+				privacy: "🔒 Privacy Locale",
+				noSpam: "🚫 Zero Spam Fornitori",
+				free: "⚡ 100% Sempre Gratis",
+				pdf: "📄 File PDF Pronti da Stampare"
+			},
+			columns: {
+				budget: "Budget & Finanze",
+				dining: "Banchetto, Bar & Torta",
+				guests: "Invitati & Logistica",
+				stationery: "Partecipazioni & Ricordi"
+			},
+			tools: {
+				masterBudget: "Calcolatore Budget Matrimonio",
+				venueCost: "Costi Nascosti Location & Villa",
+				whoPays: "Chi Paga Cosa al Matrimonio?",
+				bachelorette: "Budget Addio al Nubilato",
+				tipping: "Guida alle Mance per Fornitori",
+				honeymoon: "Budget Viaggio di Nozze",
+				loan: "Simulatore Prestito Matrimonio",
+				giftCash: "Busta Regalo in Denaro (Sposi)",
+				drink: "Calcolatore Open Bar & Prosecco",
+				liquor: "Distillati & Bottiglie per Cocktail",
+				cakePricing: "Calcolatore Prezzo Torta Nuziale",
+				cakeServing: "Piani e Porzioni Torta Nuziale",
+				menuMaker: "Crea Menù da Stampare (4x9 DL)",
+				catering: "Catering: Menù Servito vs Buffet",
+				dilution: "Gradazione Alcolica & Diluizione",
+				floral: "Preventivo Fiori & Allestimenti",
+				seating: "Tableau de Mariage & Piantina Tavoli",
+				clearance: "Pista da Ballo & Distanze Tavoli",
+				processional: "Corteo Nuziale & Ingresso Sposi",
+				timeline: "Timeline & Programma del Giorno",
+				rehearsal: "Cena della Vigilia & Prova",
+				guestList: "Gestione Lista Invitati",
+				rsvp: "Tracciamento Conferme (RSVP)",
+				alterations: "Preventivo Sartoria Abito da Sposa",
+				envelope: "Intestazione Buste Partecipazioni",
+				suiteSizer: "Formati Partecipazioni (A7 / A6)",
+				postage: "Calcolo Spese Postali & Ceralacca",
+				placeCards: "Segnaposto & Cavalieri da Tavolo",
+				thankYou: "Testi Biglietti di Ringraziamento",
+				speech: "Timer Discorso dei Testimoni",
+				hashtag: "Generatore Hashtag Matrimonio",
+				numerology: "Numerologia della Data di Nozze",
+				bachelor: "Budget Addio al Celibato",
+				playlist: "Playlist & Brani DJ",
+				officiantScript: "Scaletta & Discorso Celebrante",
+				nameChange: "Cambio Cognome & Pratiche",
+				sparkler: "Stelline Scintillanti & Uscita",
+				dessertTable: "Tavolo dei Dolci & Confettata"
+			},
+			proTip: {
+				title: "Consiglio del Wedding Planner",
+				text: '«Ordina sempre il 10–15% di partecipazioni e segnaposto in più per ricordi di famiglia, calligrafia e le foto di dettaglio del fotografo!»',
+				linkText: "Apri la Checklist di 12 Mesi →"
+			},
+			legal: {
+				copyright: "© 2026 Manage.Wedding",
+				loveNote: "Fatto con 🥂 & ❤️ per sposi e wedding planner",
+				about: "Chi Siamo",
+				contact: "Contatti",
+				privacy: "Privacy Policy",
+				terms: "Termini di Servizio",
+				top: "Torna su ↑"
+			}
+		}
+	},
+	pt: {
+		nav: {
+			budget: "💰 Orçamento",
+			dining: "🍾 Banquete",
+			guests: "👥 Convidados",
+			stationery: "💌 Papelaria",
+			home: "Início",
+			langLabel: "PT",
+			selectLang: "Selecionar idioma:"
+		},
+		footer: {
+			tagline: "Calculado com carinho, servido com champanhe. Ferramentas 100% gratuitas, privadas e locais para noivos e organizadores.",
+			badges: {
+				privacy: "🔒 Privacidade Local",
+				noSpam: "🚫 Zero Spam de Fornecedores",
+				free: "⚡ 100% Sempre Gratuito",
+				pdf: "📄 Ficheiros PDF Prontos a Imprimir"
+			},
+			columns: {
+				budget: "Orçamento & Finanças",
+				dining: "Banquete, Bar & Bolo",
+				guests: "Convidados & Logística",
+				stationery: "Papelaria & Lembranças"
+			},
+			tools: {
+				masterBudget: "Calculadora de Orçamento Geral",
+				venueCost: "Custos Ocultos da Quinta / Espaço",
+				whoPays: "Quem Paga o Quê no Casamento?",
+				bachelorette: "Orçamento da Despedida de Solteira",
+				tipping: "Guia de Gratificações / Gorjetas",
+				honeymoon: "Orçamento da Lua de Mel",
+				loan: "Simulador de Empréstimo Casamento",
+				giftCash: "Presente em Dinheiro (Convidados)",
+				drink: "Calculadora de Bebidas & Open Bar",
+				liquor: "Bebidas Brancas & Garrafas",
+				cakePricing: "Preço do Bolo de Casamento",
+				cakeServing: "Andares e Fatias de Bolo",
+				menuMaker: "Criador de Ementas (4x9 DL)",
+				catering: "Banquete Servido vs. Buffet",
+				dilution: "Teor Alcoólico & Diluição de Cocktails",
+				floral: "Orçamento de Flores & Decoração",
+				seating: "Mapa e Disposição de Mesas",
+				clearance: "Pista de Dança & Espaçamento",
+				processional: "Cortejo Nupcial & Ordem de Entrada",
+				timeline: "Cronograma do Grande Dia",
+				rehearsal: "Jantar de Ensaio / Véspera",
+				guestList: "Gestão da Lista de Convidados",
+				rsvp: "Controlo de Confirmações (RSVP)",
+				alterations: "Arranjos do Vestido de Noiva",
+				envelope: "Endereçamento de Envelopes",
+				suiteSizer: "Formatos de Convites (A7 / A6)",
+				postage: "Calculadora de Portes e Selos",
+				placeCards: "Marcadores de Lugar e Mesa",
+				thankYou: "Textos de Cartões de Agradecimento",
+				speech: "Temporizador de Discursos",
+				hashtag: "Gerador de Hashtags de Casamento",
+				numerology: "Numerologia da Data de Casamento",
+				bachelor: "Despedida de Solteiro",
+				playlist: "Playlist & Músicas DJ",
+				officiantScript: "Roteiro de Cerimónia Laica",
+				nameChange: "Mudança de Nome / Apelido",
+				sparkler: "Sparklers & Luzinhas de Saída",
+				dessertTable: "Mesa de Sobremesas & Doces"
+			},
+			proTip: {
+				title: "Dica de Wedding Planner",
+				text: '«Encomende sempre 10 a 15% a mais de convites e marcadores de mesa para lembranças de família, caligrafia e as fotos de detalhe do fotógrafo!»',
+				linkText: "Abrir Checklist de 12 Meses →"
+			},
+			legal: {
+				copyright: "© 2026 Manage.Wedding",
+				loveNote: "Feito com 🥂 & ❤️ para noivos e organizadores",
+				about: "Sobre Nós",
+				contact: "Contacto",
+				privacy: "Política de Privacidade",
+				terms: "Termos de Utilização",
+				top: "Voltar ao topo ↑"
+			}
+		}
+	}
+};
+
+const currentT = i18n[currentLang as 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt'] || i18n.en;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={currentLang}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+		<meta name="robots" content={robotsMeta} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="manifest" href="/site.webmanifest" />
 		<link rel="canonical" href={canonicalURL} />
+		
+		{!is404 && (
+			<>
+				<!-- Multilingual Hreflang Cluster -->
+				<link rel="alternate" hreflang="en" href={`https://manage.wedding${cleanPath ? cleanPath : ''}`} />
+				<link rel="alternate" hreflang="es" href={`https://manage.wedding/es${cleanPath ? cleanPath : ''}`} />
+				<link rel="alternate" hreflang="fr" href={`https://manage.wedding/fr${cleanPath ? cleanPath : ''}`} />
+				<link rel="alternate" hreflang="de" href={`https://manage.wedding/de${cleanPath ? cleanPath : ''}`} />
+				<link rel="alternate" hreflang="it" href={`https://manage.wedding/it${cleanPath ? cleanPath : ''}`} />
+				<link rel="alternate" hreflang="pt" href={`https://manage.wedding/pt${cleanPath ? cleanPath : ''}`} />
+				<link rel="alternate" hreflang="x-default" href={`https://manage.wedding${cleanPath ? cleanPath : ''}`} />
+			</>
+		)}
+
 		<!-- Performance: DNS Prefetch & Preconnect for Google Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -105,7 +650,7 @@ if (finalSchema && (finalSchema as any)["@graph"]) {
 	</head>
 	<body>
 		<nav class="nav-sketch">
-			<a href="/" style="text-decoration: none;">
+			<a href={langPrefix || '/'} style="text-decoration: none;">
 				<div class="font-heading" style="font-size: clamp(1.4rem, 4vw, 2rem); color: var(--fg-pencil); transform: rotate(-2deg); white-space: nowrap;">
 					manage.wedding
 				</div>
@@ -113,38 +658,43 @@ if (finalSchema && (finalSchema as any)["@graph"]) {
 
 			<!-- Desktop Navigation Links (Single-Word Categories + Language Selector) -->
 			<div class="nav-links-desktop" style="display: flex; gap: 1.25rem; align-items: center;">
-				<a href="/budget">💰 Budget</a>
-				<a href="/dining">🍾 Dining</a>
-				<a href="/guests">👥 Guests</a>
-				<a href="/stationery">💌 Stationery</a>
+				<a href={`${langPrefix}/budget`}>{currentT.nav.budget}</a>
+				<a href={`${langPrefix}/dining`}>{currentT.nav.dining}</a>
+				<a href={`${langPrefix}/guests`}>{currentT.nav.guests}</a>
+				<a href={`${langPrefix}/stationery`}>{currentT.nav.stationery}</a>
 
 				<!-- Language Selector Dropdown -->
 				<div class="lang-dropdown-wrapper" style="position: relative; margin-left: 0.25rem;">
 					<button id="lang-menu-btn" class="lang-toggle-btn" aria-label="Select Language" aria-expanded="false" style="display: flex; align-items: center; gap: 0.35rem; background: #fff; border: 1.5px solid var(--fg-pencil); padding: 5px 10px; border-radius: 4px; font-family: var(--font-body); font-size: 0.88rem; font-weight: 700; color: var(--fg-pencil); cursor: pointer; box-shadow: 2px 2px 0px var(--fg-pencil); transition: all 0.15s ease;">
 						<span>🌐</span>
-						<span>EN</span>
+						<span>{currentT.nav.langLabel}</span>
 						<span style="font-size: 0.65rem; opacity: 0.75; transform: translateY(1px);">▼</span>
 					</button>
 
 					<div id="lang-dropdown-menu" class="lang-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 8px); right: 0; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); min-width: 175px; padding: 6px 0; z-index: 110;">
-						<a href="/" class="lang-option active" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; font-size: 0.88rem; color: var(--fg-pencil); text-decoration: none; font-weight: 700; background: rgba(37,99,235,0.08);">
+						<a href={getLangLink('en')} class={`lang-option ${currentLang === 'en' ? 'active' : ''}`} style={`display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; font-size: 0.88rem; color: var(--fg-pencil); text-decoration: none; font-weight: ${currentLang === 'en' ? '700' : '600'}; background: ${currentLang === 'en' ? 'rgba(37,99,235,0.08)' : 'transparent'};`}>
 							<span>🇬🇧 English</span>
-							<span style="color: var(--accent-blue); font-weight: 900;">✓</span>
+							{currentLang === 'en' && <span style="color: var(--accent-blue); font-weight: 900;">✓</span>}
 						</a>
-						<a href="/es" class="lang-option" style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; font-size: 0.88rem; color: var(--text-secondary); text-decoration: none; font-weight: 600; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'; this.style.color='var(--fg-pencil)'" onmouseout="this.style.background='transparent'; this.style.color='var(--text-secondary)'">
+						<a href={getLangLink('es')} class={`lang-option ${currentLang === 'es' ? 'active' : ''}`} style={`display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; font-size: 0.88rem; color: var(--fg-pencil); text-decoration: none; font-weight: ${currentLang === 'es' ? '700' : '600'}; background: ${currentLang === 'es' ? 'rgba(37,99,235,0.08)' : 'transparent'};`}>
 							<span>🇪🇸 Español</span>
+							{currentLang === 'es' && <span style="color: var(--accent-blue); font-weight: 900;">✓</span>}
 						</a>
-						<a href="/fr" class="lang-option" style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; font-size: 0.88rem; color: var(--text-secondary); text-decoration: none; font-weight: 600; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'; this.style.color='var(--fg-pencil)'" onmouseout="this.style.background='transparent'; this.style.color='var(--text-secondary)'">
+						<a href={getLangLink('fr')} class={`lang-option ${currentLang === 'fr' ? 'active' : ''}`} style={`display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; font-size: 0.88rem; color: var(--fg-pencil); text-decoration: none; font-weight: ${currentLang === 'fr' ? '700' : '600'}; background: ${currentLang === 'fr' ? 'rgba(37,99,235,0.08)' : 'transparent'};`}>
 							<span>🇫🇷 Français</span>
+							{currentLang === 'fr' && <span style="color: var(--accent-blue); font-weight: 900;">✓</span>}
 						</a>
-						<a href="/de" class="lang-option" style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; font-size: 0.88rem; color: var(--text-secondary); text-decoration: none; font-weight: 600; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'; this.style.color='var(--fg-pencil)'" onmouseout="this.style.background='transparent'; this.style.color='var(--text-secondary)'">
+						<a href={getLangLink('de')} class={`lang-option ${currentLang === 'de' ? 'active' : ''}`} style={`display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; font-size: 0.88rem; color: var(--fg-pencil); text-decoration: none; font-weight: ${currentLang === 'de' ? '700' : '600'}; background: ${currentLang === 'de' ? 'rgba(37,99,235,0.08)' : 'transparent'};`}>
 							<span>🇩🇪 Deutsch</span>
+							{currentLang === 'de' && <span style="color: var(--accent-blue); font-weight: 900;">✓</span>}
 						</a>
-						<a href="/it" class="lang-option" style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; font-size: 0.88rem; color: var(--text-secondary); text-decoration: none; font-weight: 600; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'; this.style.color='var(--fg-pencil)'" onmouseout="this.style.background='transparent'; this.style.color='var(--text-secondary)'">
+						<a href={getLangLink('it')} class={`lang-option ${currentLang === 'it' ? 'active' : ''}`} style={`display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; font-size: 0.88rem; color: var(--fg-pencil); text-decoration: none; font-weight: ${currentLang === 'it' ? '700' : '600'}; background: ${currentLang === 'it' ? 'rgba(37,99,235,0.08)' : 'transparent'};`}>
 							<span>🇮🇹 Italiano</span>
+							{currentLang === 'it' && <span style="color: var(--accent-blue); font-weight: 900;">✓</span>}
 						</a>
-						<a href="/pt" class="lang-option" style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; font-size: 0.88rem; color: var(--text-secondary); text-decoration: none; font-weight: 600; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'; this.style.color='var(--fg-pencil)'" onmouseout="this.style.background='transparent'; this.style.color='var(--text-secondary)'">
+						<a href={getLangLink('pt')} class={`lang-option ${currentLang === 'pt' ? 'active' : ''}`} style={`display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; font-size: 0.88rem; color: var(--fg-pencil); text-decoration: none; font-weight: ${currentLang === 'pt' ? '700' : '600'}; background: ${currentLang === 'pt' ? 'rgba(37,99,235,0.08)' : 'transparent'};`}>
 							<span>🇵🇹 Português</span>
+							{currentLang === 'pt' && <span style="color: var(--accent-blue); font-weight: 900;">✓</span>}
 						</a>
 					</div>
 				</div>
@@ -160,40 +710,36 @@ if (finalSchema && (finalSchema as any)["@graph"]) {
 			<!-- Mobile Dropdown Drawer -->
 			<div class="mobile-menu-drawer" id="mobile-menu-drawer">
 				<div class="mobile-nav-grid">
-					<a href="/" class="mobile-nav-link" onclick="closeMobileMenu()">
+					<a href={langPrefix || '/'} class="mobile-nav-link" onclick="closeMobileMenu()">
 						<span>🏠</span>
-						<span>Home</span>
+						<span>{currentT.nav.home}</span>
 					</a>
-					<a href="/budget" class="mobile-nav-link" onclick="closeMobileMenu()">
-						<span>💰</span>
-						<span>Budget</span>
+					<a href={`${langPrefix}/budget`} class="mobile-nav-link" onclick="closeMobileMenu()">
+						<span>{currentT.nav.budget}</span>
 					</a>
-					<a href="/dining" class="mobile-nav-link" onclick="closeMobileMenu()">
-						<span>🍾</span>
-						<span>Dining</span>
+					<a href={`${langPrefix}/dining`} class="mobile-nav-link" onclick="closeMobileMenu()">
+						<span>{currentT.nav.dining}</span>
 					</a>
-					<a href="/guests" class="mobile-nav-link" onclick="closeMobileMenu()">
-						<span>👥</span>
-						<span>Guests</span>
+					<a href={`${langPrefix}/guests`} class="mobile-nav-link" onclick="closeMobileMenu()">
+						<span>{currentT.nav.guests}</span>
 					</a>
-					<a href="/stationery" class="mobile-nav-link" onclick="closeMobileMenu()">
-						<span>💌</span>
-						<span>Stationery</span>
+					<a href={`${langPrefix}/stationery`} class="mobile-nav-link" onclick="closeMobileMenu()">
+						<span>{currentT.nav.stationery}</span>
 					</a>
 
 					<!-- Mobile Language Switcher -->
 					<div style="margin-top: 0.5rem; padding-top: 0.75rem; border-top: 1.5px dashed var(--fg-pencil);">
 						<div style="font-size: 0.80rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
 							<span>🌐</span>
-							<span>Language / Idioma:</span>
+							<span>{currentT.nav.selectLang || 'Select Language:'}</span>
 						</div>
 						<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem;">
-							<a href="/" class="mobile-lang-btn active" style="text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: var(--fg-pencil); color: #fff;">🇬🇧 EN</a>
-							<a href="/es" class="mobile-lang-btn" style="text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 600; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: #fff; color: var(--fg-pencil);">🇪🇸 ES</a>
-							<a href="/fr" class="mobile-lang-btn" style="text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 600; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: #fff; color: var(--fg-pencil);">🇫🇷 FR</a>
-							<a href="/de" class="mobile-lang-btn" style="text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 600; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: #fff; color: var(--fg-pencil);">🇩🇪 DE</a>
-							<a href="/it" class="mobile-lang-btn" style="text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 600; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: #fff; color: var(--fg-pencil);">🇮🇹 IT</a>
-							<a href="/pt" class="mobile-lang-btn" style="text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 600; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: #fff; color: var(--fg-pencil);">🇵🇹 PT</a>
+							<a href={getLangLink('en')} class={`mobile-lang-btn ${currentLang === 'en' ? 'active' : ''}`} style={`text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: ${currentLang === 'en' ? 'var(--fg-pencil)' : '#fff'}; color: ${currentLang === 'en' ? '#fff' : 'var(--fg-pencil)'};`}>🇬🇧 EN</a>
+							<a href={getLangLink('es')} class={`mobile-lang-btn ${currentLang === 'es' ? 'active' : ''}`} style={`text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: ${currentLang === 'es' ? 'var(--fg-pencil)' : '#fff'}; color: ${currentLang === 'es' ? '#fff' : 'var(--fg-pencil)'};`}>🇪🇸 ES</a>
+							<a href={getLangLink('fr')} class={`mobile-lang-btn ${currentLang === 'fr' ? 'active' : ''}`} style={`text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: ${currentLang === 'fr' ? 'var(--fg-pencil)' : '#fff'}; color: ${currentLang === 'fr' ? '#fff' : 'var(--fg-pencil)'};`}>🇫🇷 FR</a>
+							<a href={getLangLink('de')} class={`mobile-lang-btn ${currentLang === 'de' ? 'active' : ''}`} style={`text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: ${currentLang === 'de' ? 'var(--fg-pencil)' : '#fff'}; color: ${currentLang === 'de' ? '#fff' : 'var(--fg-pencil)'};`}>🇩🇪 DE</a>
+							<a href={getLangLink('it')} class={`mobile-lang-btn ${currentLang === 'it' ? 'active' : ''}`} style={`text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: ${currentLang === 'it' ? 'var(--fg-pencil)' : '#fff'}; color: ${currentLang === 'it' ? '#fff' : 'var(--fg-pencil)'};`}>🇮🇹 IT</a>
+							<a href={getLangLink('pt')} class={`mobile-lang-btn ${currentLang === 'pt' ? 'active' : ''}`} style={`text-align: center; padding: 6px 4px; font-size: 0.82rem; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-decoration: none; background: ${currentLang === 'pt' ? 'var(--fg-pencil)' : '#fff'}; color: ${currentLang === 'pt' ? '#fff' : 'var(--fg-pencil)'};`}>🇵🇹 PT</a>
 						</div>
 					</div>
 				</div>
@@ -258,11 +804,81 @@ if (finalSchema && (finalSchema as any)["@graph"]) {
 					}
 				}
 			});
+
+			// Universal Form State Auto-Save & Auto-Restore
+			(function() {
+				try {
+					const pathKey = window.location.pathname.replace(/\/$/, '') || '/';
+					const storagePrefix = 'mw_save_' + pathKey + '_';
+
+					function shouldIgnore(el) {
+						if (!el || el.dataset.noSave !== undefined) return true;
+						if (el.id === 'global-search-input' || el.id === 'search-input') return true;
+						if (el.type === 'hidden' || el.type === 'submit' || el.type === 'button') return true;
+						if (el.closest && el.closest('.no-save, #mobile-menu-drawer, #lang-dropdown-menu')) return true;
+						return false;
+					}
+
+					function restoreState() {
+						const inputs = document.querySelectorAll('input, select, textarea');
+						inputs.forEach(el => {
+							if (shouldIgnore(el)) return;
+							const key = storagePrefix + (el.id || el.name);
+							if (!el.id && !el.name) return;
+							const saved = localStorage.getItem(key);
+							if (saved !== null) {
+								if (el.type === 'checkbox') {
+									el.checked = saved === 'true';
+								} else if (el.type === 'radio') {
+									el.checked = el.value === saved;
+								} else {
+									el.value = saved;
+								}
+								el.dispatchEvent(new Event('input', { bubbles: true }));
+								el.dispatchEvent(new Event('change', { bubbles: true }));
+							}
+						});
+					}
+
+					function saveInput(el) {
+						if (shouldIgnore(el)) return;
+						const key = storagePrefix + (el.id || el.name);
+						if (!el.id && !el.name) return;
+						if (el.type === 'checkbox') {
+							localStorage.setItem(key, el.checked.toString());
+						} else if (el.type === 'radio') {
+							if (el.checked) localStorage.setItem(key, el.value);
+						} else {
+							localStorage.setItem(key, el.value);
+						}
+					}
+
+					document.addEventListener('input', (e) => {
+						if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA')) {
+							saveInput(e.target);
+						}
+					}, { passive: true });
+
+					document.addEventListener('change', (e) => {
+						if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA')) {
+							saveInput(e.target);
+						}
+					}, { passive: true });
+
+					if (document.readyState !== 'loading') {
+						restoreState();
+					} else {
+						document.addEventListener('DOMContentLoaded', restoreState);
+					}
+				} catch (err) {
+					// Fallback silently if localStorage is restricted
+				}
+			})();
 		</script>
 
 		<slot />
 
-		<!-- Creative & Worthy Wedding Footer -->
+		<!-- Creative & Worthy Wedding Footer (Multilingual) -->
 		<footer class="wedding-footer" style="background-color: var(--muted-paper); border-top: 3px dashed var(--fg-pencil); margin-top: 5rem; padding: 4.5rem 1.5rem 2.5rem; position: relative;">
 			
 			<div class="tape" style="top: -12px;"></div>
@@ -272,22 +888,22 @@ if (finalSchema && (finalSchema as any)["@graph"]) {
 				<!-- Footer Top: Brand Note & Value Badges -->
 				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 3.5rem; border-bottom: 2px solid var(--fg-pencil); padding-bottom: 2rem;">
 					<div>
-						<a href="/" style="text-decoration: none;">
+						<a href={langPrefix || '/'} style="text-decoration: none;">
 							<div class="font-heading" style="font-size: 1.8rem; color: var(--fg-pencil); font-weight: 800; transform: rotate(-1deg); display: flex; align-items: center; gap: 0.4rem;">
 								<span>💍</span>
 								<span>manage.wedding</span>
 							</div>
 						</a>
 						<p style="margin: 0.4rem 0 0 0; font-size: 1rem; color: var(--text-secondary); max-width: 520px; line-height: 1.5;">
-							Calculated with love, served with champagne. 100% free, private & local-first math for real couples and coordinators.
+							{currentT.footer.tagline}
 						</p>
 					</div>
 
 					<div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
-						<span style="font-size: 0.82rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 4px 10px; border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">🔒 Local-First Privacy</span>
-						<span style="font-size: 0.82rem; font-weight: 700; background: #fee2e2; border: 1.5px solid var(--fg-pencil); padding: 4px 10px; border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">🚫 Zero Vendor Spam</span>
-						<span style="font-size: 0.82rem; font-weight: 700; background: #dbeafe; border: 1.5px solid var(--fg-pencil); padding: 4px 10px; border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">⚡ 100% Free Forever</span>
-						<span style="font-size: 0.82rem; font-weight: 700; background: #dcfce7; border: 1.5px solid var(--fg-pencil); padding: 4px 10px; border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">📄 Vector PDF Ready</span>
+						<span style="font-size: 0.82rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 4px 10px; border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">{currentT.footer.badges.privacy}</span>
+						<span style="font-size: 0.82rem; font-weight: 700; background: #fee2e2; border: 1.5px solid var(--fg-pencil); padding: 4px 10px; border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">{currentT.footer.badges.noSpam}</span>
+						<span style="font-size: 0.82rem; font-weight: 700; background: #dbeafe; border: 1.5px solid var(--fg-pencil); padding: 4px 10px; border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">{currentT.footer.badges.free}</span>
+						<span style="font-size: 0.82rem; font-weight: 700; background: #dcfce7; border: 1.5px solid var(--fg-pencil); padding: 4px 10px; border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">{currentT.footer.badges.pdf}</span>
 					</div>
 				</div>
 
@@ -296,81 +912,87 @@ if (finalSchema && (finalSchema as any)["@graph"]) {
 					
 					<!-- Column 1: Budget & Finance -->
 					<div>
-						<a href="/budget" style="text-decoration: none;">
+						<a href={`${langPrefix}/budget`} style="text-decoration: none;">
 							<h3 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 0 0 0.85rem 0; border-bottom: 1.5px solid var(--accent-red); padding-bottom: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">
 								<span>💰</span>
-								<span>Budget & Finance</span>
+								<span>{currentT.footer.columns.budget}</span>
 							</h3>
 						</a>
 						<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.90rem;">
-							<li><a href="/master-budget-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Master Budget Allocator</a></li>
-							<li><a href="/wedding-venue-cost-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Venue Hidden Fees (++)</a></li>
-							<li><a href="/who-pays-for-what-wedding" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Who Pays for What?</a></li>
-							<li><a href="/bachelorette-budget-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Bachelorette Splitter</a></li>
-							<li><a href="/vendor-tipping-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Vendor Tipping Envelopes</a></li>
-							<li><a href="/honeymoon-budget-estimator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Honeymoon Estimator</a></li>
-							<li><a href="/wedding-loan-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Wedding Loan Sizer</a></li>
-							<li><a href="/gift-cash-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Guest Gift Cash Sizer</a></li>
+							<li><a href={`${langPrefix}/master-budget-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.masterBudget}</a></li>
+							<li><a href={`${langPrefix}/wedding-venue-cost-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.venueCost}</a></li>
+							<li><a href={`${langPrefix}/who-pays-for-what-wedding`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.whoPays}</a></li>
+							<li><a href={`${langPrefix}/bachelorette-budget-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.bachelorette}</a></li>
+							<li><a href={`${langPrefix}/bachelor-party-budget-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.bachelor}</a></li>
+							<li><a href={`${langPrefix}/vendor-tipping-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.tipping}</a></li>
+							<li><a href={`${langPrefix}/honeymoon-budget-estimator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.honeymoon}</a></li>
+							<li><a href={`${langPrefix}/wedding-loan-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.loan}</a></li>
+							<li><a href={`${langPrefix}/wedding-name-change-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.nameChange}</a></li>
+							<li><a href={`${langPrefix}/gift-cash-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.giftCash}</a></li>
 						</ul>
 					</div>
 
 					<!-- Column 2: Bar, Food & Dining -->
 					<div>
-						<a href="/dining" style="text-decoration: none;">
+						<a href={`${langPrefix}/dining`} style="text-decoration: none;">
 							<h3 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 0 0 0.85rem 0; border-bottom: 1.5px solid var(--accent-blue); padding-bottom: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">
 								<span>🍾</span>
-								<span>Food, Bar & Dining</span>
+								<span>{currentT.footer.columns.dining}</span>
 							</h3>
 						</a>
 						<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.90rem;">
-							<li><a href="/wedding-drink-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Open Bar Drink Calculator</a></li>
-							<li><a href="/liquor-wedding-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Spirits & Handles (1.75L)</a></li>
-							<li><a href="/cake-pricing-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Cake Pricing & Quotes</a></li>
-							<li><a href="/cake-serving-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Tier Dimensions & Servings</a></li>
-							<li><a href="/reception-menu-maker" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Reception Menu Maker (4x9)</a></li>
-							<li><a href="/catering-cost-estimator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Plated vs Buffet Catering</a></li>
-							<li><a href="/alcohol-dilution-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Alcohol Proof Dilution</a></li>
-							<li><a href="/floral-cost-estimator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Bouquet & Floral Costs</a></li>
+							<li><a href={`${langPrefix}/wedding-drink-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.drink}</a></li>
+							<li><a href={`${langPrefix}/liquor-wedding-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.liquor}</a></li>
+							<li><a href={`${langPrefix}/cake-pricing-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.cakePricing}</a></li>
+							<li><a href={`${langPrefix}/cake-serving-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.cakeServing}</a></li>
+							<li><a href={`${langPrefix}/reception-menu-maker`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.menuMaker}</a></li>
+							<li><a href={`${langPrefix}/wedding-dessert-table-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.dessertTable}</a></li>
+							<li><a href={`${langPrefix}/catering-cost-estimator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.catering}</a></li>
+							<li><a href={`${langPrefix}/alcohol-dilution-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.dilution}</a></li>
+							<li><a href={`${langPrefix}/floral-cost-estimator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.floral}</a></li>
 						</ul>
 					</div>
 
 					<!-- Column 3: Guests & Logistics -->
 					<div>
-						<a href="/guests" style="text-decoration: none;">
+						<a href={`${langPrefix}/guests`} style="text-decoration: none;">
 							<h3 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 0 0 0.85rem 0; border-bottom: 1.5px solid #16a34a; padding-bottom: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">
 								<span>👥</span>
-								<span>Guests & Logistics</span>
+								<span>{currentT.footer.columns.guests}</span>
 							</h3>
 						</a>
 						<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.90rem;">
-							<li><a href="/seating-chart-maker" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Drag & Drop Seating Chart</a></li>
-							<li><a href="/seating-clearance-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Floor Plan & Dance Floor</a></li>
-							<li><a href="/wedding-processional-order" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Processional Order Lineup</a></li>
-							<li><a href="/day-of-timeline-generator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Day-Of Timeline Generator</a></li>
-							<li><a href="/rehearsal-dinner-planner" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Rehearsal Dinner Planner</a></li>
-							<li><a href="/guest-list-manager" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Guest List Manager</a></li>
-							<li><a href="/rsvp-tracker" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">RSVP Attendance Tracker</a></li>
-							<li><a href="/dress-alterations-estimator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Dress Alterations Sizer</a></li>
+							<li><a href={`${langPrefix}/seating-chart-maker`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.seating}</a></li>
+							<li><a href={`${langPrefix}/seating-clearance-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.clearance}</a></li>
+							<li><a href={`${langPrefix}/wedding-processional-order`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.processional}</a></li>
+							<li><a href={`${langPrefix}/wedding-officiant-script-timer`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.officiantScript}</a></li>
+							<li><a href={`${langPrefix}/wedding-sparkler-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.sparkler}</a></li>
+							<li><a href={`${langPrefix}/day-of-timeline-generator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.timeline}</a></li>
+							<li><a href={`${langPrefix}/rehearsal-dinner-planner`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.rehearsal}</a></li>
+							<li><a href={`${langPrefix}/guest-list-manager`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.guestList}</a></li>
+							<li><a href={`${langPrefix}/rsvp-tracker`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.rsvp}</a></li>
+							<li><a href={`${langPrefix}/dress-alterations-estimator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.alterations}</a></li>
 						</ul>
 					</div>
 
 					<!-- Column 4: Stationery & Creative -->
 					<div>
-						<a href="/stationery" style="text-decoration: none;">
+						<a href={`${langPrefix}/stationery`} style="text-decoration: none;">
 							<h3 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 0 0 0.85rem 0; border-bottom: 1.5px solid #7c3aed; padding-bottom: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">
 								<span>💌</span>
-								<span>Stationery & Creative</span>
+								<span>{currentT.footer.columns.stationery}</span>
 							</h3>
 						</a>
 						<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.90rem;">
-							<li><a href="/wedding-envelope-addressing" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Envelope Address Formatter</a></li>
-							<li><a href="/wedding-invitation-suite-sizer" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">A7 Suite Sizer (300 DPI)</a></li>
-							<li><a href="/wedding-invitation-postage-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">USPS Postage & Wax Seals</a></li>
-							<li><a href="/table-place-cards" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Folded Place Card Maker</a></li>
-							<li><a href="/wedding-thank-you-cards" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Thank-You Note Generator</a></li>
-							<li><a href="/wedding-speech-calculator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Speech & Toast Timer</a></li>
-							<li><a href="/wedding-hashtag-generator" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Wedding Hashtag Generator</a></li>
-							<li><a href="/wedding-date-numerology" style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">Date Numerology Sizer</a></li>
+							<li><a href={`${langPrefix}/wedding-envelope-addressing`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.envelope}</a></li>
+							<li><a href={`${langPrefix}/wedding-invitation-suite-sizer`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.suiteSizer}</a></li>
+							<li><a href={`${langPrefix}/wedding-invitation-postage-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.postage}</a></li>
+							<li><a href={`${langPrefix}/table-place-cards`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.placeCards}</a></li>
+							<li><a href={`${langPrefix}/wedding-thank-you-cards`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.thankYou}</a></li>
+							<li><a href={`${langPrefix}/wedding-speech-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.speech}</a></li>
+							<li><a href={`${langPrefix}/wedding-playlist-duration-calculator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.playlist}</a></li>
+							<li><a href={`${langPrefix}/wedding-hashtag-generator`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.hashtag}</a></li>
+							<li><a href={`${langPrefix}/wedding-date-numerology`} style="color: var(--text-secondary); text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='var(--fg-pencil)'" onmouseout="this.style.color='var(--text-secondary)'">{currentT.footer.tools.numerology}</a></li>
 						</ul>
 					</div>
 
@@ -380,13 +1002,13 @@ if (finalSchema && (finalSchema as any)["@graph"]) {
 							<div class="tape" style="top: -10px; left: 50%; transform: translateX(-50%);"></div>
 							<div style="font-weight: 800; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
 								<span>💡</span>
-								<span>Planner Pro-Tip</span>
+								<span>{currentT.footer.proTip.title}</span>
 							</div>
 							<p style="margin: 0; font-size: 0.86rem; color: var(--fg-pencil); line-height: 1.5; font-style: italic;">
-								"Always order 10–15% extra invitation suites and place cards for keepsakes, calligraphy errors, and your photographer's flat-lay detail shots!"
+								{currentT.footer.proTip.text}
 							</p>
 							<div style="margin-top: 0.85rem; border-top: 1px dashed var(--fg-pencil); padding-top: 0.5rem; text-align: right;">
-								<a href="/wedding-checklist" style="font-size: 0.80rem; font-weight: 700; color: var(--fg-pencil); text-decoration: underline;">Open 12-Month Checklist →</a>
+								<a href={`${langPrefix}/wedding-checklist`} style="font-size: 0.80rem; font-weight: 700; color: var(--fg-pencil); text-decoration: underline;">{currentT.footer.proTip.linkText}</a>
 							</div>
 						</div>
 					</div>
@@ -396,17 +1018,17 @@ if (finalSchema && (finalSchema as any)["@graph"]) {
 				<!-- Footer Bottom: Legal & Love Note -->
 				<div style="border-top: 1.5px solid rgba(0,0,0,0.12); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.88rem; color: var(--text-secondary);">
 					<div>
-						<span>&copy; 2026 Manage.Wedding</span>
+						<span>{currentT.footer.legal.copyright}</span>
 						<span style="margin: 0 0.5rem;">•</span>
-						<span>Made with 🥂 & ❤️ for couples & planners everywhere</span>
+						<span>{currentT.footer.legal.loveNote}</span>
 					</div>
 
 					<div style="display: flex; gap: 1.25rem; flex-wrap: wrap;">
-						<a href="/about" style="color: var(--fg-pencil); text-decoration: underline; text-decoration-style: wavy;">About</a>
-						<a href="/contact" style="color: var(--fg-pencil); text-decoration: underline; text-decoration-style: wavy;">Contact Us</a>
-						<a href="/privacy" style="color: var(--fg-pencil); text-decoration: underline; text-decoration-style: wavy;">Privacy Policy</a>
-						<a href="/terms" style="color: var(--fg-pencil); text-decoration: underline; text-decoration-style: wavy;">Terms of Service</a>
-						<a href="#top" style="color: var(--accent-red); font-weight: 700; text-decoration: none;">Back to Top ↑</a>
+						<a href={`${langPrefix}/about`} style="color: var(--fg-pencil); text-decoration: underline; text-decoration-style: wavy;">{currentT.footer.legal.about}</a>
+						<a href={`${langPrefix}/contact`} style="color: var(--fg-pencil); text-decoration: underline; text-decoration-style: wavy;">{currentT.footer.legal.contact}</a>
+						<a href={`${langPrefix}/privacy`} style="color: var(--fg-pencil); text-decoration: underline; text-decoration-style: wavy;">{currentT.footer.legal.privacy}</a>
+						<a href={`${langPrefix}/terms`} style="color: var(--fg-pencil); text-decoration: underline; text-decoration-style: wavy;">{currentT.footer.legal.terms}</a>
+						<a href="#top" style="color: var(--accent-red); font-weight: 700; text-decoration: none;">{currentT.footer.legal.top}</a>
 					</div>
 				</div>
 

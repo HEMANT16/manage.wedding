@@ -1,0 +1,956 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/day-of-timeline-generator/#webapp",
+      "name": "Generador de Cronograma y Horarios del Día de la Boda (Timing Nupcial)",
+      "url": "https://manage.wedding/es/day-of-timeline-generator",
+      "inLanguage": "es",
+      "description": "Generador gratuito del cronograma y timing del día de la boda. Calcula los horarios minuto a minuto desde peluquería y maquillaje hasta el baile y la recena. Exporta a Word, PDF y Excel.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cómo funciona el generador de cronograma para el día de la boda?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Indica la hora de inicio de la ceremonia, si haréis First Look (encuentro previo) y el tiempo de desplazamiento. La herramienta calcula automáticamente el timing completo hacia atrás y hacia adelante (preparativos, sesión de fotos, cóctel, banquete y fiesta)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué es el 'First Look' y cómo afecta a los horarios de la boda?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El First Look es el encuentro íntimo de los novios a solas antes de la ceremonia. Permite realizar las fotos de pareja y con los testigos antes del 'sí, quiero', de modo que tras la ceremonia podáis disfrutar del 100% del cóctel con los invitados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto margen de seguridad (buffer) conviene añadir?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Se recomienda dejar un colchón de 15 minutos en peluquería y maquillaje, 15 minutos adicionales al trayecto en coche y prever que la ceremonia suele empezar entre 5 y 10 minutos tarde mientras se sientan los invitados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Puedo exportar el timing a Word o PDF para los proveedores?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí, puedes descargar el cronograma completo en formato Word (.doc), imprimirlo en PDF para los padrinos y fotógrafo o exportarlo a Excel (.csv)."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Planificar el Timing y Horarios del Día de la Boda",
+      "description": "Guía maestra paso a paso para cuadrar todos los momentos del día sin estrés ni retrasos.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Paso 1: Fija la Hora de la Ceremonia como Eje Central",
+          "text": "Establece la hora de la ceremonia (ej. 18:00 h). Todos los preparativos previos y los hitos posteriores se calculan a partir de este punto."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 2: Decide si Habrá First Look o Reportaje Tradicional",
+          "text": "Elige si haréis las fotos de pareja 1,5 h antes de la ceremonia o durante la primera media hora del cóctel."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 3: Calcula el Tiempo de Maquillaje y Peluquería",
+          "text": "Calcula 45 minutos por invitada/dama y entre 60 y 90 minutos para la novia, terminando siempre 45 minutos antes de salir de casa."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 4: Cuadra los Tiempos de Cóctel, Banquete y Baile",
+          "text": "Reserva entre 60 y 75 minutos para el cóctel de bienvenida, 90 minutos para la comida o cena y entre 2,5 y 4 horas para la barra libre y baile."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 5: Exporta y Entrega Copias a los Proveedores",
+          "text": "Exporta el itinerario a Word o PDF y entrégalo al fotógrafo, DJ, maitre del catering y wedding planner."
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Generador de Cronograma y Timing del Día de la Boda | Manage.Wedding"
+	description="Crea el cronograma y horarios del día de tu boda en segundos. Ajusta ceremonia, First Look, fotos, banquete y baile. Exporta a Word, PDF o Excel."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Cronograma del Día de la Boda" category="stationery-creative" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Cronograma y Timing <span class="accent-italic">del Día de la Boda</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Organiza cada minuto de tu gran día sin agobios. Cuadra peluquería, maquillaje, fotos, banquete, barra libre y exporta en <strong>Word (.doc)</strong>, <strong>PDF</strong> o <strong>Excel (.csv)</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Timeline Builder Controls & Actions Toolbar -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.5rem; background: #fff;">
+			<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+				<div>
+					<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin: 0;">
+						⏱️ Generador de Horarios y Guion del Evento
+					</h2>
+					<span class="font-body" style="color: var(--text-secondary); font-size: 0.95rem;">
+						Calculado hacia atrás y hacia adelante a partir de la ceremonia
+					</span>
+				</div>
+
+				<!-- Export & Control Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" class="export-btn-group">
+					<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #eff6ff;">
+						📝 Exportar a Word (.doc)
+					</button>
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #fef2f2;">
+						🖨️ Imprimir / PDF
+					</button>
+					<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						📊 Exportar Excel (.csv)
+					</button>
+					<button type="button" id="btn-copy-summary" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						📋 Copiar Resumen
+					</button>
+				</div>
+			</div>
+
+			<!-- Preset Timeline Quick Switcher -->
+			<div style="margin-bottom: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+				<span class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+					⚡ Elige una Plantilla de Horarios Típica:
+				</span>
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" id="preset-buttons-container">
+					<button type="button" class="preset-btn active-preset" data-ceremony="18:00" data-firstlook="yes" data-travel="15" data-reception="5">
+						🌅 Boda de Tarde Clásica (18:00 h • Con First Look)
+					</button>
+					<button type="button" class="preset-btn" data-ceremony="19:00" data-firstlook="yes" data-travel="10" data-reception="4.5">
+						🌇 Atardecer de Verano (19:00 h • Golden Hour)
+					</button>
+					<button type="button" class="preset-btn" data-ceremony="12:30" data-firstlook="no" data-travel="20" data-reception="5">
+						⛪ Boda de Mañana / Mediodía (12:30 h • Tradicional)
+					</button>
+					<button type="button" class="preset-btn" data-ceremony="13:00" data-firstlook="yes" data-travel="10" data-reception="4">
+						🥂 Almuerzo & Fiesta de Día (13:00 h)
+					</button>
+				</div>
+			</div>
+
+			<!-- Core Configuration Form Inputs -->
+			<form id="timeline-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end;">
+				<div>
+					<label for="ceremony-time" class="font-heading" style="display: block; font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--fg-pencil);">
+						Hora de Inicio de Ceremonia
+					</label>
+					<input type="time" id="ceremony-time" value="18:00" required style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.05rem; background: var(--bg-paper);">
+				</div>
+
+				<div>
+					<label for="first-look" class="font-heading" style="display: block; font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--fg-pencil);">
+						¿Hacer First Look (Encuentro Previo)?
+					</label>
+					<select id="first-look" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; background: #fff;">
+						<option value="yes" selected>Sí (Fotos de pareja antes de la ceremonia)</option>
+						<option value="no">No (Fotos durante el cóctel)</option>
+					</select>
+				</div>
+
+				<div>
+					<label for="travel-time" class="font-heading" style="display: block; font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--fg-pencil);">
+						Desplazamiento al Lugar (Minutos)
+					</label>
+					<input type="number" id="travel-time" min="0" max="180" value="15" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; background: var(--bg-paper);">
+				</div>
+
+				<div>
+					<label for="reception-hours" class="font-heading" style="display: block; font-size: 0.95rem; margin-bottom: 0.3rem; color: var(--fg-pencil);">
+						Duración del Banquete y Fiesta (Horas)
+					</label>
+					<select id="reception-hours" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; background: #fff;">
+						<option value="3.5">3,5 Horas</option>
+						<option value="4">4,0 Horas</option>
+						<option value="4.5">4,5 Horas</option>
+						<option value="5" selected>5,0 Horas (Estándar Cóctel + Cena + Barra Libre)</option>
+						<option value="6">6,0 Horas (Boda Larga con Recena)</option>
+					</select>
+				</div>
+			</form>
+		</div>
+
+		<!-- Main Workspace Grid: Interactive Timeline Stream + Custom Milestone Adder -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1fr 340px; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="timeline-workspace-grid">
+			
+			<!-- Left: Master Visual Vertical Timeline Stream -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<!-- Header & Audience Filter Tabs -->
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+					<div>
+						<h3 class="font-heading" style="font-size: 1.4rem; margin: 0; color: var(--fg-pencil);">
+							📋 Itinerario Maestro del Gran Día
+						</h3>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">
+							Edita, añade o elimina momentos según vuestra boda
+						</span>
+					</div>
+
+					<!-- Role Filter Pills -->
+					<div style="display: flex; gap: 0.3rem; flex-wrap: wrap;" id="role-filter-group">
+						<button type="button" class="role-pill-btn active-role" data-role="all">Todos los Hitos</button>
+						<button type="button" class="role-pill-btn" data-role="wedding-party">👰 Novios y Familia</button>
+						<button type="button" class="role-pill-btn" data-role="photo">📸 Foto y Vídeo</button>
+						<button type="button" class="role-pill-btn" data-role="reception">🍽️ Banquete y Fiesta</button>
+					</div>
+				</div>
+
+				<!-- Vertical Timeline Container -->
+				<div id="timeline-stream" class="timeline-stream-box" style="position: relative; padding-left: 2.25rem; border-left: 3px solid var(--fg-pencil); margin-left: 1rem;">
+					<!-- Injected via JS -->
+				</div>
+
+			</div>
+
+			<!-- Right: Custom Milestone Adder & Day-Of Buffer Checklist -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Add Custom Milestone Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: #fff;">
+					<h3 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+						<span>➕</span> Añadir Momento Personalizado
+					</h3>
+					
+					<form id="add-custom-event-form" style="display: flex; flex-direction: column; gap: 0.75rem;">
+						<div>
+							<label for="custom-event-name" class="font-heading" style="display: block; font-size: 0.85rem; margin-bottom: 0.2rem;">Nombre del Hito o Momento</label>
+							<input type="text" id="custom-event-name" required placeholder="ej. Recena de Mini Hamburguesas, Entrega de Ramos" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1px solid var(--fg-pencil); border-radius: 4px; font-size: 0.95rem; background: var(--bg-paper);">
+						</div>
+
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<label for="custom-event-time" class="font-heading" style="display: block; font-size: 0.85rem; margin-bottom: 0.2rem;">Hora</label>
+								<input type="time" id="custom-event-time" required value="23:30" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1px solid var(--fg-pencil); border-radius: 4px; font-size: 0.9rem; background: var(--bg-paper);">
+							</div>
+							<div>
+								<label for="custom-event-role" class="font-heading" style="display: block; font-size: 0.85rem; margin-bottom: 0.2rem;">Categoría</label>
+								<select id="custom-event-role" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+									<option value="reception">Banquete y Fiesta</option>
+									<option value="wedding-party">Novios y Familia</option>
+									<option value="photo">Foto y Vídeo</option>
+								</select>
+							</div>
+						</div>
+
+						<button type="submit" class="hand-btn" style="padding: 0.5rem; font-size: 0.95rem; margin-top: 0.25rem;">
+							✨ Añadir al Cronograma
+						</button>
+					</form>
+				</div>
+
+				<!-- Essential Day-Of Timing Rules Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.5rem;">
+						📌 Regla de Oro del Margen de 15 Minutos:
+					</strong>
+					<ul class="font-body" style="font-size: 0.85rem; line-height: 1.5; padding-left: 1.1rem; margin: 0; color: var(--fg-pencil);">
+						<li><strong>Maquillaje y Peinado:</strong> Concluir 45 min antes de vestirse y salir.</li>
+						<li><strong>Trayecto en Coche:</strong> Suma +15 min a la ruta prevista en Google Maps.</li>
+						<li><strong>Ceremonia:</strong> Asume 5-10 min de cortesía para sentar a los invitados.</li>
+						<li><strong>Puesta de Sol:</strong> Programa las fotos de pareja 45 min antes del atardecer.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Cronograma Oficial del Día de la Boda</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Fecha de Generación: <span id="print-date"></span> | Hora Ceremonia: <span id="print-ceremony-time"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; width: 90px; text-align: left;">Hora</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Hito / Momento</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 120px; text-align: left;">Categoría</th>
+					</tr>
+				</thead>
+				<tbody id="print-timeline-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="result-box" style="margin-bottom: 2.5rem; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); padding: 1.5rem 1.75rem; position: relative;">
+			<div class="badge-postit" style="top: -12px; right: 15px;">⚡ Regla de Oro del Timing</div>
+			<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+				<span>⚡</span> Tiempos Estándar de Referencia para una Boda
+			</h3>
+			<p class="font-body" style="font-size: 1rem; line-height: 1.6; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				<strong>La Fórmula Central:</strong> Fija la <strong>Hora de Inicio de la Ceremonia</strong> como punto cero. Calcula <strong>45 min por persona</strong> para peluquería/maquillaje (60–90 min para la novia), programa el reportaje de pareja <strong>1,5 a 2 horas antes</strong> (si hacéis First Look), reserva <strong>60 a 75 minutos para el cóctel</strong> y <strong>90 minutos para la comida o cena</strong>.
+			</p>
+			
+			<!-- Benchmark Milestone Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Hito del Día</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Duración Recomendada</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Momento Ideal</th>
+							<th style="padding: 0.65rem 0.8rem; font-family: var(--font-heading); color: var(--fg-pencil);">Consejo de Coordinación</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">Peluquería y Maquillaje</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">45 min/acompañante; 60–90 min novia</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Terminar 1 hora antes de las fotos</td>
+							<td style="padding: 0.6rem 0.8rem;">La novia se maquilla la penúltima para no ir con prisas</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">First Look y Fotos de Pareja</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">45–60 minutos</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">2 a 2,5 horas antes de la ceremonia</td>
+							<td style="padding: 0.6rem 0.8rem;">Momento íntimo a solas sin invitados presentes</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">Ceremonia (Civil o Religiosa)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">25–35 min (civil) / 45–60 min (religiosa)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Hora fijada en la invitación</td>
+							<td style="padding: 0.6rem 0.8rem;">Música de bienvenida 20 min antes para acomodar invitados</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">Cóctel de Bienvenida</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">60–75 minutos</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Justo tras la ceremonia</td>
+							<td style="padding: 0.6rem 0.8rem;">Apertura inmediata de estaciones de aperitivos y bebidas</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">Banquete (Comida o Cena)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">90 minutos</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Traslado al salón</td>
+							<td style="padding: 0.6rem 0.8rem;">Intercalar brindis y entregas de regalos entre platos</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">Barra Libre, Baile y Recena</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">3 a 4 horas</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Hasta el fin de fiesta</td>
+							<td style="padding: 0.6rem 0.8rem;">Servir la recena caliente tras 2 horas de barra libre</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Guía de Organización</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem;">
+					Guía Completa de Tiempos y Coordinación del Día de la Boda
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; margin: 0.5rem auto 0;">
+					Cómo diseñar un guion horario fluido y sin prisas que fotógrafos, catering y novios agradecerán.
+				</p>
+			</div>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. First Look vs. Reportaje en el Cóctel
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin: 1.5rem 0;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.5rem;">
+							Con First Look (Encuentro Previo)
+						</h4>
+						<ul class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+							<li>Las fotos de pareja se realizan <strong>antes de la ceremonia</strong> con calma.</li>
+							<li><strong>Gran Ventaja:</strong> Los novios disfrutan del cóctel completo con sus invitados sin perderse ni un aperitivo.</li>
+						</ul>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.5rem;">
+							Sin First Look (Tradicional en el Altar)
+						</h4>
+						<ul class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+							<li>La primera vez que os veis es al caminar hacia el altar.</li>
+							<li>La mañana es más relajada, pero deberéis dedicar los primeros 30-40 minutos del cóctel al reportaje fotográfico.</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Preguntas Frecuentes
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						¿Cuándo se debe entregar el cronograma a los proveedores?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Envía un borrador <strong>3 a 4 semanas antes</strong> del enlace para que fotógrafo, DJ y catering confirmen detalles. Envía la versión definitiva en Word o PDF <strong>1 semana antes</strong> de la boda.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						¿A qué hora debe llegar el cortejo nupcial y los novios a la finca?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Si os vestís en la finca o hacéis First Look, la llegada recomendada es <strong>3 a 3,5 horas antes</strong> de la ceremonia. Si llegáis ya vestidos, <strong>45 a 60 minutos antes</strong> para retocaros en la suite nupcial.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<!-- Related Planning Tools -->
+		<RelatedTools currentPath="/es/day-of-timeline-generator" category="stationery" />
+
+	</main>
+</Layout>
+
+<style>
+	.preset-btn {
+		background: #fff;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.35rem 0.65rem;
+		font-family: var(--font-heading);
+		font-size: 0.85rem;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+	.preset-btn:hover {
+		background: var(--muted-paper);
+	}
+	.preset-btn.active-preset {
+		background: var(--accent-blue) !important;
+		color: #fff !important;
+		border-color: #1e40af !important;
+	}
+
+	.role-pill-btn {
+		background: #fff;
+		border: 1px solid var(--fg-pencil);
+		border-radius: 20px;
+		padding: 0.2rem 0.6rem;
+		font-size: 0.8rem;
+		cursor: pointer;
+		font-family: var(--font-body);
+		transition: all 0.15s ease;
+	}
+	.role-pill-btn.active-role {
+		background: var(--fg-pencil) !important;
+		color: #fff !important;
+	}
+
+	.timeline-event-card {
+		position: relative;
+		margin-bottom: 1.75rem;
+		background: var(--bg-paper);
+		border: 2px solid var(--fg-pencil);
+		border-radius: 6px;
+		padding: 0.75rem 1rem;
+		box-shadow: 2px 2px 0 var(--fg-pencil);
+		transition: transform 0.15s ease;
+	}
+	.timeline-event-card:hover {
+		transform: translateX(4px);
+	}
+
+	.timeline-bullet-dot {
+		position: absolute;
+		left: -2.85rem;
+		top: 1rem;
+		width: 14px;
+		height: 14px;
+		background: #fff;
+		border: 2.5px solid var(--fg-pencil);
+		border-radius: 50%;
+		box-shadow: 0 0 0 3px var(--bg-paper);
+	}
+
+	.event-tag {
+		font-size: 0.75rem;
+		padding: 0.1rem 0.45rem;
+		border-radius: 3px;
+		border: 1px solid var(--fg-pencil);
+		font-weight: bold;
+		display: inline-block;
+	}
+	.tag-wedding-party {
+		background: #ffdfba;
+	}
+	.tag-photo {
+		background: #baffc9;
+	}
+	.tag-reception {
+		background: #bae1ff;
+	}
+	.tag-ceremony {
+		background: #fbcfe8;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let timelineEvents = [];
+	let activeRoleFilter = 'all';
+
+	const ceremonyInput = document.getElementById('ceremony-time');
+	const firstLookInput = document.getElementById('first-look');
+	const travelInput = document.getElementById('travel-time');
+	const receptionHoursInput = document.getElementById('reception-hours');
+	const timelineStream = document.getElementById('timeline-stream');
+
+	function parseTimeToMinutes(timeStr) {
+		const [h, m] = timeStr.split(':').map(Number);
+		return h * 60 + m;
+	}
+
+	function minutesToFormattedTime(totalMinutes) {
+		let normalized = (totalMinutes % 1440 + 1440) % 1440;
+		let hours = Math.floor(normalized / 60);
+		let minutes = normalized % 60;
+		const hStr = hours < 10 ? '0' + hours : hours;
+		const minStr = minutes < 10 ? '0' + minutes : minutes;
+		return `${hStr}:${minStr} h`;
+	}
+
+	function calculateTimeline() {
+		const ceremonyMins = parseTimeToMinutes(ceremonyInput.value);
+		const firstLook = firstLookInput.value;
+		const travelMins = parseInt(travelInput.value) || 0;
+		const receptionLengthMins = Math.round(parseFloat(receptionHoursInput.value) * 60);
+
+		timelineEvents = [];
+
+		if (firstLook === 'yes') {
+			timelineEvents.push({
+				id: 'evt-1',
+				minutes: ceremonyMins - travelMins - 120 - 150,
+				name: 'Peluquería y Maquillaje / Preparativos Novios',
+				role: 'wedding-party',
+				description: 'Sesión de estilismo, batas nupciales y brindis previo'
+			});
+			timelineEvents.push({
+				id: 'evt-2',
+				minutes: ceremonyMins - travelMins - 120 - 45,
+				name: 'Llegada de Fotógrafo y Vídeo (Detalles y Vestido)',
+				role: 'photo',
+				description: 'Fotos de accesorios, alianzas, zapatos, vestido y traje'
+			});
+			timelineEvents.push({
+				id: 'evt-3',
+				minutes: ceremonyMins - travelMins - 120 - 15,
+				name: 'Vestirse y Retoques Finales',
+				role: 'wedding-party',
+				description: 'Ayuda de la madre, padrinos y damas de honor'
+			});
+			timelineEvents.push({
+				id: 'evt-4',
+				minutes: ceremonyMins - travelMins - 120,
+				name: 'First Look (Encuentro a Solas) y Fotos de Pareja',
+				role: 'photo',
+				description: 'Momento íntimo de los novios a solas y reportaje previo'
+			});
+			timelineEvents.push({
+				id: 'evt-5',
+				minutes: ceremonyMins - travelMins - 60,
+				name: 'Fotos con Familia Cercana y Testigos',
+				role: 'photo',
+				description: 'Retratos con padres, hermanos y cortejo nupcial'
+			});
+			if (travelMins > 0) {
+				timelineEvents.push({
+					id: 'evt-6',
+					minutes: ceremonyMins - travelMins - 15,
+					name: 'Desplazamiento al Lugar de la Ceremonia',
+					role: 'wedding-party',
+					description: `${travelMins} minutos de trayecto con margen de seguridad`
+				});
+			}
+			timelineEvents.push({
+				id: 'evt-7',
+				minutes: ceremonyMins - 20,
+				name: 'Llegada de Invitados y Música de Bienvenida',
+				role: 'wedding-party',
+				description: 'Acomodación de invitados y música ambiental previa'
+			});
+		} else {
+			timelineEvents.push({
+				id: 'evt-1',
+				minutes: ceremonyMins - travelMins - 180,
+				name: 'Peluquería, Maquillaje y Preparativos',
+				role: 'wedding-party',
+				description: 'Preparativos en suite con familiares y testigos'
+			});
+			timelineEvents.push({
+				id: 'evt-2',
+				minutes: ceremonyMins - travelMins - 75,
+				name: 'Llegada de Fotógrafo (Preparativos por Separado)',
+				role: 'photo',
+				description: 'Fotos de la novia y novio por separado en sus habitaciones'
+			});
+			if (travelMins > 0) {
+				timelineEvents.push({
+					id: 'evt-3',
+					minutes: ceremonyMins - travelMins - 15,
+					name: 'Salida hacia la Ceremonia',
+					role: 'wedding-party',
+					description: `${travelMins} minutos de trayecto`
+				});
+			}
+			timelineEvents.push({
+				id: 'evt-4',
+				minutes: ceremonyMins - 20,
+				name: 'Llegada de Invitados al Lugar del Enlace',
+				role: 'wedding-party',
+				description: 'Música de ambiente y colocación de asistentes'
+			});
+		}
+
+		timelineEvents.push({
+			id: 'evt-ceremony',
+			minutes: ceremonyMins,
+			name: 'Inicio de la Ceremonia y ' + (firstLook === 'yes' ? 'Entrada Nupcial' : 'Entrada y Votos'),
+			role: 'ceremony',
+			description: 'Entrada, lecturas, intercambio de alianzas, arras y salida triunfal'
+		});
+
+		const cocktailMins = ceremonyMins + 45;
+		timelineEvents.push({
+			id: 'evt-cocktail',
+			minutes: cocktailMins,
+			name: firstLook === 'yes' ? 'Cóctel de Bienvenida (Novios con Invitados)' : 'Cóctel de Bienvenida y Sesión Fotográfica',
+			role: 'reception',
+			description: firstLook === 'yes' ? 'Aperitivos, cortador de jamón y brindis con los invitados' : 'Aperitivos para invitados mientras se realiza el reportaje de pareja'
+		});
+
+		const dinnerMins = cocktailMins + 75;
+		timelineEvents.push({
+			id: 'evt-dinner',
+			minutes: dinnerMins,
+			name: 'Entrada al Salón del Banquete y Comida / Cena',
+			role: 'reception',
+			description: 'Entrada con música festiva y servicio del menú del banquete'
+		});
+
+		const toastsMins = dinnerMins + 60;
+		timelineEvents.push({
+			id: 'evt-toasts',
+			minutes: toastsMins,
+			name: 'Brindis, Discursos y Entrega de Regalos',
+			role: 'reception',
+			description: 'Entrega del ramo, detalles a padres y testigos, y palabras de agradecimiento'
+		});
+
+		const cakeMins = dinnerMins + 90;
+		timelineEvents.push({
+			id: 'evt-cake',
+			minutes: cakeMins,
+			name: 'Corte de Tarta y Apertura del Baile Nupcial',
+			role: 'reception',
+			description: 'Corte de la tarta nupcial seguido del primer baile de los recién casados'
+		});
+
+		const dancingMins = cakeMins + 15;
+		timelineEvents.push({
+			id: 'evt-dance',
+			minutes: dancingMins,
+			name: 'Barra Libre, Fiesta y Recena Caliente',
+			role: 'reception',
+			description: 'Música en directo o DJ, barra libre de combinados y recena'
+		});
+
+		const exitMins = ceremonyMins + 45 + receptionLengthMins;
+		timelineEvents.push({
+			id: 'evt-exit',
+			minutes: exitMins,
+			name: 'Fin de Fiesta / Despedida con Bengalas',
+			role: 'reception',
+			description: 'Última canción, túnel de bengalas o salida de autobuses'
+		});
+
+		timelineEvents.sort((a, b) => a.minutes - b.minutes);
+		renderTimeline();
+	}
+
+	function renderTimeline() {
+		timelineStream.innerHTML = '';
+
+		const filtered = timelineEvents.filter(evt => {
+			if (activeRoleFilter === 'all') return true;
+			if (activeRoleFilter === 'wedding-party') return evt.role === 'wedding-party' || evt.role === 'ceremony';
+			if (activeRoleFilter === 'photo') return evt.role === 'photo' || evt.role === 'ceremony';
+			if (activeRoleFilter === 'reception') return evt.role === 'reception';
+			return true;
+		});
+
+		if (filtered.length === 0) {
+			timelineStream.innerHTML = '<p style="color: var(--text-secondary); font-style: italic;">No hay momentos con este filtro.</p>';
+			return;
+		}
+
+		filtered.forEach(evt => {
+			const card = document.createElement('div');
+			card.className = 'timeline-event-card';
+
+			let tagClass = 'tag-wedding-party';
+			let tagLabel = '👰 Novios y Familia';
+			if (evt.role === 'photo') { tagClass = 'tag-photo'; tagLabel = '📸 Foto y Vídeo'; }
+			else if (evt.role === 'reception') { tagClass = 'tag-reception'; tagLabel = '🍽️ Banquete y Fiesta'; }
+			else if (evt.role === 'ceremony') { tagClass = 'tag-ceremony'; tagLabel = '⛪ Ceremonia'; }
+
+			const formattedTime = minutesToFormattedTime(evt.minutes);
+
+			card.innerHTML = `
+				<div class="timeline-bullet-dot"></div>
+				<div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.3rem;">
+					<strong class="font-heading" style="font-size: 1.3rem; color: var(--accent-blue);">${formattedTime}</strong>
+					<span class="event-tag ${tagClass}">${tagLabel}</span>
+				</div>
+				<h4 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 0 0 0.3rem 0;">
+					${evt.name}
+				</h4>
+				<p class="font-body" style="font-size: 0.95rem; color: var(--text-secondary); margin: 0; line-height: 1.4;">
+					${evt.description || ''}
+				</p>
+				<div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.4rem;">
+					<button type="button" style="background:none; border:none; color: var(--accent-red); cursor:pointer; font-size: 0.8rem; font-weight:bold;" onclick="removeTimelineEvent('${evt.id}')">Eliminar</button>
+				</div>
+			`;
+
+			timelineStream.appendChild(card);
+		});
+	}
+
+	window.removeTimelineEvent = function(id) {
+		timelineEvents = timelineEvents.filter(e => e.id !== id);
+		renderTimeline();
+	};
+
+	ceremonyInput.addEventListener('change', calculateTimeline);
+	firstLookInput.addEventListener('change', calculateTimeline);
+	travelInput.addEventListener('input', calculateTimeline);
+	receptionHoursInput.addEventListener('change', calculateTimeline);
+
+	document.querySelectorAll('.preset-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active-preset'));
+			btn.classList.add('active-preset');
+
+			ceremonyInput.value = btn.getAttribute('data-ceremony');
+			firstLookInput.value = btn.getAttribute('data-firstlook');
+			travelInput.value = btn.getAttribute('data-travel');
+			receptionHoursInput.value = btn.getAttribute('data-reception');
+
+			calculateTimeline();
+		});
+	});
+
+	document.querySelectorAll('.role-pill-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			document.querySelectorAll('.role-pill-btn').forEach(b => b.classList.remove('active-role'));
+			btn.classList.add('active-role');
+			activeRoleFilter = btn.getAttribute('data-role');
+			renderTimeline();
+		});
+	});
+
+	document.getElementById('add-custom-event-form').addEventListener('submit', (e) => {
+		e.preventDefault();
+		const name = document.getElementById('custom-event-name').value.trim();
+		const timeStr = document.getElementById('custom-event-time').value;
+		const role = document.getElementById('custom-event-role').value;
+
+		if (!name || !timeStr) return;
+
+		timelineEvents.push({
+			id: 'custom-' + Date.now(),
+			minutes: parseTimeToMinutes(timeStr),
+			name,
+			role,
+			description: 'Hito personalizado añadido'
+		});
+
+		timelineEvents.sort((a, b) => a.minutes - b.minutes);
+		renderTimeline();
+		document.getElementById('custom-event-name').value = '';
+	});
+
+	document.getElementById('btn-copy-summary').addEventListener('click', () => {
+		if (timelineEvents.length === 0) return;
+		let text = `💍 CRONOGRAMA DEL DÍA DE LA BODA (Ceremonia: ${minutesToFormattedTime(parseTimeToMinutes(ceremonyInput.value))})\n\n`;
+		timelineEvents.forEach(evt => {
+			text += `• ${minutesToFormattedTime(evt.minutes)} — ${evt.name}\n`;
+		});
+
+		navigator.clipboard.writeText(text).then(() => {
+			const btn = document.getElementById('btn-copy-summary');
+			btn.textContent = '✅ ¡Copiado al Portapapeles!';
+			setTimeout(() => { btn.textContent = '📋 Copiar Resumen'; }, 2000);
+		});
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		if (timelineEvents.length === 0) return;
+
+		let rows = '';
+		timelineEvents.forEach(evt => {
+			rows += `
+				<tr>
+					<td style="border:1px solid #ccc; padding:8px; font-weight:bold; width:100px;">${minutesToFormattedTime(evt.minutes)}</td>
+					<td style="border:1px solid #ccc; padding:8px; font-weight:bold;">${evt.name}</td>
+					<td style="border:1px solid #ccc; padding:8px; width:130px;">${evt.role.toUpperCase()}</td>
+					<td style="border:1px solid #ccc; padding:8px; color:#555;">${evt.description || '-'}</td>
+				</tr>
+			`;
+		});
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Cronograma del Día de la Boda</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Horarios del Día de la Boda</h1>
+				<p>Generado el: ${new Date().toLocaleDateString('es-ES')} | Ceremonia: ${minutesToFormattedTime(parseTimeToMinutes(ceremonyInput.value))}</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Hora</th>
+							<th>Hito / Momento</th>
+							<th>Categoría</th>
+							<th>Notas Logísticas</th>
+						</tr>
+					</thead>
+					<tbody>
+						${rows}
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Cronograma_Boda_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		const printDate = document.getElementById('print-date');
+		const printCeremony = document.getElementById('print-ceremony-time');
+		const printTbody = document.getElementById('print-timeline-body');
+
+		printDate.textContent = new Date().toLocaleDateString('es-ES');
+		printCeremony.textContent = minutesToFormattedTime(parseTimeToMinutes(ceremonyInput.value));
+
+		printTbody.innerHTML = '';
+		timelineEvents.forEach(evt => {
+			const tr = document.createElement('tr');
+			tr.innerHTML = `
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight: bold;">${minutesToFormattedTime(evt.minutes)}</td>
+				<td style="border: 1px solid #ccc; padding: 6px;">
+					<strong>${evt.name}</strong>
+					<div style="font-size: 11px; color: #555;">${evt.description || ''}</div>
+				</td>
+				<td style="border: 1px solid #ccc; padding: 6px;">${evt.role.toUpperCase()}</td>
+			`;
+			printTbody.appendChild(tr);
+		});
+
+		window.print();
+	});
+
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Hora,Hito,Categoría,Notas\n";
+		timelineEvents.forEach(evt => {
+			csv += `"${minutesToFormattedTime(evt.minutes)}","${(evt.name||'').replace(/"/g, '""')}","${evt.role}","${(evt.description||'').replace(/"/g, '""')}"\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Cronograma_Boda_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateTimeline();
+</script>

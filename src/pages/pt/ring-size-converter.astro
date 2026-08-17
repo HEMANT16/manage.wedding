@@ -1,0 +1,779 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Conversor Internacional de Tamanhos de Anéis e Alianças",
+      "url": "https://manage.wedding/pt/ring-size-converter",
+      "inLanguage": "pt",
+      "description": "Conversor gratuito de tamanhos de anéis e alianças de casamento. Converta instantaneamente entre Portugal/Europa (EU), Reino Unido (UK), EUA (US), Japão/Ásia, diâmetro e perímetro (mm) com compensação de largura do aro e régua para imprimir em PDF.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Como converter o tamanho de anéis entre Portugal (EU), UK e US?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "O tamanho habitual feminino 14 em Portugal (ou EU 54) corresponde ao tamanho US 7, UK O ou N 1/2 e Japão 14, com um diâmetro interior de 17,3 mm e perímetro de 54,4 mm. O nosso conversor faz o mapeamento exato entre os 5 principais sistemas internacionais."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como é que a largura da aliança afeta o tamanho a encomendar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Alianças mais largas (6 mm a 8 mm+) cobrem maior superfície de pele e criam mais atrito, parecendo mais apertadas do que anéis finos de 2 mm. Os joalheiros recomendam encomendar meio tamanho acima (+0,5 US ou +1 número EU) para alianças largas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qual é a diferença entre o interior Conforto (Comfort-Fit) e o Interior Plano?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "As alianças Comfort-Fit (anatómicas) têm o interior ligeiramente abaulado e arredondado, deslizando pelos nós dos dedos com mais facilidade e dando uma sensação de maior folga. As alianças Standard têm o interior totalmente plano."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O que fazer se a medida do dedo ficar entre dois tamanhos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Escolha sempre o tamanho acima. Os dedos incham naturalmente no verão, com o calor, após exercício físico ou ao final do dia. Um anel ligeiramente mais largo é infinitamente mais confortável do que um que aperte a circulação."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "Como Medir o Dedo e Converter Tamanhos de Anéis",
+      "description": "Guia prático de ourivesaria para medir o perímetro do dedo, calcular o diâmetro interior e converter tamanhos internacionais.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Passo 1: Envolva uma Tira de Papel na Base e no Nó do Dedo",
+          "text": "Envolva uma tira de papel não elástica na base do dedo anelar e passe pelo nó do dedo para garantir passagem confortável."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 2: Meça o Perímetro em Milímetros",
+          "text": "Marque a sobreposição do papel e meça o comprimento esticado com uma régua para obter o perímetro interior em milímetros."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 3: Calcule o Diâmetro Interior (Perímetro ÷ π)",
+          "text": "Divida o perímetro por π (3,14159) para obter o diâmetro interior exato ou consulte a nossa tabela."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 4: Contemple a Largura do Aro e Perfil Anatómico",
+          "text": "Acrescente meio tamanho para alianças largas (6 mm+) ou mantenha a medida real para perfis anatómicos comfort-fit."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 5: Exporte a Ficha Técnica de Joalharia",
+          "text": "Guarde a ficha em Word (.doc) ou imprima o medidor em PDF com escala 1:1 para validar o tamanho antes da compra."
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Conversor de Tamanhos de Anéis e Alianças (Tabela EU, UK, US e mm) | Manage.Wedding"
+	description="Converta tamanhos de anéis entre Portugal/Europa (EU), UK, US, Japão, diâmetro e perímetro em mm. Inclui medidor para imprimir em PDF e ajustes de largura."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Conversor de Tamanhos de Anéis e Alianças
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Converta tamanhos de joalharia entre <strong>Europa (EU/PT), Reino Unido (UK), EUA (US), Japão, Diâmetro e Perímetro (mm)</strong>. Inclui compensação de largura do aro e <strong>Medidor 1:1 para Imprimir em PDF e Word</strong>!
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Como Descobrir o Tamanho do Anel em 3 Passos Simples
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Escolha o Sistema Conhecido ou Medida
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Selecione o sistema de tamanhos (EU/Portugal, UK, US, Japão) ou introduza o perímetro/diâmetro do dedo em milímetros.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Ajuste a Largura da Aliança
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Indique a espessura do anel (solitário fino de 2 mm vs. aliança larga de 7 mm) para aplicar a compensação de ourivesaria.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Exporte a Ficha Técnica e Régua 1:1
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Guarde o cartão de joalharia em Word ou imprima a régua em PDF com calibração real a 100% para testar no dedo!
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Converter Form + Live Results & Circle Sizer -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="ring-grid">
+			
+			<!-- Left Column: Sizing Controls & Width Adjustments -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+						💍 Configurador de Tamanho de Anéis
+					</h2>
+					<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+						Conversão entre Europa, Reino Unido, EUA, Ásia e milímetros exatos
+					</span>
+				</div>
+
+				<form id="ring-converter-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+					
+					<!-- 1. Known System & Size Picker -->
+					<div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.6rem;">
+						<div>
+							<label for="select-system" class="font-heading" style="display: block; font-size: 0.88rem; color: var(--accent-red); margin-bottom: 0.25rem;">
+								Sistema de Origem *
+							</label>
+							<select id="select-system" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.92rem;">
+								<option value="eu" selected>🇪🇺 🇵🇹 Europa / Portugal (EU)</option>
+								<option value="us">🇺🇸 🇨🇦 EUA / Canadá (US)</option>
+								<option value="uk">🇬🇧 🇦🇺 Reino Unido / Austrália (UK)</option>
+								<option value="jp">🇯🇵 🇨🇳 Japão / Ásia</option>
+								<option value="mm">📏 Perímetro em mm</option>
+							</select>
+						</div>
+
+						<div>
+							<label for="select-ring-val" class="font-heading" style="display: block; font-size: 0.88rem; color: var(--accent-red); margin-bottom: 0.25rem;">
+								Selecione o Tamanho *
+							</label>
+							<select id="select-ring-val" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-heading); font-size: 1rem;">
+								<!-- Populated via JS -->
+							</select>
+						</div>
+					</div>
+
+					<!-- 2. Band Width Setting (Crucial for Jeweler Accuracy) -->
+					<div>
+						<label for="select-band-width" class="font-heading" style="display: block; font-size: 0.88rem; color: var(--accent-blue); margin-bottom: 0.25rem;">
+							Largura do Aro da Aliança (Compensação de Ourives)
+						</label>
+						<select id="select-band-width" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.88rem;">
+							<option value="0" selected>Aro Fino Padrão (1,5 mm - 3 mm) — Tamanho Real</option>
+							<option value="0.25">Aro Médio (4 mm - 5 mm) — +0,25 de Folga</option>
+							<option value="0.5">Aliança Larga (6 mm - 8 mm+) — Recomenda-se +0,50 de Folga</option>
+						</select>
+					</div>
+
+					<!-- 3. Comfort-Fit vs Standard-Fit Interior -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem;">
+						<span class="font-heading" style="font-size: 0.88rem; color: var(--fg-pencil); display: block;">
+							⚙️ Perfil Interior da Aliança:
+						</span>
+						<div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+							<label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+								<input type="radio" name="interior-fit" value="standard" checked style="accent-color: var(--fg-pencil);">
+								<span>Interior Plano Tradicional</span>
+							</label>
+							<label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+								<input type="radio" name="interior-fit" value="comfort" style="accent-color: var(--fg-pencil);">
+								<span>Interior Conforto (Anatómico Arredondado)</span>
+							</label>
+						</div>
+					</div>
+
+					<!-- Quick Sizing Advice Note -->
+					<div id="band-advice-box" style="background: #eff6ff; border: 1px solid var(--accent-blue); border-radius: 4px; padding: 0.65rem; font-size: 0.82rem; color: #1e3a8a; line-height: 1.4;">
+						💡 <strong>Regra de Joalheiro:</strong> Alianças finas (2 mm) usam a medida exata do dedo. Para alianças masculinas ou femininas largas (6 mm+), subir meio tamanho evita que o aro aperte com o calor.
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live International Matrix & Visual Scale Circle -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main International Matrix Result Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								🌐 Matriz Internacional de Tamanhos
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Tamanhos equivalentes nos principais mercados mundiais
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Exportar Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Exportar PDF / Medidor 1:1
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- 4-System Big Highlight Grid -->
+					<div style="display: grid; grid-template-columns: repeat(2, 1fr); sm:grid-template-columns: repeat(4, 1fr); gap: 0.6rem; text-align: center; margin-bottom: 1.25rem;">
+						<div style="background: #fdf2f8; border: 1.5px solid var(--accent-red); border-radius: 4px; padding: 0.75rem 0.4rem;">
+							<span style="font-size: 0.75rem; color: var(--accent-red); font-weight: bold; text-transform: uppercase;">Europa (EU/PT)</span>
+							<strong id="res-eu" class="font-heading" style="font-size: 1.9rem; color: var(--accent-red); display: block; line-height: 1.2;">54</strong>
+						</div>
+
+						<div style="background: #eff6ff; border: 1.5px solid var(--accent-blue); border-radius: 4px; padding: 0.75rem 0.4rem;">
+							<span style="font-size: 0.75rem; color: var(--accent-blue); font-weight: bold; text-transform: uppercase;">Reino Unido (UK)</span>
+							<strong id="res-uk" class="font-heading" style="font-size: 1.9rem; color: var(--accent-blue); display: block; line-height: 1.2;">N 1/2</strong>
+						</div>
+
+						<div style="background: #f0fdf4; border: 1.5px solid #16a34a; border-radius: 4px; padding: 0.75rem 0.4rem;">
+							<span style="font-size: 0.75rem; color: #16a34a; font-weight: bold; text-transform: uppercase;">EUA / Canadá</span>
+							<strong id="res-us" class="font-heading" style="font-size: 1.9rem; color: #16a34a; display: block; line-height: 1.2;">7</strong>
+						</div>
+
+						<div style="background: #fafaf9; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem;">
+							<span style="font-size: 0.75rem; color: var(--fg-pencil); font-weight: bold; text-transform: uppercase;">Japão / Ásia</span>
+							<strong id="res-jp" class="font-heading" style="font-size: 1.9rem; color: var(--fg-pencil); display: block; line-height: 1.2;">14</strong>
+						</div>
+					</div>
+
+					<!-- Exact Millimeter & Inch Dimensions -->
+					<div style="display: flex; justify-content: space-around; background: var(--bg-paper); border: 1px dashed var(--fg-pencil); border-radius: 4px; padding: 0.6rem; font-size: 0.85rem; margin-bottom: 1.25rem;">
+						<span>📏 Diâmetro Interior: <strong id="res-dia">17.3 mm</strong> (<span id="res-dia-in">0.68 in</span>)</span>
+						<span>📐 Perímetro Interior: <strong id="res-circ">54.4 mm</strong> (<span id="res-circ-in">2.14 in</span>)</span>
+					</div>
+
+					<!-- Visual Scaled Ring Sizer Frame -->
+					<div style="text-align: center; border-top: 1.5px dashed #ccc; padding-top: 1rem;">
+						<span class="font-heading" style="font-size: 0.92rem; color: var(--fg-pencil); display: block; margin-bottom: 0.5rem;">
+							🔍 Pré-visualização do Diâmetro do Aro:
+						</span>
+						<div style="display: flex; justify-content: center; align-items: center; min-height: 130px;">
+							<div id="visual-ring-circle" style="width: 104px; height: 104px; border: 5px solid var(--accent-red); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(0,0,0,0.05); background: #fff;">
+								<span id="visual-ring-text" style="font-family: monospace; font-size: 0.82rem; font-weight: bold; color: var(--fg-pencil);">
+									Ø 17.3 mm
+								</span>
+							</div>
+						</div>
+						<p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0.4rem 0 0 0;">
+							*Escala de ecrã aproximada. Utilize o PDF para impressão com calibração física 1:1 real.
+						</p>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation (1:1 Scale Sizer) -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 4px 0;">Manage.Wedding — Cartão Oficial de Medidas de Anéis & Régua 1:1</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportado a: <span id="print-date"></span> | Tamanho Medido: <span id="print-us-size"></span></p>
+			</div>
+
+			<div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+				<h3 style="margin:0 0 10px 0;">Especificações Exatas do Tamanho:</h3>
+				<table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+					<tr><td><strong>Tamanho Europa / Portugal (EU):</strong></td><td id="p-eu">54</td><td><strong>Tamanho Reino Unido (UK):</strong></td><td id="p-uk">N 1/2</td></tr>
+					<tr><td><strong>Tamanho EUA / Canadá (US):</strong></td><td id="p-us">7</td><td><strong>Tamanho Japão / Ásia:</strong></td><td id="p-jp">14</td></tr>
+					<tr><td><strong>Diâmetro Interior:</strong></td><td id="p-dia">17.3 mm</td><td><strong>Perímetro Interior:</strong></td><td id="p-circ">54.4 mm</td></tr>
+				</table>
+			</div>
+
+			<div style="border: 2px dashed #000; padding: 25px; text-align: center;">
+				<h3 style="margin:0 0 10px 0;">Régua de Medição de Dedos em Papel (Escala 1:1)</h3>
+				<p style="font-size: 12px; margin-bottom: 15px;">Recorte esta tira, faça um pequeno corte na ranhura (A), envolva o dedo e puxe a ponta pela ranhura para ler o tamanho diretamente.</p>
+				<div style="border: 1px solid #000; height: 35px; width: 100%; max-width: 500px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; font-size: 11px;">
+					<span>[RANHURA A]</span>
+					<span>44</span><span>47</span><span>50</span><span>52</span><span>54</span><span>57</span><span>60</span><span>62</span><span>65</span><span>67</span><span>70</span>
+					<span>[PUXAR]</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="result-box" style="margin-bottom: 2.5rem; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); padding: 1.5rem 1.75rem; position: relative;">
+			<div class="badge-postit" style="top: -12px; right: 15px;">⚡ Resumo Direto ao Assunto</div>
+			<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+				<span>⚡</span> Regra Prática: Fórmulas de Diâmetro e Perímetro de Anéis
+			</h3>
+			<p class="font-body" style="font-size: 1rem; line-height: 1.6; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				<strong>Fórmula Central de 1 Minuto:</strong> A geometria dos anéis rege-se por <strong>Diâmetro Interior (mm) × π (3,14159) = Perímetro Interior (mm)</strong>. Cada tamanho europeu completo equivale a exatamente <strong>1 mm de perímetro</strong>. Se comprar uma aliança larga (6 mm a 8 mm+), <strong>encomende 1 número acima</strong>. Se a medida do nó do dedo for superior à base, privilegie a medida do nó.
+			</p>
+			
+			<!-- Benchmark Ring Conversion Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Europa (EU/PT)</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">EUA (US)</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Reino Unido (UK)</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Japão / Ásia</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Diâmetro Interior (mm)</th>
+							<th style="padding: 0.65rem 0.8rem; font-family: var(--font-heading); color: var(--fg-pencil);">Perímetro Interior (mm)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 47</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 4.0</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">H 1/2</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">7</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">14.9 mm</td>
+							<td style="padding: 0.6rem 0.8rem;">46.8 mm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 49</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 5.0</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">J 1/2</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">9</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">15.7 mm</td>
+							<td style="padding: 0.6rem 0.8rem;">49.3 mm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 52 (Médio Mulher)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 6.0</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">L 1/2</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">11</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">16.5 mm</td>
+							<td style="padding: 0.6rem 0.8rem;">51.9 mm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 54 (Médio Mulher)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 7.0</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">N 1/2</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">14</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">17.3 mm</td>
+							<td style="padding: 0.6rem 0.8rem;">54.4 mm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 57</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 8.0</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">P 1/2</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">16</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">18.1 mm</td>
+							<td style="padding: 0.6rem 0.8rem;">57.0 mm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 60 (Médio Homem)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 9.0</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">R 1/2</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">18</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">18.9 mm</td>
+							<td style="padding: 0.6rem 0.8rem;">59.5 mm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 62 (Médio Homem)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 10.0</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">T 1/2</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">20</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">19.8 mm</td>
+							<td style="padding: 0.6rem 0.8rem;">62.1 mm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 65</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 11.0</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">V 1/2</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">23</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">20.6 mm</td>
+							<td style="padding: 0.6rem 0.8rem;">64.6 mm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 67</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 12.0</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">X 1/2</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">25</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">21.4 mm</td>
+							<td style="padding: 0.6rem 0.8rem;">67.2 mm</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 70</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 13.0</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Z 1/2</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">27</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">22.2 mm</td>
+							<td style="padding: 0.6rem 0.8rem;">69.7 mm</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Manual de Joalharia & Alianças</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Guia Completo de Tamanhos de Alianças e Anéis
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Como funcionam as escalas internacionais, fatores de inchaço dos dedos e ajustes de espessura do aro.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/floral-corner.webp" 
+					alt="Conversor de Tamanhos de Anéis — Tabela Internacional e Medidor" 
+					loading="lazy"
+					decoding="async"
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Uma aliança deve passar pelo nó do dedo com ligeira resistência e assentar confortavelmente sem girar livremente.
+				</p>
+			</div>
+
+			<!-- Section 1: Detailed Step-by-Step Guide -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Como Medir o Dedo em Casa com Precisão
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Caso não disponha de um aneleiro metálico de joalheiro, siga este método prático:
+				</p>
+
+				<div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.4rem;">
+							Passo 1: Envolva uma Tira de Papel na Base do Dedo
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Corte uma tira de papel com cerca de 1 cm de largura. Envolva-a na base do dedo onde vai usar o anel (o anelar da mão esquerda pode ter uma diferença de meio tamanho em relação à mão direita!).
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.4rem;">
+							Passo 2: Verifique a Passagem pelo Nó do Dedo
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Se o nó da articulação for mais largo do que a base, meça também o nó. O tamanho final tem de conseguir passar pelo nó sem magoar.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.4rem;">
+							Passo 3: Meça em Milímetros e Ajuste a Largura
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Estique a tira sobre uma régua em milímetros. Selecione <strong>"Perímetro em mm"</strong> na calculadora. Se for encomendar uma aliança larga (6 mm+), ative a compensação de largura (+0,5).
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem; text-align: center;">
+					🔗 Ferramentas de Joalharia e Vestuário Integradas
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/pt/dress-size-converter" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Conversor de Vestido de Noiva</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Converta medidas para tamanhos de vestidos europeus e internacionais.</span>
+					</a>
+					<a href="/pt/dress-alterations-estimator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Estimador de Arranjos do Vestido</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calcule despesas de bainhas, corpete e provas de costura.</span>
+					</a>
+					<a href="/pt/anniversary-gift-finder" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Buscador de Prendas de Aniversário</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Descubra joias e pedras preciosas por cada ano de bodas de casamento.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Perguntas Frequentes
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Todos os anéis podem ser ajustados de tamanho mais tarde?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Alianças clássicas e anéis solitários em ouro ou platina podem facilmente ser ajustados 1 a 2 tamanhos numa oficina de ourivesaria. No entanto, <strong>alianças de diamantes em volta completa (eternity rings)</strong> e anéis em tungsténio ou titânio <strong>não podem ser redimensionados</strong>, sendo crucial acertar no tamanho logo na compra inicial.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Como descobrir o tamanho em segredo para um pedido de casamento surpresa?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Pegue num anel que a sua cara-metade use habitualmente no dedo anelar ou médio, desenhe o círculo interior numa folha de papel e meça o diâmetro em milímetros com uma régua. Pode também sobrepor o anel diretamente no nosso simulador de diâmetro no ecrã.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	const ringDatabase = [
+		{ us: 3.0, uk: "F", eu: 44, jp: 4, mm: 44.2, dia: 14.1 },
+		{ us: 3.5, uk: "G", eu: 45, jp: 5, mm: 45.5, dia: 14.5 },
+		{ us: 4.0, uk: "H 1/2", eu: 47, jp: 7, mm: 46.8, dia: 14.9 },
+		{ us: 4.5, uk: "I 1/2", eu: 48, jp: 8, mm: 48.0, dia: 15.3 },
+		{ us: 5.0, uk: "J 1/2", eu: 49, jp: 9, mm: 49.3, dia: 15.7 },
+		{ us: 5.5, uk: "L", eu: 50, jp: 10, mm: 50.6, dia: 16.1 },
+		{ us: 6.0, uk: "M", eu: 52, jp: 11, mm: 51.9, dia: 16.5 },
+		{ us: 6.5, uk: "N", eu: 53, jp: 13, mm: 53.1, dia: 16.9 },
+		{ us: 7.0, uk: "O", eu: 54, jp: 14, mm: 54.4, dia: 17.3 },
+		{ us: 7.5, uk: "P", eu: 56, jp: 15, mm: 55.7, dia: 17.7 },
+		{ us: 8.0, uk: "Q", eu: 57, jp: 16, mm: 57.0, dia: 18.1 },
+		{ us: 8.5, uk: "Q 1/2", eu: 58, jp: 17, mm: 58.3, dia: 18.5 },
+		{ us: 9.0, uk: "R 1/2", eu: 60, jp: 18, mm: 59.5, dia: 18.9 },
+		{ us: 9.5, uk: "S 1/2", eu: 61, jp: 19, mm: 60.8, dia: 19.4 },
+		{ us: 10.0, uk: "T 1/2", eu: 62, jp: 20, mm: 62.1, dia: 19.8 },
+		{ us: 10.5, uk: "U 1/2", eu: 63, jp: 22, mm: 63.4, dia: 20.2 },
+		{ us: 11.0, uk: "V 1/2", eu: 65, jp: 23, mm: 64.6, dia: 20.6 },
+		{ us: 11.5, uk: "W 1/2", eu: 66, jp: 24, mm: 65.9, dia: 21.0 },
+		{ us: 12.0, uk: "Y", eu: 67, jp: 25, mm: 67.2, dia: 21.4 },
+		{ us: 12.5, uk: "Z", eu: 68, jp: 26, mm: 68.5, dia: 21.8 },
+		{ us: 13.0, uk: "Z+1", eu: 69, jp: 27, mm: 69.7, dia: 22.2 },
+		{ us: 13.5, uk: "Z+2", eu: 70, jp: 28, mm: 71.0, dia: 22.6 },
+		{ us: 14.0, uk: "Z+3", eu: 72, jp: 29, mm: 72.3, dia: 23.0 },
+		{ us: 15.0, uk: "Z+5", eu: 75, jp: 31, mm: 74.8, dia: 23.8 }
+	];
+
+	const selectSystem = document.getElementById('select-system');
+	const selectRingVal = document.getElementById('select-ring-val');
+	const selectBandWidth = document.getElementById('select-band-width');
+
+	const resUs = document.getElementById('res-us');
+	const resUk = document.getElementById('res-uk');
+	const resEu = document.getElementById('res-eu');
+	const resJp = document.getElementById('res-jp');
+	const resDia = document.getElementById('res-dia');
+	const resDiaIn = document.getElementById('res-dia-in');
+	const resCirc = document.getElementById('res-circ');
+	const resCircIn = document.getElementById('res-circ-in');
+
+	const visualRingCircle = document.getElementById('visual-ring-circle');
+	const visualRingText = document.getElementById('visual-ring-text');
+	const bandAdviceBox = document.getElementById('band-advice-box');
+
+	function populateOptions() {
+		const sys = selectSystem.value;
+		selectRingVal.innerHTML = '';
+
+		ringDatabase.forEach((row, idx) => {
+			const opt = document.createElement('option');
+			opt.value = idx.toString();
+
+			if (sys === 'eu') opt.textContent = `Tamanho EU ${row.eu}`;
+			else if (sys === 'us') opt.textContent = `Tamanho US ${row.us}`;
+			else if (sys === 'uk') opt.textContent = `Tamanho UK ${row.uk}`;
+			else if (sys === 'jp') opt.textContent = `Tamanho Japão ${row.jp}`;
+			else if (sys === 'mm') opt.textContent = `${row.mm} mm de Perímetro`;
+
+			selectRingVal.appendChild(opt);
+		});
+
+		// Default to EU 54 (index 8)
+		selectRingVal.value = "8";
+		updateConversion();
+	}
+
+	function updateConversion() {
+		const idx = parseInt(selectRingVal.value) || 8;
+		const baseData = ringDatabase[idx] || ringDatabase[8];
+		const offset = parseFloat(selectBandWidth.value) || 0;
+
+		// Calculate adjusted size index if wide band selected
+		let effectiveIdx = idx;
+		if (offset > 0) {
+			const targetUS = baseData.us + offset;
+			const found = ringDatabase.findIndex(r => r.us >= targetUS);
+			if (found !== -1) effectiveIdx = found;
+		}
+
+		const data = ringDatabase[effectiveIdx] || baseData;
+
+		resUs.textContent = data.us.toString();
+		resUk.textContent = data.uk;
+		resEu.textContent = data.eu.toString();
+		resJp.textContent = data.jp.toString();
+
+		const diaIn = (data.dia / 25.4).toFixed(2);
+		const circIn = (data.mm / 25.4).toFixed(2);
+
+		resDia.textContent = `${data.dia} mm`;
+		resDiaIn.textContent = `${diaIn} in`;
+		resCirc.textContent = `${data.mm} mm`;
+		resCircIn.textContent = `${circIn} in`;
+
+		// Visual Circle (px size approx 6x scale)
+		const pxSize = Math.round(data.dia * 6);
+		visualRingCircle.style.width = `${pxSize}px`;
+		visualRingCircle.style.height = `${pxSize}px`;
+		visualRingText.textContent = `Ø ${data.dia} mm`;
+
+		// Advice
+		if (offset > 0) {
+			bandAdviceBox.innerHTML = `💡 <strong>Compensação de Largura Ativa:</strong> O tamanho foi ajustado em <strong>+${offset}</strong> para acomodar o atrito do aro largo. Encomendar o <strong>Tamanho EU ${data.eu}</strong> terá a sensação do seu tamanho normal EU ${baseData.eu}!`;
+		} else {
+			bandAdviceBox.innerHTML = `💡 <strong>Tamanho Padrão:</strong> Medida exata para anéis solitários e alianças clássicas de 1,5 mm a 3 mm.`;
+		}
+	}
+
+	selectSystem.addEventListener('change', populateOptions);
+	selectRingVal.addEventListener('change', updateConversion);
+	selectBandWidth.addEventListener('change', updateConversion);
+	document.querySelectorAll('input[name="interior-fit"]').forEach(r => r.addEventListener('change', updateConversion));
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Especificações de Tamanho de Anéis e Alianças</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+					th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+					th { background: #f2f2f2; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Cartão Oficial de Medidas de Joalharia</h1>
+				<p>Gerado a ${new Date().toLocaleDateString('pt-PT')}</p>
+				
+				<table>
+					<tr><th>Sistema de Tamanhos</th><th>Valor do Tamanho</th></tr>
+					<tr><td>Europa / Portugal (EU)</td><td><strong>Tamanho EU ${resEu.textContent}</strong></td></tr>
+					<tr><td>Reino Unido / Austrália (UK)</td><td><strong>Tamanho UK ${resUk.textContent}</strong></td></tr>
+					<tr><td>EUA / Canadá (US)</td><td><strong>Tamanho US ${resUs.textContent}</strong></td></tr>
+					<tr><td>Japão / Ásia</td><td><strong>Tamanho ${resJp.textContent}</strong></td></tr>
+					<tr><td>Diâmetro Interior</td><td>${resDia.textContent} (${resDiaIn.textContent})</td></tr>
+					<tr><td>Perímetro Interior</td><td>${resCirc.textContent} (${resCircIn.textContent})</td></tr>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Medidas_Alianca_EU_${resEu.textContent}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / 1:1 Sizer
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('pt-PT');
+		document.getElementById('print-us-size').textContent = `EU ${resEu.textContent} (US ${resUs.textContent})`;
+		
+		document.getElementById('p-us').textContent = resUs.textContent;
+		document.getElementById('p-uk').textContent = resUk.textContent;
+		document.getElementById('p-eu').textContent = resEu.textContent;
+		document.getElementById('p-jp').textContent = resJp.textContent;
+		document.getElementById('p-dia').textContent = resDia.textContent;
+		document.getElementById('p-circ').textContent = resCirc.textContent;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Tamanho EU,Tamanho US,Tamanho UK,Tamanho Japao,Diametro mm,Perimetro mm\n";
+		ringDatabase.forEach(r => {
+			csv += `"${r.eu}","${r.us}","${r.uk}","${r.jp}","${r.dia}","${r.mm}"\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Matriz_Internacional_Tamanhos_Aneis.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	populateOptions();
+</script>

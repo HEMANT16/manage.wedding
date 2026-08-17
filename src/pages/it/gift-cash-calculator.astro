@@ -1,0 +1,658 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/gift-cash-calculator/#webapp",
+      "name": "Calcolatore Busta Matrimonio & Regalo degli Sposi",
+      "url": "https://manage.wedding/it/gift-cash-calculator",
+      "inLanguage": "it",
+      "description": "Calcola quanto mettere nella busta per il matrimonio in base a parentela, accompagnatore e trasferta, oppure stima il totale dei regali per gli sposi con frasi di auguri per il biglietto.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come calcolare la cifra giusta da mettere nella busta del matrimonio",
+      "description": "Guida al galateo italiano per calcolare l'importo della busta o del bonifico per gli sposi.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Valutare il grado di parentela o amicizia",
+          "text": "Parti dalla base: 80–120 € per colleghi, 150–200 € per amici intimi e cugini, 250–400 €+ per fratelli, testimoni o parenti strettissimi."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Moltiplicare per gli accompagnatori",
+          "text": "Se partecipi in coppia, moltiplica per circa 1,8x (es. 150 € a persona = 250–300 € per la coppia)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Considerare i costi di trasferta",
+          "text": "Se hai affrontato spese importanti per treni, aerei o pernottamenti fuori sede, è consuetudine ridurre leggermente la quota della busta."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Scrivere un biglietto di auguri sentito",
+          "text": "Accompagna sempre i contanti o la ricevuta del bonifico con una frase personalizzata di sinceri auguri."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quanto si mette solitamente nella busta per un matrimonio in Italia?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In media, per un invitato singolo la cifra oscilla tra i 120 € e i 180 €, mentre per una coppia tra i 250 € e i 350 €. Per testimoni e fratelli/sorelle l'importo consigliato parte da 300 € a 500 € a persona."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "La regola del 'coprire il costo del coperto' è ancora valida?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In Italia è consuetudine che il regalo copra almeno il valore indicativo del banchetto (oggi mediamente 100 €–150 € a persona) più una quota regalo per contribuire alla nuova vita della coppia o alla luna di miele."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Meglio regalare i contanti in busta o fare un bonifico sull'IBAN?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oggi il bonifico sull'IBAN indicato nelle partecipazioni o sul sito web è il metodo più sicuro e apprezzato per evitare di portare grandi somme di denaro contante durante il ricevimento."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calcolatore Busta Matrimonio (Quanto Regalare agli Sposi) | Manage.Wedding"
+	description="Calcola quanto mettere nella busta regalo per il matrimonio in base al grado di parentela, accompagnatore e spese di trasferta. Include frasi di auguri ed esportazione in Word/PDF."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Calcolatore Busta Matrimonio" category="budget-finance" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Calcolatore Busta <span class="accent-italic">Regalo Matrimonio</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Scopri la cifra ideale da mettere nella busta o bonificare agli sposi secondo il galateo, oppure <strong>stima il totale dei regali</strong> attesi per le tue nozze.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Come Usare il Calcolatore in 3 Passaggi
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Seleziona la Modalità
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Scegli <strong>"Modalità Invitato"</strong> (calcolo della tua busta) o <strong>"Modalità Sposi"</strong> (stima totale dei regali ricevuti).
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Imposta Parentela & Partecipazione
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Indica se partecipi da solo, in coppia o con figli e se hai sostenuto spese di viaggio per una trasferta.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Copia le Frasi di Auguri
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Esporta il promemoria con frasi già pronte da scrivere a mano sul biglietto che accompagnerà il regalo!
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Config Form + Live Results -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="gift-calc-grid">
+			
+			<!-- Left Column: Input Form -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<!-- Mode Switcher Tabs -->
+				<div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<button type="button" id="tab-guest-mode" class="mode-tab-btn active-tab" style="flex: 1; padding: 0.55rem; font-family: var(--font-heading); font-size: 0.95rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; cursor: pointer;">
+						🎁 Sono un Invitato (La Mia Busta)
+					</button>
+					<button type="button" id="tab-couple-mode" class="mode-tab-btn" style="flex: 1; padding: 0.55rem; font-family: var(--font-heading); font-size: 0.95rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; cursor: pointer; background: var(--bg-paper);">
+						💒 Siamo gli Sposi (Stima Totale)
+					</button>
+				</div>
+
+				<!-- GUEST MODE FORM -->
+				<div id="section-guest-mode">
+					<form id="guest-gift-form" style="display: flex; flex-direction: column; gap: 1rem;">
+						
+						<!-- Closeness to Couple -->
+						<div>
+							<label for="select-relationship" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--accent-red); margin-bottom: 0.25rem;">
+								1. Grado di Parentela / Vicinanza agli Sposi *
+							</label>
+							<select id="select-relationship" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+								<option value="250">👑 Testimone di Nozze / Fratello / Sorella (250 € – 400 €+)</option>
+								<option value="150" selected>🌸 Amico Intimo / Cugino Stretto / Zio (150 € – 200 €)</option>
+								<option value="120">🤝 Amico / Parente Lontano / Vicino di Casa (100 € – 140 €)</option>
+								<option value="80">💼 Collega di Lavoro / Conoscente (70 € – 100 €)</option>
+							</select>
+						</div>
+
+						<!-- Attendance & Plus-One -->
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+							<div>
+								<label for="select-attendance" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+									Chi Partecipa?
+								</label>
+								<select id="select-attendance" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.88rem;">
+									<option value="1.0">Da Solo (Solo io)</option>
+									<option value="1.8" selected>In Coppia (Io + Partner)</option>
+									<option value="2.3">Famiglia (Coppia + Bambini)</option>
+								</select>
+							</div>
+
+							<div>
+								<label for="select-venue-tier" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+									Tipologia Ricevimento
+								</label>
+								<select id="select-venue-tier" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.88rem;">
+									<option value="1.0">Banchetto Tradizionale in Villa / Ristorante</option>
+									<option value="1.2">Location di Lusso / Castello Storico (+20%)</option>
+									<option value="0.85">Ricevimento Informale / Agriturismo / Buffet</option>
+								</select>
+							</div>
+						</div>
+
+						<!-- Offsets: Travel -->
+						<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem;">
+							<span class="font-heading" style="font-size: 0.88rem; color: var(--fg-pencil); display: block;">
+								✈️ Spese Straordinarie Sostenute:
+							</span>
+							
+							<label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+								<input type="checkbox" id="chk-destination-travel" style="accent-color: var(--fg-pencil);">
+								<span>Ho pagato voli/treni e hotel per matrimonio fuori sede (-20%)</span>
+							</label>
+
+							<label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+								<input type="checkbox" id="chk-bridal-party-role" style="accent-color: var(--fg-pencil);">
+								<span>Ho sostenuto spese speciali per abito da damigella / addio al nubilato (-15%)</span>
+							</label>
+						</div>
+
+					</form>
+				</div>
+
+				<!-- COUPLE MODE FORM -->
+				<div id="section-couple-mode" style="display: none;">
+					<form id="couple-gift-form" style="display: flex; flex-direction: column; gap: 1rem;">
+						
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-guest-count" class="font-heading" style="font-size: 0.95rem; color: var(--accent-red);">
+									Totale Invitati Adulti Confermati
+								</label>
+								<span id="display-guest-count" style="font-size: 1.1rem; font-weight: bold; color: var(--accent-red);">100 Invitati</span>
+							</div>
+							<input type="range" id="input-guest-count" min="20" max="350" value="100" step="5" style="width: 100%; accent-color: var(--accent-red);">
+						</div>
+
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+							<div>
+								<label for="select-couple-venue-tier" class="font-heading" style="display: block; font-size: 0.88rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+									Stile Ricevimento
+								</label>
+								<select id="select-couple-venue-tier" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+									<option value="1.0" selected>Villa / Ristorante Standard (~150 €/ospite)</option>
+									<option value="1.25">Ricevimento Esclusivo Lusso (~190 €/ospite)</option>
+									<option value="0.85">Informale / Rustico (~120 €/ospite)</option>
+								</select>
+							</div>
+
+							<div>
+								<label for="select-destination-mode" class="font-heading" style="display: block; font-size: 0.88rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+									Provenienza Ospiti
+								</label>
+								<select id="select-destination-mode" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+									<option value="1.0" selected>Matrimonio Locale (Ospiti del posto)</option>
+									<option value="0.8">Molti ospiti in trasferta da lontano</option>
+								</select>
+							</div>
+						</div>
+
+						<p class="font-body" style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin: 0; background: var(--bg-paper); padding: 0.6rem; border-radius: 4px;">
+							*Distribuzione standard stimata: parenti stretti (25%), amici intimi (40%), colleghi e parenti lontani (35%).
+						</p>
+
+					</form>
+				</div>
+
+				<!-- Currency Selector -->
+				<div style="display: flex; align-items: center; justify-content: flex-end; gap: 0.3rem; margin-top: 1rem; border-top: 1px dashed #ccc; padding-top: 0.75rem;">
+					<span style="font-size: 0.85rem; font-weight: bold;">Valuta:</span>
+					<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+						<option value="€" selected>€ (EUR)</option>
+						<option value="CHF">CHF (Franco Svizzero)</option>
+						<option value="$">$ (USD)</option>
+						<option value="£">£ (GBP)</option>
+					</select>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Live Results -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Gift Result Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 id="res-card-title" class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								✉️ Importo Consigliato in Busta
+							</h3>
+							<span id="res-card-subtitle" class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Secondo le consuetudini del galateo italiano
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Frasi Auguri Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Stampa PDF
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Gift Range Highlight -->
+					<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span id="res-range-label" class="font-body" style="font-size: 0.9rem; color: var(--accent-red); display: block; font-weight: bold;">Cifra Consigliata nella Busta</span>
+						<strong id="res-primary-amount" class="font-heading" style="font-size: 2.6rem; color: var(--accent-red); display: block; line-height: 1.2;">270 €</strong>
+						<span id="res-range-subtext" style="font-size: 0.85rem; color: var(--accent-red);">Range equilibrato: 250 € – 300 €</span>
+					</div>
+
+					<!-- Detailed Math Breakdown List -->
+					<div style="margin-bottom: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil); margin-bottom: 0.4rem; text-align: center;">
+							🧾 Dettaglio Parametri
+						</h4>
+						<ul id="res-factors-list" class="font-body" style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.35rem; color: var(--fg-pencil);">
+							<li style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:0.2rem;">
+								<span>Quota Base Parentela:</span> <strong id="fact-base">150 €</strong>
+							</li>
+							<li style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:0.2rem;">
+								<span>Partecipanti (Coppia):</span> <strong id="fact-attendance">x 1,8</strong>
+							</li>
+							<li style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:0.2rem;">
+								<span>Ricevimento & Trasferta:</span> <strong id="fact-adjustments">1.0x (Standard)</strong>
+							</li>
+						</ul>
+					</div>
+
+					<!-- Visual Proportion Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span>Base (100 €)</span>
+							<span>Media (250 €)</span>
+							<span style="color: var(--accent-red);">Generosa (400 €+)</span>
+						</div>
+						<div style="width: 100%; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="gift-gauge-bar" style="width: 55%; height: 100%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Ready-to-Write Card Wishes Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil); display: block; margin-bottom: 0.3rem; text-align: center;">
+						💌 Frase per il Biglietto di Auguri:
+					</strong>
+					<p id="card-wish-text" class="font-body" style="font-size: 0.88rem; line-height: 1.45; margin: 0; color: var(--fg-pencil); font-style: italic; text-align: center;">
+						"Con l'augurio che la gioia di questo giorno vi accompagni per tutta la vita! Che questo nostro piccolo pensiero possa contribuire a rendere indimenticabile la vostra luna di miele."
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; text-align: center;">
+				<h1 style="font-size: 22px; margin: 0 0 4px 0;">Manage.Wedding — Promemoria Busta & Frasi di Auguri</h1>
+				<p style="margin: 0; font-size: 12px; color: #555;">Data: <span id="print-date"></span> | Cifra Busta: <span id="print-amount"></span></p>
+			</div>
+			<div id="print-content-body"></div>
+		</div>
+
+		<!-- SEO Article -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guida Completa alla Busta del Matrimonio in Italia
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Come scegliere l'importo giusto, le regole del galateo e i consigli per gli sposi.
+				</p>
+			</div>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. La Regola del Galateo Italiano
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Tradizionalmente la busta deve coprire il costo del coperto nuziale (stimabile oggi tra i 110 € e i 160 € a persona a seconda della location) più un margine di regalo proporzionato al grado di intimità con gli sposi.
+				</p>
+			</section>
+
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Domande Frequenti (FAQ)
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Quando va consegnata la busta agli sposi?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Se si tratta di denaro contante, la busta con il biglietto viene consegnata personalmente agli sposi al momento del taglio della torta o durante i saluti finali. Se si opta per il bonifico, è consuetudine effettuarlo 1 o 2 settimane prima dell'evento.
+					</p>
+				</details>
+			</section>
+		</article>
+
+		<RelatedTools currentPath="/it/gift-cash-calculator" category="budget" />
+
+	</main>
+</Layout>
+
+<style>
+	.mode-tab-btn.active-tab {
+		background: var(--fg-pencil) !important;
+		color: #fff !important;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '€';
+	let currentMode = 'guest';
+
+	const tabGuest = document.getElementById('tab-guest-mode');
+	const tabCouple = document.getElementById('tab-couple-mode');
+	const secGuest = document.getElementById('section-guest-mode');
+	const secCouple = document.getElementById('section-couple-mode');
+
+	const selectRelationship = document.getElementById('select-relationship');
+	const selectAttendance = document.getElementById('select-attendance');
+	const selectVenueTier = document.getElementById('select-venue-tier');
+	const chkDestination = document.getElementById('chk-destination-travel');
+	const chkBridalParty = document.getElementById('chk-bridal-party-role');
+
+	const inputGuestCount = document.getElementById('input-guest-count');
+	const displayGuestCount = document.getElementById('display-guest-count');
+	const selectCoupleVenue = document.getElementById('select-couple-venue-tier');
+	const selectCoupleDest = document.getElementById('select-destination-mode');
+
+	const currencySelect = document.getElementById('currency-select');
+
+	const resCardTitle = document.getElementById('res-card-title');
+	const resCardSubtitle = document.getElementById('res-card-subtitle');
+	const resRangeLabel = document.getElementById('res-range-label');
+	const resPrimaryAmount = document.getElementById('res-primary-amount');
+	const resRangeSubtext = document.getElementById('res-range-subtext');
+	const factBase = document.getElementById('fact-base');
+	const factAttendance = document.getElementById('fact-attendance');
+	const factAdjustments = document.getElementById('fact-adjustments');
+	const giftGaugeBar = document.getElementById('gift-gauge-bar');
+	const cardWishText = document.getElementById('card-wish-text');
+
+	function formatMoney(amt) {
+		return `${Math.round(amt).toLocaleString('it-IT')} ${currencySymbol}`;
+	}
+
+	function calculateGift() {
+		currencySymbol = currencySelect.value;
+
+		if (currentMode === 'guest') {
+			resCardTitle.textContent = "✉️ Importo Consigliato in Busta";
+			resCardSubtitle.textContent = "Secondo le consuetudini del galateo italiano";
+			resRangeLabel.textContent = "Cifra Consigliata nella Busta";
+
+			const base = parseFloat(selectRelationship.value) || 150;
+			const attMultiplier = parseFloat(selectAttendance.value) || 1.8;
+			const venueMultiplier = parseFloat(selectVenueTier.value) || 1.0;
+
+			let offsetMultiplier = 1.0;
+			if (chkDestination.checked) offsetMultiplier *= 0.80;
+			if (chkBridalParty.checked) offsetMultiplier *= 0.85;
+
+			const targetAmount = base * attMultiplier * venueMultiplier * offsetMultiplier;
+			const roundedTarget = Math.round(targetAmount / 10) * 10;
+			const low = Math.max(50, Math.round((roundedTarget * 0.90) / 10) * 10);
+			const high = Math.round((roundedTarget * 1.15) / 10) * 10;
+
+			resPrimaryAmount.textContent = formatMoney(roundedTarget);
+			resRangeSubtext.textContent = `Range equilibrato: ${formatMoney(low)} – ${formatMoney(high)}`;
+
+			factBase.textContent = formatMoney(base);
+			factAttendance.textContent = `x ${attMultiplier}`;
+			
+			let adjText = `${venueMultiplier}x`;
+			if (offsetMultiplier < 1.0) adjText += ` (${Math.round(offsetMultiplier * 100)}% trasferta)`;
+			factAdjustments.textContent = adjText;
+
+			const gaugePct = Math.min(100, Math.max(15, Math.round((roundedTarget / 500) * 100)));
+			giftGaugeBar.style.width = `${gaugePct}%`;
+
+			if (base >= 250) {
+				cardWishText.textContent = `"Ai nostri sposi del cuore! Essere al vostro fianco in questo giorno è una gioia immensa. Che questo dono vi accompagni in un meraviglioso inizio di vita insieme!"`;
+			} else if (chkDestination.checked) {
+				cardWishText.textContent = `"Grazie di cuore per averci voluto con voi in questa splendida cornice! Tantissimi auguri per un futuro ricco di amore e serenità."`;
+			} else {
+				cardWishText.textContent = `"Con l'augurio che la gioia di questo giorno vi accompagni per tutta la vita! Un caloroso abbraccio e auguri sinceri di una felicità senza fine."`;
+			}
+
+		} else {
+			resCardTitle.textContent = "💒 Stima Totale Regali degli Sposi";
+			resCardSubtitle.textContent = "Previsione complessiva dei regali ricevuti dagli ospiti";
+			resRangeLabel.textContent = "Totale Stimato Raccolta Buste / Lista";
+
+			const guests = parseInt(inputGuestCount.value) || 100;
+			displayGuestCount.textContent = `${guests} Invitati`;
+
+			const vTier = parseFloat(selectCoupleVenue.value) || 1.0;
+			const dMode = parseFloat(selectCoupleDest.value) || 1.0;
+
+			const avgPerGuest = 150 * vTier * dMode;
+			const totalForecast = guests * avgPerGuest;
+			const low = totalForecast * 0.85;
+			const high = totalForecast * 1.20;
+
+			resPrimaryAmount.textContent = formatMoney(totalForecast);
+			resRangeSubtext.textContent = `Range atteso: ${formatMoney(low)} – ${formatMoney(high)}`;
+
+			factBase.textContent = `${formatMoney(avgPerGuest)} / invitato`;
+			factAttendance.textContent = `${guests} Invitati`;
+			factAdjustments.textContent = `${selectCoupleVenue.options[selectCoupleVenue.selectedIndex].text.split('(')[0]}`;
+
+			const gaugePct = Math.min(100, Math.max(20, Math.round((totalForecast / 40000) * 100)));
+			giftGaugeBar.style.width = `${gaugePct}%`;
+
+			cardWishText.textContent = `"Consiglio per gli Sposi: La raccolta buste copre generalmente tra il 70% e il 100% del costo totale del banchetto e del viaggio di nozze!"`;
+		}
+	}
+
+	tabGuest.addEventListener('click', () => {
+		currentMode = 'guest';
+		tabGuest.classList.add('active-tab');
+		tabGuest.style.background = 'var(--fg-pencil)';
+		tabGuest.style.color = '#fff';
+		tabCouple.classList.remove('active-tab');
+		tabCouple.style.background = 'var(--bg-paper)';
+		tabCouple.style.color = 'var(--fg-pencil)';
+
+		secGuest.style.display = 'block';
+		secCouple.style.display = 'none';
+		calculateGift();
+	});
+
+	tabCouple.addEventListener('click', () => {
+		currentMode = 'couple';
+		tabCouple.classList.add('active-tab');
+		tabCouple.style.background = 'var(--fg-pencil)';
+		tabCouple.style.color = '#fff';
+		tabGuest.classList.remove('active-tab');
+		tabGuest.style.background = 'var(--bg-paper)';
+		tabGuest.style.color = 'var(--fg-pencil)';
+
+		secCouple.style.display = 'block';
+		secGuest.style.display = 'none';
+		calculateGift();
+	});
+
+	[selectRelationship, selectAttendance, selectVenueTier, chkDestination, chkBridalParty, inputGuestCount, selectCoupleVenue, selectCoupleDest, currencySelect].forEach(el => {
+		el.addEventListener('input', calculateGift);
+		el.addEventListener('change', calculateGift);
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Frasi di Auguri e Busta Matrimonio</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					.card-box { border: 1px solid #ccc; background: #fafafa; padding: 15px; margin-bottom: 15px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Promemoria Busta & Frasi di Auguri Nozze</h1>
+				<p>Data: ${new Date().toLocaleDateString('it-IT')} | Importo Busta: <strong>${resPrimaryAmount.textContent}</strong> (${resRangeSubtext.textContent})</p>
+				
+				<h3>Frasi pronte per il biglietto di nozze:</h3>
+				<div class="card-box">
+					<p style="font-style:italic; font-size:15px; margin:0;">${cardWishText.textContent}</p>
+				</div>
+				<div class="card-box">
+					<p style="font-style:italic; font-size:15px; margin:0;">"Che la gioia di questo giorno sia solo l'inizio di una lunga e felice vita insieme. Infiniti auguri!"</p>
+				</div>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Auguri_Busta_Matrimonio_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('it-IT');
+		document.getElementById('print-amount').textContent = resPrimaryAmount.textContent;
+
+		const body = document.getElementById('print-content-body');
+		body.innerHTML = `
+			<div style="border:1px solid #ccc; padding:15px; margin-bottom:15px;">
+				<h3 style="margin:0 0 5px 0;">${resCardTitle.textContent}</h3>
+				<p style="font-size:24px; font-weight:bold; color:#b91c1c; margin:5px 0;">${resPrimaryAmount.textContent}</p>
+				<p style="margin:0; font-size:12px;">${resRangeSubtext.textContent}</p>
+			</div>
+			<div style="border:1px solid #ccc; padding:15px;">
+				<h4 style="margin:0 0 8px 0;">Frase consigliata per il biglietto:</h4>
+				<p style="font-style:italic; font-size:13px; margin:0;">${cardWishText.textContent}</p>
+			</div>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Modalità,Cifra Consigliata,Range,Quota Base,Partecipazione,Fattori\n";
+		csv += `"${currentMode}","${resPrimaryAmount.textContent}","${resRangeSubtext.textContent}","${factBase.textContent}","${factAttendance.textContent}","${factAdjustments.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Busta_Matrimonio_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateGift();
+</script>

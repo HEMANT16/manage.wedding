@@ -1,0 +1,833 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/dress-size-converter/#webapp",
+      "name": "Brautkleid-Größenumrechner & Maßrechner",
+      "url": "https://manage.wedding/de/dress-size-converter",
+      "description": "Kostenloser Brautkleid-Größenumrechner: Berechnen Sie Ihre exakte Brautmode-Größe für EU/DE, US und UK aus Brust-, Taillen- und Hüftmaßen in cm. Entdecken Sie passende Kleiderschnitte und exportieren Sie Ihre Maßtabelle.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "de",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Warum fallen Brautkleider meist 1 bis 2 Nummern kleiner aus als Alltagsmode?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Brautmode-Designer verwenden traditionelle europäische Größentabellen aus den 1950er-Jahren ohne elastische Stretch-Anteile (Vanity Sizing existiert in der Brautmode nicht). Daher entspricht eine normale Alltagsgröße 38 (M) in der Brautmode meist einer Konfektionsgröße 40 oder 42."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Nach welchem Körpermaß sollte man das Brautkleid bestellen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bestellen Sie das Kleid immer nach Ihrem größten Einzelmaß (Brust, Taille oder Hüfte). Eine Schneiderin kann ein Brautkleid problemlos an mehreren Stellen um 1–2 Nummern enger nähen, während das Erweitern durch minimale Nahtzugaben kaum möglich ist."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie misst man sich für ein Brautkleid richtig aus?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Verwenden Sie ein flexibles Maßband: 1) Brust: an der stärksten Stelle über dem geplanten BH; 2) Taille: an der schmalsten Stelle des Oberkörpers (ca. 2–3 cm über dem Bauchnabel); 3) Hüfte: an der breitesten Stelle des Gesäßes bei geschlossenen Beinen."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie man Maße nimmt und die richtige Brautkleidgröße ermittelt",
+      "description": "Schritt-für-Schritt-Anleitung zum Maßnehmen an Brust, Taille und Hüfte zur Umrechnung in europäische (EU/DE), amerikanische (US) und britische (UK) Brautkleidgrößen.",
+      "inLanguage": "de",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Drei Kernmaße in Zentimetern ermitteln",
+          "text": "Messen Sie Brustumfang, Taillenumfang und Hüftumfang mit einem flexiblen Maßband in Unterwäsche."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Mit der Brautmode-Größentabelle abgleichen",
+          "text": "Vergleichen Sie Ihre Maße mit den Standards internationaler Brautkleid-Hersteller."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Nach dem größten Maß bestellen",
+          "text": "Wählen Sie immer die Konfektionsgröße, die zu Ihrem größten Körpermaß passt, damit der Reißverschluss schließt."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Maßkarte für das Brautmodengeschäft exportieren",
+          "text": "Laden Sie Ihre Maße als Word- (.doc) oder PDF-Dokument herunter und bringen Sie diese zum Beratungsgespräch mit."
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Brautkleid-Größenumrechner (EU, US & UK Brautkleider Größentabelle) | Manage.Wedding"
+	description="Kostenloser Brautkleid-Größenrechner: Berechnen Sie Ihre Brautkleidgröße in EU, US und UK aus Brust-, Taillen- & Hüftumfang in cm. Inklusive Schnitt-Empfehlungen & PDF-Export."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Brautkleid-Größenrechner" category="budget" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Brautkleid <span class="accent-italic">Größenumrechner</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Ermitteln Sie Ihre perfekte Brautkleidgröße nach <strong>EU / Deutsch (34–48)</strong>, <strong>US</strong> und <strong>UK</strong>. Vergleichen Sie Alltagskonfektion mit Brautmode und exportieren Sie Ihre offizielle <strong>Maßkarte für die Brautboutique</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Main Interactive Sizing Studio Workspace Grid -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 380px 1fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="dress-calc-grid">
+			
+			<!-- Left Column: Input Form Card -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+						📏 Körpermaße
+					</h2>
+					
+					<!-- Unit Switcher -->
+					<div style="display: flex; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden;">
+						<button type="button" id="unit-cm" class="unit-toggle-btn active-unit">cm</button>
+						<button type="button" id="unit-in" class="unit-toggle-btn">Inches (in)</button>
+					</div>
+				</div>
+
+				<form id="dress-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+					
+					<!-- Bust -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-bust" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								1. Brustumfang (<span class="unit-label">cm</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Stärkste Stelle über BH</span>
+						</div>
+						<input type="number" step="0.5" id="input-bust" value="92" min="50" max="180" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Waist -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-waist" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								2. Taillenumfang (<span class="unit-label">cm</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Schmalste Stelle</span>
+						</div>
+						<input type="number" step="0.5" id="input-waist" value="72" min="40" max="160" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Hips -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-hips" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								3. Hüftumfang (<span class="unit-label">cm</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Breiteste Gesäßstelle</span>
+						</div>
+						<input type="number" step="0.5" id="input-hips" value="99" min="50" max="200" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Designer Preference -->
+					<div>
+						<label for="input-designer" class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							Designer-Passform
+						</label>
+						<select id="input-designer" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+							<option value="standard" selected>Europäischer Standard (Pronovias, Sincerity, Ladybird)</option>
+							<option value="couture">Couture / Figurbetont (Fällt eher schmal aus)</option>
+							<option value="davids">Amerikanischer Standard (Fällt etwas weiter aus)</option>
+							<option value="maggie">Maggie Sottero / Essense of Australia</option>
+						</select>
+					</div>
+
+					<!-- Sample Presets -->
+					<div style="margin-top: 0.5rem; background: var(--bg-paper); border: 1px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem;">
+						<span class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							⚡ Schnellauswahl Beispielmaße:
+						</span>
+						<div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
+							<button type="button" class="preset-meas-btn" data-b="86" data-w="66" data-h="94">Größe 36 (86-66-94)</button>
+							<button type="button" class="preset-meas-btn" data-b="94" data-w="74" data-h="102">Größe 40 (94-74-102)</button>
+							<button type="button" class="preset-meas-btn" data-b="108" data-w="88" data-h="116">Größe 46 (108-88-116)</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Interactive Results, Sizing Badges, International Matrix & Silhouette Guide -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Sizing Results Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div>
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+								👗 Empfohlene Brautkleidgröße
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">
+								Berechnet nach Ihrem größten Einzelmaß
+							</span>
+						</div>
+
+						<!-- Exports -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Export PDF / Drucken
+							</button>
+						</div>
+					</div>
+
+					<!-- Side by Side Sizing Comparison Boxes -->
+					<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+						
+						<!-- Street Size -->
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Alltagskonfektion (DE)</span>
+							<strong id="res-street-size" class="font-heading" style="font-size: 2.4rem; color: var(--accent-blue); display: block; line-height: 1.2;">EU 36</strong>
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Normale Kleidung</span>
+						</div>
+
+						<!-- Primary Bridal Size -->
+						<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1rem; text-align: center; position: relative;">
+							<span style="position: absolute; top: -10px; right: 10px; background: var(--accent-red); color: #fff; font-size: 0.7rem; font-weight: bold; padding: 2px 6px; border-radius: 10px;">BESTELLE DIESE</span>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--accent-red); display: block; font-weight: bold;">Empfohlene Brautgröße</span>
+							<strong id="res-bridal-size" class="font-heading" style="font-size: 2.4rem; color: var(--accent-red); display: block; line-height: 1.2;">EU 40</strong>
+							<span style="font-size: 0.75rem; color: var(--accent-red); font-weight: bold;">+1 bis 2 Nummern (Brautstandard)</span>
+						</div>
+
+						<!-- Body Shape Archetype -->
+						<div style="background: #f0fdf4; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: #166534; display: block;">Körpersilhouette</span>
+							<strong id="res-body-shape" class="font-heading" style="font-size: 1.3rem; color: #15803d; display: block; line-height: 1.3; margin: 0.4rem 0;">Sanduhr</strong>
+							<span id="res-shape-desc" style="font-size: 0.75rem; color: #166534; display: block;">Ausgewogene Proportionen</span>
+						</div>
+
+					</div>
+
+					<!-- Visual Comparison Bar -->
+					<div style="margin-bottom: 1.5rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem;">
+							<span class="font-heading" style="font-size: 0.95rem; color: var(--fg-pencil);">Alltagsgröße vs. Brautmode-Größe</span>
+							<span id="size-diff-note" class="font-body" style="font-size: 0.85rem; color: var(--accent-red); font-weight: bold;">+1 bis 2 Größen größer</span>
+						</div>
+						<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+							<div style="display: flex; align-items: center; gap: 0.75rem;">
+								<span style="width: 80px; font-size: 0.85rem; font-weight: bold;">Alltag:</span>
+								<div style="flex: 1; height: 18px; background: #e5e7eb; border-radius: 4px; border: 1px solid var(--fg-pencil); overflow: hidden;">
+									<div id="bar-street" style="height: 100%; width: 30%; background: var(--accent-blue); transition: width 0.4s ease;"></div>
+								</div>
+								<span id="bar-label-street" style="width: 60px; font-size: 0.9rem; font-weight: bold;">EU 36</span>
+							</div>
+							<div style="display: flex; align-items: center; gap: 0.75rem;">
+								<span style="width: 80px; font-size: 0.85rem; font-weight: bold; color: var(--accent-red);">Brautmode:</span>
+								<div style="flex: 1; height: 18px; background: #e5e7eb; border-radius: 4px; border: 1px solid var(--fg-pencil); overflow: hidden;">
+									<div id="bar-bridal" style="height: 100%; width: 45%; background: var(--accent-red); transition: width 0.4s ease;"></div>
+								</div>
+								<span id="bar-label-bridal" style="width: 60px; font-size: 0.9rem; font-weight: bold; color: var(--accent-red);">EU 40</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- International Conversion Matrix Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+							🌐 Internationale Brautkleider-Größentabelle
+						</h4>
+						<div style="overflow-x: auto;">
+							<table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.95rem; font-family: var(--font-body);">
+								<thead>
+									<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Standard</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">EU / DE</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">US Bridal</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">UK Bridal</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">IT (Italien)</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">FR (Frankreich)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">Ihre Größe</td>
+										<td id="matrix-eu" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">40</td>
+										<td id="matrix-us" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">10</td>
+										<td id="matrix-uk" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">12</td>
+										<td id="matrix-it" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">44</td>
+										<td id="matrix-au" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">42</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- Measurement Anchor Alert & Alteration Guidance -->
+					<div style="background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<strong class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							✂️ Bestell- und Änderungsempfehlung:
+						</strong>
+						<p id="alteration-advice-text" class="font-body" style="font-size: 0.95rem; margin: 0; line-height: 1.5; color: var(--fg-pencil);">
+							Ihr größtes Körpermaß ist die Hüfte. Bestellen Sie immer nach dieser Größe, damit das Kleid mühelos schließt. Die Schneiderin passt Taille und Brust bei der Anprobe perfekt an.
+						</p>
+					</div>
+
+				</div>
+
+				<!-- Flattering Gown Silhouette Recommendations Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+					<h3 class="font-heading" style="font-size: 1.3rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+						<span>✨</span> Empfohlene Kleiderschnitte für Ihre Figur
+					</h3>
+					<div id="silhouette-cards-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+						<!-- Injected via JS -->
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Offizielle Brautkleid-Maßkarte</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportiert am: <span id="print-date"></span> | Für Brautberatung & Schneiderin</p>
+			</div>
+			
+			<table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Körperbereich</th>
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: center;">Gemessenes Maß</th>
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: center;">Hinweis</th>
+					</tr>
+				</thead>
+				<tbody id="print-meas-body"></tbody>
+			</table>
+
+			<div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; background: #fafafa;">
+				<h3 style="margin: 0 0 8px 0; font-size: 15px;">Offizielle Größenempfehlung:</h3>
+				<p style="margin: 4px 0;">• <strong>Zu bestellende Brautkleidgröße:</strong> <span id="print-rec-size"></span></p>
+				<p style="margin: 4px 0;">• <strong>Alltagsgröße:</strong> <span id="print-street-size"></span></p>
+				<p style="margin: 4px 0;">• <strong>Körpertyp:</strong> <span id="print-body-shape"></span></p>
+				<p style="margin: 4px 0;">• <strong>Änderungshinweis:</strong> <span id="print-alteration-note"></span></p>
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="result-box" style="margin-bottom: 2.5rem; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); padding: 1.5rem 1.75rem; position: relative;">
+			<div class="badge-postit" style="top: -12px; right: 15px;">⚡ Auf einen Blick</div>
+			<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+				<span>⚡</span> Faustregel: Brautkleidgröße vs. Alltagsgröße
+			</h3>
+			<p class="font-body" style="font-size: 1rem; line-height: 1.6; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				<strong>Die Grundregel:</strong> Brautkleider fallen in der Regel <strong>1 bis 2 Größen kleiner</strong> aus als Ihre gewohnte Kleidung. Wenn Sie im Alltag eine 38 tragen, benötigen Sie im Brautmodengeschäft meist eine 40 oder 42. Bestellen Sie immer nach Ihrem <strong>größten Körpermaß</strong>, da Engernähen problemlos möglich ist, Erweitern jedoch kaum.
+			</p>
+			
+			<!-- Benchmark Size Conversion Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Alltagsgröße (DE)</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Brautgröße (EU/DE)</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">US Bridal</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">UK Bridal</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Brustumfang (cm)</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Taillenumfang (cm)</th>
+							<th style="padding: 0.65rem 0.8rem; font-family: var(--font-heading); color: var(--fg-pencil);">Hüftumfang (cm)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">32–34 (XS)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 36</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 6</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">UK 8</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">84–86 cm</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">63–66 cm</td>
+							<td style="padding: 0.6rem 0.8rem;">89–91 cm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">36 (S)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 38</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 8</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">UK 10</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">89 cm</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">68 cm</td>
+							<td style="padding: 0.6rem 0.8rem;">95 cm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">38 (M)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 40–42</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 10–12</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">UK 12–14</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">93–96 cm</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">72–76 cm</td>
+							<td style="padding: 0.6rem 0.8rem;">99–103 cm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">40–42 (L)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 44–46</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 14–16</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">UK 16–18</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">100–104 cm</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">80–84 cm</td>
+							<td style="padding: 0.6rem 0.8rem;">107–110 cm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">44–46 (XL)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">EU 48–50</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 18–20</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">UK 20–22</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">109–115 cm</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">89–95 cm</td>
+							<td style="padding: 0.6rem 0.8rem;">116–122 cm</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem;">
+					Der vollständige Brautkleid-Größenguide
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0;">
+					Alles über Maßtabellen, das richtige Maßnehmen und schmeichelhafte Schnitte für jede Körperform.
+				</p>
+			</div>
+
+			<!-- Section 1: Richtiger Schnitt -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Der perfekte Schnitt für Ihre Figur
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Während eine <strong>A-Linie</strong> fast jeder Figur schmeichelt und Problemzonen an Hüfte und Beinen sanft umspielt, betont ein <strong>Meerjungfrauen-Kleid (Fit & Flare)</strong> weibliche Kurven bei einer Sanduhr-Silhouette perfekt. Für zierliche Bräute strecken Empire-Linien und V-Ausschnitte optisch die Figur.
+				</p>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/de/dress-size-converter" category="budget" />
+
+	</main>
+</Layout>
+
+<style>
+	.unit-toggle-btn {
+		padding: 0.35rem 0.75rem;
+		font-family: var(--font-heading);
+		font-size: 0.85rem;
+		background: var(--bg-paper);
+		color: var(--fg-pencil);
+		border: none;
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+	.unit-toggle-btn.active-unit {
+		background: var(--fg-pencil);
+		color: #fff;
+	}
+	.preset-meas-btn {
+		background: #fff;
+		border: 1px solid var(--fg-pencil);
+		border-radius: 3px;
+		padding: 0.25rem 0.5rem;
+		font-size: 0.8rem;
+		cursor: pointer;
+		font-family: var(--font-body);
+	}
+	.preset-meas-btn:hover {
+		background: var(--muted-paper);
+	}
+	.silhouette-card {
+		background: var(--bg-paper);
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 6px;
+		padding: 0.85rem;
+	}
+	.silhouette-card h5 {
+		font-family: var(--font-heading);
+		font-size: 1rem;
+		color: var(--accent-red);
+		margin: 0 0 0.3rem 0;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currentUnit = 'cm';
+
+	const bustInput = document.getElementById('input-bust');
+	const waistInput = document.getElementById('input-waist');
+	const hipsInput = document.getElementById('input-hips');
+	const designerSelect = document.getElementById('input-designer');
+
+	const resStreet = document.getElementById('res-street-size');
+	const resBridal = document.getElementById('res-bridal-size');
+	const resBodyShape = document.getElementById('res-body-shape');
+	const resShapeDesc = document.getElementById('res-shape-desc');
+
+	const barStreet = document.getElementById('bar-street');
+	const barBridal = document.getElementById('bar-bridal');
+	const barLabelStreet = document.getElementById('bar-label-street');
+	const barLabelBridal = document.getElementById('bar-label-bridal');
+	const sizeDiffNote = document.getElementById('size-diff-note');
+
+	const matrixUs = document.getElementById('matrix-us');
+	const matrixUk = document.getElementById('matrix-uk');
+	const matrixEu = document.getElementById('matrix-eu');
+	const matrixAu = document.getElementById('matrix-au');
+	const matrixIt = document.getElementById('matrix-it');
+
+	const alterationText = document.getElementById('alteration-advice-text');
+	const silhouetteContainer = document.getElementById('silhouette-cards-container');
+
+	// Standard Bridal Sizing Table in Inches
+	const sizeChartInches = [
+		{ bridal: 2, street: 0, eu: 32, bust: 32.5, waist: 24.5, hip: 35 },
+		{ bridal: 4, street: 2, eu: 34, bust: 33.5, waist: 25.5, hip: 36 },
+		{ bridal: 6, street: 4, eu: 36, bust: 34.5, waist: 26.5, hip: 37 },
+		{ bridal: 8, street: 6, eu: 38, bust: 35.5, waist: 27.5, hip: 38 },
+		{ bridal: 10, street: 8, eu: 40, bust: 36.5, waist: 28.5, hip: 39.5 },
+		{ bridal: 12, street: 10, eu: 42, bust: 38.0, waist: 30.0, hip: 41 },
+		{ bridal: 14, street: 12, eu: 44, bust: 39.5, waist: 31.5, hip: 42.5 },
+		{ bridal: 16, street: 14, eu: 46, bust: 41.0, waist: 33.0, hip: 44 },
+		{ bridal: 18, street: 16, eu: 48, bust: 43.0, waist: 35.0, hip: 46 },
+		{ bridal: 20, street: 18, eu: 50, bust: 45.5, waist: 37.5, hip: 48 },
+		{ bridal: 22, street: 20, eu: 52, bust: 47.5, waist: 40.0, hip: 50 },
+		{ bridal: 24, street: 22, eu: 54, bust: 50.0, waist: 42.5, hip: 52.5 },
+		{ bridal: 26, street: 24, eu: 56, bust: 52.5, waist: 45.0, hip: 55 }
+	];
+
+	function toInches(val) {
+		return currentUnit === 'cm' ? val / 2.54 : val;
+	}
+
+	function calculateSizing() {
+		let rawB = parseFloat(bustInput.value) || 92;
+		let rawW = parseFloat(waistInput.value) || 72;
+		let rawH = parseFloat(hipsInput.value) || 99;
+
+		const bIn = toInches(rawB);
+		const wIn = toInches(rawW);
+		const hIn = toInches(rawH);
+
+		// Find size for each measurement
+		let bustSizeObj = sizeChartInches.find(s => bIn <= s.bust) || sizeChartInches[sizeChartInches.length - 1];
+		let waistSizeObj = sizeChartInches.find(s => wIn <= s.waist) || sizeChartInches[sizeChartInches.length - 1];
+		let hipSizeObj = sizeChartInches.find(s => hIn <= s.hip) || sizeChartInches[sizeChartInches.length - 1];
+
+		// Maximum size needed to fit largest measurement
+		const maxBridalSize = Math.max(bustSizeObj.bridal, waistSizeObj.bridal, hipSizeObj.bridal);
+		const matchedObj = sizeChartInches.find(s => s.bridal === maxBridalSize) || sizeChartInches[sizeChartInches.length - 1];
+
+		// Designer adjustments
+		let adjustedBridal = maxBridalSize;
+		const designer = designerSelect.value;
+		if (designer === 'couture') {
+			adjustedBridal = Math.min(26, maxBridalSize + 2);
+		} else if (designer === 'davids') {
+			adjustedBridal = Math.max(2, maxBridalSize - 2);
+		}
+
+		const streetSizeVal = matchedObj.street;
+		const euBridalSize = adjustedBridal + 30; // US 10 = EU 40
+
+		// Determine Body Shape Archetype
+		let shape = 'Sanduhr';
+		let shapeDetail = 'Ausgewogene Brust- & Hüftmaße mit schmaler Taille';
+		let silhouettes = [
+			{ name: 'Meerjungfrau / Trompete (Fit & Flare)', desc: 'Betont Kurven und natürlich ausgewogene Proportionen.' },
+			{ name: 'Klassische A-Linie', desc: 'Universell schmeichelnder Schnitt mit Taillenfokus.' }
+		];
+
+		if (hIn >= bIn + 2 && (hIn - wIn) >= 8) {
+			shape = 'Birnenform / A-Typ';
+			shapeDetail = 'Hüfte breiter als Brust mit schmalerer Taille';
+			silhouettes = [
+				{ name: 'Prinzessin / Duchesse / Ballkleid', desc: 'Voluminöser Rock umspielt Hüften und betont die schmale Taille.' },
+				{ name: 'Fließende A-Linie / Empire', desc: 'Lenkt den Blick nach oben auf Dekolleté und Mieder.' }
+			];
+		} else if (bIn >= hIn + 2) {
+			shape = 'V-Typ / Umgekehrtes Dreieck';
+			shapeDetail = 'Volleres Dekolleté / breitere Schultern als Hüfte';
+			silhouettes = [
+				{ name: 'A-Linie mit V-Ausschnitt', desc: 'Streckt den Oberkörper und harmonisiert das Schulter-Hüft-Verhältnis.' },
+				{ name: 'Ballkleid mit Kellerfalten', desc: 'Schafft optisches Volumen im Rock für perfekte Symmetrie.' }
+			];
+		} else if (Math.abs(bIn - hIn) <= 2 && (bIn - wIn) <= 6) {
+			shape = 'Rechteck / Sportlich-Gerade';
+			shapeDetail = 'Gleichmäßige Maße mit dezenter Taillierung';
+			silhouettes = [
+				{ name: 'Fit-and-Flare mit Gürtel', desc: 'Zaubert optisch weibliche Rundungen an Taille und Hüfte.' },
+				{ name: 'Korsagen-Kleid mit Stäbchen', desc: 'Definiert eine klare Taillenstruktur mit eingearbeiteter Korsage.' }
+			];
+		}
+
+		// Update UI
+		const euStreet = matchedObj.eu - 4; // z.B. Alltag 36 vs Braut 40
+		resStreet.textContent = `EU ${Math.max(32, euStreet)}`;
+		resBridal.textContent = `EU ${euBridalSize}`;
+		resBodyShape.textContent = shape;
+		resShapeDesc.textContent = shapeDetail;
+
+		// Progress Comparison Bars
+		const maxScale = 56;
+		const streetPct = Math.min(100, Math.round((euStreet / maxScale) * 100));
+		const bridalPct = Math.min(100, Math.round((euBridalSize / maxScale) * 100));
+
+		barStreet.style.width = `${streetPct}%`;
+		barBridal.style.width = `${bridalPct}%`;
+		barLabelStreet.textContent = `EU ${Math.max(32, euStreet)}`;
+		barLabelBridal.textContent = `EU ${euBridalSize}`;
+
+		sizeDiffNote.textContent = '+1 bis 2 Nummern größer als Alltag';
+
+		// International Matrix
+		matrixUs.textContent = `${adjustedBridal}`;
+		matrixUk.textContent = `${adjustedBridal + 2}`;
+		matrixEu.textContent = `${euBridalSize}`;
+		matrixAu.textContent = `${euBridalSize + 2}`;
+		matrixIt.textContent = `${euBridalSize + 4}`;
+
+		// Alteration Advice Note
+		let anchor = 'Hüfte';
+		if (bustSizeObj.bridal >= waistSizeObj.bridal && bustSizeObj.bridal >= hipSizeObj.bridal) anchor = 'Brust';
+		else if (waistSizeObj.bridal >= bustSizeObj.bridal && waistSizeObj.bridal >= hipSizeObj.bridal) anchor = 'Taille';
+
+		alterationText.innerHTML = `
+			Ihr größtes Körpermaß ist die <strong>${anchor} (entspricht EU ${euBridalSize})</strong>. Bestellen Sie <strong>Größe EU ${euBridalSize}</strong>, damit das Kleid problemlos schließt. Ihre Schneiderin kann die übrigen Bereiche bei den Anproben mühelos anpassen.
+		`;
+
+		// Silhouettes
+		silhouetteContainer.innerHTML = '';
+		silhouettes.forEach(s => {
+			const div = document.createElement('div');
+			div.className = 'silhouette-card';
+			div.innerHTML = `
+				<h5>✨ ${s.name}</h5>
+				<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">${s.desc}</p>
+			`;
+			silhouetteContainer.appendChild(div);
+		});
+	}
+
+	// Unit Switcher
+	document.getElementById('unit-in').addEventListener('click', () => {
+		if (currentUnit === 'in') return;
+		currentUnit = 'in';
+		document.getElementById('unit-in').classList.add('active-unit');
+		document.getElementById('unit-cm').classList.remove('active-unit');
+		document.querySelectorAll('.unit-label').forEach(el => el.textContent = 'inches');
+
+		bustInput.value = (parseFloat(bustInput.value) / 2.54).toFixed(1);
+		waistInput.value = (parseFloat(waistInput.value) / 2.54).toFixed(1);
+		hipsInput.value = (parseFloat(hipsInput.value) / 2.54).toFixed(1);
+		calculateSizing();
+	});
+
+	document.getElementById('unit-cm').addEventListener('click', () => {
+		if (currentUnit === 'cm') return;
+		currentUnit = 'cm';
+		document.getElementById('unit-cm').classList.add('active-unit');
+		document.getElementById('unit-in').classList.remove('active-unit');
+		document.querySelectorAll('.unit-label').forEach(el => el.textContent = 'cm');
+
+		bustInput.value = (parseFloat(bustInput.value) * 2.54).toFixed(1);
+		waistInput.value = (parseFloat(waistInput.value) * 2.54).toFixed(1);
+		hipsInput.value = (parseFloat(hipsInput.value) * 2.54).toFixed(1);
+		calculateSizing();
+	});
+
+	// Presets
+	document.querySelectorAll('.preset-meas-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			let b = parseFloat(btn.getAttribute('data-b'));
+			let w = parseFloat(btn.getAttribute('data-w'));
+			let h = parseFloat(btn.getAttribute('data-h'));
+
+			if (currentUnit === 'in') {
+				b = (b / 2.54).toFixed(1);
+				w = (w / 2.54).toFixed(1);
+				h = (h / 2.54).toFixed(1);
+			}
+
+			bustInput.value = b;
+			waistInput.value = w;
+			hipsInput.value = h;
+			calculateSizing();
+		});
+	});
+
+	// Input listeners
+	bustInput.addEventListener('input', calculateSizing);
+	waistInput.addEventListener('input', calculateSizing);
+	hipsInput.addEventListener('input', calculateSizing);
+	designerSelect.addEventListener('change', calculateSizing);
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const rawB = bustInput.value;
+		const rawW = waistInput.value;
+		const rawH = hipsInput.value;
+		const unit = currentUnit === 'in' ? 'inches' : 'cm';
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Brautkleid Maßkarte</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Offizielle Brautkleid-Maßkarte</h1>
+				<p>Erstellt am ${new Date().toLocaleDateString('de-DE')} | Für Brautberatung & Schneiderin</p>
+				
+				<h3>Gemessene Körpermaße:</h3>
+				<table>
+					<thead>
+						<tr><th>Körperbereich</th><th>Gemessener Wert</th><th>Hinweis</th></tr>
+					</thead>
+					<tbody>
+						<tr><td><strong>Brustumfang</strong></td><td>${rawB} ${unit}</td><td>Über dem geplanten Braut-BH gemessen</td></tr>
+						<tr><td><strong>Taillenumfang</strong></td><td>${rawW} ${unit}</td><td>An der schmalsten Stelle gemessen</td></tr>
+						<tr><td><strong>Hüftumfang</strong></td><td>${rawH} ${unit}</td><td>An der breitesten Gesäßstelle gemessen</td></tr>
+					</tbody>
+				</table>
+
+				<h3 style="margin-top:20px;">Größenempfehlung:</h3>
+				<table>
+					<thead>
+						<tr><th>Größensystem</th><th>Empfohlene Größe</th><th>Details</th></tr>
+					</thead>
+					<tbody>
+						<tr><td><strong>Empfohlene EU-Brautgröße</strong></td><td><strong>${resBridal.textContent}</strong></td><td>Bestellung nach größtem Körpermaß</td></tr>
+						<tr><td><strong>Alltagskonfektion (DE)</strong></td><td>${resStreet.textContent}</td><td>Normale Alltagsgröße</td></tr>
+						<tr><td><strong>US Bridal</strong></td><td>US ${matrixUs.textContent}</td><td>US-Brautstandard</td></tr>
+						<tr><td><strong>UK Bridal</strong></td><td>UK ${matrixUk.textContent}</td><td>Großbritannien / Australien</td></tr>
+						<tr><td><strong>Körpertyp & Silhouette</strong></td><td>${resBodyShape.textContent}</td><td>${resShapeDesc.textContent}</td></tr>
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Brautkleid_Masskarte_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		const printDate = document.getElementById('print-date');
+		const printMeasBody = document.getElementById('print-meas-body');
+		const printRecSize = document.getElementById('print-rec-size');
+		const printStreetSize = document.getElementById('print-street-size');
+		const printBodyShape = document.getElementById('print-body-shape');
+		const printAlterationNote = document.getElementById('print-alteration-note');
+
+		printDate.textContent = new Date().toLocaleDateString('de-DE');
+		const unit = currentUnit === 'in' ? 'inches' : 'cm';
+
+		printMeasBody.innerHTML = `
+			<tr>
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">1. Brustumfang</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${bustInput.value} ${unit}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Über BH gemessen</td>
+			</tr>
+			<tr>
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">2. Taillenumfang</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${waistInput.value} ${unit}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Schmalste Stelle</td>
+			</tr>
+			<tr>
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">3. Hüftumfang</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${hipsInput.value} ${unit}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Breiteste Gesäßstelle</td>
+			</tr>
+		`;
+
+		printRecSize.textContent = `${resBridal.textContent} (US ${matrixUs.textContent} / UK ${matrixUk.textContent})`;
+		printStreetSize.textContent = resStreet.textContent;
+		printBodyShape.textContent = `${resBodyShape.textContent} (${resShapeDesc.textContent})`;
+		printAlterationNote.textContent = alterationText.textContent;
+
+		window.print();
+	});
+
+	// Initialize
+	calculateSizing();
+</script>

@@ -1,0 +1,291 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Calcolatori Invitati, Tableau de Mariage & Logistica Nozze (Gratuiti)";
+const description = "Organizza gli invitati, crea il tableau de mariage interattivo, calcola le dimensioni della pista da ballo e genera la timeline del giorno del matrimonio.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://manage.wedding/it/guests/#collection",
+      "name": "Calcolatori Invitati, Tableau de Mariage & Logistica Nozze | Manage.Wedding",
+      "url": "https://manage.wedding/it/guests",
+      "inLanguage": "it",
+      "description": "Suite completa per l'organizzazione degli invitati: tableau de mariage con drag & drop, distanze tavoli, corteo nuziale, timeline minuto per minuto e checklist nozze.",
+      "hasPart": [
+        { "@type": "WebApplication", "name": "Tableau de Mariage & Piantina Tavoli", "url": "https://manage.wedding/it/seating-chart-maker" },
+        { "@type": "WebApplication", "name": "Pista da Ballo & Distanze Tavoli", "url": "https://manage.wedding/it/seating-clearance-calculator" },
+        { "@type": "WebApplication", "name": "Corteo Nuziale & Ingresso Sposi", "url": "https://manage.wedding/it/wedding-processional-order" },
+        { "@type": "WebApplication", "name": "Timeline & Programma del Giorno", "url": "https://manage.wedding/it/day-of-timeline-generator" },
+        { "@type": "WebApplication", "name": "Cena della Vigilia & Prova", "url": "https://manage.wedding/it/rehearsal-dinner-planner" },
+        { "@type": "WebApplication", "name": "Gestione Lista Invitati", "url": "https://manage.wedding/it/guest-list-manager" },
+        { "@type": "WebApplication", "name": "Tracciamento Conferme (RSVP)", "url": "https://manage.wedding/it/rsvp-tracker" },
+        { "@type": "WebApplication", "name": "Stima Presenze Reali & Defezioni", "url": "https://manage.wedding/it/guest-count-estimator" },
+        { "@type": "WebApplication", "name": "Scadenze Invio Partecipazioni", "url": "https://manage.wedding/it/rsvp-date-calculator" },
+        { "@type": "WebApplication", "name": "Scaletta e Discorso Celebrante Matrimonio", "url": "https://manage.wedding/it/wedding-officiant-script-timer" },
+        { "@type": "WebApplication", "name": "Checklist Matrimonio su 12 Mesi", "url": "https://manage.wedding/it/wedding-checklist" },
+        { "@type": "WebApplication", "name": "Preventivo Sartoria Abito da Sposa", "url": "https://manage.wedding/it/dress-alterations-estimator" },
+        { "@type": "WebApplication", "name": "Guida Taglie Abito da Sposa", "url": "https://manage.wedding/it/dress-size-converter" },
+        { "@type": "WebApplication", "name": "Misuratore Fedi Nuziali in mm", "url": "https://manage.wedding/it/ring-size-converter" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quale percentuale di invitati rifiuta solitamente l'invito di nozze?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Per matrimoni nella propria città, la percentuale di defezione è mediamente del 10–15%. Per matrimoni che richiedono viaggi aerei e pernottamenti in hotel (destination wedding), il tasso di rifiuto sale tra il 20% e il 30%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto deve essere grande la pista da ballo per 150 invitati?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Si calcola che tra il 35% e il 50% degli ospiti balli contemporaneamente. Per 150 persone si stimano circa 50–70 ballerini contemporanei: calcolando circa 0,4–0,5 m² a persona, la dimensione ideale della pista è tra i 25 m² e i 35 m²."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quale distanza lasciare tra i tavoli rotondi in sala?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La distanza raccomandata tra i bordi di due tavoli rotondi è di almeno 1,5 metri (150 cm). Questo garantisce 45 cm di arretramento sedia per lato e un corridoio centrale di 60 cm per il passaggio agevole dei camerieri."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const guestTools = [
+  {
+    title: "Calcolatore Stelline Scintillanti & Cartelli",
+    url: "/it/wedding-sparkler-calculator",
+    icon: "✨",
+    badge: "Cartelli Stampabili",
+    desc: "Calcola bastoncini scintillanti, finestra foto, accendini antivento e secchi di sabbia. Include cartelli 'Fate Brillare l\'Amore' in PDF e PNG.",
+    tags: ["Uscita Sposi", "Cartelli Stampabili", "Schede Sicurezza"]
+  },
+
+  {
+    title: "Tableau de Mariage & Piantina Tavoli",
+    url: "/it/seating-chart-maker",
+    icon: "🪑",
+    badge: "Drag & Drop",
+    desc: "Disponi gli invitati ai tavoli rotondi o imperiali con un'interfaccia visuale intuitiva ed esporta la lista per la sala.",
+    tags: ["Tableau Visuale", "Tavoli Imperiali", "Stampa PDF"]
+  },
+  {
+    title: "Pista da Ballo & Distanze Tavoli",
+    url: "/it/seating-clearance-calculator",
+    icon: "📐",
+    badge: "Metri Quadri & Misure",
+    desc: "Calcola i m² della pista da ballo, la capienza dei tavoli da 150/180 cm e i corridoi di servizio per i camerieri.",
+    tags: ["Metratura Sala", "Tavoli da 150/180cm", "Pista da Ballo"]
+  },
+  {
+    title: "Corteo Nuziale & Ingresso Sposi",
+    url: "/it/wedding-processional-order",
+    icon: "⛪",
+    badge: "Scaletta Cerimonia",
+    desc: "Personalizza l'ordine d'ingresso in chiesa, comune o cerimonia all'aperto per testimoni, genitori, paggetti e sposi.",
+    tags: ["Ingresso in Chiesa", "Testimoni & Damigelle", "Guida Tascabile"]
+  },
+  {
+    title: "Scaletta e Discorso Celebrante Matrimonio",
+    url: "/it/wedding-officiant-script-timer",
+    icon: "📜",
+    badge: "Scaletta & Fogli A5",
+    desc: "Scrivi e scandisci la cerimonia simbolica in 9 fasi (120 PPM) con prompter dal vivo e schede A5 per la cartellina del celebrante.",
+    tags: ["Scaletta Celebrante", "Timer Cerimonia Simbolica", "Schede A5 per Leggio"]
+  },
+  {
+    title: "Timeline & Programma del Grande Giorno",
+    url: "/it/day-of-timeline-generator",
+    icon: "⏰",
+    badge: "Minuto per Minuto",
+    desc: "Inserisci l'orario della cerimonia per generare la scaletta completa per trucco, foto, arrivo ospiti, taglio torta e balli.",
+    tags: ["Scaletta Fornitori", "Orari Trucco & Foto", "Export Word/PDF"]
+  },
+  {
+    title: "Cena della Vigilia & Prova",
+    url: "/it/rehearsal-dinner-planner",
+    icon: "🍷",
+    badge: "Sera Prima",
+    desc: "Organizza la cena informale pre-matrimonio: lista invitati, budget pizzeria/trattoria e orari della prova cerimonia.",
+    tags: ["Prova Cerimonia", "Ospiti da Fuori", "Budget Cena"]
+  },
+  {
+    title: "Gestione Lista Invitati",
+    url: "/it/guest-list-manager",
+    icon: "📋",
+    badge: "Import Excel/CSV",
+    desc: "Gestisci accompagnatori, indirizzi per le partecipazioni, menù bambini e intolleranze con import ed export Excel.",
+    tags: ["Filtri Famiglie", "Intolleranze & Allergie", "Export Excel"]
+  },
+  {
+    title: "Tracciamento Conferme (RSVP)",
+    url: "/it/rsvp-tracker",
+    icon: "✉️",
+    badge: "Monitoraggio Presenze",
+    desc: "Registra risposte, scelte alimentari e conferme in tempo reale con statistiche immediate.",
+    tags: ["Conferme & Rifiuti", "Riepilogo Menù", "Dashboard"]
+  },
+  {
+    title: "Stima Presenze Reali & Defezioni",
+    url: "/it/guest-count-estimator",
+    icon: "📊",
+    badge: "Tasso Partecipazione",
+    desc: "Prevedi il numero reale di presenti e defezioni differenziando tra invitati locali e ospiti che viaggiano da lontano.",
+    tags: ["Percentuale Rifiuti", "Ospiti da Fuori", "Coperti Reali"]
+  },
+  {
+    title: "Scadenze Invio Partecipazioni",
+    url: "/it/rsvp-date-calculator",
+    icon: "📅",
+    badge: "Tempistiche Inviti",
+    desc: "Calcola le date esatte per inviare i Save-the-Date, recapitare le partecipazioni e sollecitare le conferme mancanti.",
+    tags: ["Save-the-Date", "Spedizione Inviti", "Data Limite RSVP"]
+  },
+  {
+    title: "Checklist Matrimonio su 12 Mesi",
+    url: "/it/wedding-checklist",
+    icon: "✅",
+    badge: "12 Mesi",
+    desc: "La lista interattiva con tutti i compiti da svolgere mese per mese, con salvataggio automatico nel tuo browser.",
+    tags: ["Scadenziario Nozze", "Salvataggio Locale", "Senza Stress"]
+  },
+  {
+    title: "Preventivo Sartoria Abito da Sposa",
+    url: "/it/dress-alterations-estimator",
+    icon: "👗",
+    badge: "Modifiche Sartoriali",
+    desc: "Stima il costo delle prove sartoriali: orlo, regolazione fianchi e corpetto, coppe e ancoraggio dello strascico.",
+    tags: ["Prove Sartoria", "Regolazione Orlo", "Punto Strascico"]
+  },
+  {
+    title: "Guida Taglie Abito da Sposa",
+    url: "/it/dress-size-converter",
+    icon: "📏",
+    badge: "Taglie IT/EU/US",
+    desc: "Converti le tue misure corporee in cm nelle taglie bridal italiane, francesi, americane e internazionali.",
+    tags: ["Misure in cm", "Tabella Taglie IT", "Conversione US/UK"]
+  },
+  {
+    title: "Misuratore Fedi Nuziali in mm",
+    url: "/it/ring-size-converter",
+    icon: "💍",
+    badge: "Scala Italiana",
+    desc: "Trova la misura perfetta per le fedi nuziali: diametro interno e circonferenza millimetrica (misure 8–30).",
+    tags: ["Misura Italiana", "Diametro Interno mm", "Guida Fedi"]
+  }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+    
+    <!-- Hero Header -->
+    <header class="fade-in category-header" style="text-align: center; margin-bottom: 3rem; position: relative;">
+      <div class="tape" style="margin: 0 auto 1rem;"></div>
+      <span class="badge-postit">Hub Invitati & Logistica</span>
+      <h1 class="font-heading" style="font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+        Calcolatori <span class="accent-italic">Invitati, Tavoli & Logistica</span>
+      </h1>
+      <p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+        Gestisci la lista degli ospiti, crea il tableau de mariage con tavoli rotondi e imperiali, progetta la pista da ballo e genera il programma della giornata.
+      </p>
+    </header>
+
+    <!-- Category Nav Bar -->
+    <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+      <span style="font-size: 0.9rem; font-weight: 700; color: #64748b; align-self: center;">Categorie:</span>
+      <a href="/it/budget" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💰 Budget</a>
+      <a href="/it/dining" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">🍾 Banchetto & Bar</a>
+      <a href="/it/guests" class="tool-tag" style="background: var(--post-it); font-weight: 700; text-decoration: none; padding: 6px 14px; border: 2px solid var(--fg-pencil);">👥 Invitati (Attivo)</a>
+      <a href="/it/stationery" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💌 Partecipazioni & Ricordi</a>
+    </div>
+
+    <!-- Tools Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem; margin-bottom: 4rem;">
+      {guestTools.map(tool => (
+        <div class="hand-card" style="padding: 1.75rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span style="font-size: 2.2rem;">{tool.icon}</span>
+              <span style="font-size: 0.78rem; font-weight: 700; background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+                {tool.badge}
+              </span>
+            </div>
+            
+            <h2 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+              {tool.title}
+            </h2>
+            
+            <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 0.75rem;">
+              {tool.tags.map(t => (
+                <span class="tool-tag" style="font-size: 0.75rem; padding: 2px 6px;">{t}</span>
+              ))}
+            </div>
+
+            <p class="font-body" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+              {tool.desc}
+            </p>
+          </div>
+
+          <a href={tool.url} class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem; text-decoration: none; display: block; box-sizing: border-box;">
+            Apri Strumento →
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- In-Depth Guests Guide -->
+    <article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+        <span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">Guida Logistica</span>
+        <h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+          Come Gestire Ospiti, Tavoli e Scaletta Senza Stress
+        </h2>
+        <p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+          Dalla suddivisione strategica dei tavoli al coordinamento orario dei fornitori il giorno del sì.
+        </p>
+      </div>
+
+      <section style="margin-bottom: 3rem;">
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+          1. Consigli per il Tableau de Mariage
+        </h3>
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+          Nei tavoli rotondi da 150 cm alloggia comodamente 8 persone (massimo 9), mentre nei tavoli da 180 cm alloggia da 10 a 12 persone. Mantieni sempre raggruppati gli amici per affinità e posiziona i tavoli con anziani e passeggini lontani dalle casse audio.
+        </p>
+      </section>
+
+      <!-- FAQ Section -->
+      <section>
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.25rem; text-align: center;">
+          Domande Frequenti (FAQ)
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--accent-blue); outline: none;">
+              Quando bisogna confermare il numero esatto di coperti alla location?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--fg-pencil); line-height: 1.6;">
+              La maggior parte delle location e dei catering richiede il numero definitivo di coperti (e la lista delle intolleranze alimentari) tra 10 e 15 giorni prima della data delle nozze.
+            </p>
+          </details>
+        </div>
+      </section>
+
+    </article>
+
+  </main>
+</Layout>

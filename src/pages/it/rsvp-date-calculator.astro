@@ -1,0 +1,223 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const title = "Calcolatore Date Inviti & Scadenza RSVP Matrimonio | Manage.Wedding";
+const description = "Calcola le date esatte per inviare il Save-the-Date, le partecipazioni di nozze e la data limite per le conferme RSVP per matrimoni in Italia o all'estero.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/rsvp-date-calculator/#webapp",
+      "name": "Calcolatore Date Inviti e Scadenza RSVP Matrimonio",
+      "url": "https://manage.wedding/it/rsvp-date-calculator",
+      "inLanguage": "it",
+      "description": "Calcola le date raccomandate per inviare Save the Date, partecipazioni di nozze e scadenza per le conferme RSVP.",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come calcolare il calendario di spedizione degli inviti e scadenze RSVP",
+      "description": "Tabella di marcia temporale per l'invio della cancelleria di nozze e la raccolta delle conferme.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Inserire la data del matrimonio",
+          "text": "Seleziona sul calendario il giorno previsto per la cerimonia e il ricevimento."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Selezionare se si tratta di nozze fuori regione o all'estero",
+          "text": "Attiva l'opzione se gli ospiti devono prenotare voli e hotel con largo anticipo."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Visualizzare le tappe del calendario",
+          "text": "Ottieni le date consigliate per il Save-the-Date (6–8 mesi prima), le partecipazioni (8–10 settimane prima) e la scadenza RSVP (4 settimane prima)."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quando bisogna spedire le partecipazioni di nozze?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In Italia le partecipazioni di nozze vengono solitamente consegnate o spedite tra i 2 e i 3 mesi prima della data del matrimonio (8–10 settimane prima)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "A cosa serve il Save-the-Date e quando si invia?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Il Save-the-Date serve ad avvisare gli invitati con 6–9 mesi di anticipo per consentire loro di tenere libera la data, soprattutto se il matrimonio si svolge in estate o nei ponti festivi."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+    <Breadcrumb title="Calcolatore Scadenza RSVP & Inviti" category="stationery" />
+    
+    <div class="home-grid" style="display: block; max-width: 800px; margin: 0 auto;">
+      
+      <div class="hand-card wobbly-border fade-in">
+        <div class="tape"></div>
+        <div class="badge-postit">Calcolo Gratuito</div>
+        <h1 class="font-heading" style="font-size: 2.5rem; color: var(--accent-red); margin-bottom: 0.5rem; text-align: center;">
+          Calcolatore Date Inviti & RSVP
+        </h1>
+        <p style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary);">
+          Scopri quando spedire Save-the-Date, partecipazioni e quando fissare la data limite per le conferme di nozze.
+        </p>
+
+        <form id="calculator-form">
+          <div class="form-group">
+            <label for="wedding-date" class="form-label">Data del Matrimonio (Il Grande Giorno)</label>
+            <input type="date" id="wedding-date" class="form-input" required />
+          </div>
+
+          <div class="form-group" style="display: flex; align-items: center; gap: 1rem; margin-top: 2rem; margin-bottom: 2rem;">
+            <input type="checkbox" id="destination-wedding" style="width: 24px; height: 24px; cursor: pointer; accent-color: var(--accent-blue);" />
+            <label for="destination-wedding" class="form-label" style="margin: 0; cursor: pointer;">Matrimonio Fuori Regione o all'Estero (Destination Wedding)?</label>
+          </div>
+
+          <div style="text-align: center;">
+            <button type="submit" class="hand-btn">Calcola il Mio Calendario!</button>
+          </div>
+        </form>
+
+        <div id="result-box" class="result-box wobbly-border-dashed" style="margin-top: 3rem;">
+          <h3 class="font-heading" style="text-align: center; font-size: 2rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">
+            Scadenze e Tempistiche di Spedizione
+          </h3>
+          
+          <div class="result-item">
+            <div class="item-label">Spedizione Save-the-Date</div>
+            <div class="item-value" id="res-std">--</div>
+          </div>
+          <div class="result-item">
+            <div class="item-label">Consegna Partecipazioni di Nozze</div>
+            <div class="item-value" id="res-inv">--</div>
+          </div>
+          <div class="result-item">
+            <div class="item-label">Data Limite Conferme RSVP</div>
+            <div class="item-value" id="res-rsvp">--</div>
+          </div>
+
+          <!-- Dynamic Graph -->
+          <div style="margin-top: 3rem; position: relative; padding-top: 2rem;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; border-top: 2px dashed var(--fg-pencil);"></div>
+            <h4 class="font-heading" style="text-align: center; margin-bottom: 1rem; color: var(--fg-pencil);">Timeline Visiva</h4>
+            <div style="display: flex; height: 40px; border: 3px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #fff;">
+              <div id="bar-std" style="width: 33.3%; background-color: var(--post-it); border-right: 3px solid var(--fg-pencil); transition: width 0.5s ease; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.9rem;" title="Save-the-Date">Save-the-Date</div>
+              <div id="bar-inv" style="width: 33.3%; background-color: var(--accent-blue); color: white; border-right: 3px solid var(--fg-pencil); transition: width 0.5s ease; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.9rem;" title="Partecipazioni">Partecipazioni</div>
+              <div id="bar-rsvp" style="width: 33.4%; background-color: var(--accent-red); color: white; transition: width 0.5s ease; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.9rem;" title="Scadenza RSVP">RSVP & Nozze</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SEO Article -->
+      <article class="hand-card fade-in" style="margin-top: 3rem; background-color: #fff; padding: 2.5rem;">
+        <h2 class="font-heading" style="font-size: 2rem; color: var(--accent-blue); margin-bottom: 1.5rem;">
+          Guida al Calendario della Cancelleria di Nozze
+        </h2>
+        
+        <p class="font-body" style="line-height: 1.7; margin-bottom: 1.5rem;">
+          Pianificare con cura le date di spedizione delle partecipazioni permette ai tuoi invitati di organizzare ferie e spostamenti senza fretta, e a te di avere i numeri precisi dei coperti per il catering con il giusto anticipo.
+        </p>
+
+        <h3 class="font-heading" style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;">
+          Matrimoni Locali vs Fuori Sede
+        </h3>
+        <p class="font-body" style="line-height: 1.7; margin-bottom: 1.5rem;">
+          Se celebri il matrimonio in una regione diversa (es. in una masseria pugliese, tra le colline toscane o sui laghi lombardi) con ospiti che dovranno viaggiare, invia il Save-the-Date con almeno 9 mesi di anticipo per facilitare le prenotazioni di treni, voli e hotel.
+        </p>
+      </article>
+
+    </div>
+
+    <RelatedTools currentPath="/it/rsvp-date-calculator" category="stationery" />
+  </main>
+</Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('calculator-form');
+    const resStd = document.getElementById('res-std');
+    const resInv = document.getElementById('res-inv');
+    const resRsvp = document.getElementById('res-rsvp');
+    const barStd = document.getElementById('bar-std');
+    const barInv = document.getElementById('bar-inv');
+    const barRsvp = document.getElementById('bar-rsvp');
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const dateInput = document.getElementById('wedding-date').value;
+        const isDestination = document.getElementById('destination-wedding').checked;
+        
+        if (!dateInput) return;
+
+        const parts = dateInput.split('-');
+        const weddingDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        
+        let stdDate = new Date(weddingDate.getTime());
+        let invDate = new Date(weddingDate.getTime());
+        let rsvpDate = new Date(weddingDate.getTime());
+
+        if (isDestination) {
+          stdDate.setMonth(stdDate.getMonth() - 9);
+          invDate.setDate(invDate.getDate() - (12 * 7));
+          rsvpDate.setDate(rsvpDate.getDate() - (6 * 7));
+        } else {
+          stdDate.setMonth(stdDate.getMonth() - 6);
+          invDate.setDate(invDate.getDate() - (8 * 7));
+          rsvpDate.setDate(rsvpDate.getDate() - (4 * 7));
+        }
+
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        
+        resStd.textContent = stdDate.toLocaleDateString('it-IT', options);
+        resInv.textContent = invDate.toLocaleDateString('it-IT', options);
+        resRsvp.textContent = rsvpDate.toLocaleDateString('it-IT', options);
+
+        const totalDuration = weddingDate.getTime() - stdDate.getTime();
+        if (totalDuration > 0) {
+          const stdToInv = invDate.getTime() - stdDate.getTime();
+          const invToRsvp = rsvpDate.getTime() - invDate.getTime();
+          const rsvpToWed = weddingDate.getTime() - rsvpDate.getTime();
+
+          const stdPct = (stdToInv / totalDuration) * 100;
+          const invPct = (invToRsvp / totalDuration) * 100;
+          const rsvpPct = (rsvpToWed / totalDuration) * 100;
+          
+          barStd.style.width = `${stdPct}%`;
+          barInv.style.width = `${invPct}%`;
+          barRsvp.style.width = `${rsvpPct}%`;
+        }
+      });
+    }
+  });
+</script>

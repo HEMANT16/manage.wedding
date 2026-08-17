@@ -1,0 +1,569 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/wedding-drink-calculator/#webapp",
+      "name": "Calculateur de Boissons et Alcool de Mariage",
+      "url": "https://manage.wedding/fr/wedding-drink-calculator",
+      "description": "Calculateur gratuit de boissons et alcool de mariage. Calculez les quantités exactes de vin rouge/blanc, bières, champagne pour le toast, spiritueux, sodas et glaçons (kg) pour votre vin d'honneur et soirée dansante.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Calculer les Quantités d'Alcool pour son Mariage",
+      "description": "Méthode pas-à-pas pour dimensionner votre bar de mariage, vin d'honneur et champagne sans risquer la pénurie.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Définir le Nombre d'Invités et la Durée",
+          "text": "Renseignez le nombre d'adultes présents et la durée totale du service des boissons (généralement 2h de vin d'honneur + 3h de soirée dansante = 5h)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Choisir la Formule de Bar",
+          "text": "Sélectionnez un Open Bar complet (vins, bières, spiritueux) ou une formule Vins & Bières uniquement."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Intégrer le Champagne pour le Toast ou le Gâteau",
+          "text": "Activez la coupe de champagne pour compter 1 coupe par invité (6 coupes par bouteille de 75 cl)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Générer la Liste d'Achats et Glaçons",
+          "text": "Obtenez le nombre exact de bouteilles de vin, cartons de 24 bières, bouteilles d'alcool fort et kilos de glaçons nécessaires."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Combien de verres compte-t-on par invité et par heure de mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La règle standard des traiteurs et barmen est de prévoir 2 verres par invité pour la première heure (vin d'honneur / cocktail), puis 1 verre par invité par heure pour la suite de la soirée. En moyenne, comptez 5 verres par personne pour un événement de 4 à 5 heures."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien de verres sert-on avec une bouteille de vin ou de champagne ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Une bouteille standard de 75 cl de vin blanc ou rouge permet de servir 5 à 6 verres de 12,5 cl. Pour le champagne, une bouteille de 75 cl remplit exactement 6 flûtes ou coupes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien de kilos de glaçons faut-il prévoir pour un mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Prévoyez environ 0,7 kg de glaçons par invité en saison tempérée (soit 70 kg pour 100 invités), et jusqu'à 1 kg par personne en plein été pour assurer le rafraîchissement des bacs à bouteilles et le service des verres."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculateur d'Alcool et Boissons de Mariage (Bar, Vin & Champagne) | Manage.Wedding"
+	description="Estimez précisément vos besoins en vin, champagne, bières, alcools forts, sodas et glaçons (kg) pour votre vin d'honneur et réception de mariage."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Calculateur de Boissons Mariage" category="dining" />
+		
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); line-height: 1.15; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+				Calculateur de Boissons & Bar de Mariage
+			</h1>
+			<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto;">
+				Dimensionnez vos achats de vin rouge et blanc, champagne, bières, spiritueux et glaçons (en kg) pour régaler vos convives sans gaspillage.
+			</p>
+		</header>
+
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="home-grid">
+			
+			<!-- Left Column: Input Form -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				<div style="margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+						📋 Paramètres de Votre Réception
+					</h2>
+					<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+						Indiquez vos effectifs et la durée du service
+					</span>
+				</div>
+
+				<form id="calc-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+					<div class="form-group">
+						<label class="form-label" for="guests" style="font-family: var(--font-heading); font-size: 0.95rem;">Nombre d'Invités Adultes *</label>
+						<input type="number" id="guests" class="form-input" value="100" min="1" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-size: 1.05rem;" />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="hours" style="font-family: var(--font-heading); font-size: 0.95rem;">Durée du Bar / Soirée (Heures) *</label>
+						<input type="number" id="hours" class="form-input" value="5" min="1" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-size: 1.05rem;" />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="barType" style="font-family: var(--font-heading); font-size: 0.95rem;">Formule du Bar</label>
+						<select id="barType" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.95rem;">
+							<option value="open" selected>Open Bar Complet (Vins, Bières & Spiritueux / Cocktails)</option>
+							<option value="soft">Bar Doux (Vins & Bières Uniquement)</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="vibe" style="font-family: var(--font-heading); font-size: 0.95rem;">Profil & Ambiance des Invités</label>
+						<select id="vibe" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.95rem;">
+							<option value="average" selected>Consommation Moyenne (1 verre / heure)</option>
+							<option value="light">Consommation Légère (-25% de verres)</option>
+							<option value="heavy">Ambiance Festive & Fêtards (+25% de verres)</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="champagne" style="font-family: var(--font-heading); font-size: 0.95rem;">Coupe de Champagne (Toast ou Dessert) ?</label>
+						<select id="champagne" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.95rem;">
+							<option value="yes" selected>Oui (1 coupe de champagne par invité)</option>
+							<option value="no">Non (Inclus dans la consommation générale)</option>
+						</select>
+					</div>
+
+					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%; padding: 0.75rem; font-size: 1.1rem; margin-top: 0.5rem;">
+						🍹 Calculer la Liste des Boissons
+					</button>
+				</form>
+			</div>
+
+			<!-- Right Column: Shopping List Results -->
+			<div class="hand-card result-box" id="result-container" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div style="width: 100%;">
+						<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							🛒 Votre Liste de Courses Bar
+						</h3>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							Quantités calculées avec marge de sécurité
+						</span>
+					</div>
+
+					<!-- Exports Toolbar -->
+					<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+						<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+							📝 Export Word (.doc)
+						</button>
+						<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+							🖨️ Imprimer PDF
+						</button>
+						<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+							📊 CSV
+						</button>
+					</div>
+				</div>
+				
+				<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+					
+					<div class="result-item" style="display: flex; justify-content: space-between; align-items: center; background: #fafafa; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.6rem 0.85rem;">
+						<div>
+							<strong class="item-label" style="display: block; font-family: var(--font-heading); color: var(--fg-pencil); font-size: 1rem;">TOTAL DES CONSOMMATIONS</strong>
+							<span class="item-desc" style="font-size: 0.75rem; color: var(--text-secondary);">Nombre total de verres servis</span>
+						</div>
+						<span class="item-value" id="res-total" style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--fg-pencil); font-weight: bold;">500</span>
+					</div>
+
+					<div class="result-item" style="display: flex; justify-content: space-between; align-items: center; background: #fdf2f8; border: 1.5px solid var(--accent-red); border-radius: 4px; padding: 0.6rem 0.85rem;">
+						<div>
+							<strong class="item-label" style="display: block; font-family: var(--font-heading); color: var(--accent-red); font-size: 1rem;">🍷 VINS (Rouge / Blanc / Rosé)</strong>
+							<span class="item-desc" style="font-size: 0.75rem; color: var(--text-secondary);">Bouteilles standard 75 cl (5 verres/btl)</span>
+						</div>
+						<span class="item-value" id="res-wine" style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--accent-red); font-weight: bold;">40</span>
+					</div>
+
+					<div class="result-item" style="display: flex; justify-content: space-between; align-items: center; background: #eff6ff; border: 1.5px solid var(--accent-blue); border-radius: 4px; padding: 0.6rem 0.85rem;">
+						<div>
+							<strong class="item-label" style="display: block; font-family: var(--font-heading); color: var(--accent-blue); font-size: 1rem;">🍺 BIÈRES (Cartons de 24)</strong>
+							<span class="item-desc" style="font-size: 0.75rem; color: var(--text-secondary);">Cartons de 24 bouteilles (33 cl)</span>
+						</div>
+						<span class="item-value" id="res-beer" style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--accent-blue); font-weight: bold;">7</span>
+					</div>
+
+					<div class="result-item" id="liquor-box" style="display: flex; justify-content: space-between; align-items: center; background: #faf5ff; border: 1.5px solid #9333ea; border-radius: 4px; padding: 0.6rem 0.85rem;">
+						<div>
+							<strong class="item-label" style="display: block; font-family: var(--font-heading); color: #9333ea; font-size: 1rem;">🥃 SPIRITUEUX (Alcools Forts)</strong>
+							<span class="item-desc" style="font-size: 0.75rem; color: var(--text-secondary);">Bouteilles 75 cl (16 cocktails/btl)</span>
+						</div>
+						<span class="item-value" id="res-liquor" style="font-family: var(--font-heading); font-size: 1.6rem; color: #9333ea; font-weight: bold;">10</span>
+					</div>
+
+					<div class="result-item" id="mixer-box" style="display: flex; justify-content: space-between; align-items: center; background: #fffbeb; border: 1.5px solid #d97706; border-radius: 4px; padding: 0.6rem 0.85rem;">
+						<div>
+							<strong class="item-label" style="display: block; font-family: var(--font-heading); color: #d97706; font-size: 1rem;">🥤 JUS, SODAS & TONIC</strong>
+							<span class="item-desc" style="font-size: 0.75rem; color: var(--text-secondary);">Litres de diluants et boissons sans alcool</span>
+						</div>
+						<span class="item-value" id="res-mixers" style="font-family: var(--font-heading); font-size: 1.6rem; color: #d97706; font-weight: bold;">34 L</span>
+					</div>
+
+					<div class="result-item" id="champagne-box" style="display: flex; justify-content: space-between; align-items: center; background: #fefce8; border: 1.5px solid #ca8a04; border-radius: 4px; padding: 0.6rem 0.85rem;">
+						<div>
+							<strong class="item-label" style="display: block; font-family: var(--font-heading); color: #ca8a04; font-size: 1rem;">🍾 CHAMPAGNE (Toast & Gâteau)</strong>
+							<span class="item-desc" style="font-size: 0.75rem; color: var(--text-secondary);">Bouteilles 75 cl (6 flûtes/btl)</span>
+						</div>
+						<span class="item-value" id="res-champagne" style="font-family: var(--font-heading); font-size: 1.6rem; color: #ca8a04; font-weight: bold;">17</span>
+					</div>
+
+					<div class="result-item" style="display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1.5px solid #16a34a; border-radius: 4px; padding: 0.6rem 0.85rem;">
+						<div>
+							<strong class="item-label" style="display: block; font-family: var(--font-heading); color: #16a34a; font-size: 1rem;">🧊 GLAÇONS & GLACE</strong>
+							<span class="item-desc" style="font-size: 0.75rem; color: var(--text-secondary);">Kilos de glaçons pour service et seaux</span>
+						</div>
+						<span class="item-value" id="res-ice" style="font-family: var(--font-heading); font-size: 1.6rem; color: #16a34a; font-weight: bold;">70 kg</span>
+					</div>
+
+				</div>
+
+				<div id="explanation-box" style="background-color: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; margin-top: 1.25rem; padding: 1rem; text-align: left;">
+					<strong class="font-heading" style="font-size: 1rem; display: block; margin-bottom: 0.35rem; color: var(--accent-red);">
+						💡 Méthode de Calcul Appliquée :
+					</strong>
+					<p id="explanation-text" class="font-body" style="font-size: 0.9rem; margin: 0; line-height: 1.45;">
+						Calculé sur une base de 1 verre par invité et par heure avec répartition 40% vin, 30% bière, 30% spiritueux.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 850px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape"></div>
+			
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Repères Rapides : Ratios d'Alcool pour 100 Invités
+				</h3>
+				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
+					Formule Express
+				</span>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
+					📐 La Règle d'Or Traiteur :
+				</div>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
+					Comptez <strong>1 verre par invité par heure</strong>. Répartition conseillée : <strong>40% de vin</strong> (5 verres/btl), <strong>30% de bière</strong> (cartons de 24), <strong>30% de spiritueux</strong> (16 verres/btl) et <strong>0,7 kg de glaçons par convive</strong>.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 560px;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Invités (Soirée 5h)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Total Verres</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Vin (75 cl)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue); text-align: center;">Bière (Cartons 24)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: #9333ea; text-align: center;">Spiritueux (75 cl)</th>
+							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: #16a34a; text-align: right;">Glaçons (kg)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">50 Invités</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">250 verres</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">20 btls</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">4 cartons</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">5 btls</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">35 kg</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ 100 Invités</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">500 verres</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">40 btls</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">7 cartons</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: #9333ea;">10 btls</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700; color: #16a34a;">70 kg</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">150 Invités</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 verres</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">60 btls</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">10 cartons</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">15 btls</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">105 kg</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p class="font-body" style="font-size: 0.85rem; color: var(--fg-pencil); margin: 0; line-height: 1.4;">
+				💡 <strong>Champagne Toast :</strong> Pour le toast ou la pièce montée, comptez <strong>1 bouteille pour 6 invités</strong> (ex. 17 bouteilles pour 100 personnes).
+			</p>
+		</div>
+
+		<!-- SEO Guide Article -->
+		<article class="hand-card" style="margin: 4rem auto; max-width: 850px; padding: clamp(1.5rem, 3vw, 3rem);">
+			<h2 class="font-heading" style="font-size: 2.3rem; margin-bottom: 1.5rem; color: var(--fg-pencil); text-align: center;">
+				Comment Réussir le Bar et les Boissons de son Mariage
+			</h2>
+			<p class="font-body" style="font-size: 1.15rem; margin-bottom: 1.5rem; line-height: 1.6;">
+				Prévoir les boissons d'un mariage est un exercice d'équilibre : vous souhaitez que vos convives profitent pleinement de la fête sans jamais manquer de rien, tout en évitant d'acheter des dizaines de bouteilles superflues.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 1.8rem; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--accent-red);">
+				1. La Règle du Verre par Heure
+			</h3>
+			<p class="font-body" style="font-size: 1.1rem; margin-bottom: 1.5rem; line-height: 1.6;">
+				Les traiteurs et cavistes se basent sur une moyenne éprouvée : <strong>2 verres par personne au vin d'honneur</strong>, puis <strong>1 verre par heure et par personne</strong> pour le dîner et la soirée dansante. Même si certains invités boivent davantage, d'autres ne consomment que des boissons sans alcool, ce qui compense naturellement la moyenne.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 1.8rem; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--accent-blue);">
+				2. Les 3 Conseils Indispensables
+			</h3>
+			<ul class="font-body" style="font-size: 1.1rem; margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.7;">
+				<li><strong>Négociez la reprise des bouteilles non ouvertes :</strong> La plupart des cavistes et grandes surfaces acceptent de reprendre les cartons intacts après le mariage.</li>
+				<li><strong>Limitez les cocktails signatures :</strong> Proposez 1 ou 2 cocktails signature simples (Spritz, Mojito, Gin Tonic). Cela évite les files d'attente interminables au bar.</li>
+				<li><strong>Prévoyez suffisamment de glace :</strong> Rien n'est plus désagréable qu'un vin blanc ou un cocktail tiède. Commandez vos sacs de glaçons la veille ou demandez à votre traiteur de gérer les bacs réfrigérés.</li>
+			</ul>
+
+			<h3 class="font-heading" style="font-size: 1.8rem; margin-top: 2.5rem; margin-bottom: 1.25rem; color: var(--fg-pencil); text-align: center;">
+				Foire Aux Questions
+			</h3>
+			
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+				<summary class="font-heading" style="font-size: 1.15rem; color: var(--accent-blue); outline: none;">Combien de verres contient une bouteille de vin ?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; line-height: 1.5;">Une bouteille de 75 cl permet de servir exactement 5 verres de 15 cl ou 6 verres de 12,5 cl.</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+				<summary class="font-heading" style="font-size: 1.15rem; color: var(--accent-blue); outline: none;">Combien de flûtes sert-on avec une bouteille de champagne ?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; line-height: 1.5;">Une bouteille de champagne de 75 cl remplit 6 flûtes de dégustation standard (environ 12 cl par coupe).</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+				<summary class="font-heading" style="font-size: 1.15rem; color: var(--accent-blue); outline: none;">Quel est le droit de bouchon moyen en France ?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; line-height: 1.5;">Si vous apportez vos propres bouteilles sur le lieu de réception, le domaine ou traiteur peut facturer un droit de bouchon de 5 € à 15 € par bouteille ouverte pour couvrir le service, la verrerie et le lavage.</p>
+			</details>
+		</article>
+
+		<RelatedTools currentPath="/fr/wedding-drink-calculator" category="dining" />
+	</main>
+
+	<script is:inline>
+		const calcForm = document.getElementById('calc-form');
+		const guestsInput = document.getElementById('guests');
+		const hoursInput = document.getElementById('hours');
+		const barTypeSelect = document.getElementById('barType');
+		const vibeSelect = document.getElementById('vibe');
+		const champagneSelect = document.getElementById('champagne');
+
+		const resTotal = document.getElementById('res-total');
+		const resBeer = document.getElementById('res-beer');
+		const resWine = document.getElementById('res-wine');
+		const resLiquor = document.getElementById('res-liquor');
+		const resMixers = document.getElementById('res-mixers');
+		const resChampagne = document.getElementById('res-champagne');
+		const resIce = document.getElementById('res-ice');
+
+		const liquorBox = document.getElementById('liquor-box');
+		const mixerBox = document.getElementById('mixer-box');
+		const champagneBox = document.getElementById('champagne-box');
+		const explanationText = document.getElementById('explanation-text');
+
+		function recalculateDrinks() {
+			const guests = parseInt(guestsInput.value) || 100;
+			const hours = parseInt(hoursInput.value) || 5;
+			const barType = barTypeSelect.value;
+			const vibe = vibeSelect.value;
+			const champagne = champagneSelect.value;
+
+			let multiplier = 1.0;
+			let vibeText = "une consommation moyenne";
+			if (vibe === 'light') {
+				multiplier = 0.75;
+				vibeText = "une consommation légère (-25%)";
+			} else if (vibe === 'heavy') {
+				multiplier = 1.25;
+				vibeText = "une ambiance très festive (+25%)";
+			}
+
+			const totalServings = Math.ceil(guests * hours * multiplier);
+
+			let beerRatio = 0.3;
+			let wineRatio = 0.4;
+			let liquorRatio = 0.3;
+
+			if (barType === 'soft') {
+				beerRatio = 0.5;
+				wineRatio = 0.5;
+				liquorRatio = 0;
+			}
+
+			const beerServings = totalServings * beerRatio;
+			const wineServings = totalServings * wineRatio;
+			const liquorServings = totalServings * liquorRatio;
+
+			// 1 carton biere = 24 bouteilles
+			const beerCases = Math.ceil(beerServings / 24);
+			// 1 btl vin = 5 verres
+			const wineBottles = Math.ceil(wineServings / 5);
+			// 1 btl spiritueux = 16 doses
+			const liquorBottles = Math.ceil(liquorServings / 16);
+
+			// Champagne: 1 coupe par invite, 6 coupes par bouteille
+			const champagneBottles = Math.ceil(guests / 6);
+
+			// Glacons: 0.7 kg par invite
+			const iceKg = Math.ceil(guests * 0.7);
+			// Mixers: 1 Litre pour 3 invites
+			const mixersLiters = barType === 'open' ? Math.ceil(guests / 3) : 0;
+
+			// Update DOM
+			resTotal.textContent = totalServings.toString();
+			resBeer.textContent = `${beerCases} cartons (${beerCases * 24} btls)`;
+			resWine.textContent = `${wineBottles} btls`;
+			
+			if (barType === 'soft') {
+				liquorBox.style.display = 'none';
+				mixerBox.style.display = 'none';
+			} else {
+				liquorBox.style.display = 'flex';
+				mixerBox.style.display = 'flex';
+				resLiquor.textContent = `${liquorBottles} btls`;
+				resMixers.textContent = `${mixersLiters} L`;
+			}
+
+			if (champagne === 'yes') {
+				champagneBox.style.display = 'flex';
+				resChampagne.textContent = `${champagneBottles} btls`;
+			} else {
+				champagneBox.style.display = 'none';
+			}
+
+			resIce.textContent = `${iceKg} kg`;
+
+			let expl = `Calculé sur une base de 1 verre par invité et par heure, ajusté pour ${vibeText}.`;
+			if (barType === 'soft') {
+				expl += ` Répartition 50% vin et 50% bière.`;
+			} else {
+				expl += ` Répartition 40% vin, 30% bière et 30% spiritueux.`;
+			}
+			if (champagne === 'yes') {
+				expl += ` Inclus ${champagneBottles} bouteilles de champagne pour 1 coupe par convive (6 coupes/bouteille).`;
+			}
+			expl += ` Prévoir environ ${iceKg} kg de glaçons (0,7 kg par invité) pour rafraîchir les verres et seaux.`;
+			
+			explanationText.textContent = expl;
+		}
+
+		calcForm.addEventListener('submit', function(e) {
+			e.preventDefault();
+			recalculateDrinks();
+		});
+
+		[guestsInput, hoursInput, barTypeSelect, vibeSelect, champagneSelect].forEach(el => {
+			el.addEventListener('change', recalculateDrinks);
+			el.addEventListener('input', recalculateDrinks);
+		});
+
+		// 📝 Export Word (.doc)
+		document.getElementById('btn-export-doc')?.addEventListener('click', () => {
+			const html = `
+				<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+				<head>
+					<meta charset="utf-8">
+					<title>Liste d'Achats Boissons Mariage</title>
+					<style>
+						body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+						h1 { color: #2d2d2d; margin-bottom: 4px; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #ccc; padding: 8px; text-align: left; font-size: 13px; }
+						th { background: #f2f2f2; }
+					</style>
+				</head>
+				<body>
+					<h1>Manage.Wedding — Liste d'Achats Boissons & Bar de Mariage</h1>
+					<p>Généré le ${new Date().toLocaleDateString('fr-FR')} pour <strong>${guestsInput.value} invités</strong> (${hoursInput.value} heures)</p>
+					
+					<table>
+						<tr><th>Catégorie de Boisson</th><th>Quantité à Commander</th></tr>
+						<tr><td>Total Consommations Estimées</td><td><strong>${resTotal.textContent} verres</strong></td></tr>
+						<tr><td>Vins (Rouge / Blanc / Rosé)</td><td><strong>${resWine.textContent}</strong></td></tr>
+						<tr><td>Bières (Cartons de 24)</td><td><strong>${resBeer.textContent}</strong></td></tr>
+						${barTypeSelect.value === 'open' ? `<tr><td>Spiritueux / Alcools Forts</td><td><strong>${resLiquor.textContent}</strong></td></tr>` : ''}
+						${barTypeSelect.value === 'open' ? `<tr><td>Jus, Sodas & Mixers</td><td><strong>${resMixers.textContent}</strong></td></tr>` : ''}
+						${champagneSelect.value === 'yes' ? `<tr><td>Champagne (Toast / Gâteau)</td><td><strong>${resChampagne.textContent}</strong></td></tr>` : ''}
+						<tr><td>Glaçons & Glace</td><td><strong>${resIce.textContent}</strong></td></tr>
+					</table>
+				</body>
+				</html>
+			`;
+
+			const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `Liste_Boissons_Mariage_${new Date().toISOString().slice(0, 10)}.doc`;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		});
+
+		// 🖨️ Export PDF / Print
+		document.getElementById('btn-export-pdf')?.addEventListener('click', () => {
+			window.print();
+		});
+
+		// 📊 Export Excel (.csv)
+		document.getElementById('btn-export-csv')?.addEventListener('click', () => {
+			let csv = "Categorie,Quantite\n";
+			csv += `"Total Consommations","${resTotal.textContent}"\n`;
+			csv += `"Vins (75cl)","${resWine.textContent}"\n`;
+			csv += `"Bieres","${resBeer.textContent}"\n`;
+			if (barTypeSelect.value === 'open') {
+				csv += `"Spiritueux","${resLiquor.textContent}"\n`;
+				csv += `"Mixers","${resMixers.textContent}"\n`;
+			}
+			if (champagneSelect.value === 'yes') {
+				csv += `"Champagne","${resChampagne.textContent}"\n`;
+			}
+			csv += `"Glacons","${resIce.textContent}"\n`;
+
+			const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `Liste_Boissons_Mariage.csv`;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		});
+
+		// Initialize
+		recalculateDrinks();
+	</script>
+</Layout>

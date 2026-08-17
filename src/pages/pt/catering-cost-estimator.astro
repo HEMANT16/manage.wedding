@@ -1,0 +1,772 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Estimador de Custos de Catering e Copo-d'Água de Casamento",
+      "url": "https://manage.wedding/pt/catering-cost-estimator",
+      "inLanguage": "pt",
+      "description": "Calculadora gratuita de catering para casamentos. Calcule o custo real por pessoa e total de ementas empratadas, buffets, bar aberto, aluguer de louças, taxas de serviço e IVA. Exporte para Word, PDF ou Excel.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Como Calcular o Custo Real de Catering de Casamento",
+      "description": "Guia passo a passo para calcular ementas, bar aberto, alugueres e impostos no copo-d'água.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Passo 1: Selecione o Estilo de Refeição e Nível da Ementa",
+          "text": "Escolha entre serviço empratado tradicional, buffet, travessas partilhadas à mesa ou estações de cocktails e adicione os aperitivos de boas-vindas."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 2: Configure o Bar Aberto e Aluguer de Louças",
+          "text": "Selecione o pacote de bebidas (apenas vinhos/cerveja ou bar aberto completo com destilados) e adicione o aluguer de atoalhados e louças se necessário."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 3: Indique os Convidados e Refeições de Staff",
+          "text": "Introduza o número de convidados pagantes e as refeições para fornecedores (fotógrafo, DJ, videógrafo, animadores)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 4: Contemple as Taxas de Serviço e IVA",
+          "text": "Aplique a taxa de serviço de catering (10% a 15%) e o IVA de restauração para obter o custo real final por pessoa."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qual é o preço médio por pessoa de catering de casamento em Portugal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Em Portugal, o valor médio de copo-d'água situa-se entre 85 € e 150 € por convidado para ementas completas com cocktail de receção, prato de peixe, prato de carne, buffet de sobremesas, ceia e bar aberto."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Um serviço de buffet é mais barato do que o jantar empratado?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nem sempre. Embora o buffet exija menos empregados de mesa para servir à mesa, exige 20% a 25% mais volume de comida para manter os réchauds e travessas sempre bem compostos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "É obrigatório alimentar os fornecedores no casamento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sim. Profissionais que trabalham no evento por mais de 6 horas contínuas (fotógrafo, DJ, videógrafo e coordenador) devem ter uma refeição quente incluída, normalmente com 50% de desconto face ao preço do convidado."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como exportar o orçamento detalhado de catering?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Basta clicar em 'Exportar Word (.doc)', 'Exportar PDF / Imprimir' ou 'CSV' para descarregar a proposta discriminada pronta para comparar com quintas e empresas de catering."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Estimador de Custos de Catering & Copo-d'Água (Preço por Pessoa) | Manage.Wedding"
+	description="Calcule custos de catering, ementas empratadas, buffet, bar aberto, alugueres, taxa de serviço e IVA. Exporte orçamentos completos em Word e PDF."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 2rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Estimador de Custos de Catering & Copo-d'Água
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Descubra o custo real com tudo incluído de ementas, bar aberto, aluguer de louças, taxas de serviço e IVA. Exporte para <strong>Word (.doc)</strong>, <strong>PDF</strong> ou <strong>Excel (.csv)</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Main Workspace Grid: Configurator + Real-Time Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="catering-calc-grid">
+			
+			<!-- Left Column: Input Form & Package Controls -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							🍽️ Opções da Ementa & Serviço
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							Configure refeição, bar, alugueres e taxas
+						</span>
+					</div>
+
+					<!-- Currency Selector -->
+					<div style="display: flex; align-items: center; gap: 0.3rem;">
+						<span style="font-size: 0.85rem; font-weight: bold;">Moeda:</span>
+						<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="€" selected>€ (EUR)</option>
+							<option value="R$">R$ (BRL)</option>
+							<option value="$">$ (USD)</option>
+							<option value="£">£ (GBP)</option>
+						</select>
+					</div>
+				</div>
+
+				<form id="catering-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+					
+					<!-- Guest Count & Vendor Meals -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+						<div>
+							<label for="input-guest-count" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								N.º de Convidados Adultos *
+							</label>
+							<input type="number" id="input-guest-count" value="100" min="10" max="1000" required style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+						</div>
+
+						<div>
+							<label for="input-vendor-meals" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Refeições de Staff (Foto, DJ)
+							</label>
+							<input type="number" id="input-vendor-meals" value="4" min="0" max="30" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+						</div>
+					</div>
+
+					<!-- Meal Service Style -->
+					<div>
+						<label for="select-meal-style" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Estilo de Serviço da Refeição
+						</label>
+						<select id="select-meal-style" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; background: #fff;">
+							<option value="75" selected>Jantar Empratado Tradicional (Peixe + Carne) (75 € / pessoa base)</option>
+							<option value="60">Buffet Completo de Pratos Quentes (60 € / pessoa base)</option>
+							<option value="65">Travessas Partilhadas à Mesa (Family Style) (65 € / pessoa base)</option>
+							<option value="55">Estações de Cocktails & Finger Food (55 € / pessoa base)</option>
+							<option value="45">Churrasco Tradicional / Porco no Espeto (45 € / pessoa base)</option>
+							<option value="40">Brunch & Mesa de Crepes/Waffles (40 € / pessoa base)</option>
+						</select>
+					</div>
+
+					<!-- Passed Appetizers / Cocktail Hour -->
+					<div>
+						<label for="select-appetizers" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Cocktail de Boas-Vindas & Canapés
+						</label>
+						<select id="select-appetizers" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+							<option value="0">Incluído no Pacote Base (0 €)</option>
+							<option value="12" selected>Cocktail Volante de Canapés e Salgadinhos (12 € / pessoa)</option>
+							<option value="18">Mesa de Queijos Regionais, Enchidos e Canapés (18 € / pessoa)</option>
+							<option value="28">Estação de Marisco & Cortador de Presunto ao Vivo (28 € / pessoa)</option>
+						</select>
+					</div>
+
+					<!-- Bar & Beverage Package -->
+					<div>
+						<label for="select-bar-package" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							Bar & Bebidas (Copo-d'Água e Festa)
+						</label>
+						<select id="select-bar-package" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+							<option value="0">Sem Álcool / Apenas Águas e Sumos (0 € / pessoa)</option>
+							<option value="8">Bebidas Próprias dos Noivos (Apenas Taxa de Rolha e Serviço) (8 € / pessoa)</option>
+							<option value="16">Vinhos da Casa, Cerveja e Espumante de Brinde (16 € / pessoa)</option>
+							<option value="25" selected>Bar Aberto Completo (Vinho, Cerveja e Destilados) (25 € / pessoa)</option>
+							<option value="38">Bar Aberto Premium com Cocktails de Assinatura (38 € / pessoa)</option>
+						</select>
+					</div>
+
+					<!-- Rentals & Dinnerware -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+						<div>
+							<label for="select-rentals" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Louças & Atoalhados
+							</label>
+							<select id="select-rentals" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem; background: #fff;">
+								<option value="0">Fornecido pela Quinta (0 €)</option>
+								<option value="8" selected>Aluguer Padrão de Toalhas e Louça (8 €/p)</option>
+								<option value="16">Louça Vintage, Marcadores & Talheres Dourados (16 €/p)</option>
+							</select>
+						</div>
+
+						<div>
+							<label for="select-dessert-fee" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Bolo dos Noivos & Ceia
+							</label>
+							<select id="select-dessert-fee" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem; background: #fff;">
+								<option value="0">Sem Taxa de Corte / Bolo Próprio (0 €)</option>
+								<option value="2.5" selected>Serviço de Corte do Bolo (2,50 €/p)</option>
+								<option value="7">Mesa de Doces Tradicionais & Ceia Completa (7 €/p)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Service Charge & Tax -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-service-pct" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								Taxa de Serviço / Staff
+							</label>
+							<div style="display: flex; align-items: center; gap: 0.2rem;">
+								<input type="number" id="input-service-pct" value="10" min="0" max="30" style="width: 60px; padding: 0.35rem; border: 1px solid var(--fg-pencil); border-radius: 3px; font-size: 0.9rem; text-align: center; background: #fff;">
+								<span style="font-weight: bold; font-size: 0.9rem;">%</span>
+							</div>
+						</div>
+
+						<div>
+							<label for="input-tax-pct" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								Taxa de IVA Aplicável
+							</label>
+							<div style="display: flex; align-items: center; gap: 0.2rem;">
+								<input type="number" id="input-tax-pct" value="13" min="0" max="25" step="0.5" style="width: 60px; padding: 0.35rem; border: 1px solid var(--fg-pencil); border-radius: 3px; font-size: 0.9rem; text-align: center; background: #fff;">
+								<span style="font-weight: bold; font-size: 0.9rem;">%</span>
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Financial Results & Surcharge Comparison -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Total Quote Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								📋 Proposta Estimada de Catering
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Tudo incluído: comida, bar, alugueres, serviço e IVA
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Exportar Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Exportar PDF / Imprimir
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Cost Per Head vs Total Grid -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+						
+						<!-- Grand Total Invoice -->
+						<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--accent-red); display: block; font-weight: bold;">Fatura Total Prevista</span>
+							<strong id="res-grand-total" class="font-heading" style="font-size: 2.2rem; color: var(--accent-red); display: block; line-height: 1.2;">15.244 €</strong>
+							<span id="res-total-guest-note" style="font-size: 0.75rem; color: var(--accent-red);">Com todas as taxas e IVA</span>
+						</div>
+
+						<!-- All-Inclusive Cost Per Head -->
+						<div style="background: #eff6ff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: #1e40af; display: block; font-weight: bold;">Custo Real por Convidado</span>
+							<strong id="res-per-head" class="font-heading" style="font-size: 2.2rem; color: var(--accent-blue); display: block; line-height: 1.2;">152,44 €</strong>
+							<span id="res-base-diff-note" style="font-size: 0.75rem; color: #1e40af;">Ementa base era 75,00 €</span>
+						</div>
+
+					</div>
+
+					<!-- Itemized Invoice Breakdown Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Discriminação dos Custos
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.95rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🥗 Ementa Base & Cocktail de Boas-Vindas:</td>
+									<td id="res-food-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">8.700,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🍷 Pacote de Bar Aberto & Bebidas:</td>
+									<td id="res-bar-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">2.500,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🍽️ Louças, Toalhas e Corte do Bolo:</td>
+									<td id="res-rentals-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">1.050,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🍱 Refeições de Staff / Fornecedores (-50%):</td>
+									<td id="res-vendor-meals-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">150,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb; background: #fafafa;">
+									<td style="padding: 0.4rem 0; font-weight: bold;">Subtotal Direto (Sem Impostos):</td>
+									<td id="res-pretax-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">12.400,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb; color: var(--accent-red);">
+									<td style="padding: 0.4rem 0;">➕ Taxa de Serviço (10%):</td>
+									<td id="res-service-charge" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">1.240,00 €</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil);">
+									<td style="padding: 0.4rem 0;">🏛️ IVA Aplicável (13%):</td>
+									<td id="res-sales-tax" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">1.604,00 €</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Proportional Cost Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span>Comida e Bebidas (80%)</span>
+							<span style="color: var(--accent-red);">Serviço & IVA (20%)</span>
+						</div>
+						<div style="display: flex; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="bar-food-portion" style="width: 80%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+							<div id="bar-fees-portion" style="width: 20%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Planner Surcharge Alert Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						⚠️ Dica de Planeamento Orçamental:
+					</strong>
+					<p class="font-body" style="font-size: 0.9rem; line-height: 1.5; margin: 0; color: var(--fg-pencil);">
+						Repare como um menu anunciado a <strong>75 €/pessoa</strong> se transforma em <strong>152,44 €/pessoa</strong> após somar canapés de boas-vindas, bar aberto, serviço e IVA. Peça sempre orçamentos finais com IVA e taxas discriminadas!
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Estimativa Oficial de Catering</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportado a: <span id="print-date"></span> | N.º Convidados: <span id="print-guests"></span> | Total Geral: <span id="print-total"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Artigo / Serviço</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 100px; text-align: center;">Convidados</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 120px; text-align: right;">Total (€)</th>
+					</tr>
+				</thead>
+				<tbody id="print-invoice-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 900px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape"></div>
+			
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Resumo Direto ao Assunto (BLUF)
+				</h3>
+				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
+					Regra Prática em 1 Minuto
+				</span>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
+					📐 A Fórmula Central de Catering:
+				</div>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
+					<strong>Custo Total = (Convidados × Ementa Base + Bar Aberto) + Alugueres + Refeições Staff + Taxa Serviço (10%–15%) + IVA (13%/23%)</strong><br />
+					<em>Multiplicador Real:</em> Multiplique o valor base da ementa por <strong>1,30 a 1,45</strong> para antecipar o valor real da fatura final.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.90rem; min-width: 620px;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Estilo de Serviço</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Ementa Base / Pessoa</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Rácio de Empregados</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Controlo de Doses</th>
+							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--accent-blue); text-align: right;">Custo Real / Convidado (Tudo Incluído)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ Jantar Empratado Tradicional</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">75 € – 130 €</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1 empregado : 10–12 convidados</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">Doses Exatas (Sem Desperdício)</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700; color: var(--accent-blue);">130 € – 210 € / pessoa</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Buffet Completo</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">55 € – 85 €</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1 empregado : 20 convidados</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">Exige +20% Margem de Comida</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700; color: var(--accent-blue);">95 € – 150 € / pessoa</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Travessas à Mesa (Family Style)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">65 € – 95 €</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1 empregado : 15 convidados</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">Moderado (+10% Margem)</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700; color: var(--accent-blue);">110 € – 165 € / pessoa</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Cocktails & Estações de Tapas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">50 € – 80 €</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">Bandejas Volantes + Bancadas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">Fluxo Contínuo de Cozinha</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700; color: var(--accent-blue);">85 € – 140 € / pessoa</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p class="font-body" style="font-size: 0.85rem; color: var(--fg-pencil); margin: 0; line-height: 1.4;">
+				💡 <strong>Refeições de Fornecedores:</strong> Conte com <strong>30 € a 40 € por pessoa</strong> para o menu quente de staff (fotógrafos, videógrafos, DJ e animadores).
+			</p>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Guia de Catering & Copo-d'Água</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Manual Completo de Custos e Ementas de Casamento
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Como planear as despesas do copo-d'água, evitar custos escondidos e escolher entre serviço empratado e buffet.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/wedding_bar_sketch.webp" 
+					alt="Estimador de Custos de Catering de Casamento — Guia de Preços" 
+					loading="lazy"
+					decoding="async"
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					O catering e espaço representam habitualmente cerca de 45% a 50% do orçamento total de um casamento.
+				</p>
+			</div>
+
+			<!-- Section 1: Average Cost Per Person -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Estrutura Típica de um Copo-d'Água Completo
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Nas festas de casamento em Portugal e Espanha, um serviço de catering completo é habitualmente composto por 6 momentos-chave:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>Cocktail de Boas-Vindas (1h30 a 2h):</strong> Salgadinhos quentes, canapés frios, mesa de queijos e enchidos, cortador de presunto e bebidas de receção.</li>
+					<li><strong>Refeição Principal Sentada:</strong> Entrada, prato de peixe, corta-sabores (sorvete de limão/tangerina) e prato de carne com guarnições nobres.</li>
+					<li><strong>Buffet de Sobremesas & Frutas:</strong> Mesa de doces tradicionais, doçaria conventual, fontes de chocolate e frutas laminadas.</li>
+					<li><strong>Bolo dos Noivos & Brinde de Espumante:</strong> Momento alto com corte do bolo e taça de espumante para todos os convidados.</li>
+					<li><strong>Bar Aberto & Animação:</strong> Serviço de cocktails, gin tónico, cervejas e refrigerantes durante o baile.</li>
+					<li><strong>Ceia da Meia-Noite:</strong> Caldo verde com broa de milho, leitão assado, preguinhos no pão ou mini hambúrgueres.</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem; text-align: center;">
+					🔗 Ferramentas de Restauração Integradas
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/pt/wedding-drink-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Calculadora de Bebidas</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calcule garrafas de vinho, cerveja e espirituosas para o bar.</span>
+					</a>
+					<a href="/pt/cake-serving-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Calculadora de Fatias de Bolo</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Descubra o número de andares e peso ideal do bolo dos noivos.</span>
+					</a>
+					<a href="/pt/master-budget-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Orçamento Geral de Casamento</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Acompanhe todas as despesas e pagamentos a fornecedores.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Perguntas Frequentes sobre Catering
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Quando é que deve ser comunicado o número final de convidados ao catering?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						A maioria das empresas de catering e quintas exige a confirmação final do número de adultos, crianças e intolerâncias alimentares <strong>15 a 21 dias antes do casamento</strong>. A partir dessa data, o número fica contratualmente fechado para efeitos de faturação mínima.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						As crianças pagam o mesmo valor de menu que os adultos?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Habitualmente, crianças até aos 3 ou 4 anos não pagam e crianças entre os 4 e os 10 anos têm um desconto de <strong>50% no menu</strong> ou usufruem de um menu infantil dedicado (nuggets, douradinhos ou bifinhos de frango).
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '€';
+
+	const guestCountInput = document.getElementById('input-guest-count');
+	const vendorMealsInput = document.getElementById('input-vendor-meals');
+	const mealStyleSelect = document.getElementById('select-meal-style');
+	const appetizersSelect = document.getElementById('select-appetizers');
+	const barPackageSelect = document.getElementById('select-bar-package');
+	const rentalsSelect = document.getElementById('select-rentals');
+	const dessertFeeSelect = document.getElementById('select-dessert-fee');
+	const servicePctInput = document.getElementById('input-service-pct');
+	const taxPctInput = document.getElementById('input-tax-pct');
+	const currencySelect = document.getElementById('currency-select');
+
+	const resGrandTotal = document.getElementById('res-grand-total');
+	const resPerHead = document.getElementById('res-per-head');
+	const resBaseDiffNote = document.getElementById('res-base-diff-note');
+	const resTotalGuestNote = document.getElementById('res-total-guest-note');
+
+	const resFoodSubtotal = document.getElementById('res-food-subtotal');
+	const resBarSubtotal = document.getElementById('res-bar-subtotal');
+	const resRentalsSubtotal = document.getElementById('res-rentals-subtotal');
+	const resVendorMealsSubtotal = document.getElementById('res-vendor-meals-subtotal');
+	const resPretaxSubtotal = document.getElementById('res-pretax-subtotal');
+	const resServiceCharge = document.getElementById('res-service-charge');
+	const resSalesTax = document.getElementById('res-sales-tax');
+
+	const barFoodPortion = document.getElementById('bar-food-portion');
+	const barFeesPortion = document.getElementById('bar-fees-portion');
+
+	function formatMoney(amount) {
+		return `${Math.round(amount).toLocaleString('pt-PT')} ${currencySymbol}`;
+	}
+
+	function calculateCatering() {
+		currencySymbol = currencySelect.value;
+		const guests = parseInt(guestCountInput.value) || 0;
+		const vendors = parseInt(vendorMealsInput.value) || 0;
+
+		const mealBasePerHead = parseFloat(mealStyleSelect.value) || 0;
+		const appPerHead = parseFloat(appetizersSelect.value) || 0;
+		const barPerHead = parseFloat(barPackageSelect.value) || 0;
+		const rentalPerHead = parseFloat(rentalsSelect.value) || 0;
+		const dessertPerHead = parseFloat(dessertFeeSelect.value) || 0;
+
+		const servicePct = (parseFloat(servicePctInput.value) || 0) / 100;
+		const taxPct = (parseFloat(taxPctInput.value) || 0) / 100;
+
+		// Subtotals
+		const foodSubtotal = guests * (mealBasePerHead + appPerHead);
+		const barSubtotal = guests * barPerHead;
+		const rentalsSubtotal = guests * (rentalPerHead + dessertPerHead);
+		const vendorMealsSubtotal = vendors * (mealBasePerHead * 0.5); // 50% crew discount
+
+		const pretaxSubtotal = foodSubtotal + barSubtotal + rentalsSubtotal + vendorMealsSubtotal;
+		const serviceCharge = pretaxSubtotal * servicePct;
+		const salesTax = (pretaxSubtotal + serviceCharge) * taxPct;
+		const grandTotal = pretaxSubtotal + serviceCharge + salesTax;
+
+		const trueCostPerHead = guests > 0 ? (grandTotal / guests) : 0;
+
+		// Update DOM
+		resGrandTotal.textContent = formatMoney(grandTotal);
+		resPerHead.textContent = `${trueCostPerHead.toFixed(2).replace('.', ',')} ${currencySymbol}`;
+		resTotalGuestNote.textContent = `Baseado em ${guests} convidados`;
+		resBaseDiffNote.textContent = `Ementa base era ${mealBasePerHead.toFixed(2).replace('.', ',')} ${currencySymbol}`;
+
+		resFoodSubtotal.textContent = formatMoney(foodSubtotal);
+		resBarSubtotal.textContent = formatMoney(barSubtotal);
+		resRentalsSubtotal.textContent = formatMoney(rentalsSubtotal);
+		resVendorMealsSubtotal.textContent = formatMoney(vendorMealsSubtotal);
+		resPretaxSubtotal.textContent = formatMoney(pretaxSubtotal);
+		resServiceCharge.textContent = formatMoney(serviceCharge);
+		resSalesTax.textContent = formatMoney(salesTax);
+
+		// Proportions
+		if (grandTotal > 0) {
+			const directFoodBarPct = Math.round((pretaxSubtotal / grandTotal) * 100);
+			const feePct = 100 - directFoodBarPct;
+			barFoodPortion.style.width = `${directFoodBarPct}%`;
+			barFeesPortion.style.width = `${feePct}%`;
+		}
+	}
+
+	// Listeners
+	[guestCountInput, vendorMealsInput, servicePctInput, taxPctInput].forEach(el => el.addEventListener('input', calculateCatering));
+	[mealStyleSelect, appetizersSelect, barPackageSelect, rentalsSelect, dessertFeeSelect, currencySelect].forEach(el => el.addEventListener('change', calculateCatering));
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const guests = parseInt(guestCountInput.value) || 0;
+		const mealText = mealStyleSelect.options[mealStyleSelect.selectedIndex].text;
+		const barText = barPackageSelect.options[barPackageSelect.selectedIndex].text;
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Proposta Estimada de Catering de Casamento</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Estimativa Oficial de Catering</h1>
+				<p>Gerado a ${new Date().toLocaleDateString('pt-PT')} | N.º Convidados: <strong>${guests}</strong> | Custo Real por Convidado: <strong>${resPerHead.textContent}</strong></p>
+				
+				<h3>Serviços Selecionados:</h3>
+				<p>• <strong>Estilo de Refeição:</strong> ${mealText}</p>
+				<p>• <strong>Pacote de Bar:</strong> ${barText}</p>
+
+				<h3>Discriminação dos Custos:</h3>
+				<table>
+					<thead>
+						<tr><th>Artigo / Momento</th><th style="text-align:right;">Subtotal</th></tr>
+					</thead>
+					<tbody>
+						<tr><td>Ementa Base & Aperitivos de Boas-Vindas</td><td style="text-align:right;">${resFoodSubtotal.textContent}</td></tr>
+						<tr><td>Pacote de Bar & Bebidas</td><td style="text-align:right;">${resBarSubtotal.textContent}</td></tr>
+						<tr><td>Louças, Toalhas e Corte do Bolo</td><td style="text-align:right;">${resRentalsSubtotal.textContent}</td></tr>
+						<tr><td>Refeições de Staff / Fornecedores</td><td style="text-align:right;">${resVendorMealsSubtotal.textContent}</td></tr>
+						<tr style="background:#f9f9f9; font-weight:bold;"><td>Subtotal Direto (Sem Impostos)</td><td style="text-align:right;">${resPretaxSubtotal.textContent}</td></tr>
+						<tr><td>Taxa de Serviço (${servicePctInput.value}%)</td><td style="text-align:right;">${resServiceCharge.textContent}</td></tr>
+						<tr><td>IVA (${taxPctInput.value}%)</td><td style="text-align:right;">${resSalesTax.textContent}</td></tr>
+						<tr style="background:#f2f2f2; font-weight:bold; font-size:15px;"><td>Fatura Total Prevista</td><td style="text-align:right; color:#b91c1c;">${resGrandTotal.textContent}</td></tr>
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Orcamento_Catering_Casamento_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		const guests = guestCountInput.value;
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('pt-PT');
+		document.getElementById('print-guests').textContent = guests;
+		document.getElementById('print-total').textContent = resGrandTotal.textContent;
+
+		const tbody = document.getElementById('print-invoice-body');
+		tbody.innerHTML = `
+			<tr><td style="border:1px solid #ccc; padding:6px;">Ementa Base & Cocktail de Boas-Vindas</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${guests} Convidados</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resFoodSubtotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Pacote de Bar & Bebidas</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${guests} Convidados</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resBarSubtotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Louças, Toalhas e Corte do Bolo</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${guests} Convidados</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resRentalsSubtotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Refeições de Staff / Fornecedores</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${vendorMealsInput.value} Staff</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resVendorMealsSubtotal.textContent}</td></tr>
+			<tr style="background:#fafafa;"><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Subtotal Direto</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">-</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resPretaxSubtotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Taxa de Serviço (${servicePctInput.value}%)</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">-</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resServiceCharge.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">IVA (${taxPctInput.value}%)</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">-</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resSalesTax.textContent}</td></tr>
+			<tr style="background:#f2f2f2;"><td style="border:1px solid #ccc; padding:6px; font-weight:bold; font-size:14px;">Fatura Total Tudo Incluído</td><td style="border:1px solid #ccc; padding:6px; text-align:center; font-weight:bold;">${resPerHead.textContent} / pessoa</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold; font-size:14px;">${resGrandTotal.textContent}</td></tr>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Linha de Despesa,Valor\n";
+		csv += `"Ementa Base e Cocktail de Boas-Vindas","${resFoodSubtotal.textContent}"\n`;
+		csv += `"Pacote de Bar e Bebidas","${resBarSubtotal.textContent}"\n`;
+		csv += `"Louças, Toalhas e Corte do Bolo","${resRentalsSubtotal.textContent}"\n`;
+		csv += `"Refeicoes de Staff / Fornecedores","${resVendorMealsSubtotal.textContent}"\n`;
+		csv += `"Subtotal Direto","${resPretaxSubtotal.textContent}"\n`;
+		csv += `"Taxa de Servico (${servicePctInput.value}%)","${resServiceCharge.textContent}"\n`;
+		csv += `"IVA (${taxPctInput.value}%)","${resSalesTax.textContent}"\n`;
+		csv += `"Fatura Total Prevista","${resGrandTotal.textContent}"\n`;
+		csv += `"Custo Real Por Convidado","${resPerHead.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Orcamento_Catering_Casamento_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateCatering();
+</script>

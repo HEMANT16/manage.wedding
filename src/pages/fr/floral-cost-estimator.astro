@@ -1,0 +1,765 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/floral-cost-estimator/#webapp",
+      "name": "Estimateur de Budget Fleurs & Décoration Florale de Mariage",
+      "url": "https://manage.wedding/fr/floral-cost-estimator",
+      "description": "Estimateur gratuit de budget fleurs de mariage. Calculez les tarifs détaillés pour le bouquet de mariée, demoiselles d'honneur, boutonnières, centres de table, arche de cérémonie et frais d'installation. Export devis Word, PDF et Excel.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Estimer le Budget Floral d'un Mariage",
+      "description": "Guide pas à pas pour chiffrer les bouquets, la cérémonie laïque, les tables de réception et la prestation fleuriste.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Recenser les Fleurs du Cortège",
+          "text": "Comptez le bouquet de mariée, les bouquets des demoiselles d'honneur, les boutonnières pour le marié et les témoins, et les corsages des mamans."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Chiffrer la Cérémonie",
+          "text": "Choisissez entre une arche épurée, une demi-arche fleurie ou une arche complète de cérémonie laïque avec décors d'allée."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Calculer les Centres de Table",
+          "text": "Multipliez le nombre de tables par le prix des compositions basses (70 € - 140 €) ou hautes sur pied (180 € - 350 €)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Ajouter la Main-d'Œuvre et la Livraison",
+          "text": "Prévoyez 20% à 25% pour le travail de préparation en atelier, le transport en véhicule réfrigéré et le montage sur le lieu."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quel est le budget moyen pour les fleurs de mariage en France ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En moyenne, les couples consacrent entre 1 500 € et 4 500 € pour les fleurs de mariage, ce qui représente environ 8% à 12% du budget global selon le standing choisi et l'ampleur de l'arche de cérémonie."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien coûte un bouquet de mariée chez un fleuriste professionnel ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Un bouquet de mariée classique de saison coûte entre 120 € et 180 €. Pour un bouquet cascade élaboré ou composé de variétés nobles (pivoines hors saison, roses de jardin parfumées, orchidées), comptez entre 200 € et 320 €."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Pourquoi les fleuristes facturent-ils des frais d'installation et de livraison ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le travail commence 3 jours avant le mariage : nettoyage des tiges, effeuillage, hydratation en chambre froide, confection minutieuse et transport en camionnette climatisée pour monter l'arche sur place le matin même."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Estimateur de Budget Floral Mariage (Calcul Fleurs, Arche & Devis) | Manage.Wedding"
+	description="Estimez précisément le coût de vos fleurs de mariage : bouquet de mariée, centres de table, arche de cérémonie et frais d'installation. Export Word et PDF."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Estimateur de Budget Floral" category="floral-attire" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Estimateur de Budget Floral
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Chiffrez vos compositions florales tige par tige. Bouquets du cortège, arche de cérémonie, centres de table et montage sur place. Exportez votre <strong>Demande de Devis Fleuriste</strong> en <strong>Word (.doc)</strong> ou <strong>PDF</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="floral-calc-grid">
+			
+			<!-- Left Column: Itemized Floral Quantities -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							🌸 Sélection des Compositions
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							Cortège, cérémonie laïque et tables de réception
+						</span>
+					</div>
+
+					<!-- Currency Selector -->
+					<div style="display: flex; align-items: center; gap: 0.3rem;">
+						<span style="font-size: 0.85rem; font-weight: bold;">Devise :</span>
+						<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="€" selected>€ (EUR)</option>
+							<option value="$">$ (USD/CAD)</option>
+							<option value="CHF">CHF (Suisse)</option>
+							<option value="£">£ (GBP)</option>
+						</select>
+					</div>
+				</div>
+
+				<form id="floral-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+					
+					<!-- Floral Density & Bloom Quality Tier -->
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<label for="select-floral-tier" class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem; text-align: center;">
+							✨ Gamme & Variétés Florales
+						</label>
+						<select id="select-floral-tier" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+							<option value="1.0">Standard / Saison (Roses classiques, œillets, gypsophile, eucalyptus) (1.0x)</option>
+							<option value="1.4" selected>Romantique & Champêtre (Roses de jardin, renoncules, hortensias, lisianthus) (1.4x)</option>
+							<option value="2.0">Haute Création / Prestige (Pivoines nobles, anémones, orchidées, pois de senteur) (2.0x)</option>
+						</select>
+					</div>
+
+					<!-- Category 1: Personal Wedding Party Flowers -->
+					<div>
+						<h3 class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.6rem; border-bottom: 1px solid var(--fg-pencil); padding-bottom: 0.2rem;">
+							👰 1. Cortège & Accessoires Floraux
+						</h3>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+							<div>
+								<label for="qty-bridal-bouquet" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Bouquet de Mariée (130 €/u)</label>
+								<input type="number" id="qty-bridal-bouquet" value="1" min="0" max="5" class="floral-input" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+							</div>
+							<div>
+								<label for="qty-bridesmaid-bouquets" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Bouquets Demoiselles (65 €/u)</label>
+								<input type="number" id="qty-bridesmaid-bouquets" value="3" min="0" max="20" class="floral-input" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+							</div>
+							<div>
+								<label for="qty-boutonnieres" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Boutonnières Hommes (18 €/u)</label>
+								<input type="number" id="qty-boutonnieres" value="5" min="0" max="30" class="floral-input" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+							</div>
+							<div>
+								<label for="qty-corsages" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Bracelets / Corsages (25 €/u)</label>
+								<input type="number" id="qty-corsages" value="3" min="0" max="20" class="floral-input" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+							</div>
+						</div>
+					</div>
+
+					<!-- Category 2: Ceremony Florals -->
+					<div>
+						<h3 class="font-heading" style="font-size: 1.15rem; color: var(--accent-blue); margin-bottom: 0.6rem; border-bottom: 1px solid var(--fg-pencil); padding-bottom: 0.2rem;">
+							⛪ 2. Cérémonie Laïque ou Religieuse
+						</h3>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+							<div>
+								<label for="select-arch" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Arche de Cérémonie</label>
+								<select id="select-arch" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+									<option value="0">Aucune / Décor épuré (0 €)</option>
+									<option value="350" selected>Demi-Arche Fleurie / Deux Coins (350 €)</option>
+									<option value="750">Arche Fleurie Complète (750 €)</option>
+									<option value="1200">Colonnes Florales & Luxuriantes (1 200 €)</option>
+								</select>
+							</div>
+							<div>
+								<label for="qty-aisle-posies" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Bouts de Bancs / Allée (45 €/u)</label>
+								<input type="number" id="qty-aisle-posies" value="6" min="0" max="30" class="floral-input" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+							</div>
+							<div style="grid-column: span 2;">
+								<label for="qty-welcome-sign" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Décor Chevalet & Panneau de Bienvenue (55 €/u)</label>
+								<input type="number" id="qty-welcome-sign" value="1" min="0" max="5" class="floral-input" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+							</div>
+						</div>
+					</div>
+
+					<!-- Category 3: Reception Table Florals -->
+					<div>
+						<h3 class="font-heading" style="font-size: 1.15rem; color: #16a34a; margin-bottom: 0.6rem; border-bottom: 1px solid var(--fg-pencil); padding-bottom: 0.2rem;">
+							🍽️ 3. Tables de Réception & Dîner
+						</h3>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+							<div>
+								<label for="qty-low-centerpieces" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Centres de Table Bas (80 €/u)</label>
+								<input type="number" id="qty-low-centerpieces" value="8" min="0" max="40" class="floral-input" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+							</div>
+							<div>
+								<label for="qty-tall-centerpieces" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Compositions Hautes sur Pied (190 €/u)</label>
+								<input type="number" id="qty-tall-centerpieces" value="2" min="0" max="30" class="floral-input" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+							</div>
+							<div>
+								<label for="qty-sweetheart-garland" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Guirlande Table d'Honneur (150 €/u)</label>
+								<input type="number" id="qty-sweetheart-garland" value="1" min="0" max="5" class="floral-input" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+							</div>
+							<div>
+								<label for="qty-cake-flowers" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Fleurs Pièce Montée (35 €/u)</label>
+								<input type="number" id="qty-cake-flowers" value="1" min="0" max="5" class="floral-input" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper);">
+							</div>
+						</div>
+					</div>
+
+					<!-- Delivery & Labor Settings -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-labor-pct" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								Main-d'Œuvre & Montage
+							</label>
+							<div style="display: flex; align-items: center; gap: 0.2rem;">
+								<input type="number" id="input-labor-pct" value="20" min="0" max="35" style="width: 60px; padding: 0.35rem; border: 1px solid var(--fg-pencil); border-radius: 3px; font-size: 0.9rem; text-align: center; background: #fff;">
+								<span style="font-weight: bold; font-size: 0.9rem;">%</span>
+							</div>
+						</div>
+
+						<div>
+							<label for="input-delivery-fee" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								Livraison Camionnette
+							</label>
+							<div style="display: flex; align-items: center; gap: 0.2rem;">
+								<span id="delivery-curr-sym" style="font-weight: bold;">€</span>
+								<input type="number" id="input-delivery-fee" value="100" min="0" max="1000" step="25" style="width: 70px; padding: 0.35rem; border: 1px solid var(--fg-pencil); border-radius: 3px; font-size: 0.9rem; text-align: center; background: #fff;">
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Financial Results & Line-Item Invoice -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Total Floral Invoice Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								💐 Synthèse du Devis Fleurs
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Tiges, compositions, montage & livraison
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Devis Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Imprimer PDF
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Grand Total Highlight -->
+					<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: var(--accent-red); display: block; font-weight: bold;">Montant Total Estimé</span>
+						<strong id="res-grand-total" class="font-heading" style="font-size: 2.6rem; color: var(--accent-red); display: block; line-height: 1.2;">3 240 €</strong>
+						<span id="res-tier-summary" style="font-size: 0.8rem; color: var(--accent-red);">Gamme Romantique & Champêtre (1.4x)</span>
+					</div>
+
+					<!-- Line-Item Category Breakdown Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Répartition Détaillée
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.95rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">👰 Cortège & Accessoires :</td>
+									<td id="res-personal-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">686,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">⛪ Cérémonie Laïque / Arche :</td>
+									<td id="res-ceremony-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">945,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🍽️ Tables de Réception :</td>
+									<td id="res-reception-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">1 687,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb; background: #fafafa;">
+									<td style="padding: 0.4rem 0; font-weight: bold;">Total Compositions Florales :</td>
+									<td id="res-stems-subtotal" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">3 318,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb; color: var(--accent-blue);">
+									<td style="padding: 0.4rem 0;">🛠️ Main-d'Œuvre & Montage (20%) :</td>
+									<td id="res-labor-amount" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">663,60 €</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil);">
+									<td style="padding: 0.4rem 0;">🚚 Livraison Camionnette :</td>
+									<td id="res-delivery-amount" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">100,00 €</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Visual Category Distribution Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span>Cortège</span>
+							<span>Cérémonie</span>
+							<span>Tables</span>
+							<span style="color: var(--accent-blue);">Installation</span>
+						</div>
+						<div style="display: flex; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="bar-personal" style="width: 20%; background: var(--accent-red); transition: width 0.3s ease;" title="Cortège"></div>
+							<div id="bar-ceremony" style="width: 25%; background: var(--accent-blue); transition: width 0.3s ease;" title="Cérémonie"></div>
+							<div id="bar-reception" style="width: 40%; background: #16a34a; transition: width 0.3s ease;" title="Tables"></div>
+							<div id="bar-labor" style="width: 15%; background: #d97706; transition: width 0.3s ease;" title="Montage & Livraison"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Florist Tip Alert Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						💡 Astuce : Réutiliser les Fleurs de Cérémonie
+					</strong>
+					<p class="font-body" style="font-size: 0.9rem; line-height: 1.5; margin: 0; color: var(--fg-pencil);">
+						Demandez à votre fleuriste de concevoir les arrangements de l'arche afin qu'ils soient déplacés devant la table des mariés ou le buffet du vin d'honneur pendant le cocktail. Économie immédiate de 400 € à 800 € !
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 20px; margin: 0 0 5px 0;">Manage.Wedding — Devis Estimatif Décoration Florale</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exporté le : <span id="print-date"></span> | Devis Total Estimé : <span id="print-total"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Composition</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 60px; text-align: center;">Quantité</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 120px; text-align: right;">Total Estimé</th>
+					</tr>
+				</thead>
+				<tbody id="print-floral-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 2.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Repères Rapides</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Grille Indicative des Tarifs Floraux de Mariage
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 750px; margin: 0 auto; font-weight: 500;">
+					Voici les tarifs moyens pratiqués par les fleuristes événementiels selon les gammes de fleurs.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📐 Barèmes Repères en France :
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Bouquet Mariée : 120 €–250 € • Bouquets Demoiselles : 50 €–90 €/u • Boutonnières : 15 €–25 €/u • Centres de table : 60 €–150 €/u • Arche : 350 €–1 800 €+
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 640px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Élément Floral</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">Gamme Standard</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">Romantique / Champêtre</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">Haute Création / Prestige</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Bouquet de Mariée</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">120 € – 150 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">170 € – 220 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold; color: var(--accent-red);">250 € – 350 €+</td>
+						</tr>
+						<tr style="background: #faf8f3;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Bouquets Demoiselles d'Honneur</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">55 € – 75 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">85 € – 110 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold; color: var(--accent-red);">120 € – 180 €</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a;">Boutonnières & Corsages</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">15 € – 22 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">24 € – 35 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold; color: var(--accent-red);">40 € – 60 €</td>
+						</tr>
+						<tr style="background: #faf8f3;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed;">Centre de Table Bas</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">65 € – 90 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">105 € – 140 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold; color: var(--accent-red);">160 € – 250 €+</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #d97706;">Composition Haute sur Pied</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">150 € – 200 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">220 € – 300 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold; color: var(--accent-red);">350 € – 550 €+</td>
+						</tr>
+						<tr style="background: #faf8f3;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #0284c7;">Arche de Cérémonie Laïque</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">300 € – 450 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">600 € – 950 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold; color: var(--accent-red);">1 200 € – 2 800 €+</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Guide Scénographie Florale</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Le Guide Complet du Budget Fleurs de Mariage
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Comprendre les coûts réels des fleurs de saison, le travail d'artisanat floral et les astuces pour optimiser son budget.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/floral_bouquet_sketch.svg" 
+					alt="Estimateur de fleurs de mariage et compositions" 
+					loading="lazy"
+					decoding="async"
+					style="width: 100%; max-height: 420px; object-fit: contain; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block; background: #fff; padding: 1.5rem;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Le choix des fleurs de saison locales permet de réduire le coût tout en garantissant une fraîcheur éclatante le jour J.
+				</p>
+			</div>
+
+			<!-- Section 1 -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Pourquoi Privilégier les Fleurs de Saison ?
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Vouloir des pivoines en octobre ou des dahlias en avril implique des importations sous serre à des tarifs 2 à 3 fois supérieurs. En synchronisant vos inspirations avec les fleurs locales de saison (renoncules au printemps, hortensias en été, dahlias en automne), vous obtenez des compositions plus volumineuses pour le même budget.
+				</p>
+			</section>
+
+			<!-- Section 2: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Foire Aux Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Quand faut-il réserver son fleuriste de mariage ?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Il est conseillé de contacter les fleuristes <strong>6 à 9 mois à l'avance</strong>, dès que votre lieu de réception et vos couleurs directrices sont fixés. Les artisans fleuristes n'acceptent qu'un à deux mariages par samedi pour assurer une installation parfaite.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Peut-on exporter cette estimation pour rencontrer un fleuriste ?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Oui ! Cliquez sur <strong>« 📝 Export Devis Word (.doc) »</strong> ou <strong>« 🖨️ Imprimer PDF »</strong> pour générer votre fiche de besoins détaillée avec vos quantités exactes.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/fr/floral-cost-estimator" category="floral" />
+
+	</main>
+</Layout>
+
+<style>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '€';
+
+	const tierSelect = document.getElementById('select-floral-tier');
+	const currencySelect = document.getElementById('currency-select');
+	const deliveryCurrSym = document.getElementById('delivery-curr-sym');
+
+	// Inputs
+	const bridalInput = document.getElementById('qty-bridal-bouquet');
+	const bridesmaidInput = document.getElementById('qty-bridesmaid-bouquets');
+	const boutonniereInput = document.getElementById('qty-boutonnieres');
+	const corsageInput = document.getElementById('qty-corsages');
+
+	const archSelect = document.getElementById('select-arch');
+	const aisleInput = document.getElementById('qty-aisle-posies');
+	const welcomeInput = document.getElementById('qty-welcome-sign');
+
+	const lowCenterpieceInput = document.getElementById('qty-low-centerpieces');
+	const tallCenterpieceInput = document.getElementById('qty-tall-centerpieces');
+	const sweetheartInput = document.getElementById('qty-sweetheart-garland');
+	const cakeInput = document.getElementById('qty-cake-flowers');
+
+	const laborPctInput = document.getElementById('input-labor-pct');
+	const deliveryFeeInput = document.getElementById('input-delivery-fee');
+
+	// Result Displays
+	const resGrandTotal = document.getElementById('res-grand-total');
+	const resTierSummary = document.getElementById('res-tier-summary');
+	const resPersonalSubtotal = document.getElementById('res-personal-subtotal');
+	const resCeremonySubtotal = document.getElementById('res-ceremony-subtotal');
+	const resReceptionSubtotal = document.getElementById('res-reception-subtotal');
+	const resStemsSubtotal = document.getElementById('res-stems-subtotal');
+	const resLaborAmount = document.getElementById('res-labor-amount');
+	const resDeliveryAmount = document.getElementById('res-delivery-amount');
+
+	const barPersonal = document.getElementById('bar-personal');
+	const barCeremony = document.getElementById('bar-ceremony');
+	const barReception = document.getElementById('bar-reception');
+	const barLabor = document.getElementById('bar-labor');
+
+	function formatMoney(amount) {
+		return `${Math.round(amount).toLocaleString('fr-FR')} ${currencySymbol}`;
+	}
+
+	function calculateFlorals() {
+		currencySymbol = currencySelect.value;
+		deliveryCurrSym.textContent = currencySymbol;
+
+		const tierMult = parseFloat(tierSelect.value) || 1.0;
+		const laborPct = (parseFloat(laborPctInput.value) || 0) / 100;
+		const deliveryFee = parseFloat(deliveryFeeInput.value) || 0;
+
+		// 1. Personal
+		const bridalCost = (parseInt(bridalInput.value) || 0) * 130 * tierMult;
+		const bridesmaidCost = (parseInt(bridesmaidInput.value) || 0) * 65 * tierMult;
+		const boutonniereCost = (parseInt(boutonniereInput.value) || 0) * 18 * tierMult;
+		const corsageCost = (parseInt(corsageInput.value) || 0) * 25 * tierMult;
+		const personalSubtotal = bridalCost + bridesmaidCost + boutonniereCost + corsageCost;
+
+		// 2. Ceremony
+		const archCost = (parseFloat(archSelect.value) || 0) * tierMult;
+		const aisleCost = (parseInt(aisleInput.value) || 0) * 45 * tierMult;
+		const welcomeCost = (parseInt(welcomeInput.value) || 0) * 55 * tierMult;
+		const ceremonySubtotal = archCost + aisleCost + welcomeCost;
+
+		// 3. Reception
+		const lowCenterCost = (parseInt(lowCenterpieceInput.value) || 0) * 80 * tierMult;
+		const tallCenterCost = (parseInt(tallCenterpieceInput.value) || 0) * 190 * tierMult;
+		const sweetheartCost = (parseInt(sweetheartInput.value) || 0) * 150 * tierMult;
+		const cakeCost = (parseInt(cakeInput.value) || 0) * 35 * tierMult;
+		const receptionSubtotal = lowCenterCost + tallCenterCost + sweetheartCost + cakeCost;
+
+		// Stems subtotal
+		const stemsSubtotal = personalSubtotal + ceremonySubtotal + receptionSubtotal;
+		const laborCost = stemsSubtotal * laborPct;
+		const grandTotal = stemsSubtotal + laborCost + deliveryFee;
+
+		// Update UI
+		resGrandTotal.textContent = formatMoney(grandTotal);
+		resTierSummary.textContent = `${tierSelect.options[tierSelect.selectedIndex].text.split('(')[0]}`;
+
+		resPersonalSubtotal.textContent = formatMoney(personalSubtotal);
+		resCeremonySubtotal.textContent = formatMoney(ceremonySubtotal);
+		resReceptionSubtotal.textContent = formatMoney(receptionSubtotal);
+		resStemsSubtotal.textContent = formatMoney(stemsSubtotal);
+		resLaborAmount.textContent = formatMoney(laborCost);
+		resDeliveryAmount.textContent = formatMoney(deliveryFee);
+
+		// Proportions
+		if (grandTotal > 0) {
+			barPersonal.style.width = `${(personalSubtotal / grandTotal) * 100}%`;
+			barCeremony.style.width = `${(ceremonySubtotal / grandTotal) * 100}%`;
+			barReception.style.width = `${(receptionSubtotal / grandTotal) * 100}%`;
+			barLabor.style.width = `${((laborCost + deliveryFee) / grandTotal) * 100}%`;
+		}
+	}
+
+	// Listeners
+	document.querySelectorAll('.floral-input, #input-labor-pct, #input-delivery-fee').forEach(el => {
+		el.addEventListener('input', calculateFlorals);
+	});
+	[tierSelect, archSelect, currencySelect].forEach(el => {
+		el.addEventListener('change', calculateFlorals);
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const tierName = tierSelect.options[tierSelect.selectedIndex].text;
+		const tierMult = parseFloat(tierSelect.value) || 1.0;
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Devis Estimatif Décoration Florale</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Devis Estimatif Décoration Florale</h1>
+				<p>Généré le ${new Date().toLocaleDateString('fr-FR')} | Gamme : <strong>${tierName}</strong> | Total Estimé : <strong>${resGrandTotal.textContent}</strong></p>
+				
+				<h3>Détail des Compositions Florales :</h3>
+				<table>
+					<thead>
+						<tr><th>Élément Floral</th><th style="text-align:center;">Quantité</th><th style="text-align:right;">Sous-total</th></tr>
+					</thead>
+					<tbody>
+						<tr><td>Bouquet de Mariée</td><td style="text-align:center;">${bridalInput.value}</td><td style="text-align:right;">${formatMoney(bridalInput.value * 130 * tierMult)}</td></tr>
+						<tr><td>Bouquets Demoiselles d'Honneur</td><td style="text-align:center;">${bridesmaidInput.value}</td><td style="text-align:right;">${formatMoney(bridesmaidInput.value * 65 * tierMult)}</td></tr>
+						<tr><td>Boutonnières Hommes</td><td style="text-align:center;">${boutonniereInput.value}</td><td style="text-align:right;">${formatMoney(boutonniereInput.value * 18 * tierMult)}</td></tr>
+						<tr><td>Corsages / Bracelets Mères & Témoins</td><td style="text-align:center;">${corsageInput.value}</td><td style="text-align:right;">${formatMoney(corsageInput.value * 25 * tierMult)}</td></tr>
+						<tr><td>Arche de Cérémonie Laïque</td><td style="text-align:center;">1</td><td style="text-align:right;">${formatMoney(archSelect.value * tierMult)}</td></tr>
+						<tr><td>Bouts de Bancs / Allée</td><td style="text-align:center;">${aisleInput.value}</td><td style="text-align:right;">${formatMoney(aisleInput.value * 45 * tierMult)}</td></tr>
+						<tr><td>Panneau de Bienvenue</td><td style="text-align:center;">${welcomeInput.value}</td><td style="text-align:right;">${formatMoney(welcomeInput.value * 55 * tierMult)}</td></tr>
+						<tr><td>Centres de Table Bas</td><td style="text-align:center;">${lowCenterpieceInput.value}</td><td style="text-align:right;">${formatMoney(lowCenterpieceInput.value * 80 * tierMult)}</td></tr>
+						<tr><td>Compositions Hautes sur Pied</td><td style="text-align:center;">${tallCenterpieceInput.value}</td><td style="text-align:right;">${formatMoney(tallCenterpieceInput.value * 190 * tierMult)}</td></tr>
+						<tr><td>Guirlande Table d'Honneur</td><td style="text-align:center;">${sweetheartInput.value}</td><td style="text-align:right;">${formatMoney(sweetheartInput.value * 150 * tierMult)}</td></tr>
+						<tr><td>Fleurs Pièce Montée</td><td style="text-align:center;">${cakeInput.value}</td><td style="text-align:right;">${formatMoney(cakeInput.value * 35 * tierMult)}</td></tr>
+						<tr style="background:#f9f9f9; font-weight:bold;"><td>Sous-total Compositions</td><td style="text-align:center;">-</td><td style="text-align:right;">${resStemsSubtotal.textContent}</td></tr>
+						<tr><td>Main-d'Œuvre & Montage (${laborPctInput.value}%)</td><td style="text-align:center;">-</td><td style="text-align:right;">${resLaborAmount.textContent}</td></tr>
+						<tr><td>Livraison Camionnette Climatée</td><td style="text-align:center;">-</td><td style="text-align:right;">${resDeliveryAmount.textContent}</td></tr>
+						<tr style="background:#f2f2f2; font-weight:bold; font-size:15px;"><td>Total Devis Fleurs Estimé</td><td style="text-align:center;">-</td><td style="text-align:right; color:#b91c1c;">${resGrandTotal.textContent}</td></tr>
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Devis_Fleurs_Mariage_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('fr-FR');
+		document.getElementById('print-total').textContent = resGrandTotal.textContent;
+
+		const tierMult = parseFloat(tierSelect.value) || 1.0;
+		const tbody = document.getElementById('print-floral-body');
+
+		tbody.innerHTML = `
+			<tr><td style="border:1px solid #ccc; padding:6px;">Bouquet de Mariée</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${bridalInput.value}</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${formatMoney(bridalInput.value * 130 * tierMult)}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Bouquets Demoiselles d'Honneur</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${bridesmaidInput.value}</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${formatMoney(bridesmaidInput.value * 65 * tierMult)}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Boutonnières & Corsages</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${parseInt(boutonniereInput.value) + parseInt(corsageInput.value)}</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${formatMoney((boutonniereInput.value * 18 + corsageInput.value * 25) * tierMult)}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Arche de Cérémonie Laïque</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">1</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${formatMoney(archSelect.value * tierMult)}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Allée de Cérémonie & Panneau</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${parseInt(aisleInput.value) + parseInt(welcomeInput.value)}</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${formatMoney((aisleInput.value * 45 + welcomeInput.value * 55) * tierMult)}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Centres de Table Bas & Hauts</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${parseInt(lowCenterpieceInput.value) + parseInt(tallCenterpieceInput.value)}</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${formatMoney((lowCenterpieceInput.value * 80 + tallCenterpieceInput.value * 190) * tierMult)}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Table d'Honneur & Pièce Montée</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">${parseInt(sweetheartInput.value) + parseInt(cakeInput.value)}</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${formatMoney((sweetheartInput.value * 150 + cakeInput.value * 35) * tierMult)}</td></tr>
+			<tr style="background:#fafafa;"><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Sous-total Compositions</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">-</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resStemsSubtotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Main-d'Œuvre & Montage (${laborPctInput.value}%)</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">-</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resLaborAmount.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Livraison Camionnette Climatée</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">-</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resDeliveryAmount.textContent}</td></tr>
+			<tr style="background:#f2f2f2;"><td style="border:1px solid #ccc; padding:6px; font-weight:bold; font-size:14px;">Total Devis Fleurs Estimé</td><td style="border:1px solid #ccc; padding:6px; text-align:center;">-</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold; font-size:14px;">${resGrandTotal.textContent}</td></tr>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		const tierMult = parseFloat(tierSelect.value) || 1.0;
+		let csv = "Element Floral,Quantite,Sous-total\n";
+		csv += `"Bouquet de Mariee",${bridalInput.value},"${formatMoney(bridalInput.value * 130 * tierMult)}"\n`;
+		csv += `"Bouquets Demoiselles d'Honneur",${bridesmaidInput.value},"${formatMoney(bridesmaidInput.value * 65 * tierMult)}"\n`;
+		csv += `"Boutonnieres",${boutonniereInput.value},"${formatMoney(boutonniereInput.value * 18 * tierMult)}"\n`;
+		csv += `"Corsages / Bracelets",${corsageInput.value},"${formatMoney(corsageInput.value * 25 * tierMult)}"\n`;
+		csv += `"Arche de Ceremonie Laique",1,"${formatMoney(archSelect.value * tierMult)}"\n`;
+		csv += `"Bouts de Bancs / Allee",${aisleInput.value},"${formatMoney(aisleInput.value * 45 * tierMult)}"\n`;
+		csv += `"Panneau de Bienvenue",${welcomeInput.value},"${formatMoney(welcomeInput.value * 55 * tierMult)}"\n`;
+		csv += `"Centres de Table Bas",${lowCenterpieceInput.value},"${formatMoney(lowCenterpieceInput.value * 80 * tierMult)}"\n`;
+		csv += `"Compositions Hautes sur Pied",${tallCenterpieceInput.value},"${formatMoney(tallCenterpieceInput.value * 190 * tierMult)}"\n`;
+		csv += `"Guirlande Table d'Honneur",${sweetheartInput.value},"${formatMoney(sweetheartInput.value * 150 * tierMult)}"\n`;
+		csv += `"Fleurs Piece Montee",${cakeInput.value},"${formatMoney(cakeInput.value * 35 * tierMult)}"\n`;
+		csv += `"Sous-total Compositions",-,"${resStemsSubtotal.textContent}"\n`;
+		csv += `"Main-d'Oeuvre & Montage",-,"${resLaborAmount.textContent}"\n`;
+		csv += `"Livraison",-,"${resDeliveryAmount.textContent}"\n`;
+		csv += `"Total Devis Fleurs Estime",-,"${resGrandTotal.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Devis_Fleurs_Mariage_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateFlorals();
+</script>

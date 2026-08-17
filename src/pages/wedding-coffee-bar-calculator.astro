@@ -1,0 +1,613 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Wedding Coffee Bar & Espresso Station Calculator",
+      "url": "https://manage.wedding/wedding-coffee-bar-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calculate whole bean coffee lbs, regular vs decaf ratios, whole milk & oat milk gallons, syrups, cups, urn capacities, and DIY vs Mobile Barista Cart costs.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Calculate Coffee and Espresso for a Wedding",
+      "description": "Step-by-step formula to calculate coffee bean weight, milk volume, cups, syrups, and urn sizing for wedding receptions.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Estimate Coffee Drinker Participation",
+          "text": "Budget for 60% to 75% of guests drinking coffee with cake and late-night dessert."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Split Regular vs Decaf Coffee",
+          "text": "For evening receptions, allocate 65% to 70% Regular and 30% to 35% Decaf to accommodate sleep schedules."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Calculate Milk and Plant-Based Milks",
+          "text": "Budget 4 to 6 oz of milk per specialty drink, splitting 60% whole milk and 40% oat or almond milk."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Export Barista Checklist and Supply Order",
+          "text": "Generate a detailed order manifest for coffee beans, cups, insulated sleeves, syrups, and stirrers."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How much coffee do I need for a 100 person wedding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For 100 guests, plan for 65 coffee drinkers averaging 1.4 cups (approx. 90 cups total). This requires 3 to 3.5 lbs of whole bean coffee (2.5 lbs regular, 1 lb decaf), 1.5 gallons of whole milk, 1 gallon of oat milk, and 110 insulated cups with lids."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much decaf coffee should you serve at an evening wedding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "At evening receptions after 7:00 PM, 30% to 40% of guests prefer decaf to avoid late-night caffeine. For daytime and brunch weddings, decaf drops to 15% to 20%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does a mobile espresso cart cost for a wedding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A professional mobile espresso cart typically costs between $650 and $1,200 for 2 to 3 hours of unlimited handcrafted drinks (lattes, cappuccinos, cold brew, syrups) with a trained barista."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How big of a coffee urn do I need?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A 55-cup or 100-cup stainless steel commercial percolator urn is recommended for weddings over 100 guests. Using two smaller 40-cup urns allows you to brew regular and decaf simultaneously."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout
+	title="Wedding Coffee Bar Calculator — Beans, Milk & Espresso Cart Sizer"
+	description="Calculate whole bean coffee lbs, regular vs decaf ratios, whole & oat milk gallons, syrups, cups, urn sizes, and compare DIY vs barista cart costs."
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/" style="color: var(--text-secondary); text-decoration: none;">Home</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/dining" style="color: var(--text-secondary); text-decoration: none;">Food & Beverage</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Coffee Bar Calculator</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>☕</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Beans, Dairy Ratios & Mobile Espresso Cart</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Wedding Coffee Bar Calculator
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Calculate <strong>coffee beans, regular vs. decaf split</strong>, whole milk & oat milk volume, syrups, urn sizes, and compare <strong>DIY urn station vs Mobile Barista Cart</strong>.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Inputs -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>👥</span> 1. Guest Count & Station Type
+				</h2>
+
+				<!-- Headcount & Coffee Station Type -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div>
+						<label for="input-coffee-guests" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Total Wedding Guests:</label>
+						<input type="number" id="input-coffee-guests" min="20" max="500" value="130" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+					</div>
+					<div>
+						<label for="select-coffee-setup" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Coffee Station Setup:</label>
+						<select id="select-coffee-setup" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="diy-urn" selected>🫖 DIY Self-Serve Percolator Urns</option>
+							<option value="espresso-cart">☕ Mobile Espresso Cart (Barista & Latte Art)</option>
+							<option value="drip-caterer">🍽️ Standard Caterer Batch Drip & Pump Pots</option>
+							<option value="iced-bar">🧊 Cold Brew & Iced Coffee Bar</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Time of Day & Season -->
+				<h2 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 1.25rem 0 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.4rem;">
+					🕒 2. Reception Timing & Season
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+					<div>
+						<label for="select-coffee-timing" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Service Time Window:</label>
+						<select id="select-coffee-timing" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="evening" selected>Evening Dinner & Cake (70% Reg / 30% Decaf)</option>
+							<option value="late-night">Late-Night Dancing Energy (85% Regular)</option>
+							<option value="brunch">Morning / Brunch Wedding (90% Regular)</option>
+						</select>
+					</div>
+					<div>
+						<label for="select-coffee-season" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Season & Weather:</label>
+						<select id="select-coffee-season" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="fall-winter" selected>🍂 Fall / Winter (High Demand: 75% drink)</option>
+							<option value="spring-summer">☀️ Spring / Summer (Moderate: 55% drink)</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Flavors & Syrups Tier -->
+				<h2 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 1.25rem 0 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.4rem;">
+					🍯 3. Gourmet Syrups & Toppings
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+					<div>
+						<label for="select-syrup-tier" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Flavor Syrups:</label>
+						<select id="select-syrup-tier" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="standard" selected>Classic Trio (Vanilla, Caramel, Hazelnut)</option>
+							<option value="deluxe">Deluxe 5-Pack (Lavender, Chai, Mocha, Sugar-Free)</option>
+							<option value="none">Simple / Unflavored (Sugar & Cream only)</option>
+						</select>
+					</div>
+					<div>
+						<label for="select-cup-type" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Drinkware Style:</label>
+						<select id="select-cup-type" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="insulated" selected>Custom 8oz Insulated Cups + Lids</option>
+							<option value="ceramic">Rented Ceramic Mugs & Saucers</option>
+							<option value="clear-iced">Clear 12oz Cups with Straws (Iced/Cold)</option>
+						</select>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Coffee & Milk Order</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Required Coffee Supplies
+						</h2>
+					</div>
+					<span id="badge-total-cups" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">135 Total Cups</span>
+				</div>
+
+				<!-- Big Number Highlights -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Whole Bean Coffee</span>
+						<strong id="stat-coffee-lbs" style="font-size: 1.8rem; font-weight: 900; color: #b91c1c; line-height: 1.1;">4.5 lbs</strong>
+						<span id="stat-coffee-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(3.2 lb Reg / 1.3 lb Decaf)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Estimated Cost</span>
+						<strong id="stat-total-cost" style="font-size: 1.8rem; font-weight: 900; color: #1e40af; line-height: 1.1;">$145 DIY</strong>
+						<span id="stat-cost-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(Saves $650 vs Cart)</span>
+					</div>
+				</div>
+
+				<!-- Dairy & Milk Breakdown Box -->
+				<div style="background: #f0fdf4; border: 1.5px solid #16a34a; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.85rem;">
+					<strong style="color: #166534; display: block; margin-bottom: 0.35rem;">🥛 Milk & Creamer Breakdown:</strong>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; color: #14532d;">
+						<div>• <strong id="stat-whole-milk">2.0 Gallons</strong> Whole Milk / Half & Half</div>
+						<div>• <strong id="stat-oat-milk">1.5 Gallons</strong> Barista Oat Milk</div>
+						<div>• <strong id="stat-sugar-lbs">3 lbs</strong> Raw Sugar & Sweetener</div>
+						<div>• <strong id="stat-syrup-bottles">3 Bottles (750ml)</strong> Syrups</div>
+					</div>
+				</div>
+
+				<!-- Hardware & Paper Goods Specs -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🫖 Coffee Urns / Percolators:</span>
+						<strong id="stat-urn-req" style="color: var(--fg-pencil);">2 x 55-Cup Commercial Urns</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🥤 Cups, Lids & Sleeves:</span>
+						<strong id="stat-cups-count" style="color: var(--fg-pencil);">155 Sets (+15% buffer)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0;">
+						<span style="color: #475569;">🥢 Stirrers & Napkins:</span>
+						<strong id="stat-stirrers-count" style="color: #15803d;">200 Wooden Stir Sticks & Cocktail Napkins</strong>
+					</div>
+				</div>
+
+				<!-- Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-print-summary" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Print Coffee Shopping List (PDF)
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Export Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Sizing Reference Table -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1rem;">
+				📋 Wedding Coffee Sizing & Options Comparison
+			</h2>
+			
+			<div style="overflow-x: auto;">
+				<table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem; color: var(--fg-pencil);">Coffee Station Option</th>
+							<th style="padding: 0.6rem; color: var(--fg-pencil);">Average Cost (100-150 guests)</th>
+							<th style="padding: 0.6rem; color: var(--fg-pencil);">Beverage Menu</th>
+							<th style="padding: 0.6rem; color: var(--fg-pencil);">Guest Experience</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem; font-weight: 700;">🫖 DIY Percolator Urn Station</td>
+							<td style="padding: 0.6rem; color: #b91c1c; font-weight: 700;">$90 – $160</td>
+							<td style="padding: 0.6rem;">Specialty Drip (Reg/Decaf), Creamers, Syrups</td>
+							<td style="padding: 0.6rem;">Self-serve casual; great for tight budgets</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem; font-weight: 700;">☕ Mobile Espresso Cart (Pro Barista)</td>
+							<td style="padding: 0.6rem; color: #1e40af; font-weight: 700;">$750 – $1,250</td>
+							<td style="padding: 0.6rem;">Lattes, Cappuccinos, Cortados, Custom Latte Art</td>
+							<td style="padding: 0.6rem;">High luxury & interactive entertainment</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem; font-weight: 700;">🍽️ Caterer Pump-Pot Station</td>
+							<td style="padding: 0.6rem; color: #b91c1c; font-weight: 700;">$2.50 – $4.50 / guest ($350–$550)</td>
+							<td style="padding: 0.6rem;">Standard commercial drip with dairy creamers</td>
+							<td style="padding: 0.6rem;">Zero hassle; handled with dinner clean-up</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.6rem; font-weight: 700;">🧊 Cold Brew & Nitro Tap Keg Bar</td>
+							<td style="padding: 0.6rem; color: #b91c1c; font-weight: 700;">$220 – $380</td>
+							<td style="padding: 0.6rem;">Nitro cold brew on tap, sweet cream foam</td>
+							<td style="padding: 0.6rem;">Trendy summer favorite for warm outdoor weddings</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<!-- Frequently Asked Questions -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1.25rem;">
+				❓ Frequently Asked Questions: Wedding Coffee Stations
+			</h2>
+			
+			<div style="display: flex; flex-direction: column; gap: 1rem;">
+				<div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.85rem;">
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						How much whole bean coffee makes one cup of brewed coffee?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						Using the golden brewing ratio of 1:16 (coffee to water), one pound (16 oz / 454g) of whole bean coffee brews approximately <strong>30 to 34 standard 6-oz cups of drip coffee</strong> or 28 double-shot espresso beverages.
+					</p>
+				</div>
+
+				<div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.85rem;">
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						What power supply does a DIY coffee urn need?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						A commercial 55-cup or 100-cup percolator urn draws 1,000 to 1,500 watts (10 to 13 amps). <strong>Never plug two large urns into the same electrical wall circuit</strong>, or you will trip the venue's circuit breakers. Plug each urn into separate wall circuits.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/wedding-coffee-bar-calculator" category="dining" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-coffee-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Wedding Coffee Bar Supply List & Barista Manifest</h1>
+				<p id="print-coffee-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Coffee Beans, Milks, Syrups & Hardware | Manage.Wedding</p>
+			</div>
+			<div id="print-coffee-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	// Elements
+	const inputCoffeeGuests = document.getElementById('input-coffee-guests');
+	const selectCoffeeSetup = document.getElementById('select-coffee-setup');
+	const selectCoffeeTiming = document.getElementById('select-coffee-timing');
+	const selectCoffeeSeason = document.getElementById('select-coffee-season');
+	const selectSyrupTier = document.getElementById('select-syrup-tier');
+	const selectCupType = document.getElementById('select-cup-type');
+
+	const badgeTotalCups = document.getElementById('badge-total-cups');
+	const statCoffeeLbs = document.getElementById('stat-coffee-lbs');
+	const statCoffeeSub = document.getElementById('stat-coffee-sub');
+	const statTotalCost = document.getElementById('stat-total-cost');
+	const statCostSub = document.getElementById('stat-cost-sub');
+
+	const statWholeMilk = document.getElementById('stat-whole-milk');
+	const statOatMilk = document.getElementById('stat-oat-milk');
+	const statSugarLbs = document.getElementById('stat-sugar-lbs');
+	const statSyrupBottles = document.getElementById('stat-syrup-bottles');
+
+	const statUrnReq = document.getElementById('stat-urn-req');
+	const statCupsCount = document.getElementById('stat-cups-count');
+	const statStirrersCount = document.getElementById('stat-stirrers-count');
+
+	function calculateCoffee() {
+		const guests = Math.max(10, parseInt(inputCoffeeGuests.value, 10) || 130);
+		const setup = selectCoffeeSetup.value;
+		const timing = selectCoffeeTiming.value;
+		const season = selectCoffeeSeason.value;
+
+		// Participation Rate
+		let drinkRate = 0.70;
+		if (season === 'spring-summer') drinkRate = 0.55;
+		if (timing === 'brunch') drinkRate = 0.85;
+
+		const coffeeDrinkers = Math.round(guests * drinkRate);
+		const avgCupsPerPerson = timing === 'brunch' ? 1.7 : 1.4;
+		const totalCups = Math.round(coffeeDrinkers * avgCupsPerPerson);
+
+		badgeTotalCups.textContent = `${totalCups} Cups of Coffee`;
+
+		// Regular vs Decaf Split
+		let regRatio = 0.70;
+		let decafRatio = 0.30;
+		if (timing === 'late-night') {
+			regRatio = 0.85;
+			decafRatio = 0.15;
+		} else if (timing === 'brunch') {
+			regRatio = 0.90;
+			decafRatio = 0.10;
+		}
+
+		// Bean Weight Calculation: 1 lb beans = ~32 cups of coffee
+		const totalLbs = (totalCups / 32).toFixed(1);
+		const regLbs = (totalLbs * regRatio).toFixed(1);
+		const decafLbs = (totalLbs * decafRatio).toFixed(1);
+
+		statCoffeeLbs.textContent = `${totalLbs} lbs Beans`;
+		statCoffeeSub.textContent = `(${regLbs} lb Reg / ${decafLbs} lb Decaf)`;
+
+		// Milk & Dairy (Approx 2.5 oz milk/creamer per cup average)
+		const totalOzMilk = totalCups * 2.8;
+		const wholeMilkGal = ( (totalOzMilk * 0.60) / 128 ).toFixed(1);
+		const oatMilkGal = ( (totalOzMilk * 0.40) / 128 ).toFixed(1);
+
+		statWholeMilk.textContent = `${Math.max(1.0, wholeMilkGal)} Gallons`;
+		statOatMilk.textContent = `${Math.max(1.0, oatMilkGal)} Gallons (Barista Edition)`;
+
+		// Sugar & Syrups
+		const sugarWeight = Math.max(2, Math.ceil(totalCups * 0.025));
+		statSugarLbs.textContent = `${sugarWeight} lbs Raw Sugar & Stevia`;
+
+		const syrupTier = selectSyrupTier.value;
+		let syrupText = '3 Bottles (750ml)';
+		if (syrupTier === 'deluxe') syrupText = '5 Bottles (750ml) Deluxe';
+		else if (syrupTier === 'none') syrupText = '0 (Cream & Sugar only)';
+		statSyrupBottles.textContent = syrupText;
+
+		// Hardware and Paper goods (+15% buffer)
+		const cupsTotal = Math.ceil(totalCups * 1.15);
+		statCupsCount.textContent = `${cupsTotal} Sets (${selectCupType.options[selectCupType.selectedIndex].text})`;
+		statStirrersCount.textContent = `${cupsTotal + 50} Wooden Stir Sticks & Cocktail Napkins`;
+
+		// Urn Sizing
+		if (setup === 'espresso-cart') {
+			statUrnReq.textContent = 'Commercial Dual-Boiler Espresso Machine';
+		} else if (totalCups <= 80) {
+			statUrnReq.textContent = '2 x 40-Cup Urns (1 Reg / 1 Decaf)';
+		} else {
+			statUrnReq.textContent = '2 x 55-Cup Commercial Percolator Urns';
+		}
+
+		// Cost Calculation
+		let cost = 145;
+		let savings = 650;
+
+		if (setup === 'diy-urn') {
+			cost = Math.round((totalLbs * 16) + (wholeMilkGal * 5) + (oatMilkGal * 8) + 35 + 25); // beans + milks + syrups + cups
+			statTotalCost.textContent = `$${cost} DIY`;
+			savings = Math.max(300, 850 - cost);
+			statCostSub.textContent = `(Saves ~$${savings} vs Cart)`;
+		} else if (setup === 'espresso-cart') {
+			cost = 850 + (guests > 150 ? 200 : 0);
+			statTotalCost.textContent = `$${cost} Cart`;
+			statCostSub.textContent = 'Includes Barista & Latte Art';
+		} else if (setup === 'drip-caterer') {
+			cost = Math.round(guests * 3.25);
+			statTotalCost.textContent = `$${cost} Caterer`;
+			statCostSub.textContent = 'Pump-pot service with dinner';
+		} else {
+			cost = Math.round(120 + (totalCups * 0.75));
+			statTotalCost.textContent = `$${cost} Cold Bar`;
+			statCostSub.textContent = 'Cold brew kegs & sweet cream';
+		}
+
+		// Print Layout
+		document.getElementById('print-coffee-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Coffee Bar Supply</th>
+						<th style="padding:6pt;">Specification Details</th>
+						<th style="padding:6pt; text-align:right;">Quantity Needed</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Specialty Whole Bean Coffee</td>
+						<td style="padding:6pt;">${regLbs} lbs Regular (Medium/Dark Roast) + ${decafLbs} lbs Decaf</td>
+						<td style="padding:6pt; text-align:right; font-weight:bold; color:#b91c1c;">${totalLbs} lbs Beans</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Milks & Creamers</td>
+						<td style="padding:6pt;">60% Whole Milk / Half & Half, 40% Plant-Based Barista Oat Milk</td>
+						<td style="padding:6pt; text-align:right;">${statWholeMilk.textContent} + ${statOatMilk.textContent}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Flavors & Sweeteners</td>
+						<td style="padding:6pt;">${syrupText}, raw sugar crystals & stevia packets</td>
+						<td style="padding:6pt; text-align:right;">${statSugarLbs.textContent}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Drinkware & Hardware</td>
+						<td style="padding:6pt;">${statUrnReq.textContent}</td>
+						<td style="padding:6pt; text-align:right;"><strong>${statCupsCount.textContent}</strong></td>
+					</tr>
+					<tr style="background:#eff6ff; font-weight:bold; font-size:11pt; border-top:2pt solid #000;">
+						<td style="padding:8pt;">ESTIMATED TOTAL BUDGET</td>
+						<td style="padding:8pt;">${selectCoffeeSetup.options[selectCoffeeSetup.selectedIndex].text}</td>
+						<td style="padding:8pt; text-align:right; color:#1e40af;">${statTotalCost.textContent}</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	// Listeners
+	[inputCoffeeGuests, selectCoffeeSetup, selectCoffeeTiming, selectCoffeeSeason, selectSyrupTier, selectCupType].forEach(el => {
+		el.addEventListener('input', calculateCoffee);
+		el.addEventListener('change', calculateCoffee);
+	});
+
+	// Print PDF
+	document.getElementById('btn-print-summary').addEventListener('click', () => {
+		calculateCoffee();
+		window.print();
+	});
+
+	// Export Word
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateCoffee();
+		const coffee = statCoffeeLbs.textContent;
+		const cost = statTotalCost.textContent;
+		const cups = badgeTotalCups.textContent;
+		const guests = inputCoffeeGuests.value;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Wedding Coffee Supplies</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Wedding Coffee Bar & Espresso Supply List</h1>
+				<p><strong>Guests:</strong> ${guests} | <strong>Total Cups:</strong> ${cups} | <strong>Beans Required:</strong> ${coffee} | <strong>Estimated Cost:</strong> ${cost}</p>
+				<hr/>
+				<p><em>Generated by Manage.Wedding</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Coffee-Bar-Supply-List-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateCoffee();
+</script>

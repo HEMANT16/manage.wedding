@@ -1,0 +1,905 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/dress-size-converter/#webapp",
+      "name": "Convertisseur de Tailles de Robe de Mariée & Mensurations",
+      "url": "https://manage.wedding/fr/dress-size-converter",
+      "description": "Convertisseur gratuit de taille de robe de mariée. Calculez votre taille exacte en France (FR), Europe (EU), US et UK à partir de votre tour de poitrine, taille et hanches. Découvrez les coupes adaptées à votre morphologie.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Pourquoi la taille d'une robe de mariée est-il plus grande que ma taille de prêt-à-porter ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Les créateurs de robes de mariée utilisent toujours les grilles de coupe haute couture traditionnelles des années 1950, conçues dans des tissus sans élasticité (mikado, organza, satin duchesse). À l'inverse, la mode de tous les jours a évolué vers des coupes plus flatteuses. Une robe de mariée taille ainsi 1 à 2 crans au-dessus de vos vêtements habituels."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Sur quelle mesure se baser pour commander sa robe de mariée ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fiez-vous toujours à votre mensuration la plus importante (entre la poitrine, la taille et les hanches). Une couturière peut très facilement reprendre et resserrer une robe trop grande, mais il est presque impossible de l'agrandir en raison des marges de couture très serrées."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment bien prendre ses mensurations avec un mètre ruban ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Utilisez un mètre ruban souple de couturière : 1) Tour de poitrine : au point le plus saillant avec la lingerie du mariage ; 2) Tour de taille : au creux naturel de la taille (2 cm au-dessus du nombril) ; 3) Tour de hanches : à l'endroit le plus fort des fessiers, pieds joints."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Mesurer et Convertir sa Taille de Robe de Mariée",
+      "description": "Guide pratique pour prendre vos mensurations et trouver votre équivalence de taille en France, aux États-Unis et au Royaume-Uni.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Prendre les 3 Mensurations Fondamentales",
+          "text": "Mesurez votre tour de poitrine, votre tour de taille naturel et votre tour de hanches en restant bien droite."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Comparer avec la Grille du Créateur",
+          "text": "Consultez le tableau de correspondance entre vos centimètres et les tailles standard (FR 36, FR 38, FR 40, etc.)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Choisir la Taille de la Mensuration Majeure",
+          "text": "Retenez toujours la taille la plus grande pour que la fermeture éclair se ferme sans tension."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Exporter Votre Fiche d'Essayage",
+          "text": "Enregistrez votre récapitulatif en Word (.doc) ou PDF pour le présenter lors de vos rendez-vous en boutique."
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Convertisseur de Taille Robe de Mariée (Guide Mensurations & Morphologie) | Manage.Wedding"
+	description="Convertissez vos mensurations (poitrine, taille, hanches) en tailles de robe de mariée françaises (FR), européennes (EU) et internationales (US/UK). Export Word et PDF."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Convertisseur de Tailles Robe de Mariée" category="floral-attire" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Convertisseur de Tailles Robe de Mariée
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Trouvez votre taille de robe exacte selon les standards français, européens, américains et britanniques. Comparez prêt-à-porter vs robe de mariée et exportez votre <strong>Fiche de Mensurations</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Main Interactive Sizing Studio Workspace Grid -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 380px 1fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="dress-calc-grid">
+			
+			<!-- Left Column: Input Form Card -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+						📏 Vos Mensurations
+					</h2>
+					
+					<!-- Unit Switcher -->
+					<div style="display: flex; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden;">
+						<button type="button" id="unit-cm" class="unit-toggle-btn active-unit">cm</button>
+						<button type="button" id="unit-in" class="unit-toggle-btn">Pouces (in)</button>
+					</div>
+				</div>
+
+				<form id="dress-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+					
+					<!-- Bust -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-bust" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								1. Tour de Poitrine (<span class="unit-label">cm</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Point le plus fort</span>
+						</div>
+						<input type="number" step="0.5" id="input-bust" value="92" min="50" max="180" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Waist -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-waist" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								2. Tour de Taille (<span class="unit-label">cm</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Creux naturel</span>
+						</div>
+						<input type="number" step="0.5" id="input-waist" value="72" min="40" max="160" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Hips -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-hips" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								3. Tour de Bassin / Hanches (<span class="unit-label">cm</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Fessiers au plus large</span>
+						</div>
+						<input type="number" step="0.5" id="input-hips" value="99" min="50" max="200" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Designer Preference -->
+					<div>
+						<label for="input-designer" class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							Maison de Création / Marque
+						</label>
+						<select id="input-designer" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+							<option value="standard" selected>Standard Créateur Français / Européen</option>
+							<option value="couture">Haute Couture Espagnole / Italienne (Pronovias - Taille Petit)</option>
+							<option value="davids">Standard Américain Prêt-à-Porter (David's Bridal / BHLDN)</option>
+							<option value="maggie">Maggie Sottero / Essense of Australia</option>
+						</select>
+					</div>
+
+					<!-- Sample Presets -->
+					<div style="margin-top: 0.5rem; background: var(--bg-paper); border: 1px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem;">
+						<span class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							⚡ Mensurations Repères Rapides :
+						</span>
+						<div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
+							<button type="button" class="preset-meas-btn" data-b="86" data-w="66" data-h="94">Taille 36/38 (86-66-94)</button>
+							<button type="button" class="preset-meas-btn" data-b="95" data-w="75" data-h="103">Taille 40/42 (95-75-103)</button>
+							<button type="button" class="preset-meas-btn" data-b="110" data-w="90" data-h="118">Taille 46/48 (110-90-118)</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Interactive Results, Sizing Badges, International Matrix & Silhouette Guide -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Sizing Results Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div>
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+								👗 Votre Taille de Robe Conseillée
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">
+								Calculée pour s'adapter à votre mensuration la plus importante
+							</span>
+						</div>
+
+						<!-- Exports -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Imprimer PDF
+							</button>
+						</div>
+					</div>
+
+					<!-- Side by Side Sizing Comparison Boxes -->
+					<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+						
+						<!-- Street Size -->
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Taille Prêt-à-Porter</span>
+							<strong id="res-street-size" class="font-heading" style="font-size: 2.4rem; color: var(--accent-blue); display: block; line-height: 1.2;">38 FR</strong>
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Vêtements du quotidien</span>
+						</div>
+
+						<!-- Primary Bridal Size -->
+						<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1rem; text-align: center; position: relative;">
+							<span style="position: absolute; top: -10px; right: 10px; background: var(--accent-red); color: #fff; font-size: 0.7rem; font-weight: bold; padding: 2px 6px; border-radius: 10px;">À COMMANDER</span>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--accent-red); display: block; font-weight: bold;">Taille Robe de Mariée</span>
+							<strong id="res-bridal-size" class="font-heading" style="font-size: 2.4rem; color: var(--accent-red); display: block; line-height: 1.2;">40 FR</strong>
+							<span style="font-size: 0.75rem; color: var(--accent-red); font-weight: bold;">(US 10 / UK 12)</span>
+						</div>
+
+						<!-- Body Shape Archetype -->
+						<div style="background: #f0fdf4; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: #166534; display: block;">Morphologie</span>
+							<strong id="res-body-shape" class="font-heading" style="font-size: 1.3rem; color: #15803d; display: block; line-height: 1.3; margin: 0.4rem 0;">Sablier (X)</strong>
+							<span id="res-shape-desc" style="font-size: 0.75rem; color: #166534; display: block;">Épaules et hanches équilibrées</span>
+						</div>
+
+					</div>
+
+					<!-- Visual Comparison Bar -->
+					<div style="margin-bottom: 1.5rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem;">
+							<span class="font-heading" style="font-size: 0.95rem; color: var(--fg-pencil);">Écart Prêt-à-Porter vs Robe Nuptiale</span>
+							<span id="size-diff-note" class="font-body" style="font-size: 0.85rem; color: var(--accent-red); font-weight: bold;">+1 Taille Au-Dessus</span>
+						</div>
+						<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+							<div style="display: flex; align-items: center; gap: 0.75rem;">
+								<span style="width: 100px; font-size: 0.85rem; font-weight: bold;">Prêt-à-porter :</span>
+								<div style="flex: 1; height: 18px; background: #e5e7eb; border-radius: 4px; border: 1px solid var(--fg-pencil); overflow: hidden;">
+									<div id="bar-street" style="height: 100%; width: 35%; background: var(--accent-blue); transition: width 0.4s ease;"></div>
+								</div>
+								<span id="bar-label-street" style="width: 55px; font-size: 0.9rem; font-weight: bold;">38 FR</span>
+							</div>
+							<div style="display: flex; align-items: center; gap: 0.75rem;">
+								<span style="width: 100px; font-size: 0.85rem; font-weight: bold; color: var(--accent-red);">Robe Mariée :</span>
+								<div style="flex: 1; height: 18px; background: #e5e7eb; border-radius: 4px; border: 1px solid var(--fg-pencil); overflow: hidden;">
+									<div id="bar-bridal" style="height: 100%; width: 45%; background: var(--accent-red); transition: width 0.4s ease;"></div>
+								</div>
+								<span id="bar-label-bridal" style="width: 55px; font-size: 0.9rem; font-weight: bold; color: var(--accent-red);">40 FR</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- International Conversion Matrix Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+							🌐 Tableau des Équivalences Internationales
+						</h4>
+						<div style="overflow-x: auto;">
+							<table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.95rem; font-family: var(--font-body);">
+								<thead>
+									<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">France (FR)</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Europe (EU)</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">US Mariée</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">UK / Australie</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Italie (IT)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td id="matrix-fr" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">40 FR</td>
+										<td id="matrix-eu" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">38</td>
+										<td id="matrix-us" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">10</td>
+										<td id="matrix-uk" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">12</td>
+										<td id="matrix-it" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">44</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- Measurement Anchor Alert & Alteration Guidance -->
+					<div style="background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<strong class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							✂️ Conseil Couturière & Commande :
+						</strong>
+						<p id="alteration-advice-text" class="font-body" style="font-size: 0.95rem; margin: 0; line-height: 1.5; color: var(--fg-pencil);">
+							Votre mensuration la plus forte correspond aux hanches. Commandez toujours cette taille pour que la robe se ferme parfaitement. La couturière ajustera le bustier et la taille lors des essayages.
+						</p>
+					</div>
+
+				</div>
+
+				<!-- Flattering Gown Silhouette Recommendations Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+					<h3 class="font-heading" style="font-size: 1.3rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+						<span>✨</span> Coupes Idéales selon Votre Morphologie
+					</h3>
+					<div id="silhouette-cards-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+						<!-- Injected via JS -->
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 20px; margin: 0 0 5px 0;">Manage.Wedding — Fiche de Mensurations & Tailles Robe de Mariée</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exporté le : <span id="print-date"></span> | Fiche pour Styliste & Couturière</p>
+			</div>
+			
+			<table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Zone de Mensuration</th>
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: center;">Mesure Cliente</th>
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: center;">Taille Correspondante</th>
+					</tr>
+				</thead>
+				<tbody id="print-meas-body"></tbody>
+			</table>
+
+			<div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; background: #fafafa;">
+				<h3 style="margin: 0 0 8px 0; font-size: 15px;">Synthèse des Tailles Conseillées :</h3>
+				<p style="margin: 4px 0;">• <strong>Taille Robe de Mariée à Commander :</strong> <span id="print-rec-size"></span></p>
+				<p style="margin: 4px 0;">• <strong>Taille Prêt-à-Porter :</strong> <span id="print-street-size"></span></p>
+				<p style="margin: 4px 0;">• <strong>Morphologie :</strong> <span id="print-body-shape"></span></p>
+				<p style="margin: 4px 0;">• <strong>Note Retouches :</strong> <span id="print-alteration-note"></span></p>
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="result-box" style="margin-bottom: 2.5rem; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); padding: 1.5rem 1.75rem; position: relative;">
+			<div class="badge-postit" style="top: -12px; right: 15px;">⚡ Repères Rapides</div>
+			<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+				<span>⚡</span> Correspondance des Tailles Prêt-à-Porter vs Robe de Mariée
+			</h3>
+			<p class="font-body" style="font-size: 1rem; line-height: 1.6; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				<strong>Règle d'or :</strong> Les robes de mariée taillent généralement <strong>1 taille au-dessus</strong> de vos vêtements habituels (ex. un 38 en prêt-à-porter correspond à un 40 en robe de mariée). Commandez toujours selon votre <strong>mensuration la plus grande</strong> (poitrine, taille ou hanches) car resserrer une robe est simple, alors que l'agrandir est très limité.
+			</p>
+			
+			<!-- Benchmark Size Conversion Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Prêt-à-Porter FR</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Taille Mariée FR</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">US Mariée</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">UK / AU</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Poitrine (cm)</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Taille (cm)</th>
+							<th style="padding: 0.65rem 0.8rem; font-family: var(--font-heading); color: var(--fg-pencil);">Hanches (cm)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">34 FR (XS)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">36 FR</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 4</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">UK 8</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">82 – 85 cm</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">62 – 65 cm</td>
+							<td style="padding: 0.6rem 0.8rem;">88 – 91 cm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">36 FR (S)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">38 FR</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 6</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">UK 10</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">86 – 89 cm</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">66 – 69 cm</td>
+							<td style="padding: 0.6rem 0.8rem;">92 – 95 cm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">38 FR (M)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">40 FR</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 10</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">UK 12</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">90 – 94 cm</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">70 – 74 cm</td>
+							<td style="padding: 0.6rem 0.8rem;">96 – 100 cm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">40 FR (L)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">42 FR</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 12</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">UK 14</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">95 – 99 cm</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">75 – 79 cm</td>
+							<td style="padding: 0.6rem 0.8rem;">101 – 105 cm</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">42/44 FR (XL)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">46 FR</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">US 16</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">UK 18</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">102 – 107 cm</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">82 – 88 cm</td>
+							<td style="padding: 0.6rem 0.8rem;">108 – 113 cm</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Guide Morphologie Nuptiale</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem;">
+					Le Guide des Tailles & Coupes de Robe de Mariée
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0;">
+					Tout savoir sur les équivalences internationales, la prise de mensurations et le choix de la coupe idéale.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/wedding-dress-sketch.webp" 
+					alt="Tailles de robe de mariée et mensurations" 
+					loading="lazy" 
+					decoding="async"
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Commander à sa mensuration la plus forte garantit un tombé parfait après les retouches d'atelier.
+				</p>
+			</div>
+
+			<!-- Section 1: Morphologies -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Les 4 Morphologies & Coupes Idéales
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin: 1.5rem 0;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.5rem;">
+							Morphologie en Sablier (X ou 8)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Poitrine et hanches alignées avec une taille bien marquée. Coupes recommandées : <strong>Sirène, Fourreau, Ligne A cintrée</strong>.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.5rem;">
+							Morphologie en Poire (A)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Hanches plus larges que les épaules avec une taille fine. Coupes recommandées : <strong>Robe de Princesse, Coupe Évasée / Trapèze</strong>.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.5rem;">
+							Morphologie en V (Pyramide Inversée)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Épaules plus larges que les hanches. Coupes recommandées : <strong>Décolleté en V plongeant, Robe de Bal volumineuse</strong>.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #d97706; margin-bottom: 0.5rem;">
+							Morphologie Rectiligne (H)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.5; margin: 0;">
+							Épaules, taille et hanches dans le même alignement. Coupes recommandées : <strong>Bustier corset structuré, Coupe Empire fluide</strong>.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Foire Aux Questions
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Que faire si je suis entre deux tailles ?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						<strong>Choisissez toujours la taille au-dessus !</strong> Les couturières peuvent reprendre jusqu'à 2 tailles sans dénaturer la robe, alors qu'il est impossible de gagner plus de 1 à 2 cm sur une robe trop petite.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Faut-il commander une taille en dessous si je prévois de perdre du poids ?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Non, c'est l'erreur la plus fréquente. Commandez toujours à vos mensurations réelles du moment. Si vous perdez du poids, la couturière ajustera la robe lors des essayages prévus 6 semaines avant le mariage.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/fr/dress-size-converter" category="floral" />
+
+	</main>
+</Layout>
+
+<style>
+	.unit-toggle-btn {
+		background: #fff;
+		border: none;
+		padding: 0.3rem 0.6rem;
+		font-family: var(--font-heading);
+		font-size: 0.85rem;
+		cursor: pointer;
+		color: var(--fg-pencil);
+		transition: background 0.15s ease;
+	}
+	.unit-toggle-btn.active-unit {
+		background: var(--fg-pencil);
+		color: #fff;
+	}
+
+	.preset-meas-btn {
+		background: #fff;
+		border: 1px solid var(--fg-pencil);
+		border-radius: 3px;
+		padding: 0.2rem 0.45rem;
+		font-size: 0.75rem;
+		cursor: pointer;
+		font-family: var(--font-body);
+	}
+	.preset-meas-btn:hover {
+		background: var(--muted-paper);
+	}
+
+	.silhouette-card {
+		background: var(--bg-paper);
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.85rem;
+	}
+	.silhouette-card h5 {
+		margin: 0 0 0.25rem 0;
+		font-family: var(--font-heading);
+		font-size: 1rem;
+		color: var(--accent-blue);
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	// Standard Size Chart in Centimeters
+	const sizeChartCm = [
+		{ streetFr: '32', bridalFr: '34', usBridal: 2, ukBridal: 6, euBridal: 32, itBridal: 38, bust: 81, waist: 61, hip: 88 },
+		{ streetFr: '34', bridalFr: '36', usBridal: 4, ukBridal: 8, euBridal: 34, itBridal: 40, bust: 84, waist: 64, hip: 91 },
+		{ streetFr: '36', bridalFr: '38', usBridal: 6, ukBridal: 10, euBridal: 36, itBridal: 42, bust: 87, waist: 67, hip: 94 },
+		{ streetFr: '38', bridalFr: '40', usBridal: 8, ukBridal: 12, euBridal: 38, itBridal: 44, bust: 91, waist: 71, hip: 98 },
+		{ streetFr: '40', bridalFr: '42', usBridal: 10, ukBridal: 14, euBridal: 40, itBridal: 46, bust: 95, waist: 75, hip: 102 },
+		{ streetFr: '42', bridalFr: '44', usBridal: 12, ukBridal: 16, euBridal: 42, itBridal: 48, bust: 99, waist: 79, hip: 106 },
+		{ streetFr: '44', bridalFr: '46', usBridal: 14, ukBridal: 18, euBridal: 44, itBridal: 50, bust: 104, waist: 84, hip: 111 },
+		{ streetFr: '46', bridalFr: '48', usBridal: 16, ukBridal: 20, euBridal: 46, itBridal: 52, bust: 109, waist: 89, hip: 116 },
+		{ streetFr: '48', bridalFr: '50', usBridal: 18, ukBridal: 22, euBridal: 48, itBridal: 54, bust: 115, waist: 95, hip: 122 },
+		{ streetFr: '50', bridalFr: '52', usBridal: 20, ukBridal: 24, euBridal: 50, itBridal: 56, bust: 121, waist: 101, hip: 128 },
+		{ streetFr: '52', bridalFr: '54', usBridal: 22, ukBridal: 26, euBridal: 52, itBridal: 58, bust: 127, waist: 107, hip: 134 }
+	];
+
+	let currentUnit = 'cm'; // 'cm' or 'in'
+
+	const bustInput = document.getElementById('input-bust');
+	const waistInput = document.getElementById('input-waist');
+	const hipsInput = document.getElementById('input-hips');
+	const designerSelect = document.getElementById('input-designer');
+
+	const resStreet = document.getElementById('res-street-size');
+	const resBridal = document.getElementById('res-bridal-size');
+	const resBodyShape = document.getElementById('res-body-shape');
+	const resShapeDesc = document.getElementById('res-shape-desc');
+
+	const barStreet = document.getElementById('bar-street');
+	const barBridal = document.getElementById('bar-bridal');
+	const barLabelStreet = document.getElementById('bar-label-street');
+	const barLabelBridal = document.getElementById('bar-label-bridal');
+	const sizeDiffNote = document.getElementById('size-diff-note');
+
+	const matrixFr = document.getElementById('matrix-fr');
+	const matrixEu = document.getElementById('matrix-eu');
+	const matrixUs = document.getElementById('matrix-us');
+	const matrixUk = document.getElementById('matrix-uk');
+	const matrixIt = document.getElementById('matrix-it');
+
+	const alterationText = document.getElementById('alteration-advice-text');
+	const silhouetteContainer = document.getElementById('silhouette-cards-container');
+
+	function toCm(val) {
+		return currentUnit === 'in' ? val * 2.54 : val;
+	}
+
+	function calculateSizing() {
+		let rawB = parseFloat(bustInput.value) || 92;
+		let rawW = parseFloat(waistInput.value) || 72;
+		let rawH = parseFloat(hipsInput.value) || 99;
+
+		const bCm = toCm(rawB);
+		const wCm = toCm(rawW);
+		const hCm = toCm(rawH);
+
+		// Find size for each measurement
+		let bustSizeObj = sizeChartCm.find(s => bCm <= s.bust) || sizeChartCm[sizeChartCm.length - 1];
+		let waistSizeObj = sizeChartCm.find(s => wCm <= s.waist) || sizeChartCm[sizeChartCm.length - 1];
+		let hipSizeObj = sizeChartCm.find(s => hCm <= s.hip) || sizeChartCm[sizeChartCm.length - 1];
+
+		// Maximum size needed to fit largest measurement
+		const maxUsSize = Math.max(bustSizeObj.usBridal, waistSizeObj.usBridal, hipSizeObj.usBridal);
+		const matchedObj = sizeChartCm.find(s => s.usBridal === maxUsSize) || sizeChartCm[sizeChartCm.length - 1];
+
+		let adjustedObj = matchedObj;
+		const designer = designerSelect.value;
+		if (designer === 'couture') {
+			const idx = Math.min(sizeChartCm.length - 1, sizeChartCm.indexOf(matchedObj) + 1);
+			adjustedObj = sizeChartCm[idx];
+		} else if (designer === 'davids') {
+			const idx = Math.max(0, sizeChartCm.indexOf(matchedObj) - 1);
+			adjustedObj = sizeChartCm[idx];
+		}
+
+		// Determine Body Shape
+		let shape = 'Sablier (X ou 8)';
+		let shapeDetail = 'Épaules et hanches équilibrées avec une taille définie';
+		let silhouettes = [
+			{ name: 'Sirène / Fourreau', desc: 'Sublime les courbes et met en valeur la taille naturelle.' },
+			{ name: 'Ligne A Classique', desc: 'Coupe universelle flatteuse resserrée à la taille.' }
+		];
+
+		if (hCm >= bCm + 5 && (hCm - wCm) >= 20) {
+			shape = 'Poire / Pyramide (A)';
+			shapeDetail = 'Hanches plus généreuses que le buste';
+			silhouettes = [
+				{ name: 'Robe Princesse / Bal', desc: 'La jupe volumineuse dissimule les hanches tout en soulignant la finesse du buste.' },
+				{ name: 'Coupe Empire Fluide', desc: 'Met l’accent sur le décolleté et s’évase délicatement.' }
+			];
+		} else if (bCm >= hCm + 5) {
+			shape = 'Pyramide Inversée (V)';
+			shapeDetail = 'Épaules / poitrine plus larges que le bassin';
+			silhouettes = [
+				{ name: 'Ligne A avec Décolleté V', desc: 'Allonge le buste et équilibre la carrure.' },
+				{ name: 'Robe de Bal avec Plis', desc: 'Apporte du volume en bas pour une parfaite symétrie.' }
+			];
+		} else if (Math.abs(bCm - hCm) <= 5 && (bCm - wCm) <= 15) {
+			shape = 'Rectangle / Athlétique (H)';
+			shapeDetail = 'Alignement harmonieux avec taille peu marquée';
+			silhouettes = [
+				{ name: 'Fourreau Évasé', desc: 'Crée l’illusion optique de courbes féminines.' },
+				{ name: 'Robe avec Bustier Corset', desc: 'Structure et affine la taille grâce au baleinage.' }
+			];
+		}
+
+		// Update UI
+		resStreet.textContent = `${adjustedObj.streetFr} FR`;
+		resBridal.textContent = `${adjustedObj.bridalFr} FR`;
+		resBodyShape.textContent = shape;
+		resShapeDesc.textContent = shapeDetail;
+
+		// Bars
+		const maxScale = 54;
+		const streetNum = parseInt(adjustedObj.streetFr) || 38;
+		const bridalNum = parseInt(adjustedObj.bridalFr) || 40;
+		const streetPct = Math.min(100, Math.round((streetNum / maxScale) * 100));
+		const bridalPct = Math.min(100, Math.round((bridalNum / maxScale) * 100));
+
+		barStreet.style.width = `${streetPct}%`;
+		barBridal.style.width = `${bridalPct}%`;
+		barLabelStreet.textContent = `${adjustedObj.streetFr} FR`;
+		barLabelBridal.textContent = `${adjustedObj.bridalFr} FR`;
+
+		const diff = bridalNum - streetNum;
+		sizeDiffNote.textContent = diff > 0 ? `+${diff / 2} Taille Au-Dessus du Prêt-à-Porter` : 'Taille identique au prêt-à-porter';
+
+		// Matrix
+		matrixFr.textContent = `${adjustedObj.bridalFr} FR`;
+		matrixEu.textContent = `${adjustedObj.euBridal}`;
+		matrixUs.textContent = `US ${adjustedObj.usBridal}`;
+		matrixUk.textContent = `UK ${adjustedObj.ukBridal}`;
+		matrixIt.textContent = `IT ${adjustedObj.itBridal}`;
+
+		// Advice
+		let anchor = 'les hanches';
+		if (bustSizeObj.usBridal >= waistSizeObj.usBridal && bustSizeObj.usBridal >= hipSizeObj.usBridal) anchor = 'la poitrine';
+		else if (waistSizeObj.usBridal >= bustSizeObj.usBridal && waistSizeObj.usBridal >= hipSizeObj.usBridal) anchor = 'la taille';
+
+		alterationText.innerHTML = `
+			Votre mensuration la plus forte correspond à <strong>${anchor} (${matchedObj.bridalFr} FR)</strong>. Commandez la taille <strong>${adjustedObj.bridalFr} FR</strong> pour que la fermeture s’ajuste sans tension. Votre couturière reprendra facilement le bustier lors des essayages.
+		`;
+
+		// Silhouettes
+		silhouetteContainer.innerHTML = '';
+		silhouettes.forEach(s => {
+			const div = document.createElement('div');
+			div.className = 'silhouette-card';
+			div.innerHTML = `
+				<h5>✨ ${s.name}</h5>
+				<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">${s.desc}</p>
+			`;
+			silhouetteContainer.appendChild(div);
+		});
+	}
+
+	// Unit Switcher
+	document.getElementById('unit-cm').addEventListener('click', () => {
+		if (currentUnit === 'cm') return;
+		currentUnit = 'cm';
+		document.getElementById('unit-cm').classList.add('active-unit');
+		document.getElementById('unit-in').classList.remove('active-unit');
+		document.querySelectorAll('.unit-label').forEach(el => el.textContent = 'cm');
+
+		bustInput.value = (parseFloat(bustInput.value) * 2.54).toFixed(1);
+		waistInput.value = (parseFloat(waistInput.value) * 2.54).toFixed(1);
+		hipsInput.value = (parseFloat(hipsInput.value) * 2.54).toFixed(1);
+		calculateSizing();
+	});
+
+	document.getElementById('unit-in').addEventListener('click', () => {
+		if (currentUnit === 'in') return;
+		currentUnit = 'in';
+		document.getElementById('unit-in').classList.add('active-unit');
+		document.getElementById('unit-cm').classList.remove('active-unit');
+		document.querySelectorAll('.unit-label').forEach(el => el.textContent = 'pouces');
+
+		bustInput.value = (parseFloat(bustInput.value) / 2.54).toFixed(1);
+		waistInput.value = (parseFloat(waistInput.value) / 2.54).toFixed(1);
+		hipsInput.value = (parseFloat(hipsInput.value) / 2.54).toFixed(1);
+		calculateSizing();
+	});
+
+	// Presets
+	document.querySelectorAll('.preset-meas-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			let b = parseFloat(btn.getAttribute('data-b'));
+			let w = parseFloat(btn.getAttribute('data-w'));
+			let h = parseFloat(btn.getAttribute('data-h'));
+
+			if (currentUnit === 'in') {
+				b = (b / 2.54).toFixed(1);
+				w = (w / 2.54).toFixed(1);
+				h = (h / 2.54).toFixed(1);
+			}
+
+			bustInput.value = b;
+			waistInput.value = w;
+			hipsInput.value = h;
+			calculateSizing();
+		});
+	});
+
+	// Input listeners
+	bustInput.addEventListener('input', calculateSizing);
+	waistInput.addEventListener('input', calculateSizing);
+	hipsInput.addEventListener('input', calculateSizing);
+	designerSelect.addEventListener('change', calculateSizing);
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const rawB = bustInput.value;
+		const rawW = waistInput.value;
+		const rawH = hipsInput.value;
+		const unit = currentUnit === 'cm' ? 'cm' : 'pouces';
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Fiche de Mensurations Robe de Mariée</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Fiche de Mensurations & Tailles Robe de Mariée</h1>
+				<p>Généré le ${new Date().toLocaleDateString('fr-FR')} | Document pour Styliste & Atelier de Couture</p>
+				
+				<h3>Mensurations de la Mariée :</h3>
+				<table>
+					<thead>
+						<tr><th>Zone de Mesure</th><th>Valeur</th><th>Remarques</th></tr>
+					</thead>
+					<tbody>
+						<tr><td><strong>Tour de Poitrine</strong></td><td>${rawB} ${unit}</td><td>Mesuré avec la lingerie du mariage</td></tr>
+						<tr><td><strong>Tour de Taille</strong></td><td>${rawW} ${unit}</td><td>Mesuré au creux naturel le plus fin</td></tr>
+						<tr><td><strong>Tour de Hanches</strong></td><td>${rawH} ${unit}</td><td>Mesuré au plus fort des fessiers</td></tr>
+					</tbody>
+				</table>
+
+				<h3 style="margin-top:20px;">Synthèse des Tailles Conseillées :</h3>
+				<table>
+					<thead>
+						<tr><th>Standard</th><th>Taille</th><th>Remarques</th></tr>
+					</thead>
+					<tbody>
+						<tr><td><strong>Taille Robe de Mariée Conseillée</strong></td><td><strong>${resBridal.textContent}</strong></td><td>Commandée selon la mensuration la plus forte</td></tr>
+						<tr><td><strong>Taille Prêt-à-Porter Habituelle</strong></td><td>${resStreet.textContent}</td><td>Vêtements du quotidien</td></tr>
+						<tr><td><strong>Équivalence Internationale</strong></td><td>${matrixUs.textContent} / ${matrixUk.textContent} / ${matrixIt.textContent}</td><td>Standards US, UK et Italie</td></tr>
+						<tr><td><strong>Morphologie Silhouette</strong></td><td>${resBodyShape.textContent}</td><td>${resShapeDesc.textContent}</td></tr>
+					</tbody>
+				</table>
+
+				<p style="margin-top:20px; font-size:12px; color:#666;">Conseil : Toujours vérifier la grille spécifique de la maison de couture avant validation de commande.</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Fiche_Mensurations_Robe_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		const printDate = document.getElementById('print-date');
+		const printMeasBody = document.getElementById('print-meas-body');
+		const printRecSize = document.getElementById('print-rec-size');
+		const printStreetSize = document.getElementById('print-street-size');
+		const printBodyShape = document.getElementById('print-body-shape');
+		const printAlterationNote = document.getElementById('print-alteration-note');
+
+		printDate.textContent = new Date().toLocaleDateString('fr-FR');
+		const unit = currentUnit === 'cm' ? 'cm' : 'pouces';
+
+		printMeasBody.innerHTML = `
+			<tr>
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">1. Tour de Poitrine</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${bustInput.value} ${unit}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Avec lingerie du mariage</td>
+			</tr>
+			<tr>
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">2. Tour de Taille</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${waistInput.value} ${unit}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Creux naturel</td>
+			</tr>
+			<tr>
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">3. Tour de Bassin / Hanches</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${hipsInput.value} ${unit}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Fessiers au plus fort</td>
+			</tr>
+		`;
+
+		printRecSize.textContent = `${resBridal.textContent} (${matrixUs.textContent} / ${matrixUk.textContent})`;
+		printStreetSize.textContent = resStreet.textContent;
+		printBodyShape.textContent = `${resBodyShape.textContent} (${resShapeDesc.textContent})`;
+		printAlterationNote.textContent = alterationText.textContent;
+
+		window.print();
+	});
+
+	// Initialize
+	calculateSizing();
+</script>

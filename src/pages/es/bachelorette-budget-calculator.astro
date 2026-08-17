@@ -1,0 +1,620 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/bachelorette-budget-calculator/#webapp",
+      "name": "Calculadora de Presupuesto de Despedida de Soltera y Reparto",
+      "url": "https://manage.wedding/es/bachelorette-budget-calculator",
+      "inLanguage": "es",
+      "description": "Calculadora gratuita de despedida de soltera: reparte el coste exacto por persona para alojamiento, cenas, decoración y actividades cubriendo la parte de la novia. Genera mensajes para Bizum y WhatsApp.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Dividir los Gastos de una Despedida de Soltera Justamente",
+      "description": "Guía práctica para organizadoras y amigas para presupuestar y dividir los gastos del viaje sin tensiones.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Paso 1: Define los Asistentes y Cubre a la Novia",
+          "text": "Cuenta el número total de asistentes y decide si las amigas cubrirán el alojamiento, comidas y actividades de la novia (fórmula estándar N-1)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 2: Suma los Gastos Fijos Comunes",
+          "text": "Calcula los costes grupales: alquiler de Airbnb o casa rural, transporte conjunto, decoración temática y compra del supermercado."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 3: Estima Cenas y Excursiones",
+          "text": "Añade el presupuesto para cenas, brunch, paseo en barco, cata de vinos o sesión de spa."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 4: Recauda la Fianza Inicial por Bizum",
+          "text": "Envía un desglose claro: recauda un primer pago del 50% para reservar el alojamiento y el 50% restante dos semanas antes del viaje."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Quién paga los gastos de la novia en la despedida de soltera?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Según la costumbre actual, las amigas y acompañantes cubren entre todas la parte de la novia correspondiente a alojamiento, comidas grupales, actividades y copas de celebración. La novia suele pagar únicamente su propio billete de transporte o vuelo personal."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto cuesta de media una despedida de soltera por persona?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Una escapada de fin de semana nacional con viaje y alojamiento (ej. Ibiza, Sevilla, Salamanca, Oporto) suele costar entre 250€ y 450€ por persona. Una despedida local de un día o cena con espectáculo ronda los 80€ a 150€ por persona."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuándo debe recaudarse el dinero de la despedida de soltera?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Se recomienda recaudar un primer pago (50% para reservar la casa rural o Airbnb) entre 2 y 4 meses antes. El 50% restante (compra de bebida, comida y reservas) debe recogerse 2 o 3 semanas antes del viaje."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué hacer si alguna amiga no puede permitirse el viaje completo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Comunica los importes con transparencia desde el inicio. Permite que las amigas con menor presupuesto se sumen a planes concretos (como solo la cena del sábado) o colaboren con una aportación simbólica para el brindis de la novia."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Presupuesto de Despedida de Soltera (Cubrir a la Novia) | Manage.Wedding"
+	description="Calculadora de despedida de soltera. Calcula el gasto exacto por amiga para alojamiento, cenas y fiesta cubriendo a la novia. Genera mensajes para Bizum y WhatsApp."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Presupuesto de Despedida de Soltera" category="budget-finance" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Cálculo N-1 para Cubrir a la Novia y Mensaje Bizum</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Presupuesto de <span class="accent-italic">Despedida de Soltera</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Calcula con exactitud el coste por persona para alojamiento, compra, decoración temática y actividades. Cubre la parte de la novia y genera el mensaje de WhatsApp para Bizum en 1 clic.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Trip Setup & Expense Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Detalles del Viaje y Asistentes
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Motor N-1
+					</span>
+				</div>
+
+				<!-- Destination / Preset Picker -->
+				<div class="form-group">
+					<label class="form-label" for="destination-preset">Destino / Tipo de Despedida</label>
+					<select id="destination-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="ibiza" selected>🏖️ Escapada a Ibiza / Playa (Barco + Beach Club / 350€ por persona)</option>
+						<option value="sevilla">💃 Sevilla / Ciudad Fiesta (Cenas + Tapas + Discoteca / 260€ por persona)</option>
+						<option value="rural">🏡 Casa Rural con Piscina y Barbacoa (Fin de semana relax / 180€ por persona)</option>
+						<option value="madrid">🪩 Madrid / Noche de Fiesta y Brunch (Espectáculo + Copas / 220€ por persona)</option>
+						<option value="local">🍸 Despedida Local de 1 Día (Cena temática + Copas / 95€ por persona)</option>
+						<option value="custom">✏️ Personalizar Todos los Gastos</option>
+					</select>
+				</div>
+
+				<!-- Bride Name & Total Attendees -->
+				<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="bride-name">Nombre de la Novia / Novio</label>
+						<input type="text" id="bride-name" class="form-input" value="Laura" placeholder="Ej: Laura" />
+					</div>
+					<div>
+						<label class="form-label" for="bridesmaid-count">Amigas que Pagan</label>
+						<input type="number" id="bridesmaid-count" class="form-input" value="7" min="1" max="30" />
+					</div>
+				</div>
+
+				<!-- Cover the Bride Toggle -->
+				<div class="form-group" style="background: #fffcf5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem;">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 700; font-size: 0.98rem; margin: 0;">
+						<input type="checkbox" id="toggle-cover-bride" checked style="width: 18px; height: 18px;" />
+						<span>Cubrir el 100% de la Novia (La novia paga 0€)</span>
+					</label>
+					<span style="font-size: 0.82rem; color: #64748b; display: block; margin-top: 4px; margin-left: 26px;">
+						Costumbre estándar: Las 7 amigas se reparten el total a partes iguales.
+					</span>
+				</div>
+
+				<!-- Shared Fixed Expenses (Lodging / Transport / Decor) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Gastos Comunes del Grupo (€)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="airbnb-total" style="font-size: 0.9rem;">Alojamiento (Airbnb/Hotel)</label>
+							<input type="number" id="airbnb-total" class="form-input" value="1200" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="transport-total" style="font-size: 0.9rem;">Transporte / Taxis</label>
+							<input type="number" id="transport-total" class="form-input" value="200" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="decor-total" style="font-size: 0.9rem;">Decoración y Disfraces</label>
+							<input type="number" id="decor-total" class="form-input" value="150" min="0" step="20" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="grocery-total" style="font-size: 0.9rem;">Compra Supermercado y Bebida</label>
+							<input type="number" id="grocery-total" class="form-input" value="300" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Dining & Group Activities -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Comidas y Actividades en Grupo (€)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="dining-total" style="font-size: 0.9rem;">Cenas, Brunch y Copas</label>
+							<input type="number" id="dining-total" class="form-input" value="600" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="activities-total" style="font-size: 0.9rem;">Barco / Spa / Aventura</label>
+							<input type="number" id="activities-total" class="form-input" value="400" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results Card & Venmo Exporter -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Cost Breakdown Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Total por Amiga / Asistente
+						</span>
+						<span id="bride-status-badge" style="font-size: 0.85rem; font-weight: 800; background: #16a34a; color: #fff; padding: 3px 8px; border-radius: 4px;">
+							👰 Laura Paga: 0 €
+						</span>
+					</div>
+
+					<div id="display-per-person" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.5rem;">
+						407 €
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Presupuesto total del grupo: <strong id="display-trip-grand-total" style="color: var(--fg-pencil);">2.850 €</strong> dividido entre <span id="display-headcount-text">7 amigas pagadoras</span>.
+					</p>
+
+					<!-- Itemized Per-Person Split Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Alojamiento (Airbnb/Casa Rural):</span>
+							<strong id="item-lodging-share">171 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Comidas, Supermercado y Bebida:</span>
+							<strong id="item-food-share">129 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Actividades y Excursiones:</span>
+							<strong id="item-activity-share">57 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Decoración, Disfraces y Taxis:</span>
+							<strong id="item-decor-share">50 €</strong>
+						</div>
+					</div>
+
+					<!-- Payment Schedule Recommendation -->
+					<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem; font-size: 0.9rem; line-height: 1.5;">
+						<strong style="display: block; color: var(--fg-pencil); margin-bottom: 4px;">📅 Calendario de Pagos Recomendado:</strong>
+						• <strong>Primer Bizum (Reserva):</strong> <span id="sched-dep-1" style="font-weight: 700; color: var(--accent-red);">204 €</span> (para asegurar alojamiento)<br />
+						• <strong>Segundo Bizum (2 semanas antes):</strong> <span id="sched-dep-2" style="font-weight: 700; color: var(--accent-blue);">203 €</span> (compra y actividades)
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-copy-venmo" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📲</span> Copiar Mensaje para WhatsApp / Bizum
+						</button>
+						<button id="btn-print-itinerary" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Imprimir Presupuesto (PDF)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Trending Themes Cheat Sheet -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						✨ 5 Temáticas de Despedida en Tendencia:
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Mamma Mia / Greek Summer:</strong> Tonos azules y blancos, diademas de flores, vestidos ibicencos y gafas retro.</li>
+						<li><strong>Last Disco / Brilli-Brilli:</strong> Lentejuelas, cortinas metalizadas, bolas de discoteca y copas de champán.</li>
+						<li><strong>Barbiecore / Total Pink:</strong> Bañadores fucsia a juego, flotadores gigantes de flamenco y gafas corazón.</li>
+						<li><strong>Aperol Spritz / Dolce Vita:</strong> Estilo costa italiana, estampados de limones, lino y cócteles al atardecer.</li>
+						<li><strong>Festival Vibes / Coachella:</strong> Purpurina facial, sombreros cowboy, flecos y pulseras personalizadas.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Resumen Rápido</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Fórmula y Costes Medios de Despedida de Soltera
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					¿Poco tiempo? Aquí tienes la fórmula para calcular la cuota por persona y la media de gasto por destino.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					💵 La Fórmula Estándar de Reparto (N-1):
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Coste por Amiga = [Alojamiento + Compra Supermercado + Decoración + Actividades + Cenas] ÷ [Total Asistentes − 1 (Novia)] • La novia cubre su desplazamiento individual y las amigas costean los gastos comunes.
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Tipo de Plan / Destino</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Gasto Medio por Amiga</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Conceptos Habituales</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Ambiente y Temática</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Ibiza / Costa / Playa</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">320 € – 480 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Apartamento cerca de la playa, paseo en catamarán y beach club</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Mamma Mia, Total Pink</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Sevilla / Ciudad con Marcha</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">240 € – 340 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Piso céntrico, tour de tapas, reservados y brunch de domingo</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Flamenco Chic, Last Disco</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Casa Rural con Piscina</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">160 € – 240 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Alquiler íntegro de finca, barbacoa, compra de supermercado y juegos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Camp Bach, Tarde de Spa</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Plan de 1 Día Local</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">80 € – 140 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Taller de coctelería o scape room, cena con show y copas</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Brunch & Party, Glam Night</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guía Completa para Organizar la Despedida de Soltera Perfecta
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Organizar la despedida de tu mejor amiga debe ser una vivencia divertida y libre de discusiones económicas.
+				</p>
+			</div>
+
+			<!-- Section 1: Who Pays for What -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. El Reparto Económico sin Fricciones
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Hablar de dinero entre amigas con diferentes situaciones económicas requiere tacto. Establece las bases antes de reservar:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>Qué pagan las amigas:</strong> El alquiler del alojamiento, cenas, compra de bebida, decoración, sorpresas y la parte proporcional de la novia.</li>
+					<li><strong>Qué paga la novia:</strong> Su billete de tren o avión individual, su vestuario y, opcionalmente, invitar a una ronda de cócteles como agradecimiento.</li>
+					<li><strong>Consejo de Oro:</strong> La organizadora debe crear una encuesta anónima previa con rangos de presupuesto (150€, 250€, 350€+) para elegir un plan cómodo para todas.</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: Collection Schedule -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. Cómo Recaudar el Dinero sin Perseguir a Nadie
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Nunca adelantes importes grandes de tu bolsillo sin haber recaudado la fianza:
+				</p>
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-size: 0.98rem; line-height: 1.6; color: var(--fg-pencil);">
+					<strong>📲 Consejos para Gestionar los Pagos por Bizum / Tricount:</strong><br />
+					• <strong>Fase 1 (Reserva del Alojamiento):</strong> Recauda el 50% con 3 meses de antelación. Quien no haya ingresado la fianza en la fecha límite no se incluye en la reserva.<br />
+					• <strong>Fase 2 (Saldo Final):</strong> Solicita el 50% restante para compra y actividades 2 semanas antes del viaje.<br />
+					• <strong>Gastos del Día a Día:</strong> Utiliza apps como <em>Tricount</em> o <em>Splitwise</em> para registrar cafés o rondas espontáneas durante el viaje.
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Preguntas Frecuentes sobre Despedidas de Soltera
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">¿La novia paga su propia despedida de soltera?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						La novia suele costear su billete de tren o vuelo personal. El grupo de amigas asume y divide el alojamiento, cenas, compra y actividades para que ella disfrute como invitada de honor.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">¿Cuánto dinero suele costar un viaje de despedida?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Los viajes de fin de semana rondan entre 200€ y 400€ por persona. Las opciones de casa rural o planes locales de un día se sitúan entre 90€ y 180€.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">¿Qué ocurre si una amiga no puede acudir por motivos económicos?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Es totalmente comprensible. Ofrécele sumarse a algún plan suelto (como una cena) o participar en el regalo conjunto para la novia.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/es/bachelorette-budget-calculator" category="budget" />
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('destination-preset');
+		const brideNameInput = document.getElementById('bride-name');
+		const bridesmaidCountInput = document.getElementById('bridesmaid-count');
+		const toggleCoverBride = document.getElementById('toggle-cover-bride');
+
+		const airbnbInput = document.getElementById('airbnb-total');
+		const transportInput = document.getElementById('transport-total');
+		const decorInput = document.getElementById('decor-total');
+		const groceryInput = document.getElementById('grocery-total');
+		const diningInput = document.getElementById('dining-total');
+		const activitiesInput = document.getElementById('activities-total');
+
+		const displayPerPerson = document.getElementById('display-per-person');
+		const displayGrandTotal = document.getElementById('display-trip-grand-total');
+		const displayHeadcountText = document.getElementById('display-headcount-text');
+		const brideStatusBadge = document.getElementById('bride-status-badge');
+
+		const itemLodgingShare = document.getElementById('item-lodging-share');
+		const itemFoodShare = document.getElementById('item-food-share');
+		const itemActivityShare = document.getElementById('item-activity-share');
+		const itemDecorShare = document.getElementById('item-decor-share');
+		const schedDep1 = document.getElementById('sched-dep-1');
+		const schedDep2 = document.getElementById('sched-dep-2');
+
+		const btnCopyVenmo = document.getElementById('btn-copy-venmo');
+		const btnPrint = document.getElementById('btn-print-itinerary');
+
+		function formatEUR(num) {
+			return `${Math.round(num).toLocaleString('es-ES')} €`;
+		}
+
+		function calculateBachelorette() {
+			const bridesmaids = parseInt(bridesmaidCountInput.value, 10) || 1;
+			const coverBride = toggleCoverBride.checked;
+			const bride = brideNameInput.value.trim() || 'Laura';
+
+			const lodging = parseFloat(airbnbInput.value) || 0;
+			const transport = parseFloat(transportInput.value) || 0;
+			const decor = parseFloat(decorInput.value) || 0;
+			const groceries = parseFloat(groceryInput.value) || 0;
+			const dining = parseFloat(diningInput.value) || 0;
+			const activities = parseFloat(activitiesInput.value) || 0;
+
+			const grandTotal = lodging + transport + decor + groceries + dining + activities;
+			const payingCount = coverBride ? bridesmaids : (bridesmaids + 1);
+
+			const perPersonTotal = grandTotal / payingCount;
+			const lodgingShare = lodging / payingCount;
+			const foodShare = (groceries + dining) / payingCount;
+			const activityShare = activities / payingCount;
+			const decorShare = (decor + transport) / payingCount;
+
+			displayPerPerson.textContent = formatEUR(perPersonTotal);
+			displayGrandTotal.textContent = formatEUR(grandTotal);
+			displayHeadcountText.textContent = `${payingCount} ${payingCount === 1 ? 'amiga pagadora' : 'amigas pagadoras'}`;
+
+			if (coverBride) {
+				brideStatusBadge.textContent = `👰 ${bride} Paga: 0 €`;
+				brideStatusBadge.style.background = '#16a34a';
+			} else {
+				brideStatusBadge.textContent = `👰 ${bride} Paga Cuota Igual: ${formatEUR(perPersonTotal)}`;
+				brideStatusBadge.style.background = '#0284c7';
+			}
+
+			itemLodgingShare.textContent = formatEUR(lodgingShare);
+			itemFoodShare.textContent = formatEUR(foodShare);
+			itemActivityShare.textContent = formatEUR(activityShare);
+			itemDecorShare.textContent = formatEUR(decorShare);
+
+			const half = Math.round(perPersonTotal / 2);
+			schedDep1.textContent = formatEUR(half);
+			schedDep2.textContent = formatEUR(Math.round(perPersonTotal) - half);
+		}
+
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'ibiza') {
+				airbnbInput.value = 1400;
+				transportInput.value = 200;
+				decorInput.value = 150;
+				groceryInput.value = 350;
+				diningInput.value = 700;
+				activitiesInput.value = 500;
+			} else if (p === 'sevilla') {
+				airbnbInput.value = 900;
+				transportInput.value = 150;
+				decorInput.value = 120;
+				groceryInput.value = 250;
+				diningInput.value = 600;
+				activitiesInput.value = 300;
+			} else if (p === 'rural') {
+				airbnbInput.value = 750;
+				transportInput.value = 80;
+				decorInput.value = 100;
+				groceryInput.value = 300;
+				diningInput.value = 250;
+				activitiesInput.value = 150;
+			} else if (p === 'madrid') {
+				airbnbInput.value = 850;
+				transportInput.value = 120;
+				decorInput.value = 100;
+				groceryInput.value = 200;
+				diningInput.value = 550;
+				activitiesInput.value = 280;
+			} else if (p === 'local') {
+				airbnbInput.value = 0;
+				transportInput.value = 60;
+				decorInput.value = 80;
+				groceryInput.value = 100;
+				diningInput.value = 400;
+				activitiesInput.value = 150;
+			}
+			calculateBachelorette();
+		});
+
+		[brideNameInput, bridesmaidCountInput, toggleCoverBride, airbnbInput, transportInput, decorInput, groceryInput, diningInput, activitiesInput].forEach(inp => {
+			inp.addEventListener('input', calculateBachelorette);
+			inp.addEventListener('change', calculateBachelorette);
+		});
+
+		btnCopyVenmo.addEventListener('click', () => {
+			const bride = brideNameInput.value.trim() || 'Laura';
+			const perPerson = displayPerPerson.textContent;
+			const dep1 = schedDep1.textContent;
+			const dep2 = schedDep2.textContent;
+
+			let text = `🎉 *Despedida de ${bride} — Presupuesto y Bizum*\n\n`;
+			text += `¡Hola chicas! Aquí tenéis el desglose de gastos para la despedida de ${bride}:\n\n`;
+			text += `💰 *Total por persona:* ${perPerson} (¡cubre a ${bride} para que ella no pague nada!)\n\n`;
+			text += `📋 *Qué incluye este importe:*\n`;
+			text += `• Alojamiento: ${itemLodgingShare.textContent}\n`;
+			text += `• Comidas, súper y bebida: ${itemFoodShare.textContent}\n`;
+			text += `• Actividades y fiesta: ${itemActivityShare.textContent}\n`;
+			text += `• Decoración, disfraces y taxis: ${itemDecorShare.textContent}\n\n`;
+			text += `📅 *Plazos de Bizum:*\n`;
+			text += `1️⃣ Primer Bizum (Reserva alojamiento): *${dep1}*\n`;
+			text += `2️⃣ Segundo Bizum (2 semanas antes): *${dep2}*\n\n`;
+			text += `¡Va a ser inolvidable! 🍾✨`;
+
+			navigator.clipboard.writeText(text).then(() => {
+				const orig = btnCopyVenmo.textContent;
+				btnCopyVenmo.textContent = '✅ ¡Copiado al Portapapeles!';
+				setTimeout(() => { btnCopyVenmo.textContent = orig; }, 2500);
+			});
+		});
+
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Presupuesto de Despedida — Manage.Wedding</title>
+					<style>
+						@page { size: 8.5in 11in; margin: 0.5in; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 20pt; color: #0f172a; margin-bottom: 4px; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 13pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Presupuesto de la Despedida de ${brideNameInput.value || 'Laura'}</h1>
+					<p>Presupuesto Total Grupo: ${displayGrandTotal.textContent} | <strong>Cuota por Asistente: ${displayPerPerson.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Concepto</th><th>Total Grupo (€)</th><th>Cuota Individual (€)</th></tr></thead>
+						<tbody>
+							<tr><td>Alojamiento (Airbnb/Casa Rural)</td><td>${airbnbInput.value} €</td><td>${itemLodgingShare.textContent}</td></tr>
+							<tr><td>Comidas, Cenas y Supermercado</td><td>${parseFloat(groceryInput.value) + parseFloat(diningInput.value)} €</td><td>${itemFoodShare.textContent}</td></tr>
+							<tr><td>Actividades y Excursiones</td><td>${activitiesInput.value} €</td><td>${itemActivityShare.textContent}</td></tr>
+							<tr><td>Decoración, Disfraces y Taxis</td><td>${parseFloat(decorInput.value) + parseFloat(transportInput.value)} €</td><td>${itemDecorShare.textContent}</td></tr>
+							<tr class="total-row"><td>TOTAL POR ASISTENTE</td><td>${displayGrandTotal.textContent}</td><td>${displayPerPerson.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		calculateBachelorette();
+	</script>
+</Layout>

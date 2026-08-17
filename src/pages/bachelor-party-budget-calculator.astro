@@ -1,0 +1,1031 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/bachelor-party-budget-calculator/#webapp",
+      "name": "Bachelor Party Budget & Cost Splitter",
+      "url": "https://manage.wedding/bachelor-party-budget-calculator",
+      "description": "Free bachelor party budget calculator and expense splitter. Calculates exact per-guy costs for Airbnb, golf, boat rentals, steak dinners, nightlife, and booze while covering the groom. Export Venmo payment requests, Word documents, and PDF itineraries.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Plan and Split Bachelor Party Expenses Fairly",
+      "description": "Step-by-step best man guide to setting a bachelor party budget, splitting costs fairly, and collecting deposits without chasing attendees.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Step 1: Set Headcount & Decide on Covering the Groom",
+          "text": "Count total attendees and confirm that the groomsmen will evenly split the groom's lodging, meals, and activities (standard N-1 cost split)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 2: Lock Shared Lodging and Transport",
+          "text": "Calculate non-negotiable group fixed costs: large Airbnb/villa rental, rental SUV/van, airport shuttles, and initial grocery run."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 3: Estimate Group Activities and Nightlife",
+          "text": "Add budgeted estimates for golf tee times, chartered boats, brewery tours, group steak dinners, and club VIP tables."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Step 4: Collect Upfront Deposit via Venmo/Zelle",
+          "text": "Send an itemized payment schedule: collect a 50% deposit 3-6 months ahead to secure lodging, and collect the final balance 2 weeks before departure."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does the groom pay for his own bachelor party?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In standard modern bachelor party etiquette, the groom does NOT pay for his share of group lodging, activities, dinners, or drinks—these expenses are split evenly among the groomsmen and attending guests (the N-1 split rule). The groom traditionally pays only for his own personal flights or individual transportation to the destination."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does the average bachelor party cost per person?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The average domestic destination bachelor party (e.g., Las Vegas, Austin, Scottsdale, Miami) costs between $850 and $1,450 per guy for a 3-night weekend, including lodging, meals, activities, alcohol, and covering the groom. A local cabin or staycation weekend averages $300 to $550 per person."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When should the Best Man collect money for the bachelor party?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Collect Deposit #1 (50% of the estimated total to lock the Airbnb and major excursions) 3 to 6 months before the trip. Collect Deposit #2 (the remaining 50% for dinners, groceries, and nightlife) 2 to 3 weeks before departure. Never book non-refundable reservations on your personal card without receiving deposits first."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you handle a guy who cannot afford the bachelor party trip?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Send an anonymous budget survey before picking a destination. If an attendee cannot afford the full multi-day trip, invite him to join for a single day/event (e.g., Saturday dinner and golf), or allow him to chip in a voluntary flat amount ($50-$100) toward the groom's steak dinner or bar tab."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Bachelor Party Budget Calculator & Cost Splitter (Cover the Groom)"
+	description="Free bachelor party budget calculator and expense splitter. Calculates exact per-guy costs for Airbnb, golf, boat rentals, steak dinners, nightlife, and booze while covering the groom. Export Venmo payment requests, Word doc, and PDF."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Bachelor Party Budget Splitter" category="budget-finance" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Cover the Groom & Venmo Splitter</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Bachelor Party Budget <span class="accent-italic">& Cost Splitter</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Calculate exact per-guy shares for Airbnb villas, tee times, boat charters, steak dinners, and nightlife. Automatically cover the groom's tab and export instant Venmo & WhatsApp payment requests.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Trip Setup & Categorized Expense Inputs -->
+			<div class="hand-card" style="padding: clamp(1.25rem, 3vw, 2.25rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.45rem; margin: 0; color: var(--fg-pencil);">
+						Trip Setup & Headcount
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						N-1 Split Engine
+					</span>
+				</div>
+
+				<!-- Destination / Preset Picker -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="destination-preset" style="font-weight: 700;">Destination / Trip Vibe Preset</label>
+					<select id="destination-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600; padding: 0.65rem;">
+						<option value="vegas" selected>🎰 Las Vegas, NV (Strip Suites / VIP Nightclub / $1,250/guy)</option>
+						<option value="austin">🤠 Austin, TX (Rainey St BBQ / Lake Travis Boat / $850/guy)</option>
+						<option value="scottsdale">🏌️ Scottsdale, AZ (Golf Rounds / Pool Villa / $950/guy)</option>
+						<option value="miami">🛥️ Miami, FL (Yacht Charter / Oceanfront Penthouse / $1,400/guy)</option>
+						<option value="cabin">🏔️ Mountain Cabin / Ski Weekend (Tahoe/Denver / $650/guy)</option>
+						<option value="custom">✏️ Custom Trip Inputs</option>
+					</select>
+				</div>
+
+				<!-- Groom Name, Paying Guys, Nights -->
+				<div style="display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+					<div>
+						<label class="form-label" for="groom-name" style="font-size: 0.9rem; font-weight: 600;">Groom's Name</label>
+						<input type="text" id="groom-name" class="form-input" value="Alex" placeholder="e.g. Alex" />
+					</div>
+					<div>
+						<label class="form-label" for="guys-count" style="font-size: 0.9rem; font-weight: 600;">Paying Guys</label>
+						<input type="number" id="guys-count" class="form-input" value="7" min="1" max="40" />
+					</div>
+					<div>
+						<label class="form-label" for="trip-nights" style="font-size: 0.9rem; font-weight: 600;">Nights</label>
+						<input type="number" id="trip-nights" class="form-input" value="3" min="1" max="30" />
+					</div>
+				</div>
+
+				<!-- Cover Groom Toggle -->
+				<div class="form-group" style="background: #fffcf5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.5rem;">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 700; font-size: 0.98rem; margin: 0;">
+						<input type="checkbox" id="toggle-cover-groom" checked style="width: 18px; height: 18px; cursor: pointer;" />
+						<span>Cover Groom's Costs 100% (Groom Pays $0)</span>
+					</label>
+					<span style="font-size: 0.82rem; color: #64748b; display: block; margin-top: 4px; margin-left: 26px;">
+						Standard etiquette: The 7 paying guys divide the entire group bill equally.
+					</span>
+				</div>
+
+				<!-- Accordion / Expense Categories -->
+				
+				<!-- Category 1: Accommodations -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🏡 1. Accommodations & Lodging ($)
+						</strong>
+						<span id="subtotal-lodging" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">$2,800</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-airbnb" style="font-size: 0.85rem;">Airbnb / Hotel Total</label>
+							<input type="number" id="exp-airbnb" class="form-input" value="2500" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-cleaning" style="font-size: 0.85rem;">Cleaning & Service Fees</label>
+							<input type="number" id="exp-cleaning" class="form-input" value="300" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Category 2: Daytime Activities -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🏌️ 2. Daytime Activities & Excursions ($)
+						</strong>
+						<span id="subtotal-activities" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">$1,600</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+						<div>
+							<label class="form-label" for="exp-golf" style="font-size: 0.85rem;">Golf Rounds & Rentals</label>
+							<input type="number" id="exp-golf" class="form-input" value="800" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-boat" style="font-size: 0.85rem;">Boat / Yacht Charter</label>
+							<input type="number" id="exp-boat" class="form-input" value="500" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-shooting" style="font-size: 0.85rem;">Shooting / Paintball / ATVs</label>
+							<input type="number" id="exp-shooting" class="form-input" value="0" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-tours" style="font-size: 0.85rem;">Brewery / Distillery Tour</label>
+							<input type="number" id="exp-tours" class="form-input" value="300" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Category 3: Food & Dining -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🥩 3. Food & Group Meals ($)
+						</strong>
+						<span id="subtotal-food" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">$1,600</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+						<div>
+							<label class="form-label" for="exp-dinners" style="font-size: 0.85rem;">Steakhouse & Dinners</label>
+							<input type="number" id="exp-dinners" class="form-input" value="1000" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-groceries" style="font-size: 0.85rem;">Groceries & House Snacks</label>
+							<input type="number" id="exp-groceries" class="form-input" value="350" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+					<div>
+						<label class="form-label" for="exp-brunch" style="font-size: 0.85rem;">Hangover Brunch & Quick Lunches</label>
+						<input type="number" id="exp-brunch" class="form-input" value="250" min="0" step="25" style="font-size: 0.95rem;" />
+					</div>
+				</div>
+
+				<!-- Category 4: Nightlife & Drinks -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🍻 4. Nightlife & Alcohol ($)
+						</strong>
+						<span id="subtotal-nightlife" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">$1,500</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem;">
+						<div>
+							<label class="form-label" for="exp-bars" style="font-size: 0.85rem;">Bar Tabs & Pub Crawls</label>
+							<input type="number" id="exp-bars" class="form-input" value="600" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-vip" style="font-size: 0.85rem;">VIP Table / Club Cover</label>
+							<input type="number" id="exp-vip" class="form-input" value="500" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+					<div>
+						<label class="form-label" for="exp-booze" style="font-size: 0.85rem;">House Beer, Seltzers & Spirits</label>
+						<input type="number" id="exp-booze" class="form-input" value="400" min="0" step="25" style="font-size: 0.95rem;" />
+					</div>
+				</div>
+
+				<!-- Category 5: Transportation -->
+				<div style="margin-bottom: 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🚗 5. Transportation ($)
+						</strong>
+						<span id="subtotal-transport" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">$550</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-rental" style="font-size: 0.85rem;">Rental Van / SUV & Gas</label>
+							<input type="number" id="exp-rental" class="form-input" value="350" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-uber" style="font-size: 0.85rem;">Rideshares (Uber / Lyft)</label>
+							<input type="number" id="exp-uber" class="form-input" value="200" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Category 6: Swag & Favors -->
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #fafafa;">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+						<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil);">
+							🧢 6. Swag, Gear & Favors ($)
+						</strong>
+						<span id="subtotal-swag" style="font-weight: 700; color: var(--accent-blue); font-size: 0.95rem;">$250</span>
+					</div>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label class="form-label" for="exp-shirts" style="font-size: 0.85rem;">Custom Shirts & Hats</label>
+							<input type="number" id="exp-shirts" class="form-input" value="150" min="0" step="10" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="exp-kits" style="font-size: 0.85rem;">Hangover Kits & Koozies</label>
+							<input type="number" id="exp-kits" class="form-input" value="100" min="0" step="10" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results Summary, Payment Generator, & Exports -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Cost Breakdown Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.25rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Cost Per Paying Guy
+						</span>
+						<span id="groom-status-badge" style="font-size: 0.85rem; font-weight: 800; background: #16a34a; color: #fff; padding: 3px 8px; border-radius: 4px;">
+							🤵 Alex Pays: $0
+						</span>
+					</div>
+
+					<div id="display-per-person" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						$1,186
+					</div>
+
+					<div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); flex-wrap: wrap;">
+						<span>🌙 <strong id="display-per-night" style="color: var(--fg-pencil);">$395</strong> / night</span>
+						<span>•</span>
+						<span>🎁 Groom subsidy: <strong id="display-groom-subsidy" style="color: var(--accent-red); font-weight: 700;">+$148</strong> / guy</span>
+					</div>
+
+					<p style="font-size: 0.92rem; color: var(--text-secondary); margin: 0 0 1.25rem 0; padding-bottom: 1rem; border-bottom: 1px dashed #cbd5e1;">
+						Total group trip spend: <strong id="display-trip-grand-total" style="color: var(--fg-pencil); font-weight: 700;">$8,300</strong> across <span id="display-headcount-text">7 paying guys</span> (+ groom).
+					</p>
+
+					<!-- Itemized Per-Person Split Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem 1rem; margin-bottom: 1.25rem;">
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🏡 Lodging Share:</span>
+							<strong id="item-lodging-share">$400</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🏌️ Daytime Activities:</span>
+							<strong id="item-activity-share">$229</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🥩 Food & Group Dinners:</span>
+							<strong id="item-food-share">$229</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🍻 Nightlife & Drinks:</span>
+							<strong id="item-nightlife-share">$214</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.9rem;">
+							<span>🚗 Transportation:</span>
+							<strong id="item-transport-share">$79</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; font-size: 0.9rem;">
+							<span>🧢 Swag & Gear:</span>
+							<strong id="item-swag-share">$36</strong>
+						</div>
+					</div>
+
+					<!-- Suggested Payment Schedule -->
+					<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; font-size: 0.88rem; line-height: 1.5;">
+						<strong style="display: block; color: var(--fg-pencil); margin-bottom: 4px;">📅 Recommended 2-Part Payment Schedule:</strong>
+						• <strong>Deposit 1 (Upfront Lock):</strong> <span id="sched-dep-1" style="font-weight: 700; color: var(--accent-red);">$593</span> (Airbnb & reservations)<br />
+						• <strong>Deposit 2 (2 Wks Before):</strong> <span id="sched-dep-2" style="font-weight: 700; color: var(--accent-blue);">$593</span> (dinners, drinks & logistics)
+					</div>
+
+					<!-- Payment Handle & Deadline Setup -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem;">
+						<strong class="font-heading" style="display: block; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+							💳 Payment Request Settings
+						</strong>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<label class="form-label" for="payment-handle" style="font-size: 0.8rem;">Venmo / Zelle / Handle</label>
+								<input type="text" id="payment-handle" class="form-input" value="@BestManDave" placeholder="@VenmoHandle" style="font-size: 0.85rem; padding: 0.4rem 0.6rem;" />
+							</div>
+							<div>
+								<label class="form-label" for="payment-deadline" style="font-size: 0.8rem;">Deposit 1 Due Date</label>
+								<input type="text" id="payment-deadline" class="form-input" value="Oct 15" placeholder="e.g. Oct 15" style="font-size: 0.85rem; padding: 0.4rem 0.6rem;" />
+							</div>
+						</div>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
+						<button id="btn-copy-venmo" class="hand-btn" style="padding: 10px; font-size: 0.95rem; gap: 0.4rem; grid-column: span 2;">
+							<span>📲</span> Copy WhatsApp / Venmo Request
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="padding: 9px; font-size: 0.88rem; gap: 0.3rem;">
+							<span>📄</span> Export Word (.doc)
+						</button>
+						<button id="btn-print-pdf" class="hand-btn secondary" style="padding: 9px; font-size: 0.88rem; gap: 0.3rem;">
+							<span>🖨️</span> Print PDF
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Quick Checklist Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						🎯 Best Man Checklist & Rules of Engagement:
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.88rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Get deposits first:</strong> Never front thousands on your personal card without non-refundable deposits.</li>
+						<li><strong>Keep the groom in the dark (partially):</strong> Keep the activities surprise-filled, but verify his dietary/activity limits.</li>
+						<li><strong>Hydration & Recovery:</strong> Budget liquid IV packets and plenty of bottled water for the house.</li>
+						<li><strong>Download Splitwise:</strong> For incidental bar tabs, Uber rides, and coffee runs during the weekend.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Bottom Line Up Front (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Quick Rule of Thumb: Bachelor Party Budget & Expense Etiquette
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Need the essentials fast? Here is the standard N-1 bachelor formula and benchmark cost averages for popular trip destinations.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					💵 The Standard Bachelor Party (N-1) Split Formula:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Cost Per Guy = [Airbnb + Activities + Dinners + Nightlife + Booze + Rental Transport + Swag] ÷ [Total Attendees − 1 (Groom)]
+				</p>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin: 6px 0 0 0;">
+					* The groom covers his own travel flights; attending guys split all shared accommodations, food, booze, and group entertainment.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Destination / Trip Style</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Avg. Cost Per Guy (3 Nights)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Key Highlight Expenses</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Vibe & Top Activities</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">🎰 Las Vegas, NV</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$1,100 – $1,600</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Strip suites, steakhouse dinner, club VIP table</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">High-energy nightlife, pool parties, casinos</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">🤠 Austin, TX</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$750 – $1,050</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">East Austin Airbnb, Lake Travis pontoon, BBQ brisket</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Live music, lake day, Rainey St bar crawl</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">🏌️ Scottsdale / Phoenix, AZ</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$850 – $1,250</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Pool villa rental, 36 holes of golf, Old Town bars</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Golf trips, pool cabanas, desert ATVs</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #0284c7);">🛥️ Miami / South Beach, FL</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$1,200 – $1,800</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Half-day yacht charter, LIV/E11EVEN table, prime steak</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Yacht parties, upscale beach clubs, nightlife</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">🏔️ Cabin / Ski (Denver/Tahoe)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">$500 – $800</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Mountain lodge with hot tub, lift passes, craft brewery</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Outdoors, skiing/snowboarding, fireside brews</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					The Best Man's Guide to Bachelor Party Budgeting & Money Collection
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Organizing an unforgettable weekend for the groom shouldn't leave you stressed or in debt. Here is the modern financial playbook for best men and groomsmen.
+				</p>
+			</div>
+
+			<!-- Section 1: Who Pays for What -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Who Pays for What at a Bachelor Party?
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Financial misunderstandings are the #1 source of friction in bachelor party planning. Clear expectations must be set before anyone books flights or rooms:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>What the Attending Guys Cover:</strong> Their own transportation/flights, equal share of the Airbnb or hotel suites, group activities (boat charter, golf tee times), dinners, bar tabs, and splitting the groom's portion of all lodging, food, and activities.</li>
+					<li><strong>What the Groom Covers:</strong> His own flight/gas to get to the city, personal clothing/luggage, and optionally buying the group a welcome round of drinks or Sunday brunch as a thank you.</li>
+					<li><strong>The Best Man's Role:</strong> The Best Man coordinates the budget, secures the bookings, and collects funds. He does NOT pay extra or cover unpaid balances out of his own pocket.</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: Collection Schedule & Timeline -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. The 2-Payment Collection Rule (Never Front Thousands Alone)
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					The biggest mistake best men make is booking a $4,000 villa on their own credit card and hoping friends pay them back later. Use this disciplined schedule:
+				</p>
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-size: 0.98rem; line-height: 1.6; color: var(--fg-pencil);">
+					<strong>📲 Standard 2-Phase Collection Schedule:</strong><br />
+					• <strong>Phase 1 — Deposit #1 (4 to 6 Months Out):</strong> Collect 50% of the total estimated cost. This covers the non-refundable Airbnb/hotel deposit and locks critical reservations (e.g., boat charters or golf times). Anyone who hasn't paid by the deadline is not included in the headcount.<br />
+					• <strong>Phase 2 — Final Balance (2 to 3 Weeks Out):</strong> Collect the remaining 50% to fund the grocery haul, alcohol supply, dinner reservations, and rideshare kitty.<br />
+					• <strong>During the Trip:</strong> Use the free <em>Splitwise</em> app so anyone who buys a round of drinks, buys coffee, or calls an Uber can log it instantly.
+				</div>
+			</section>
+
+			<!-- Section 3: Handling Different Budgets -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: #16a34a; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					3. How to Handle Different Financial Situations Discreetly
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Groomsmen often come from different financial stages of life. Keep the planning inclusive:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1rem;">
+					<li><strong>Send an Anonymous Google Form:</strong> Ask each guy privately for their hard spending ceiling ($500, $800, $1,200+) before picking a city. Plan to the lowest common denominator.</li>
+					<li><strong>A La Carte Attendance:</strong> If someone lives nearby or cannot afford the entire weekend, let them pay just for the Friday night dinner and drinks rather than forcing a 3-night Airbnb split.</li>
+					<li><strong>Transparent Pricing:</strong> Always share the exact itemized budget table (using this tool's Word or PDF export) so every guy knows where his money is going.</li>
+				</ul>
+			</section>
+
+			<!-- Section 4: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Frequently Asked Questions
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; background: var(--bg-paper);">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Does the best man pay more than other guests?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						No. The best man donates his time and organizational energy to plan the trip, but he pays the exact same equal per-person share as every other groomsman and guest.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; background: var(--bg-paper);">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">What happens to leftover money collected for groceries and drinks?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						If there is surplus money at the end of the trip from the grocery/drinks fund, use it to cover the final Sunday farewell brunch or send a transparent Venmo refund to everyone in equal portions.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; background: var(--bg-paper);">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">How many months before the wedding should the bachelor party take place?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						The ideal timing is <strong>1 to 3 months before the wedding</strong>. Avoid scheduling the party within 2 weeks of the wedding day to prevent fatigue, travel delays, or wedding week stress for the groom.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/bachelor-party-budget-calculator" category="budget" />
+
+	</main>
+
+	<!-- Interactive Logic & Export Handlers -->
+	<script is:inline>
+		// Form Elements
+		const presetSelect = document.getElementById('destination-preset');
+		const groomNameInput = document.getElementById('groom-name');
+		const guysCountInput = document.getElementById('guys-count');
+		const tripNightsInput = document.getElementById('trip-nights');
+		const toggleCoverGroom = document.getElementById('toggle-cover-groom');
+
+		// Inputs
+		const expAirbnb = document.getElementById('exp-airbnb');
+		const expCleaning = document.getElementById('exp-cleaning');
+		const expGolf = document.getElementById('exp-golf');
+		const expBoat = document.getElementById('exp-boat');
+		const expShooting = document.getElementById('exp-shooting');
+		const expTours = document.getElementById('exp-tours');
+		const expDinners = document.getElementById('exp-dinners');
+		const expGroceries = document.getElementById('exp-groceries');
+		const expBrunch = document.getElementById('exp-brunch');
+		const expBars = document.getElementById('exp-bars');
+		const expVip = document.getElementById('exp-vip');
+		const expBooze = document.getElementById('exp-booze');
+		const expRental = document.getElementById('exp-rental');
+		const expUber = document.getElementById('exp-uber');
+		const expShirts = document.getElementById('exp-shirts');
+		const expKits = document.getElementById('exp-kits');
+
+		// Subtotal displays
+		const subLodging = document.getElementById('subtotal-lodging');
+		const subActivities = document.getElementById('subtotal-activities');
+		const subFood = document.getElementById('subtotal-food');
+		const subNightlife = document.getElementById('subtotal-nightlife');
+		const subTransport = document.getElementById('subtotal-transport');
+		const subSwag = document.getElementById('subtotal-swag');
+
+		// Summary Displays
+		const displayPerPerson = document.getElementById('display-per-person');
+		const displayPerNight = document.getElementById('display-per-night');
+		const displayGroomSubsidy = document.getElementById('display-groom-subsidy');
+		const displayGrandTotal = document.getElementById('display-trip-grand-total');
+		const displayHeadcountText = document.getElementById('display-headcount-text');
+		const groomStatusBadge = document.getElementById('groom-status-badge');
+
+		// Itemized Shares
+		const itemLodgingShare = document.getElementById('item-lodging-share');
+		const itemActivityShare = document.getElementById('item-activity-share');
+		const itemFoodShare = document.getElementById('item-food-share');
+		const itemNightlifeShare = document.getElementById('item-nightlife-share');
+		const itemTransportShare = document.getElementById('item-transport-share');
+		const itemSwagShare = document.getElementById('item-swag-share');
+
+		// Payment Sched & Action Elements
+		const schedDep1 = document.getElementById('sched-dep-1');
+		const schedDep2 = document.getElementById('sched-dep-2');
+		const paymentHandleInput = document.getElementById('payment-handle');
+		const paymentDeadlineInput = document.getElementById('payment-deadline');
+
+		const btnCopyVenmo = document.getElementById('btn-copy-venmo');
+		const btnExportDoc = document.getElementById('btn-export-doc');
+		const btnPrintPdf = document.getElementById('btn-print-pdf');
+
+		function calculateBachelor() {
+			const guys = parseInt(guysCountInput.value, 10) || 1;
+			const nights = parseInt(tripNightsInput.value, 10) || 1;
+			const coverGroom = toggleCoverGroom.checked;
+			const groom = groomNameInput.value.trim() || 'Alex';
+
+			// Group Category Sums
+			const lodgingTotal = (parseFloat(expAirbnb.value) || 0) + (parseFloat(expCleaning.value) || 0);
+			const activitiesTotal = (parseFloat(expGolf.value) || 0) + (parseFloat(expBoat.value) || 0) + (parseFloat(expShooting.value) || 0) + (parseFloat(expTours.value) || 0);
+			const foodTotal = (parseFloat(expDinners.value) || 0) + (parseFloat(expGroceries.value) || 0) + (parseFloat(expBrunch.value) || 0);
+			const nightlifeTotal = (parseFloat(expBars.value) || 0) + (parseFloat(expVip.value) || 0) + (parseFloat(expBooze.value) || 0);
+			const transportTotal = (parseFloat(expRental.value) || 0) + (parseFloat(expUber.value) || 0);
+			const swagTotal = (parseFloat(expShirts.value) || 0) + (parseFloat(expKits.value) || 0);
+
+			const grandTotal = lodgingTotal + activitiesTotal + foodTotal + nightlifeTotal + transportTotal + swagTotal;
+			
+			// Headcount Division
+			const totalHeadcount = guys + 1; // guys + groom
+			const payingCount = coverGroom ? guys : totalHeadcount;
+
+			const perPersonTotal = grandTotal / payingCount;
+			const perPersonPerNight = perPersonTotal / Math.max(nights, 1);
+
+			// Groom subsidy calculation (how much extra per guy to cover groom)
+			const baseEqualSplit = grandTotal / totalHeadcount;
+			const subsidyPerGuy = coverGroom ? (perPersonTotal - baseEqualSplit) : 0;
+
+			// Category Shares
+			const lodgingShare = lodgingTotal / payingCount;
+			const activityShare = activitiesTotal / payingCount;
+			const foodShare = foodTotal / payingCount;
+			const nightlifeShare = nightlifeTotal / payingCount;
+			const transportShare = transportTotal / payingCount;
+			const swagShare = swagTotal / payingCount;
+
+			// Update Subtotals
+			subLodging.textContent = `$${Math.round(lodgingTotal).toLocaleString()}`;
+			subActivities.textContent = `$${Math.round(activitiesTotal).toLocaleString()}`;
+			subFood.textContent = `$${Math.round(foodTotal).toLocaleString()}`;
+			subNightlife.textContent = `$${Math.round(nightlifeTotal).toLocaleString()}`;
+			subTransport.textContent = `$${Math.round(transportTotal).toLocaleString()}`;
+			subSwag.textContent = `$${Math.round(swagTotal).toLocaleString()}`;
+
+			// Update Summary Card
+			displayPerPerson.textContent = `$${Math.round(perPersonTotal).toLocaleString()}`;
+			displayPerNight.textContent = `$${Math.round(perPersonPerNight).toLocaleString()}`;
+			displayGrandTotal.textContent = `$${Math.round(grandTotal).toLocaleString()}`;
+			displayHeadcountText.textContent = `${payingCount} paying guy${payingCount === 1 ? '' : 's'}`;
+
+			if (coverGroom) {
+				groomStatusBadge.textContent = `🤵 ${groom} Pays: $0`;
+				groomStatusBadge.style.background = '#16a34a';
+				displayGroomSubsidy.textContent = `+$${Math.round(subsidyPerGuy).toLocaleString()}`;
+			} else {
+				groomStatusBadge.textContent = `🤵 ${groom} Pays Equal Share: $${Math.round(perPersonTotal).toLocaleString()}`;
+				groomStatusBadge.style.background = '#0284c7';
+				displayGroomSubsidy.textContent = `$0`;
+			}
+
+			// Update Itemized Shares
+			itemLodgingShare.textContent = `$${Math.round(lodgingShare).toLocaleString()}`;
+			itemActivityShare.textContent = `$${Math.round(activityShare).toLocaleString()}`;
+			itemFoodShare.textContent = `$${Math.round(foodShare).toLocaleString()}`;
+			itemNightlifeShare.textContent = `$${Math.round(nightlifeShare).toLocaleString()}`;
+			itemTransportShare.textContent = `$${Math.round(transportShare).toLocaleString()}`;
+			itemSwagShare.textContent = `$${Math.round(swagShare).toLocaleString()}`;
+
+			// 2-Deposit Schedule
+			const dep1 = Math.round(perPersonTotal / 2);
+			const dep2 = Math.round(perPersonTotal) - dep1;
+			schedDep1.textContent = `$${dep1.toLocaleString()}`;
+			schedDep2.textContent = `$${dep2.toLocaleString()}`;
+		}
+
+		// Preset Selection Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'vegas') {
+				tripNightsInput.value = 3;
+				expAirbnb.value = 2500;
+				expCleaning.value = 300;
+				expGolf.value = 800;
+				expBoat.value = 500;
+				expShooting.value = 0;
+				expTours.value = 300;
+				expDinners.value = 1000;
+				expGroceries.value = 350;
+				expBrunch.value = 250;
+				expBars.value = 600;
+				expVip.value = 500;
+				expBooze.value = 400;
+				expRental.value = 350;
+				expUber.value = 200;
+				expShirts.value = 150;
+				expKits.value = 100;
+			} else if (p === 'austin') {
+				tripNightsInput.value = 3;
+				expAirbnb.value = 2000;
+				expCleaning.value = 250;
+				expGolf.value = 400;
+				expBoat.value = 750; // Lake Travis pontoon
+				expShooting.value = 300;
+				expTours.value = 200;
+				expDinners.value = 750; // Brisket BBQ
+				expGroceries.value = 300;
+				expBrunch.value = 200;
+				expBars.value = 500;
+				expVip.value = 0;
+				expBooze.value = 350;
+				expRental.value = 300;
+				expUber.value = 150;
+				expShirts.value = 120;
+				expKits.value = 80;
+			} else if (p === 'scottsdale') {
+				tripNightsInput.value = 3;
+				expAirbnb.value = 2800; // Pool villa
+				expCleaning.value = 350;
+				expGolf.value = 1200; // 36 holes
+				expBoat.value = 0;
+				expShooting.value = 350;
+				expTours.value = 200;
+				expDinners.value = 800;
+				expGroceries.value = 350;
+				expBrunch.value = 200;
+				expBars.value = 500;
+				expVip.value = 300;
+				expBooze.value = 400;
+				expRental.value = 350;
+				expUber.value = 150;
+				expShirts.value = 140;
+				expKits.value = 80;
+			} else if (p === 'miami') {
+				tripNightsInput.value = 3;
+				expAirbnb.value = 3500; // Oceanfront
+				expCleaning.value = 400;
+				expGolf.value = 400;
+				expBoat.value = 1500; // Yacht charter
+				expShooting.value = 0;
+				expTours.value = 0;
+				expDinners.value = 1400; // Prime 112
+				expGroceries.value = 350;
+				expBrunch.value = 300;
+				expBars.value = 600;
+				expVip.value = 1000; // Club LIV table
+				expBooze.value = 450;
+				expRental.value = 300;
+				expUber.value = 250;
+				expShirts.value = 150;
+				expKits.value = 100;
+			} else if (p === 'cabin') {
+				tripNightsInput.value = 3;
+				expAirbnb.value = 1800; // Mountain lodge
+				expCleaning.value = 250;
+				expGolf.value = 0;
+				expBoat.value = 0;
+				expShooting.value = 400;
+				expTours.value = 300; // Brewery tour
+				expDinners.value = 600;
+				expGroceries.value = 500; // Big house cooking
+				expBrunch.value = 150;
+				expBars.value = 300;
+				expVip.value = 0;
+				expBooze.value = 500;
+				expRental.value = 400; // 4x4 SUV
+				expUber.value = 50;
+				expShirts.value = 100;
+				expKits.value = 50;
+			}
+			calculateBachelor();
+		});
+
+		// Live Listeners for all inputs
+		const allInputs = [
+			groomNameInput, guysCountInput, tripNightsInput, toggleCoverGroom,
+			expAirbnb, expCleaning, expGolf, expBoat, expShooting, expTours,
+			expDinners, expGroceries, expBrunch, expBars, expVip, expBooze,
+			expRental, expUber, expShirts, expKits
+		];
+
+		allInputs.forEach(el => {
+			el.addEventListener('input', calculateBachelor);
+			el.addEventListener('change', calculateBachelor);
+		});
+
+		// Copy WhatsApp / Venmo Request Message
+		btnCopyVenmo.addEventListener('click', () => {
+			const groom = groomNameInput.value.trim() || 'Alex';
+			const perPerson = displayPerPerson.textContent;
+			const grandTotal = displayGrandTotal.textContent;
+			const handle = paymentHandleInput.value.trim() || '@BestMan';
+			const deadline = paymentDeadlineInput.value.trim() || 'Soon';
+			const nights = tripNightsInput.value;
+			const dep1 = schedDep1.textContent;
+			const dep2 = schedDep2.textContent;
+
+			let text = `🎉 *${groom}'s Bachelor Party Budget & Payment Details*\n\n`;
+			text += `Fellas, here is the full cost breakdown for ${groom}'s celebration (${nights} Nights):\n\n`;
+			text += `💰 *Cost Per Guy:* ${perPerson} (covers ${groom} so he pays $0!)\n`;
+			text += `💵 *Group Grand Total:* ${grandTotal}\n\n`;
+			text += `📋 *Itemized Share Per Guy:*\n`;
+			text += `• 🏡 Lodging (Airbnb/Hotel): ${itemLodgingShare.textContent}\n`;
+			text += `• 🏌️ Activities & Excursions: ${itemActivityShare.textContent}\n`;
+			text += `• 🥩 Dinners & Meals: ${itemFoodShare.textContent}\n`;
+			text += `• 🍻 Nightlife & Drinks: ${itemNightlifeShare.textContent}\n`;
+			text += `• 🚗 Transportation: ${itemTransportShare.textContent}\n`;
+			text += `• 🧢 Swag & Favors: ${itemSwagShare.textContent}\n\n`;
+			text += `📅 *2-Part Payment Schedule:*\n`;
+			text += `1️⃣ *Deposit 1 (Due ${deadline}):* ${dep1} (locks Airbnb & boat)\n`;
+			text += `2️⃣ *Deposit 2 (2 Wks Before Trip):* ${dep2} (food, booze & tables)\n\n`;
+			text += `📲 *Send Payment via Venmo / Zelle:* ${handle}\n\n`;
+			text += `Let's send ${groom} off in legendary fashion! 🍻🔥`;
+
+			navigator.clipboard.writeText(text).then(() => {
+				const orig = btnCopyVenmo.innerHTML;
+				btnCopyVenmo.innerHTML = '<span>✅</span> Copied to Clipboard!';
+				setTimeout(() => { btnCopyVenmo.innerHTML = orig; }, 2500);
+			});
+		});
+
+		// 📄 Export Microsoft Word (.doc)
+		btnExportDoc.addEventListener('click', () => {
+			const groom = groomNameInput.value.trim() || 'Alex';
+			const guys = guysCountInput.value;
+			const nights = tripNightsInput.value;
+			const dateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+			const html = `
+				<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+				<head>
+					<meta charset="utf-8">
+					<title>${groom}'s Bachelor Party Budget Itinerary</title>
+					<style>
+						body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #1e293b; padding: 24px; }
+						h1 { font-size: 20pt; color: #0f172a; margin-bottom: 4px; }
+						h2 { font-size: 14pt; color: #dc2626; margin-top: 20px; margin-bottom: 6px; border-bottom: 2px solid #cbd5e1; padding-bottom: 4px; }
+						p { margin: 4px 0 12px 0; color: #475569; font-size: 10.5pt; }
+						table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; font-size: 10.5pt; }
+						th { background-color: #f1f5f9; border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; font-weight: bold; }
+						td { border: 1px solid #cbd5e1; padding: 8px 10px; }
+						.total-row { background-color: #fef3c7; font-weight: bold; font-size: 12pt; }
+						.highlight { color: #dc2626; font-weight: bold; }
+					</style>
+				</head>
+				<body>
+					<h1>🎉 Manage.Wedding — ${groom}'s Bachelor Party Budget</h1>
+					<p>Generated on ${dateStr} | Trip Length: <strong>${nights} Nights</strong> | Paying Guys: <strong>${guys} Guys</strong> (+ Groom)</p>
+					
+					<h2>Trip Financial Summary</h2>
+					<p>• <strong>Total Trip Grand Total:</strong> ${displayGrandTotal.textContent}</p>
+					<p>• <strong>Cost Per Paying Guy:</strong> <span class="highlight">${displayPerPerson.textContent}</span> (${displayPerNight.textContent} / night)</p>
+					<p>• <strong>Groom Status:</strong> ${groomStatusBadge.textContent} (Groom subsidy: ${displayGroomSubsidy.textContent} per guy)</p>
+
+					<h2>Itemized Expense Category Breakdown</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Expense Category</th>
+								<th>Group Total ($)</th>
+								<th>Per-Guy Share ($)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><strong>1. Accommodations & Lodging</strong> (Airbnb / Hotel + Cleaning)</td>
+								<td>${subLodging.textContent}</td>
+								<td>${itemLodgingShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>2. Daytime Activities</strong> (Golf, Boat Charter, Tours, Shooting)</td>
+								<td>${subActivities.textContent}</td>
+								<td>${itemActivityShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>3. Food & Meals</strong> (Steakhouse, Groceries, Hangover Brunch)</td>
+								<td>${subFood.textContent}</td>
+								<td>${itemFoodShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>4. Nightlife & Alcohol</strong> (Bar Tabs, VIP Table, House Booze)</td>
+								<td>${subNightlife.textContent}</td>
+								<td>${itemNightlifeShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>5. Transportation & Gas</strong> (Rental SUV, Rideshares/Uber)</td>
+								<td>${subTransport.textContent}</td>
+								<td>${itemTransportShare.textContent}</td>
+							</tr>
+							<tr>
+								<td><strong>6. Swag & Favors</strong> (Custom Shirts, Hangover Kits)</td>
+								<td>${subSwag.textContent}</td>
+								<td>${itemSwagShare.textContent}</td>
+							</tr>
+							<tr class="total-row">
+								<td>TOTAL PER-GUY COST</td>
+								<td>${displayGrandTotal.textContent}</td>
+								<td>${displayPerPerson.textContent}</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<h2>Payment Collection Schedule</h2>
+					<p>• <strong>Deposit #1 (Due ${paymentDeadlineInput.value || 'Upfront'}):</strong> ${schedDep1.textContent} per guy (to lock Airbnb & boat reservations)</p>
+					<p>• <strong>Deposit #2 (Due 2 Weeks Before Trip):</strong> ${schedDep2.textContent} per guy (food, booze, and nightlife tables)</p>
+					<p>• <strong>Payment Handle (Venmo / Zelle):</strong> <code>${paymentHandleInput.value || '@BestMan'}</code></p>
+				</body>
+				</html>
+			`;
+
+			const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `${groom}_Bachelor_Party_Budget_${new Date().toISOString().slice(0, 10)}.doc`;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		});
+
+		// 🖨️ Vector PDF Print Export
+		btnPrintPdf.addEventListener('click', () => {
+			const groom = groomNameInput.value.trim() || 'Alex';
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>${groom}'s Bachelor Party Budget — Manage.Wedding</title>
+					<style>
+						@page { size: 8.5in 11in; margin: 0.5in; }
+						body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 11pt; color: #1e293b; line-height: 1.5; }
+						h1 { font-size: 20pt; color: #0f172a; margin-bottom: 4px; }
+						h2 { font-size: 13pt; color: #dc2626; margin-top: 18px; margin-bottom: 6px; border-bottom: 2px solid #cbd5e1; padding-bottom: 3px; }
+						table { width: 100%; border-collapse: collapse; margin-top: 12px; margin-bottom: 16px; }
+						th, td { border: 1px solid #cbd5e1; padding: 7px 10px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+						.footer-note { font-size: 9.5pt; color: #64748b; margin-top: 20px; border-top: 1px dashed #cbd5e1; padding-top: 8px; }
+					</style>
+				</head>
+				<body>
+					<h1>🎉 ${groom}'s Bachelor Party Official Budget Breakdown</h1>
+					<p><strong>Trip Length:</strong> ${tripNightsInput.value} Nights | <strong>Paying Guys:</strong> ${guysCountInput.value} Guys | <strong>Status:</strong> ${groomStatusBadge.textContent}</p>
+					
+					<table>
+						<thead>
+							<tr>
+								<th>Expense Category</th>
+								<th>Group Total ($)</th>
+								<th>Per-Guy Share ($)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr><td>Accommodations (Airbnb/Hotel & Cleaning)</td><td>${subLodging.textContent}</td><td>${itemLodgingShare.textContent}</td></tr>
+							<tr><td>Daytime Activities (Golf, Boat Charter, Tours)</td><td>${subActivities.textContent}</td><td>${itemActivityShare.textContent}</td></tr>
+							<tr><td>Food & Group Meals (Steakhouse, Groceries, Brunch)</td><td>${subFood.textContent}</td><td>${itemFoodShare.textContent}</td></tr>
+							<tr><td>Nightlife & Drinks (Bar Tabs, VIP Tables, House Booze)</td><td>${subNightlife.textContent}</td><td>${itemNightlifeShare.textContent}</td></tr>
+							<tr><td>Transportation (Rental SUV/Van & Rideshares)</td><td>${subTransport.textContent}</td><td>${itemTransportShare.textContent}</td></tr>
+							<tr><td>Swag, Gear & Favors (Custom Shirts, Koozies)</td><td>${subSwag.textContent}</td><td>${itemSwagShare.textContent}</td></tr>
+							<tr class="total-row"><td>TOTAL COST PER PAYING GUY</td><td>${displayGrandTotal.textContent}</td><td>${displayPerPerson.textContent}</td></tr>
+						</tbody>
+					</table>
+
+					<h2>Payment Schedule & Venmo Details</h2>
+					<p>• <strong>Deposit #1 (Due ${paymentDeadlineInput.value || 'Upfront'}):</strong> ${schedDep1.textContent} / guy<br>
+					• <strong>Deposit #2 (2 Weeks Prior):</strong> ${schedDep2.textContent} / guy<br>
+					• <strong>Send via Venmo/Zelle to:</strong> ${paymentHandleInput.value || '@BestMan'}</p>
+
+					<div class="footer-note">
+						Generated via Manage.Wedding • Bachelor Party Budget & Cost Splitter Calculator
+					</div>
+
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body>
+				</html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Initial Calculation
+		calculateBachelor();
+	</script>
+</Layout>

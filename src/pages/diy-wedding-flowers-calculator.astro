@@ -1,0 +1,707 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "DIY Wedding Flowers & Stem Count Calculator",
+      "url": "https://manage.wedding/diy-wedding-flowers-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calculate wholesale flower stem counts, bunch conversions, focal/filler/greenery ratios, bucket counts, and 15% hydration buffers for DIY wedding flowers.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Calculate Stem Counts for DIY Bulk Wedding Flowers",
+      "description": "A step-by-step florist formula to estimate total stems, wholesale bunches, and bucket needs for bouquets, centerpieces, and arches.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Tally All Floral Arrangements",
+          "text": "Count your bridal bouquet, bridesmaid bouquets, boutonnieres, corsages, table centerpieces, arch installations, and bud vases."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Select Floral Density & Style",
+          "text": "Choose between airy wildflower (15-20 stems), classic lush garden (25-35 stems), or luxury high-density (45-60 stems)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Apply the 35/30/15/20 Florist Ratio",
+          "text": "Divide stem totals into 35% Focal flowers, 30% Secondary flowers, 15% Texture/Filler, and 20% Foliage/Greenery."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Add 15% Breakage Buffer & Convert to Bunches",
+          "text": "Add a 15% hydration safety margin to accommodate broken stems and round up to standard wholesale bunches (10 or 25 stems/bunch)."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How many flowers do I need for a DIY wedding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A typical DIY wedding with 1 bridal bouquet, 4 bridesmaid bouquets, 6 boutonnieres, and 10 centerpieces requires approximately 450 to 650 total stems (equivalent to 22 to 30 wholesale bunches including a 15% safety buffer)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What percentage extra flowers should you order for DIY weddings?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Always order 15% to 20% extra stems. Fresh cut flowers suffer from stem breakage, snapped flower heads, transport dehydration, and bent necks during shipping. The buffer ensures you have enough flawless blooms on the morning of your wedding."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When should wholesale wedding flowers be delivered?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Wholesale bulk flowers should arrive 2 to 3 days before the wedding (typically Wednesday morning for a Saturday wedding). Flowers need 24 to 48 hours in cool water with floral food to rehydrate and open to their peak blooming fullness."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many stems are in a wholesale bunch of flowers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standard roses come in bunches of 25 stems. Garden roses, peonies, and spray roses typically come in bunches of 10 to 12 stems. Greenery (eucalyptus, ruscus) and fillers (baby's breath, waxflower) are sold by grower bunches weighing approximately 8 to 12 oz (or 10 main stems per bunch)."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout
+	title="DIY Wedding Flowers & Stem Count Calculator — Bulk Wholesale Sizer"
+	description="Calculate exact wholesale stem counts, floral recipe ratios (focal, secondary, filler, greens), bunch orders, bucket counts, and 1-click printable order sheets."
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/" style="color: var(--text-secondary); text-decoration: none;">Home</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/budget" style="color: var(--text-secondary); text-decoration: none;">Budget & Planning</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">DIY Flowers Calculator</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>🌸</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Wholesale Florist Recipe & Bunch Converter</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				DIY Bulk Wedding Flowers & Stem Count Calculator
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Convert your dream wedding floral vision into exact <strong>Wholesale Stem & Bunch Counts</strong>. Calculate precise florist ratios (focal, secondary, texture, greens), include the essential 15% hydration buffer, and estimate buckets & conditioning timelines.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Arrangement Quantities & Floral Style -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>💐</span> 1. Arrangement Counts & Style
+				</h2>
+
+				<!-- Floral Density & Style -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label for="select-floral-style" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Arrangement Density & Floral Aesthetic:
+					</label>
+					<select id="select-floral-style" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="wildflower">🌿 Airy Wildflower & Garden (Light greenery, 20 stems/bridal)</option>
+						<option value="classic" selected>🌸 Classic Romantic & Lush (Standard density, 32 stems/bridal)</option>
+						<option value="luxury">👑 Luxury Statement (High density, 50 stems/bridal)</option>
+					</select>
+				</div>
+
+				<!-- Personals / Wedding Party Inputs -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong style="color: var(--fg-pencil); display: block; font-size: 0.9rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+						Party & Personals
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+						<div>
+							<label for="input-bridal-bouquet" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Bridal Bouquets:</label>
+							<input type="number" id="input-bridal-bouquet" min="0" max="5" value="1" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+						<div>
+							<label for="input-bridesmaid-bouquets" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Bridesmaid Bouquets:</label>
+							<input type="number" id="input-bridesmaid-bouquets" min="0" max="15" value="4" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-boutonnieres" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Boutonnieres:</label>
+							<input type="number" id="input-boutonnieres" min="0" max="25" value="6" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+						<div>
+							<label for="input-corsages" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Wrist/Pin Corsages:</label>
+							<input type="number" id="input-corsages" min="0" max="15" value="4" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Reception & Ceremony Decor Inputs -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong style="color: var(--fg-pencil); display: block; font-size: 0.9rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+						Centerpieces & Ceremony
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+						<div>
+							<label for="input-centerpieces-low" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Low Centerpieces / Compotes:</label>
+							<input type="number" id="input-centerpieces-low" min="0" max="40" value="8" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+						<div>
+							<label for="input-bud-vases" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Bud Vases (3 stems/vase):</label>
+							<input type="number" id="input-bud-vases" min="0" max="100" value="15" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+					</div>
+
+					<div style="margin-bottom: 0.75rem;">
+						<label for="select-arch-install" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Ceremony Arch / Backdrop Installation:</label>
+						<select id="select-arch-install" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="none">None (No arch florals)</option>
+							<option value="corner" selected>2 Corner Floral Sprays (~70 stems)</option>
+							<option value="lush">Half Arch / Full Meadow Ground Sprays (~140 stems)</option>
+							<option value="grand">Grand Full Floral Arch (~240 stems)</option>
+						</select>
+					</div>
+
+					<div>
+						<label for="input-cake-bar-florals" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Cake Flowers & Bar Accent Sprigs:</label>
+						<input type="number" id="input-cake-bar-florals" min="0" max="30" value="8" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+					</div>
+				</div>
+
+				<!-- Safety Margin Buffer -->
+				<div class="form-group" style="margin-bottom: 1rem;">
+					<label for="select-buffer-margin" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Hydration & Stem Breakage Safety Margin:
+					</label>
+					<select id="select-buffer-margin" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="1.15" selected>⭐ Recommended +15% Buffer (Industry standard for transit snapping)</option>
+						<option value="1.10">🌱 Budget +10% Buffer (Tight margin for experienced crafters)</option>
+						<option value="1.20">🛡️ Stress-Free +20% Buffer (Recommended for delicate peonies/dahlias)</option>
+					</select>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results & Wholesale Shopping Blueprint -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Procurement Summary</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Wholesale Floral Blueprint
+						</h2>
+					</div>
+					<span id="badge-total-bunches" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">24 Bunches</span>
+				</div>
+
+				<!-- Big Stem & Cost Highlight -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Total Stems to Buy</span>
+						<strong id="stat-total-stems" style="font-size: 2rem; font-weight: 900; color: #1e40af; line-height: 1.1;">438</strong>
+						<span id="stat-stems-buffer-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(381 exact + 57 buffer)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Wholesale Estimate</span>
+						<strong id="stat-total-flower-cost" style="font-size: 2rem; font-weight: 900; color: #15803d; line-height: 1.1;">$657</strong>
+						<span style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">Avg ~$1.50/stem wholesale</span>
+					</div>
+				</div>
+
+				<!-- Category Stem Count Breakdown -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<strong style="color: var(--fg-pencil); display: block; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+						Botanical Recipe Stem Ratios
+					</strong>
+
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🌹 <strong>Focal Blooms (35%)</strong> (Roses, Dahlias, Peonies):</span>
+						<strong id="stat-focal-stems" style="color: #b91c1c;">153 stems (~6 bunches)</strong>
+					</div>
+
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🌸 <strong>Secondary Flowers (30%)</strong> (Ranunculus, Lisianthus):</span>
+						<strong id="stat-secondary-stems" style="color: #c026d3;">131 stems (~13 bunches)</strong>
+					</div>
+
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🌾 <strong>Texture & Filler (15%)</strong> (Waxflower, Astilbe):</span>
+						<strong id="stat-filler-stems" style="color: #d97706;">66 stems (~7 bunches)</strong>
+					</div>
+
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
+						<span style="color: #475569;">🌿 <strong>Greenery & Foliage (20%)</strong> (Eucalyptus, Ruscus):</span>
+						<strong id="stat-greenery-stems" style="color: #15803d;">88 stems (~9 bunches)</strong>
+					</div>
+				</div>
+
+				<!-- Prep & Logistics Hardware Matrix -->
+				<div style="background: #fef08a; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.85rem;">
+					<strong style="color: var(--fg-pencil); display: block; margin-bottom: 0.25rem;">🪣 Prep & Hydration Supplies:</strong>
+					<span id="stat-prep-hardware" style="color: #334155;">
+						Requires <strong>12 to 14 Five-Gallon Buckets</strong>, 1 quart of floral food, and delivery on <strong>Wednesday morning</strong>.
+					</span>
+				</div>
+
+				<!-- Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Export PDF / Print
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Export Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Section: Florist Stem Count Reference Table -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1rem;">
+				🌿 Average Stem Counts by Arrangement Type
+			</h2>
+			<div style="overflow-x: auto;">
+				<table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem;">Arrangement Type</th>
+							<th style="padding: 0.6rem;">Airy / Minimal</th>
+							<th style="padding: 0.6rem;">Classic Lush</th>
+							<th style="padding: 0.6rem;">Luxury Statement</th>
+							<th style="padding: 0.6rem;">Recipe Notes</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem; font-weight: 700;">💐 Bridal Bouquet</td>
+							<td style="padding: 0.6rem;">18–22 stems</td>
+							<td style="padding: 0.6rem; font-weight: 700; color: #1e40af;">28–35 stems</td>
+							<td style="padding: 0.6rem;">45–60 stems</td>
+							<td style="padding: 0.6rem; color: #475569;">Focus on premium blooms (Garden Roses, Dahlias, Peonies).</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfdfd;">
+							<td style="padding: 0.6rem; font-weight: 700;">🌸 Bridesmaid Bouquet</td>
+							<td style="padding: 0.6rem;">10–14 stems</td>
+							<td style="padding: 0.6rem; font-weight: 700; color: #1e40af;">16–22 stems</td>
+							<td style="padding: 0.6rem;">25–30 stems</td>
+							<td style="padding: 0.6rem; color: #475569;">Approximately 50% to 60% of the bridal bouquet volume.</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem; font-weight: 700;">🌹 Boutonniere / Pocket Square</td>
+							<td style="padding: 0.6rem;">1 focal + sprig</td>
+							<td style="padding: 0.6rem; font-weight: 700; color: #1e40af;">1 focal + 2 texture</td>
+							<td style="padding: 0.6rem;">2 focal + greens</td>
+							<td style="padding: 0.6rem; color: #475569;">Use sturdy hearty flowers (Ranunculus, Spray Roses, Thistle).</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfdfd;">
+							<td style="padding: 0.6rem; font-weight: 700;">🏺 Low Compote Centerpiece</td>
+							<td style="padding: 0.6rem;">12–16 stems</td>
+							<td style="padding: 0.6rem; font-weight: 700; color: #1e40af;">22–28 stems</td>
+							<td style="padding: 0.6rem;">35–45 stems</td>
+							<td style="padding: 0.6rem; color: #475569;">Designed low so guests can see across the reception table.</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem; font-weight: 700;">🕯️ Bud Vase Trio (per table)</td>
+							<td style="padding: 0.6rem;">2 stems/vase</td>
+							<td style="padding: 0.6rem; font-weight: 700; color: #1e40af;">3 stems/vase</td>
+							<td style="padding: 0.6rem;">4 stems/vase</td>
+							<td style="padding: 0.6rem; color: #475569;">Cost-effective: 3 bud vases create a chic 9-stem tablescape.</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.6rem; font-weight: 700;">🌿 Ceremony Arch / Meadow Sprays</td>
+							<td style="padding: 0.6rem;">40–60 stems</td>
+							<td style="padding: 0.6rem; font-weight: 700; color: #1e40af;">70–140 stems</td>
+							<td style="padding: 0.6rem;">200–300+ stems</td>
+							<td style="padding: 0.6rem; color: #475569;">Heavy greenery base (Salal, Eucalyptus) with large focal clusters.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<!-- Section: Florist Conditioning & Timeline Guide -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1rem;">
+				⏰ The 4-Day DIY Flower Conditioning Schedule
+			</h2>
+			
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #f8fafc;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem; margin-bottom: 0.3rem;">
+						Wednesday: Arrival & Hydration
+					</strong>
+					<p style="font-size: 0.85rem; color: #334155; margin: 0; line-height: 1.45;">
+						Unbox immediately. Cut stems at a 45° angle under running water. Remove all foliage that falls below the waterline. Place in clean buckets with flower food for 24 hours.
+					</p>
+				</div>
+
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #f8fafc;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem; margin-bottom: 0.3rem;">
+						Thursday: Blooming & Opening
+					</strong>
+					<p style="font-size: 0.85rem; color: #334155; margin: 0; line-height: 1.45;">
+						Roses and peonies will begin opening. Keep buckets in a cool, dark room (60°F - 68°F) away from direct sunlight, heating drafts, and fruit (ethylene gas wilts blooms).
+					</p>
+				</div>
+
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #f8fafc;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem; margin-bottom: 0.3rem;">
+						Friday: Arrangement Assembly Day
+					</strong>
+					<p style="font-size: 0.85rem; color: #334155; margin: 0; line-height: 1.45;">
+						Assemble bridal bouquets, centerpieces, and bud vases with floral tape and chicken wire/frogs. Store finished bouquets in vases with 2 inches of water.
+					</p>
+				</div>
+
+				<div style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; background: #f8fafc;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem; margin-bottom: 0.3rem;">
+						Saturday: Morning-Of Transport
+					</strong>
+					<p style="font-size: 0.85rem; color: #334155; margin: 0; line-height: 1.45;">
+						Make boutonnieres and corsages (or spray with Crowning Glory finishing spray). Transport arrangements in cardboard boxes lined with non-slip shelf liner.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Frequently Asked Questions -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1.25rem;">
+				❓ Frequently Asked Questions: DIY Bulk Flowers
+			</h2>
+			
+			<div style="display: flex; flex-direction: column; gap: 1rem;">
+				<div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.85rem;">
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						How much money do you actually save by doing DIY wedding flowers?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						Full-service wedding florists charge 3x to 4x the raw wholesale flower cost to cover floral labor, studio overhead, design mechanics, delivery, and setup. On average, couples save <strong>60% to 70% ($2,000 to $5,000+)</strong> by purchasing wholesale bulk stems and arranging them with family and bridesmaids.
+					</p>
+				</div>
+
+				<div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.85rem;">
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						How many flowers fit in a standard 5-gallon bucket?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						For proper air circulation and hydration, place approximately <strong>30 to 40 standard rose stems</strong> (or 2 to 3 bunches of greenery) per 5-gallon bucket. Overcrowding buckets causes premature botrytis mold and crushed flower heads.
+					</p>
+				</div>
+
+				<div>
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						Which flowers are best (and easiest) for DIY beginners?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						Hardy flowers that tolerate handling include: Standard Ecuadorian Roses, Carnations, Lisianthus, Spray Roses, Ranunculus, Waxflower, and Silver Dollar Eucalyptus. Fragile flowers like Hydrangeas, Gardenias, and delicate Sweet Peas require advanced floral hydration care.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/diy-wedding-flowers-calculator" category="budget" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-order-sheet-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Wholesale Floral Procurement & Prep Brief</h1>
+				<p id="print-floral-meta" style="font-size: 10.5pt; color: #333; margin: 0;">DIY Wedding Flowers Order Form | Generated by Manage.Wedding</p>
+			</div>
+			<div id="print-floral-tables">
+				<!-- Injected dynamically by script -->
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	// Form Inputs
+	const selectFloralStyle = document.getElementById('select-floral-style');
+	const inputBridalBouquet = document.getElementById('input-bridal-bouquet');
+	const inputBridesmaidBouquets = document.getElementById('input-bridesmaid-bouquets');
+	const inputBoutonnieres = document.getElementById('input-boutonnieres');
+	const inputCorsages = document.getElementById('input-corsages');
+	const inputCenterpiecesLow = document.getElementById('input-centerpieces-low');
+	const inputBudVases = document.getElementById('input-bud-vases');
+	const selectArchInstall = document.getElementById('select-arch-install');
+	const inputCakeBarFlorals = document.getElementById('input-cake-bar-florals');
+	const selectBufferMargin = document.getElementById('select-buffer-margin');
+
+	// Result Elements
+	const badgeTotalBunches = document.getElementById('badge-total-bunches');
+	const statTotalStems = document.getElementById('stat-total-stems');
+	const statStemsBufferSub = document.getElementById('stat-stems-buffer-sub');
+	const statTotalFlowerCost = document.getElementById('stat-total-flower-cost');
+	const statFocalStems = document.getElementById('stat-focal-stems');
+	const statSecondaryStems = document.getElementById('stat-secondary-stems');
+	const statFillerStems = document.getElementById('stat-filler-stems');
+	const statGreeneryStems = document.getElementById('stat-greenery-stems');
+	const statPrepHardware = document.getElementById('stat-prep-hardware');
+
+	function calculateFlorals() {
+		const style = selectFloralStyle.value;
+		let mult = 1.0;
+		if (style === 'wildflower') mult = 0.75;
+		else if (style === 'luxury') mult = 1.5;
+
+		const bridal = (parseInt(inputBridalBouquet.value, 10) || 0) * (32 * mult);
+		const bridesmaids = (parseInt(inputBridesmaidBouquets.value, 10) || 0) * (18 * mult);
+		const bouts = (parseInt(inputBoutonnieres.value, 10) || 0) * 3;
+		const corsages = (parseInt(inputCorsages.value, 10) || 0) * 4;
+		const centerpieces = (parseInt(inputCenterpiecesLow.value, 10) || 0) * (24 * mult);
+		const budVases = (parseInt(inputBudVases.value, 10) || 0) * 3;
+		const cakeBar = (parseInt(inputCakeBarFlorals.value, 10) || 0) * 2;
+
+		let archStems = 0;
+		const archType = selectArchInstall.value;
+		if (archType === 'corner') archStems = 70 * mult;
+		else if (archType === 'lush') archStems = 140 * mult;
+		else if (archType === 'grand') archStems = 240 * mult;
+
+		const rawStemCount = Math.round(bridal + bridesmaids + bouts + corsages + centerpieces + budVases + cakeBar + archStems);
+		const bufferFactor = parseFloat(selectBufferMargin.value) || 1.15;
+		const totalWithBuffer = Math.round(rawStemCount * bufferFactor);
+		const bufferStems = totalWithBuffer - rawStemCount;
+
+		statTotalStems.textContent = totalWithBuffer;
+		statStemsBufferSub.textContent = `(${rawStemCount} exact + ${bufferStems} safety buffer)`;
+
+		// Stem Category Breakdown (35% Focal, 30% Secondary, 15% Filler, 20% Greens)
+		const focalStems = Math.round(totalWithBuffer * 0.35);
+		const secondaryStems = Math.round(totalWithBuffer * 0.30);
+		const fillerStems = Math.round(totalWithBuffer * 0.15);
+		const greeneryStems = Math.round(totalWithBuffer * 0.20);
+
+		// Bunch estimations
+		const focalBunches = Math.ceil(focalStems / 25); // Roses usually 25/bunch
+		const secondaryBunches = Math.ceil(secondaryStems / 10); // 10/bunch
+		const fillerBunches = Math.ceil(fillerStems / 10); // 10/bunch
+		const greeneryBunches = Math.ceil(greeneryStems / 10); // 10 stems/bunch
+
+		const totalBunches = focalBunches + secondaryBunches + fillerBunches + greeneryBunches;
+		badgeTotalBunches.textContent = `${totalBunches} Wholesale Bunches`;
+
+		statFocalStems.innerHTML = `${focalStems} stems <em>(~${focalBunches} bunches @ 25/pk)</em>`;
+		statSecondaryStems.innerHTML = `${secondaryStems} stems <em>(~${secondaryBunches} bunches @ 10/pk)</em>`;
+		statFillerStems.innerHTML = `${fillerStems} stems <em>(~${fillerBunches} bunches @ 10/pk)</em>`;
+		statGreeneryStems.innerHTML = `${greeneryStems} stems <em>(~${greeneryBunches} bunches @ 10/pk)</em>`;
+
+		// Estimated Wholesale Cost ($1.50/stem avg across wholesale suppliers)
+		const estimatedCost = Math.round(totalWithBuffer * 1.50);
+		statTotalFlowerCost.textContent = `$${estimatedCost.toLocaleString('en-US')}`;
+
+		// Buckets & Hardware
+		const bucketsCount = Math.max(4, Math.ceil(totalWithBuffer / 32));
+		statPrepHardware.innerHTML = `Requires <strong>${bucketsCount} Five-Gallon Buckets</strong>, 1 bottle of quick-dip hydration, and delivery on <strong>Wednesday morning</strong>.`;
+
+		// Print Table Generation
+		document.getElementById('print-floral-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Flower Recipe Classification</th>
+						<th style="padding:6pt; text-align:center;">Total Stems</th>
+						<th style="padding:6pt; text-align:center;">Wholesale Bunches</th>
+						<th style="padding:6pt;">Recommended Flower Varieties</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">🌹 Focal Blooms (35%)</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; color:#1e40af;">${focalStems} stems</td>
+						<td style="padding:6pt; text-align:center;">~${focalBunches} bunches (25/pk)</td>
+						<td style="padding:6pt;">Standard Roses, Garden Roses, Dahlias, Peonies, Hydrangeas</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">🌸 Secondary Flowers (30%)</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; color:#c026d3;">${secondaryStems} stems</td>
+						<td style="padding:6pt; text-align:center;">~${secondaryBunches} bunches (10/pk)</td>
+						<td style="padding:6pt;">Ranunculus, Lisianthus, Spray Roses, Carnations, Anemones</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">🌾 Texture & Fillers (15%)</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; color:#d97706;">${fillerStems} stems</td>
+						<td style="padding:6pt; text-align:center;">~${fillerBunches} bunches (10/pk)</td>
+						<td style="padding:6pt;">Waxflower, Astilbe, Veronica, Baby's Breath, Blue Thistle</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">🌿 Greenery & Foliage (20%)</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; color:#15803d;">${greeneryStems} stems</td>
+						<td style="padding:6pt; text-align:center;">~${greeneryBunches} bunches (10/pk)</td>
+						<td style="padding:6pt;">Silver Dollar Eucalyptus, Italian Ruscus, Salal Tips, Olive Greens</td>
+					</tr>
+					<tr style="background:#f8fafc; font-weight:bold;">
+						<td style="padding:8pt;">TOTAL PROCUREMENT:</td>
+						<td style="padding:8pt; text-align:center; font-size:12pt; color:#1e40af;">${totalWithBuffer} stems</td>
+						<td style="padding:8pt; text-align:center; font-size:12pt; color:#15803d;">${totalBunches} Bunches</td>
+						<td style="padding:8pt;">Estimated Wholesale Cost: ~$${estimatedCost.toLocaleString('en-US')} (Prep: ${bucketsCount} buckets)</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	// Listeners
+	const allInputs = [
+		selectFloralStyle, inputBridalBouquet, inputBridesmaidBouquets,
+		inputBoutonnieres, inputCorsages, inputCenterpiecesLow,
+		inputBudVases, selectArchInstall, inputCakeBarFlorals, selectBufferMargin
+	];
+	allInputs.forEach(input => {
+		input.addEventListener('input', calculateFlorals);
+		input.addEventListener('change', calculateFlorals);
+	});
+
+	// Direct In-Page Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		calculateFlorals();
+		window.print();
+	});
+
+	// Word Document Export
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateFlorals();
+		const totalStems = statTotalStems.textContent;
+		const totalCost = statTotalFlowerCost.textContent;
+		const bunches = badgeTotalBunches.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>DIY Wedding Flowers Order Brief</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Wholesale Bulk Wedding Flowers Order Brief</h1>
+				<p><strong>Total Stems to Buy:</strong> ${totalStems} stems | <strong>Wholesale Bunches:</strong> ${bunches} | <strong>Estimated Cost:</strong> ${totalCost}</p>
+				<hr/>
+				<h2>Stem Count Breakdown</h2>
+				<table>
+					<tr style="background:#f1f5f9;">
+						<th>Botanical Role</th><th>Stem Count</th><th>Common Varieties</th>
+					</tr>
+					<tr><td><strong>Focal Blooms (35%):</strong></td><td>${statFocalStems.textContent}</td><td>Garden Roses, Standard Roses, Dahlias, Peonies</td></tr>
+					<tr><td><strong>Secondary (30%):</strong></td><td>${statSecondaryStems.textContent}</td><td>Ranunculus, Lisianthus, Spray Roses, Carnations</td></tr>
+					<tr><td><strong>Fillers (15%):</strong></td><td>${statFillerStems.textContent}</td><td>Waxflower, Astilbe, Veronica, Thistle</td></tr>
+					<tr><td><strong>Greenery (20%):</strong></td><td>${statGreeneryStems.textContent}</td><td>Silver Dollar Eucalyptus, Italian Ruscus, Salal</td></tr>
+				</table>
+				<br/>
+				<h2>Delivery & Conditioning Reminders</h2>
+				<p>• Schedule delivery for Wednesday morning (for a Saturday wedding).</p>
+				<p>• Strip foliage below waterline and hydrate for 24 hours in clean buckets with flower food.</p>
+				<hr/>
+				<p><em>Generated by Manage.Wedding DIY Flowers Sizer</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `DIY-Wedding-Flowers-Order-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateFlorals();
+</script>

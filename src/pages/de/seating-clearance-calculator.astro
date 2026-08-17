@@ -1,0 +1,659 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/seating-clearance-calculator/#webapp",
+      "name": "Tischabstands- & Raumplanungsrechner Hochzeit | Manage.Wedding",
+      "url": "https://manage.wedding/de/seating-clearance-calculator",
+      "inLanguage": "de",
+      "description": "Berechnen Sie exakte Tanzflächenmaße (m²), Tischabstände (150-cm-Regel), 150-cm- vs. 180-cm-Rundtische und die benötigte Mindestsaalgröße in Quadratmetern für 50 bis 300+ Gäste.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie berechnet man die Tanzflächengröße und Raumfläche (m²) für eine Hochzeit?",
+      "description": "Schritt-für-Schritt-Formel zur Ermittlung von Tanzflächenmaßen, Tischabständen und Quadratmetern für den Festsaal.",
+      "inLanguage": "de",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 1: Gleichzeitige Tänzer ermitteln (40%-Regel)",
+          "text": "Multiplizieren Sie die Gästezahl mit 40% (0,40), um die durchschnittliche Anzahl aktiver Tänzer zur Spitzenzeit zu erhalten."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 2: Tanzflächenfläche berechnen (ca. 0,45 m² pro Tänzer)",
+          "text": "Multiplizieren Sie die Spitzentänzer mit ca. 0,45 m² pro Person (z. B. 60 Tänzer × 0,45 m² = 27 m² Tanzfläche bzw. ca. 5 m × 6 m)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 3: Essbereich & Tischabstände kalkulieren (ca. 1,2–1,4 m² pro Gast)",
+          "text": "Planen Sie für runde 150-cm-Tische mit 8 Stühlen ca. 1,2 bis 1,4 m² pro Person ein, inklusive 150 cm Abstand zwischen den Tischkanten."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 4: Puffer für Bar, Buffet & DJ-Bühne addieren",
+          "text": "Addieren Sie Flächen für DJ/Band-Bühne (15–25 m²), Cocktail-Bars (10–20 m²), Buffet-Stationen (15 m²) und Geschenketisch/Fotobox (8 m²)."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "de",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Welche Tanzflächengröße braucht man für 100 bis 150 Hochzeitsgäste?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Für 100 Gäste empfiehlt sich eine Tanzfläche von ca. 20 bis 25 m² (z. B. 4,5 m × 5 m bzw. 20–25 modulare 1×1-m-Platten). Für 150 Gäste sind ca. 27 bis 32 m² ideal (z. B. 5 m × 6 m)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie viel Abstand muss zwischen zwei runden Tischen frei bleiben?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Halten Sie mindestens 150 cm (1,5 Meter) Abstand von Tischkante zu Tischkante. Dies ermöglicht 45 cm Stuhl-Rückenfreiheit auf beiden Seiten und lässt einen 60 cm breiten Durchgang für Kellner und Gäste."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie viel Quadratmeter Raumfläche benötigt man pro Gast?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Für ein gesetztes Hochzeitsdinner mit Rundtischen, Tanzfläche, Buffet und Bar rechnet man mit 1,5 bis 2,0 m² pro Gast. Eine Hochzeit mit 150 Gästen erfordert somit einen Festsaal oder ein Zelt von ca. 240 bis 300 m²."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Tischabstands- & Raumplanungsrechner Hochzeit | Tanzfläche & Saalgröße (m²)"
+	description="Berechnen Sie exakte Tanzflächenmaße (m²), Tischabstände (150-cm-Regel), 150-cm- vs. 180-cm-Rundtische und die benötigte Mindestsaalgröße in Quadratmetern für 50 bis 300+ Gäste."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Raum- & Tanzflächenplaner" category="guests-logistics" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Raumkapazität & Tanzflächenplaner</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Festsaal-Raumplaner <span class="accent-italic">& Tanzflächen-Rechner</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Ermitteln Sie die exakten Maße für die Tanzfläche, Anzahl der 150-cm- vs. 180-cm-Rundtische, Kellner-Laufwege (150-cm-Regel) und die benötigte Saalfläche (m²), bevor Sie den Mietvertrag unterschreiben.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Guest Count, Table Style & Room Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Event-Größe & Raumdaten
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Metrisches System (m / m²)
+					</span>
+				</div>
+
+				<!-- Venue Layout Presets -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="layout-preset" style="font-weight: 700; font-size: 0.95rem;">Location / Vorlage wählen</label>
+					<select id="layout-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600; width: 100%; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px;">
+						<option value="ballroom-150" selected>🏨 Hotel-Festsaal (150 Gäste / 150 cm Rundtische / DJ)</option>
+						<option value="tent-200">🎪 Hochzeitszelt (200 Gäste / 12 × 24 m Zelt / Live-Band)</option>
+						<option value="barn-120">🌾 Scheunenhochzeit (120 Gäste / Holztische & Tafeln)</option>
+						<option value="intimate-75">🏛️ Schloss / Historisches Gut (75 Gäste)</option>
+						<option value="custom">✏️ Eigene Maße & Gästezahl eingeben</option>
+					</select>
+				</div>
+
+				<!-- Guest Count & Dancing Participation -->
+				<div style="display: grid; grid-template-columns: 1fr 1.3fr; gap: 0.75rem; margin-bottom: 1.25rem;" class="form-group">
+					<div>
+						<label class="form-label" for="input-guests" style="font-weight: 700; font-size: 0.95rem;">Gästezahl</label>
+						<input type="number" id="input-guests" class="form-input" value="150" min="20" max="600" step="5" style="width: 100%; padding: 0.6rem; font-size: 1.1rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 4px;" />
+					</div>
+					<div>
+						<label class="form-label" for="dance-participation" style="font-weight: 700; font-size: 0.95rem;">Party-Energie / Tanzlust</label>
+						<select id="dance-participation" class="form-input" style="cursor: pointer; font-size: 0.95rem; width: 100%; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px;">
+							<option value="0.33">Ruhig / Älteres Publikum (33% Tänzer)</option>
+							<option value="0.45" selected>Standard Party-Stimmung (45% Tänzer)</option>
+							<option value="0.60">Ausgelassene Feierfreude (60% Tänzer)</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Table Shape & Seating Density -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="table-style" style="font-weight: 700; font-size: 0.95rem;">Tischformat für das Dinner</label>
+					<select id="table-style" class="form-input" style="cursor: pointer; width: 100%; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px;">
+						<option value="round-60" selected>150 cm Rundtisch (8 Gäste bequem / max. 10)</option>
+						<option value="round-72">180 cm Rundtisch (10 Gäste bequem / max. 12)</option>
+						<option value="rect-8ft">240 cm Rechteckige Tafel (8 Gäste / 4 pro Seite)</option>
+					</select>
+				</div>
+
+				<!-- Venue Dimensions (Optional Check) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Saalabmessungen der Location (Optionaler Platz-Check)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="room-length" style="font-size: 0.9rem;">Saallänge (Meter)</label>
+							<input type="number" id="room-length" class="form-input" value="18" min="5" step="1" style="width: 100%; padding: 0.55rem; font-size: 0.95rem; border: 2px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+						<div>
+							<label class="form-label" for="room-width" style="font-size: 0.9rem;">Saalbreite (Meter)</label>
+							<input type="number" id="room-width" class="form-input" value="15" min="5" step="1" style="width: 100%; padding: 0.55rem; font-size: 0.95rem; border: 2px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Entertainment & Service Buffers -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Service- & Entertainment-Stationen
+					</strong>
+
+					<div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.92rem;">
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-band" style="width: 18px; height: 18px;" />
+							<span>Live-Band-Bühne (20 m²) statt kleiner DJ-Pult (10 m²)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-buffet" checked style="width: 18px; height: 18px;" />
+							<span>Buffet-Station & Laufwege (15 m²)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-bar-stations" checked style="width: 18px; height: 18px;" />
+							<span>Getränkebar / Cocktail-Station (20 m²)</span>
+						</label>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results, Dance Floor Sizing & Capacity Check -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Clearance & Dance Floor Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Empfohlene Tanzflächengröße
+						</span>
+						<span id="dance-tile-count-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							30 Platten (1×1 m)
+						</span>
+					</div>
+
+					<div id="display-dance-dimensions" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						5,0 m × 6,0 m (30 m²)
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Kalkuliert für <strong id="display-peak-dancers" style="color: var(--fg-pencil);">68 Tänzer gleichzeitig</strong> (45% von 150 Gästen @ 0,45 m²/Person).
+					</p>
+
+					<!-- Itemized Space Breakdown Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<strong style="display: block; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+							📐 Komplette Raumflächen-Aufteilung:
+						</strong>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span>Tische & Gedecke (<strong id="display-tables-needed">19 Tische</strong>):</span>
+							<strong id="display-dining-sqft">180 m²</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span>Tanzfläche:</span>
+							<strong id="display-dance-sqft">30 m²</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span>Bars, Buffet & DJ/Band-Bühne:</span>
+							<strong id="display-production-sqft">45 m²</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.5rem 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--accent-red);">
+							<span>BENÖTIGTE MINDEST-SAALFLÄCHE:</span>
+							<strong id="display-total-room-needed">255 m²</strong>
+						</div>
+					</div>
+
+					<!-- Venue Room Fit Evaluation Alert -->
+					<div id="room-capacity-alert" style="background: #f0fdf4; border: 1.5px solid #16a34a; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.9rem; color: #166534; line-height: 1.5;">
+						<strong id="alert-fit-title">✅ Ausgezeichnete Raumgröße (270 m² vorhanden):</strong><br />
+						<span id="alert-fit-body">Ihr Raum mit 18 × 15 Metern bietet perfekten Platz für alle 19 Tische, Tanzfläche und 150 cm breite Serviergänge.</span>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-floorplan" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Drucken / PDF speichern
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Word-Export (.doc)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Table Clearance & ADA Rules Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						📏 Die goldene 150-cm-Tischabstandsregel:
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Tischkante zu Tischkante:</strong> Mindestens <strong>150 cm</strong> Freiraum zwischen runden Tischen. Dies umfasst 45 cm pro Stuhl und einen 60 cm breiten Servicegang für Kellner.</li>
+						<li><strong>Wandabstand:</strong> Tische mindestens <strong>100 bis 120 cm</strong> von Wänden, Fenstern und Säulen abrücken.</li>
+						<li><strong>Brauttisch-Abstand:</strong> Mindestens <strong>3 bis 4 Meter</strong> Abstand zur Tanzfläche für ungestörte Sichtlinien bei Fotos und Reden.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Auf einen Blick (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Tanzflächenmaße & Mindest-Saalgröße in m²
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Hier ist die Referenztabelle für 50 bis 300 Gäste mit Tanzflächenabmessungen, Plattenanzahl und minimaler Raumgröße.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					🕺 Die Faustformel für Tanzfläche & Saal:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Tanzfläche (m²) = [Gäste × 0,45 (Tänzer)] × 0,45 m² • Gesamte Saalfläche = ca. 1,6 bis 2,0 m² pro Gast für Tische, Tanzfläche, Buffet und Bar.
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Gästezahl</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Tanzflächenmaße</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">1×1-m-Platten</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">150-cm-Rundtische</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Mindest-Saalfläche</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">50 – 75 Gäste</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">3,5 × 4,0 m (14 m²)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">14 – 16 Platten</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">7 – 10 Tische</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">120 – 150 m²</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">100 – 125 Gäste</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">4,5 × 5,0 m (22 m²)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">22 – 25 Platten</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">13 – 16 Tische</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">180 – 220 m²</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a;">150 – 175 Gäste</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">5,0 × 6,0 m (30 m²)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">30 – 32 Platten</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">19 – 22 Tische</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">250 – 300 m²</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed;">200 – 250 Gäste</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">5,5 × 7,0 m (38 m²)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">38 – 42 Platten</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">25 – 32 Tische</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">340 – 420 m²</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Leitfaden für Raumplanung, Zelthochzeiten & Tanzfläche
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					So vermeiden Sie Engpässe an der Bar, quetschfreie Tischabstände und schaffen eine energiegeladene Tanzfläche.
+				</p>
+			</div>
+
+			<!-- Section 1: Dance Floor Psychology -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Die Psychologie der Tanzfläche (Größer ist NICHT immer besser)
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Ein häufiger Planungsfehler ist eine überdimensionierte Tanzfläche. Ist sie zu groß, verliert sich die Menge, die Tanzfläche wirkt leer und Gäste trauen sich nicht vor. Eine passgenaue, kompakte Tanzfläche sorgt für hohe Party-Dichte und zieht auch tanzmuffelige Gäste an:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>Die 40%-Regel:</strong> Bei jedem Lied sind ca. 30% bis 50% der Gäste auf der Fläche (der Rest holt Drinks, unterhält sich oder ist an der Fotobox).</li>
+					<li><strong>0,45 m² pro Tänzer:</strong> Ausreichend Bewegungsfreiheit für Drehungen, ohne mit Nachbarn zusammenzustoßen.</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: Tent Sizing -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. Zeltgrößen für Open-Air- & Gartenhochzeiten
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Wenn Sie ein Festzelt oder Stretchzelt mieten, gelten folgende Standardgrößen:
+				</p>
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-size: 0.98rem; line-height: 1.6; color: var(--fg-pencil);">
+					<strong>🎪 Typische Zeltabmessungen:</strong><br />
+					• <strong>100 Gäste:</strong> 12 m × 18 m Zelt (ca. 216 m²)<br />
+					• <strong>150 Gäste:</strong> 12 m × 24 m Zelt (ca. 288 m²)<br />
+					• <strong>200 Gäste:</strong> 15 m × 25 m bis 15 m × 30 m Zelt (375–450 m²)
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Häufig gestellte Fragen (FAQ)
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Wo sollte die Bar im Raum platziert werden?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Platzieren Sie die Bar in der Nähe der Tanzfläche und abseits des Haupteingangs. So bleibt die Party-Energie hoch und Gäste stauen sich nicht im Eingangsbereich.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Wie viel Platz benötigt ein runder Tisch (150 cm) samt Stühlen?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Inklusive herausgezogener Stühle und Servierkorridor beansprucht ein runder Tisch von 150 cm Durchmesser einen Kreis von etwa 3 Metern Durchmesser (ca. 8–10 m² Stellfläche).
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/de/seating-clearance-calculator" category="guests-logistics" />
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('layout-preset');
+		const guestsInput = document.getElementById('input-guests');
+		const dancePartSelect = document.getElementById('dance-participation');
+		const tableStyleSelect = document.getElementById('table-style');
+
+		const roomLengthInput = document.getElementById('room-length');
+		const roomWidthInput = document.getElementById('room-width');
+
+		const checkBand = document.getElementById('check-band');
+		const checkBuffet = document.getElementById('check-buffet');
+		const checkBars = document.getElementById('check-bar-stations');
+
+		const danceTileBadge = document.getElementById('dance-tile-count-badge');
+		const displayDanceDimensions = document.getElementById('display-dance-dimensions');
+		const displayPeakDancers = document.getElementById('display-peak-dancers');
+
+		const displayTablesNeeded = document.getElementById('display-tables-needed');
+		const displayDiningSqft = document.getElementById('display-dining-sqft');
+		const displayDanceSqft = document.getElementById('display-dance-sqft');
+		const displayProductionSqft = document.getElementById('display-production-sqft');
+		const displayTotalRoomNeeded = document.getElementById('display-total-room-needed');
+
+		const roomCapacityAlert = document.getElementById('room-capacity-alert');
+		const alertFitTitle = document.getElementById('alert-fit-title');
+		const alertFitBody = document.getElementById('alert-fit-body');
+
+		const btnPrint = document.getElementById('btn-print-floorplan');
+		const btnDoc = document.getElementById('btn-export-doc');
+
+		function calculateFloorPlan() {
+			const guests = parseInt(guestsInput.value, 10) || 1;
+			const dancerPct = parseFloat(dancePartSelect.value) || 0.45;
+			const tableStyle = tableStyleSelect.value;
+
+			// Dance Floor Math (Metric: 0.45 m2 per peak dancer)
+			const peakDancers = Math.round(guests * dancerPct);
+			const danceSqm = Math.round(peakDancers * 0.45);
+			const side = Math.max(3.5, Math.round(Math.sqrt(danceSqm) * 10) / 10);
+			const danceL = Math.max(4.0, side);
+			const danceW = Math.max(3.5, Math.round((danceSqm / danceL) * 10) / 10);
+			const actualDanceSqm = Math.round(danceL * danceW);
+			const tileCount = actualDanceSqm; // 1x1m tiles
+
+			// Table Math
+			let seatsPerTable = 8;
+			let sqmPerGuest = 1.2;
+			let tableTypeName = '150 cm Rundtische';
+
+			if (tableStyle === 'round-60') {
+				seatsPerTable = 8;
+				sqmPerGuest = 1.2;
+				tableTypeName = '150 cm Rundtische (8 Gäste)';
+			} else if (tableStyle === 'round-72') {
+				seatsPerTable = 10;
+				sqmPerGuest = 1.4;
+				tableTypeName = '180 cm Rundtische (10 Gäste)';
+			} else if (tableStyle === 'rect-8ft') {
+				seatsPerTable = 8;
+				sqmPerGuest = 1.1;
+				tableTypeName = '240 cm Tafeln (8 Gäste)';
+			}
+
+			const tablesCount = Math.ceil(guests / seatsPerTable);
+			const diningSqm = Math.round(guests * sqmPerGuest);
+
+			// Production & Buffers
+			let productionSqm = 0;
+			if (checkBand.checked) productionSqm += 20; // Band stage
+			else productionSqm += 10; // DJ Booth
+
+			if (checkBuffet.checked) productionSqm += 15;
+			if (checkBars.checked) productionSqm += 20;
+
+			const totalRoomNeeded = diningSqm + actualDanceSqm + productionSqm;
+
+			// Room Fit Evaluation
+			const rLength = parseFloat(roomLengthInput.value) || 0;
+			const rWidth = parseFloat(roomWidthInput.value) || 0;
+			const roomAvailableSqm = Math.round(rLength * rWidth);
+
+			// Update UI
+			danceTileBadge.textContent = `${tileCount} Platten (1×1 m)`;
+			displayDanceDimensions.textContent = `${danceL.toFixed(1).replace('.', ',')} m × ${danceW.toFixed(1).replace('.', ',')} m (${actualDanceSqm} m²)`;
+			displayPeakDancers.textContent = `${peakDancers} Tänzer gleichzeitig`;
+
+			displayTablesNeeded.textContent = `${tablesCount} ${tableTypeName}`;
+			displayDiningSqft.textContent = `${diningSqm.toLocaleString('de-DE')} m²`;
+			displayDanceSqft.textContent = `${actualDanceSqm.toLocaleString('de-DE')} m²`;
+			displayProductionSqft.textContent = `${productionSqm.toLocaleString('de-DE')} m²`;
+			displayTotalRoomNeeded.textContent = `${totalRoomNeeded.toLocaleString('de-DE')} m²`;
+
+			if (roomAvailableSqm > 0) {
+				if (roomAvailableSqm >= totalRoomNeeded) {
+					const surplus = roomAvailableSqm - totalRoomNeeded;
+					roomCapacityAlert.style.display = 'block';
+					roomCapacityAlert.style.background = '#f0fdf4';
+					roomCapacityAlert.style.borderColor = '#16a34a';
+					roomCapacityAlert.style.color = '#166534';
+					alertFitTitle.textContent = `✅ Ausgezeichnete Raumgröße (${roomAvailableSqm.toLocaleString('de-DE')} m² vorhanden):`;
+					alertFitBody.textContent = `Ihr Raum mit ${rLength} × ${rWidth} Metern bietet perfekten Platz für alle ${tablesCount} Tische, Tanzfläche und ${surplus.toLocaleString('de-DE')} m² Puffer für Gänge und Sektempfang.`;
+				} else {
+					const deficit = totalRoomNeeded - roomAvailableSqm;
+					roomCapacityAlert.style.display = 'block';
+					roomCapacityAlert.style.background = '#fef2f2';
+					roomCapacityAlert.style.borderColor = '#ef4444';
+					roomCapacityAlert.style.color = '#991b1b';
+					alertFitTitle.textContent = `⚠️ Raum möglicherweise zu eng (${deficit.toLocaleString('de-DE')} m² Fehlbedarf):`;
+					alertFitBody.textContent = `Ihr Raum mit ${rLength} × ${rWidth} m (${roomAvailableSqm.toLocaleString('de-DE')} m²) könnte knapp werden. Erwägen Sie 180-cm-Rundtische (10 Plätze) oder eine kompaktere Tanzfläche.`;
+				}
+			} else {
+				roomCapacityAlert.style.display = 'none';
+			}
+		}
+
+		// Preset Selection Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'ballroom-150') {
+				guestsInput.value = 150;
+				dancePartSelect.value = '0.45';
+				tableStyleSelect.value = 'round-60';
+				roomLengthInput.value = 18;
+				roomWidthInput.value = 15;
+				checkBand.checked = false;
+				checkBuffet.checked = true;
+				checkBars.checked = true;
+			} else if (p === 'tent-200') {
+				guestsInput.value = 200;
+				dancePartSelect.value = '0.45';
+				tableStyleSelect.value = 'round-60';
+				roomLengthInput.value = 24;
+				roomWidthInput.value = 12;
+				checkBand.checked = true;
+				checkBuffet.checked = true;
+				checkBars.checked = true;
+			} else if (p === 'barn-120') {
+				guestsInput.value = 120;
+				dancePartSelect.value = '0.45';
+				tableStyleSelect.value = 'rect-8ft';
+				roomLengthInput.value = 18;
+				roomWidthInput.value = 12;
+				checkBand.checked = false;
+				checkBuffet.checked = true;
+				checkBars.checked = true;
+			} else if (p === 'intimate-75') {
+				guestsInput.value = 75;
+				dancePartSelect.value = '0.33';
+				tableStyleSelect.value = 'round-60';
+				roomLengthInput.value = 14;
+				roomWidthInput.value = 10;
+				checkBand.checked = false;
+				checkBuffet.checked = false;
+				checkBars.checked = true;
+			}
+			calculateFloorPlan();
+		});
+
+		// Live Listeners
+		[guestsInput, dancePartSelect, tableStyleSelect, roomLengthInput, roomWidthInput, checkBand, checkBuffet, checkBars].forEach(inp => {
+			inp.addEventListener('input', calculateFloorPlan);
+			inp.addEventListener('change', calculateFloorPlan);
+		});
+
+		// Print Floor Plan Sheet
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Hochzeits-Raumplan & Tischabstände — Manage.Wedding</title>
+					<style>
+						@page { size: A4; margin: 15mm; }
+						body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 18pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Hochzeits-Raumplan & Flächen-Spezifikationen</h1>
+					<p>Gästezahl: ${guestsInput.value} | Benötigte Mindest-Saalfläche: ${displayTotalRoomNeeded.textContent}</p>
+					
+					<table>
+						<thead><tr><th>Raumbereich</th><th>Spezifikation / Anzahl</th><th>Flächenbedarf</th></tr></thead>
+						<tbody>
+							<tr><td><strong>Tanzfläche</strong></td><td>${displayDanceDimensions.textContent} (${danceTileBadge.textContent})</td><td>${displayDanceSqft.textContent}</td></tr>
+							<tr><td><strong>Tischplätze Dinner</strong></td><td>${displayTablesNeeded.textContent}</td><td>${displayDiningSqft.textContent}</td></tr>
+							<tr><td><strong>Service & Bühne</strong></td><td>DJ/Band, Buffet, Bar-Stationen</td><td>${displayProductionSqft.textContent}</td></tr>
+							<tr class="total-row"><td>BENÖTIGTE GESAMTFLÄCHE</td><td>—</td><td>${displayTotalRoomNeeded.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Export Word Doc
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Hochzeits-Raumplan</title>
+				<style>body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Raumplan & Spezifikationen</h2>
+					<p>Gäste: ${guestsInput.value} | <strong>Gesamtfläche: ${displayTotalRoomNeeded.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Bereich</th><th>Details</th><th>Fläche (m²)</th></tr></thead>
+						<tbody>
+							<tr><td>Tanzfläche</td><td>${displayDanceDimensions.textContent} (${danceTileBadge.textContent})</td><td>${displayDanceSqft.textContent}</td></tr>
+							<tr><td>Tische</td><td>${displayTablesNeeded.textContent}</td><td>${displayDiningSqft.textContent}</td></tr>
+							<tr><td>Service</td><td>Bars, Buffet, DJ/Band</td><td>${displayProductionSqft.textContent}</td></tr>
+							<tr style="font-weight:bold; background-color:#eee;"><td>GESAMT</td><td>—</td><td>${displayTotalRoomNeeded.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'hochzeits-raumplan-spezifikationen.doc';
+			link.click();
+		});
+
+		// Initial Calculation
+		calculateFloorPlan();
+	</script>
+</Layout>

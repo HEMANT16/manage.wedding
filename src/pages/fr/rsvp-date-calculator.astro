@@ -1,0 +1,312 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const title = "Calculateur de Date Limite RSVP & Faire-Part Mariage | Manage.Wedding";
+const description = "Calculez quand envoyer vos Save-the-Date, faire-part de mariage et quelle date limite de réponse (RSVP) fixer pour votre traiteur. Outil gratuit et instantané.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/rsvp-date-calculator/#webapp",
+      "name": "Calculateur de Date Limite RSVP et Calendrier Faire-Part",
+      "url": "https://manage.wedding/fr/rsvp-date-calculator",
+      "description": "Calculez les dates d'envoi recommandées pour vos Save-the-Date, faire-part officiels et date limite RSVP de mariage.",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Calculer la Date Limite de Réponse RSVP et d'Envoi des Faire-Part",
+      "description": "Méthode pour synchroniser les envois postaux, les délais de réponse et les exigences du traiteur.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Renseigner la Date du Mariage",
+          "text": "Sélectionnez le jour de votre cérémonie et réception sur le calendrier."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Préciser s'il s'agit d'un Mariage en Destination Éloignée",
+          "text": "Cochez l'option si vos invités doivent réserver des vols ou des hébergements de vacances."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Découvrir le Calendrier d'Envoi",
+          "text": "Obtenez la date d'envoi du Save-the-Date (6 à 8 mois avant), du faire-part (6 à 8 semaines avant) et la date limite RSVP (3 à 4 semaines avant)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Prévoir la Marge pour le Traiteur",
+          "text": "Assurez-vous de conserver 7 à 14 jours entre la date butoir RSVP et le verrouillage définitif des repas auprès du traiteur."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Comment fonctionne le calculateur de date RSVP ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Il part de la date de votre mariage et applique les délais d'usage : 6 mois avant pour les Save-the-Date, 8 semaines pour les faire-part et 4 semaines pour la date limite RSVP (délais allongés pour les mariages à l'étranger)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelle date limite fixer si le traiteur demande le nombre exact 2 semaines avant ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fixez votre date limite RSVP 4 semaines avant le mariage. Vous disposerez ainsi de 14 jours complets pour relancer les retardataires avant l'échéance traiteur."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Est-il obligatoire d'envoyer un Save-the-Date ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pour un mariage en été, un week-end prolongé ou si des invités viennent de loin, le Save-the-Date est indispensable. Pour un petit mariage local, il reste vivement recommandé pour bloquer la date dans les agendas."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem); box-sizing: border-box; overflow-x: hidden;">
+    <Breadcrumb title="Date Limite RSVP" category="stationery" />
+
+    <div class="home-grid" style="display: block; max-width: 800px; margin: 0 auto;">
+      
+      <div class="hand-card wobbly-border fade-in" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fff;">
+        <div class="tape" style="margin: 0 auto 1rem;"></div>
+        <div class="badge-postit">Outil Gratuit</div>
+        <h1 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--accent-red); margin-bottom: 0.5rem; text-align: center;">
+          Calculateur de Date Limite RSVP
+        </h1>
+        <p style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary); font-size: 1.1rem;">
+          Déterminez précisément quand poster vos faire-part et quelle date limite fixer pour éviter tout stress avec votre traiteur !
+        </p>
+
+        <form id="calculator-form">
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label for="wedding-date" class="form-label" style="font-family: var(--font-heading); font-size: 1.1rem; display: block; margin-bottom: 0.5rem;">
+              Date de Votre Mariage (Le Grand Jour) *
+            </label>
+            <input type="date" id="wedding-date" class="form-input" required style="width: 100%; box-sizing: border-box; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-size: 1.1rem; font-weight: 700;" />
+          </div>
+
+          <div class="form-group" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem; margin-bottom: 2rem; background: var(--bg-paper); padding: 0.75rem 1rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px;">
+            <input type="checkbox" id="destination-wedding" style="width: 22px; height: 22px; cursor: pointer; accent-color: var(--accent-blue);" />
+            <label for="destination-wedding" class="form-label" style="margin: 0; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+              Mariage à l'Étranger / Destination Éloignée (Vols & Hôtels nécessaires)
+            </label>
+          </div>
+
+          <div style="text-align: center;">
+            <button type="submit" class="hand-btn" style="padding: 0.8rem 2rem; font-size: 1.15rem;">
+              ✨ Calculer Mon Calendrier d'Envoi
+            </button>
+          </div>
+        </form>
+
+        <div id="result-box" class="result-box wobbly-border-dashed" style="margin-top: 3rem; display: none; background: #fffcf5; padding: 1.5rem; border: 2px dashed var(--fg-pencil); border-radius: 6px;">
+          <h3 class="font-heading" style="text-align: center; font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">
+            Vos Dates Clés d'Envoi
+          </h3>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px dashed var(--fg-pencil);">
+            <div style="font-weight: 700; font-size: 1.05rem;">💌 Envoi des Save-the-Date :</div>
+            <div id="res-std" style="font-weight: 800; color: var(--accent-blue); font-size: 1.1rem;">--</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px dashed var(--fg-pencil);">
+            <div style="font-weight: 700; font-size: 1.05rem;">📬 Envoi des Faire-Part Officiels :</div>
+            <div id="res-inv" style="font-weight: 800; color: #16a34a; font-size: 1.1rem;">--</div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0;">
+            <div style="font-weight: 700; font-size: 1.05rem;">⏳ Date Limite de Réponse (RSVP) :</div>
+            <div id="res-rsvp" style="font-weight: 800; color: var(--accent-red); font-size: 1.15rem;">--</div>
+          </div>
+
+          <!-- Dynamic Graph -->
+          <div style="margin-top: 2.5rem; position: relative; padding-top: 1.5rem;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; border-top: 2px dashed var(--fg-pencil);"></div>
+            <h4 class="font-heading" style="text-align: center; margin-bottom: 1rem; color: var(--fg-pencil); font-size: 1.1rem;">
+              Frise Chronologique Visuelle
+            </h4>
+            <div style="display: flex; height: 40px; border: 3px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #fff;">
+              <div id="bar-std" style="width: 33.3%; background-color: var(--post-it); border-right: 3px solid var(--fg-pencil); transition: width 0.5s ease; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: bold;" title="Save-the-Date">Save-the-Date</div>
+              <div id="bar-inv" style="width: 33.3%; background-color: var(--accent-blue); color: white; border-right: 3px solid var(--fg-pencil); transition: width 0.5s ease; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: bold;" title="Faire-Part">Faire-Part</div>
+              <div id="bar-rsvp" style="width: 33.4%; background-color: var(--accent-red); color: white; transition: width 0.5s ease; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 0.85rem; font-weight: bold;" title="RSVP & Traiteur">RSVP → Mariage</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+      <div class="hand-card" style="margin: 3rem auto 0 auto; max-width: 800px; background: var(--post-it); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+        <div class="tape" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);"></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+          <h2 class="font-heading" style="font-size: clamp(1.3rem, 2.5vw, 1.7rem); color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+            <span>⚡</span> Règle d'Or du Rétroplanning Papeterie
+          </h2>
+          <span style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(0,0,0,0.06); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid var(--fg-pencil);">
+            Repères Clés
+          </span>
+        </div>
+        
+        <!-- Core Formula Banner -->
+        <div style="background: rgba(255, 255, 255, 0.9); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+          <p class="font-body" style="font-size: 1.05rem; line-height: 1.6; margin: 0 0 0.5rem 0; color: var(--fg-pencil);">
+            <strong>Calendrier Standard (Mariage Local) :</strong> 
+            <span style="display: inline-block; background: #fef3c7; border: 1px solid #d97706; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #92400e; margin: 2px 4px;">Save-the-Date = 6 à 8 Mois Avant</span> · 
+            <span style="display: inline-block; background: #eff6ff; border: 1px solid #3b82f6; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #1e40af; margin: 2px 4px;">Faire-Part = 6 à 8 Semaines Avant</span> · 
+            <span style="display: inline-block; background: #f0fdf4; border: 1px solid #22c55e; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #166534; margin: 2px 4px;">Date Butoir RSVP = 3 à 4 Semaines Avant</span>
+          </p>
+        </div>
+
+        <!-- Semantic Benchmark Table -->
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; background: #fff; border: 2px solid var(--fg-pencil); font-family: var(--font-body); font-size: 0.92rem; text-align: left;">
+            <thead>
+              <tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+                <th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Étape Papeterie</th>
+                <th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--accent-blue);">Mariage en France</th>
+                <th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--accent-red);">Mariage à l'Étranger</th>
+                <th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Action des Invités</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Save-the-Date</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">6 à 8 mois avant</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">9 à 12 mois avant</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Bloquer la date sur l'agenda</td>
+              </tr>
+              <tr style="background: #faf8f3;">
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Faire-Part Officiel</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">6 à 8 semaines avant</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">12 à 16 semaines avant</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Confirmer présence & choix repas</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Date Limite RSVP</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">3 à 4 semaines avant</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">6 à 8 semaines avant</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Date butoir de réponse</td>
+              </tr>
+              <tr style="background: #faf8f3;">
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Verrouillage Traiteur</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">10 à 14 jours avant</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">21 à 30 jours avant</td>
+                <td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Transmission des repas exacts</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SEO Article -->
+      <article class="hand-card fade-in" style="margin-top: 3rem; background-color: #fff; padding: clamp(1.5rem, 3vw, 2.5rem);">
+        <h2 class="font-heading" style="font-size: 2rem; color: var(--accent-blue); margin-bottom: 1.5rem;">
+          Guide Complet pour Réussir ses Délais de Papeterie
+        </h2>
+        
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil);">
+          Fixer la bonne date limite de réponse (RSVP) est un équilibre subtil : demandée trop tôt, les invités oublient de répondre ; fixée trop tard, votre traiteur et votre fleuriste risquent de manquer de temps pour leurs approvisionnements.
+        </p>
+
+        <h3 class="font-heading" style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--fg-pencil);">
+          Pourquoi Prévoir une Marge de Sécurité ?
+        </h3>
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil);">
+          Il y a toujours environ 15 % à 25 % d'invités qui ne répondent pas avant la date limite. En plaçant votre date butoir <strong>4 semaines avant le mariage</strong>, vous vous offrez 2 semaines de tranquillité pour relancer amicalement les retardataires avant de devoir transmettre la liste définitive à votre traiteur à J-15.
+        </p>
+      </article>
+
+    </div>
+
+    <RelatedTools currentPath="/fr/rsvp-date-calculator" category="stationery" />
+
+  </main>
+</Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('calculator-form');
+    const resBox = document.getElementById('result-box');
+    const resStd = document.getElementById('res-std');
+    const resInv = document.getElementById('res-inv');
+    const resRsvp = document.getElementById('res-rsvp');
+    const barStd = document.getElementById('bar-std');
+    const barInv = document.getElementById('bar-inv');
+    const barRsvp = document.getElementById('bar-rsvp');
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const dateInput = document.getElementById('wedding-date').value;
+        const isDestination = document.getElementById('destination-wedding').checked;
+        
+        if (!dateInput) return;
+
+        const parts = dateInput.split('-');
+        const weddingDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        
+        let stdDate = new Date(weddingDate.getTime());
+        let invDate = new Date(weddingDate.getTime());
+        let rsvpDate = new Date(weddingDate.getTime());
+
+        if (isDestination) {
+          stdDate.setMonth(stdDate.getMonth() - 9);
+          invDate.setDate(invDate.getDate() - (12 * 7));
+          rsvpDate.setDate(rsvpDate.getDate() - (6 * 7));
+        } else {
+          stdDate.setMonth(stdDate.getMonth() - 6);
+          invDate.setDate(invDate.getDate() - (8 * 7));
+          rsvpDate.setDate(rsvpDate.getDate() - (4 * 7));
+        }
+
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        
+        resStd.textContent = stdDate.toLocaleDateString('fr-FR', options);
+        resInv.textContent = invDate.toLocaleDateString('fr-FR', options);
+        resRsvp.textContent = rsvpDate.toLocaleDateString('fr-FR', options);
+
+        resBox.style.display = 'block';
+
+        const totalDuration = weddingDate.getTime() - stdDate.getTime();
+        if (totalDuration > 0) {
+          const stdToInv = invDate.getTime() - stdDate.getTime();
+          const invToRsvp = rsvpDate.getTime() - invDate.getTime();
+          const rsvpToWed = weddingDate.getTime() - rsvpDate.getTime();
+
+          const stdPct = (stdToInv / totalDuration) * 100;
+          const invPct = (invToRsvp / totalDuration) * 100;
+          const rsvpPct = (rsvpToWed / totalDuration) * 100;
+          
+          barStd.style.width = `${stdPct}%`;
+          barInv.style.width = `${invPct}%`;
+          barRsvp.style.width = `${rsvpPct}%`;
+        }
+
+        resBox.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+  });
+</script>

@@ -1,0 +1,316 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Simulateurs de Budget & Finances de Mariage (Gratuits & Privés)";
+const description = "Simulateurs gratuits de budget de mariage : ventilation selon la règle 50/15/10/10/10/5, audit des frais cachés de domaine, répartition familiale et EVJF/EVG.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://manage.wedding/fr/budget/#collection",
+      "name": "Simulateurs de Budget et Finances de Mariage",
+      "url": "https://manage.wedding/fr/budget",
+      "inLanguage": "fr",
+      "description": "Suite complète d'outils pour budgétiser votre mariage, auditer les devis de domaine, répartir les dépenses entre familles et estimer les pourboires.",
+      "hasPart": [
+        { "@type": "WebApplication", "name": "Simulateur de Budget Global", "url": "https://manage.wedding/fr/master-budget-calculator" },
+        { "@type": "WebApplication", "name": "Frais Cachés du Lieu de Réception", "url": "https://manage.wedding/fr/wedding-venue-cost-calculator" },
+        { "@type": "WebApplication", "name": "Qui Paie Quoi au Mariage ?", "url": "https://manage.wedding/fr/who-pays-for-what-wedding" },
+        { "@type": "WebApplication", "name": "Budget Enterrement de Vie (EVJF / EVG)", "url": "https://manage.wedding/fr/bachelorette-budget-calculator" },
+        { "@type": "WebApplication", "name": "Guide des Pourboires Prestataires", "url": "https://manage.wedding/fr/vendor-tipping-calculator" },
+        { "@type": "WebApplication", "name": "Budget Voyage de Noces", "url": "https://manage.wedding/fr/honeymoon-budget-estimator" },
+        { "@type": "WebApplication", "name": "Simulateur de Prêt Mariage", "url": "https://manage.wedding/fr/wedding-loan-calculator" },
+        { "@type": "WebApplication", "name": "Calculateur de Démarches & Nom d'Usage après Mariage", "url": "https://manage.wedding/fr/wedding-name-change-calculator" },
+        { "@type": "WebApplication", "name": "Calculateur de Cadeau en Argent", "url": "https://manage.wedding/fr/gift-cash-calculator" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quelle est la formule recommandée pour répartir le budget d'un mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La répartition de référence du secteur nuptial est : 45-50% pour le Lieu & Traiteur (Location, Repas et Boissons), 12-15% pour la Photo & Vidéo, 10% pour les Tenues & Beauté, 8-10% pour l'Animation & Musique, 8-10% pour les Fleurs & Décoration, 3-5% pour la Papeterie & Affranchissement, et 5% de Réserve pour Imprévus."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Que sont les frais cachés de réception (droit de bouchon, heures supplémentaires, TVA) ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Il s'agit des surcoûts non mentionnés dans le tarif de base : droit de bouchon sur le champagne apporté (3 à 8 € par bouteille), heures supplémentaires au-delà de 3h du matin (150 à 400 €/heure), ménage de fin de soirée, gardiennage et TVA spécifique aux prestations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien donner de pourboire aux prestataires de mariage en France et Europe ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En France et en Europe, le service est généralement inclus, mais un pourboire d'usage récompense l'excellence : 20 à 50 € par serveur ou maître d'hôtel, 50 à 100 € pour le DJ/animateur, 10 à 20 € pour les coiffeurs et livreurs."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const budgetTools = [
+  {
+    title: "Budget Enterrement de Vie de Garçon (EVG)",
+    url: "/fr/bachelor-party-budget-calculator",
+    icon: "🍻",
+    badge: "Offrir au Marié",
+    desc: "Calculez les frais de week-end entre amis (logement, activités, soirées) en partageant équitablement la part du futur marié.",
+    tags: ["Partage N-1", "Texte Lydia / Paylib", "Week-end EVG"]
+  },
+
+  {
+    title: "Simulateur de Budget Global",
+    url: "/fr/master-budget-calculator",
+    icon: "💰",
+    badge: "Règle 50/15/10",
+    desc: "Indiquez votre budget total pour obtenir une ventilation automatique par poste avec fonds de secours pour imprévus.",
+    tags: ["Ratios Éprouvés", "Fonds d'Urgence", "Suivi des Coûts"]
+  },
+  {
+    title: "Frais Cachés du Lieu de Réception",
+    url: "/fr/wedding-venue-cost-calculator",
+    icon: "🏰",
+    badge: "Audit Devis",
+    desc: "Calculez le coût réel d'un domaine ou château au-delà du loyer brut : minimum traiteur, droit de bouchon et heures sup.",
+    tags: ["Droit de Bouchon", "Heures Sup", "Net à Payer"]
+  },
+  {
+    title: "Qui Paie Quoi au Mariage ?",
+    url: "/fr/who-pays-for-what-wedding",
+    icon: "👥",
+    badge: "Tradition vs Moderne",
+    desc: "Comparez le protocole traditionnel avec la répartition moderne entre familles. Plus de 20 postes détaillés et accord imprimable.",
+    tags: ["Familles Recomposées", "Partage Équitable", "Accord PDF"]
+  },
+  {
+    title: "Budget Enterrement de Vie (EVJF / EVG)",
+    url: "/fr/bachelorette-budget-calculator",
+    icon: "🍸",
+    badge: "Part Mariée Offerte",
+    desc: "Répartissez l'hébergement, les repas et les activités entre témoins et amis en offrant la part de la mariée ou du marié.",
+    tags: ["Calcul N-1", "Copie WhatsApp", "Activités"]
+  },
+  {
+    title: "Guide des Pourboires Prestataires",
+    url: "/fr/vendor-tipping-calculator",
+    icon: "💵",
+    badge: "Usages & Normes",
+    desc: "Fini les hésitations le Jour J : calculez les gratifications d'usage et imprimez vos bordereaux d'enveloppes.",
+    tags: ["Enveloppes de Pourboire", "Usage Européen", "Checklist Jour J"]
+  },
+  {
+    title: "Budget Voyage de Noces",
+    url: "/fr/honeymoon-budget-estimator",
+    icon: "✈️",
+    badge: "Calcul Voyage",
+    desc: "Estimez le budget total de votre lune de miel : vols, hôtels de charme, dîners gastronomiques, excursions et assurances.",
+    tags: ["Hébergement", "Repas Quotidiens", "Imprévus"]
+  },
+  {
+    title: "Simulateur de Prêt Mariage",
+    url: "/fr/wedding-loan-calculator",
+    icon: "🏦",
+    badge: "Mensualités & TAEG",
+    desc: "Calculez vos mensualités exactes, le coût total des intérêts et la durée de remboursement selon le taux d'emprunt.",
+    tags: ["TAEG", "Mensualité", "Coût du Crédit"]
+  },
+  {
+    title: "Changement de Nom & Démarches",
+    url: "/fr/wedding-name-change-calculator",
+    icon: "✍️",
+    badge: "Démarches & Timbres",
+    desc: "Calculez les timbres fiscaux (Passeport, CNI) et organisez vos déclarations ANTS, Impôts et CPAM dans l'ordre légal.",
+    tags: ["Nom d'Usage", "ANTS Passeport", "Ordre Légal"]
+  },
+  {
+    title: "Calculateur de Cadeau en Argent",
+    url: "/fr/gift-cash-calculator",
+    icon: "🎁",
+    badge: "Guide Invités",
+    desc: "Combien donner dans l'urne ou sur la liste de mariage ? Calculez le montant idéal selon votre lien, déplacement et accompagnant.",
+    tags: ["Étiquette Invités", "Formule Urne", "Participation Repas"]
+  }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+    
+    <!-- Hero Header -->
+    <header class="fade-in category-header" style="text-align: center; margin-bottom: 3rem; position: relative;">
+      <div class="tape" style="margin: 0 auto 1rem;"></div>
+      <span class="badge-postit">Pôle Finances & Budget</span>
+      <h1 class="font-heading" style="font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+        Simulateurs de <span class="accent-italic">Budget & Finances</span> de Mariage
+      </h1>
+      <p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+        Prenez le contrôle total de vos finances nuptiales. Des calculatrices 100% gratuites, locales et sans inscription pour ventiler vos dépenses et éviter les mauvaises surprises.
+      </p>
+    </header>
+
+    <!-- Category Nav Bar -->
+    <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+      <span style="font-size: 0.9rem; font-weight: 700; color: #64748b; align-self: center;">Catégories :</span>
+      <a href="/fr/budget" class="tool-tag" style="background: var(--post-it); font-weight: 700; text-decoration: none; padding: 6px 14px; border: 2px solid var(--fg-pencil);">💰 Budget (Actif)</a>
+      <a href="/fr/dining" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">🍾 Réception & Bar</a>
+      <a href="/fr/guests" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">👥 Invités & Logistique</a>
+      <a href="/fr/stationery" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💌 Papeterie & Créatif</a>
+    </div>
+
+    <!-- Tools Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem; margin-bottom: 4rem;">
+      {budgetTools.map(tool => (
+        <div class="hand-card" style="padding: 1.75rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span style="font-size: 2.2rem;">{tool.icon}</span>
+              <span style="font-size: 0.78rem; font-weight: 700; background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+                {tool.badge}
+              </span>
+            </div>
+            
+            <h2 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+              {tool.title}
+            </h2>
+            
+            <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 0.75rem;">
+              {tool.tags.map(t => (
+                <span class="tool-tag" style="font-size: 0.75rem; padding: 2px 6px;">{t}</span>
+              ))}
+            </div>
+
+            <p class="font-body" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+              {tool.desc}
+            </p>
+          </div>
+
+          <a href={tool.url} class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+            Ouvrir le Simulateur →
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- In-Depth Budgeting Guide -->
+    <article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+        <span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">Conseils d'Experts</span>
+        <h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+          Comment Maîtriser le Budget de Votre Mariage
+        </h2>
+        <p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+          Les règles d'or pour anticiper les dépenses, éviter l'endettement et investir sereinement dans vos priorités.
+        </p>
+      </div>
+
+      <section style="margin-bottom: 3rem;">
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+          1. La Règle d'Or 50/15/10/10/10/5
+        </h3>
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+          Plutôt que d'estimer au hasard, appuyez-vous sur les pourcentages réels constatés lors de milliers d'unions :
+        </p>
+        
+        <div style="overflow-x: auto; margin-top: 1rem; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+            <thead>
+              <tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Poste de Dépense</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Pourcentage</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Ce Que Cela Comprend</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Lieu & Restauration</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 700;">45% – 50%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Location du domaine, vin d'honneur, repas servi à table ou buffet, boissons et service.</td>
+              </tr>
+              <tr style="background: #faf8f5;">
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Photographe & Vidéaste</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">12% – 15%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Reportage journée complète, séance engagement, film teaser et galerie en ligne.</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Tenues & Mise en Beauté</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">8% – 10%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Robe de mariée, costume, retouches, voile, chaussures, essais coiffure et maquillage.</td>
+              </tr>
+              <tr style="background: #faf8f5;">
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Musique & Animation</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">8% – 10%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">DJ, groupe de musique en direct pour le cocktail, sonorisation cérémonie et éclairage de piste.</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Fleurs & Décoration</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">8% – 10%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Bouquet de mariée, arche de cérémonie, centres de table, boutonnières et mobilier d'ambiance.</td>
+              </tr>
+              <tr style="background: #faf8f5;">
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Fonds de Réserve pour Imprévus</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-blue); font-weight: 700;">5%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Tente de repli météo, repas prestataires, heures supplémentaires et pourboires.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section style="margin-bottom: 3rem;">
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+          2. Débusquer les Frais Cachés sur les Devis
+        </h3>
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+          Un menu annoncé à 90 € par personne peut rapidement atteindre <strong>125 € par convive</strong> une fois ajoutés le droit de bouchon, le forfait ménage, les heures de nuit du personnel et la TVA. Prenez le réflexe de calculer le coût réel TTC avant toute signature d'engagement.
+        </p>
+      </section>
+
+      <!-- FAQ Section -->
+      <section>
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.25rem; text-align: center;">
+          Foire Aux Questions
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              Quelle est la formule recommandée pour répartir le budget d'un mariage ?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              La règle 50/15/10/10/10/5 préconise 45-50% pour le lieu et le traiteur, 12-15% pour la photographie/vidéo, 10% pour les tenues, 8-10% pour la musique, 8-10% pour les fleurs, et 5% de réserve.
+            </p>
+          </details>
+
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              Que sont les frais cachés de réception ?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              Il s'agit des droits de bouchon, des majorations horaires de nuit après 3h du matin, du forfait de ménage et des frais d'électricité pour le groupe de musique.
+            </p>
+          </details>
+
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              Combien donner de pourboire aux prestataires de mariage ?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              En France, un geste de 20 à 50 € par serveur ou 50 à 100 € pour le DJ est une marque de reconnaissance très appréciée pour un service impeccable.
+            </p>
+          </details>
+        </div>
+      </section>
+
+    </article>
+
+  </main>
+</Layout>

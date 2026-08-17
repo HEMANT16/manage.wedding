@@ -1,0 +1,873 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Simulador de Crédito para Casamento & Tabela de Amortização",
+      "url": "https://manage.wedding/pt/wedding-loan-calculator",
+      "inLanguage": "pt",
+      "description": "Calculadora gratuita de crédito para casamento. Calcule prestações mensais, juros totais (TAEG), comissões de abertura e tabelas completas de amortização. Simule amortizações extra e exporte para Word, PDF ou Excel.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Como Calcular Prestações Mensais e Juros do Crédito para Casamento",
+      "description": "Guia passo a passo para calcular a amortização mensal, taxas TAEG/TAN e prazos de liquidação para financiamento de casamento.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Calcule o Seu Défice de Liquidez Real",
+          "text": "Subtraia a poupança acumulada e donativos familiares aos custos totais previstos para pedir emprestado apenas o estritamente necessário."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Introduza o Montante e a Taxa de Juro (TAEG)",
+          "text": "Indique o valor do capital pretendido e a taxa de juro anual (normalmente entre 7% e 12% em crédito pessoal consoante o perfil de risco)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Selecione o Prazo de Reembolso",
+          "text": "Escolha um prazo entre 12 e 60 meses para encontrar o equilíbrio entre prestações mensais confortáveis e o custo total de juros."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Simule Amortizações Mensais Antecipadas",
+          "text": "Acrescente pagamentos extra de capital para verificar quantos meses e centenas de euros em juros consegue poupar."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qual é a taxa de juro média (TAEG) para um crédito pessoal de casamento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Em Portugal e na União Europeia, as taxas TAEG para crédito pessoal sem finalidade específica situam-se habitualmente entre 7,5% e 12,5% para clientes com bom historial bancário e taxa de esforço equilibrada (inferior a 35%)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Vale a pena recorrer a um crédito pessoal para pagar o casamento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Os consultores financeiros recomendam evitar dívidas de consumo para eventos de um só dia. Contudo, um pequeno crédito de valor controlado com taxa fixa para cobrir sinais iniciais ou despesas pontuais, com liquidação prevista em 12 a 24 meses (recorrendo também às prendas dos convidados), pode ser uma solução de tesouraria viável."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Existem penalizações por amortização antecipada do crédito?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "De acordo com a legislação do Banco de Portugal e da UE para crédito ao consumo, a comissão de reembolso antecipado está legalmente limitada a um máximo de 0,5% do capital amortizado (se faltar mais de 1 ano para o fim do contrato) ou 0,25% (se faltar 1 ano ou menos), sendo por vezes nula em taxas variáveis."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como exportar o plano de amortização mensal do empréstimo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Clique no botão 'Exportar Word (.doc)', 'Exportar PDF / Imprimir' ou 'Exportar CSV' no topo do simulador. O sistema compila uma tabela mês a mês com as prestações, amortização de capital, juros pagos e saldo devedor."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Simulador de Crédito para Casamento (Prestações, Juros & Tabela de Amortização) | Manage.Wedding"
+	description="Calcule prestações mensais, taxas TAEG/TAN e planos de amortização para créditos de casamento. Simule pagamentos extra e exporte para Word, PDF ou Excel."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Simulador de Crédito para Casamento
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Calcule prestações mensais, custo total de juros e prazos de liquidação. Simule amortizações antecipadas de capital e exporte o seu <strong>Plano de Amortização</strong> para <strong>Word (.doc)</strong> ou <strong>PDF</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Como Simular o Empréstimo em 3 Passos Simples
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Defina o Montante e Taxa (TAEG)
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Introduza o valor do financiamento estritamente necessário e a taxa de juro anual (TAEG %), ou escolha um dos atalhos rápidos predefinidos.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Ajuste o Prazo & Pagamentos Extra
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Escolha o prazo (12 a 60 meses) e teste pagamentos mensais extra para verificar o impacto direto na redução dos juros totais.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Exporte o Plano de Reembolso
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Clique em <strong>"📝 Exportar Word (.doc)"</strong> ou <strong>"🖨️ Exportar PDF"</strong> para descarregar o mapa completo de amortização mês a mês.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="loan-calc-grid">
+			
+			<!-- Left Column: Input Form & Presets -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div style="width: 100%;">
+					<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+						🏦 Condições do Crédito & Taxas
+					</h2>
+					<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+						Configure o capital, taxa de juro, prazo e amortizações
+					</span>
+				</div>
+			</div>
+
+				<!-- Quick Presets -->
+				<div style="margin-bottom: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; text-align: center;">
+					<span class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.4rem; text-align: center;">
+						⚡ Cenários Frequentes de Financiamento:
+					</span>
+					<div style="display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center;">
+						<button type="button" class="loan-preset-btn" data-amt="5000" data-apr="7.5" data-term="24">💵 5.000 € (24 M • 7,5%)</button>
+						<button type="button" class="loan-preset-btn active-preset" data-amt="12000" data-apr="8.9" data-term="36">💳 12.000 € (36 M • 8,9%)</button>
+						<button type="button" class="loan-preset-btn" data-amt="20000" data-apr="9.5" data-term="48">💎 20.000 € (48 M • 9,5%)</button>
+						<button type="button" class="loan-preset-btn" data-amt="30000" data-apr="10.9" data-term="60">👑 30.000 € (60 M • 10,9%)</button>
+					</div>
+				</div>
+
+				<form id="loan-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+					
+					<!-- Loan Amount & Currency -->
+					<div style="display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 0.75rem;">
+						<div>
+							<label for="input-loan-amount" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Montante Solicitado *
+							</label>
+							<div style="display: flex; align-items: center; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; overflow: hidden;">
+								<span id="currency-symbol-display" style="padding: 0.55rem 0.75rem; background: var(--bg-paper); border-right: 1px solid var(--fg-pencil); font-weight: bold; font-family: var(--font-heading);">€</span>
+								<input type="number" id="input-loan-amount" value="12000" min="500" max="150000" step="500" required style="flex: 1; border: none; padding: 0.55rem; font-family: var(--font-body); font-size: 1.1rem; font-weight: bold; outline: none; background: transparent;">
+							</div>
+						</div>
+
+						<div>
+							<label for="currency-select" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Moeda
+							</label>
+							<select id="currency-select" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+								<option value="€" selected>€ (EUR)</option>
+								<option value="R$">R$ (BRL)</option>
+								<option value="$">$ (USD)</option>
+								<option value="£">£ (GBP)</option>
+								<option value="CHF">CHF</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- APR % & Term Months -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-apr" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Taxa Anual (TAEG %) *
+							</label>
+							<div style="display: flex; align-items: center; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; overflow: hidden;">
+								<input type="number" id="input-apr" value="8.9" min="0" max="36" step="0.1" required style="flex: 1; border: none; padding: 0.55rem; font-family: var(--font-body); font-size: 1.1rem; outline: none; background: transparent;">
+								<span style="padding: 0.55rem 0.75rem; background: var(--bg-paper); border-left: 1px solid var(--fg-pencil); font-weight: bold;">%</span>
+							</div>
+						</div>
+
+						<div>
+							<label for="select-loan-term" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Prazo de Reembolso
+							</label>
+							<select id="select-loan-term" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+								<option value="12">12 Meses (1 Ano)</option>
+								<option value="24">24 Meses (2 Anos)</option>
+								<option value="36" selected>36 Meses (3 Anos)</option>
+								<option value="48">48 Meses (4 Anos)</option>
+								<option value="60">60 Meses (5 Anos)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Origination Fee & Extra Monthly Payment -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.75rem;">
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-origination-pct" class="font-heading" style="font-size: 0.85rem; color: var(--fg-pencil);">
+									Comissão de Dossier / Abertura (%)
+								</label>
+								<span id="origination-fee-display" style="font-size: 0.8rem; color: var(--accent-red); font-weight: bold;">0 €</span>
+							</div>
+							<div style="display: flex; align-items: center; gap: 0.5rem;">
+								<input type="range" id="input-origination-pct" min="0" max="5" step="0.5" value="0" style="flex: 1; accent-color: var(--fg-pencil);">
+								<span id="origination-pct-label" style="font-size: 0.85rem; font-weight: bold; width: 35px;">0%</span>
+							</div>
+						</div>
+
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-extra-payment" class="font-heading" style="font-size: 0.85rem; color: var(--fg-pencil);">
+									Pagamento Mensal Extra (Amortização de Capital)
+								</label>
+								<span id="extra-payment-display" style="font-size: 0.85rem; color: var(--accent-blue); font-weight: bold;">+0 €/mês</span>
+							</div>
+							<div style="display: flex; align-items: center; gap: 0.5rem;">
+								<input type="range" id="input-extra-payment" min="0" max="500" step="25" value="0" style="flex: 1; accent-color: var(--accent-blue);">
+								<span id="extra-payment-label" style="font-size: 0.85rem; font-weight: bold; width: 55px;">0 €</span>
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Financial Results & Surcharge Comparison -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Monthly Payment Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								💳 Prestação Mensal Estimada
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Amortização de capital + Juros mensais
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Exportar Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Exportar PDF / Imprimir
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Monthly Payment Highlight -->
+					<div style="background: #eff6ff; border: 2.5px solid var(--accent-blue); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: var(--accent-blue); display: block; font-weight: bold;">Prestação Mensal Prevista</span>
+						<strong id="res-monthly-payment" class="font-heading" style="font-size: 2.6rem; color: var(--accent-blue); display: block; line-height: 1.2;">381,04 €</strong>
+						<span id="res-term-note" style="font-size: 0.8rem; color: var(--accent-blue);">Durante 36 Meses a 8,9% TAEG</span>
+					</div>
+
+					<!-- Line-Item Totals Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Custo Total do Financiamento (MTIC)
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.95rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">💵 Capital Solicitado (Principal):</td>
+									<td id="res-principal-amount" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">12.000,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb; color: var(--accent-red);">
+									<td style="padding: 0.4rem 0;">📈 Encargos Totais de Juros:</td>
+									<td id="res-interest-amount" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">1.717,44 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🏷️ Comissão de Dossier / Abertura:</td>
+									<td id="res-origination-fee" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">0,00 €</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #fafafa; font-size: 1.05rem;">
+									<td style="padding: 0.45rem 0; font-weight: bold;">Montante Total a Reembolsar (MTIC):</td>
+									<td id="res-grand-total-paid" style="padding: 0.45rem 0; text-align: right; font-weight: bold; color: var(--accent-red);">13.717,44 €</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Principal vs Interest Visual Proportion Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span style="color: var(--accent-blue);">Capital (<span id="bar-principal-pct">87%</span>)</span>
+							<span style="color: var(--accent-red);">Juros (<span id="bar-interest-pct">13%</span>)</span>
+						</div>
+						<div style="display: flex; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="bar-principal" style="width: 87%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+							<div id="bar-interest" style="width: 13%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Extra Payment Interest Savings Alert Card -->
+				<div id="extra-savings-card" class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil); display: none;">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						🎉 Impacto das Amortizações Extra!
+					</strong>
+					<p id="extra-savings-text" class="font-body" style="font-size: 0.9rem; line-height: 1.5; margin: 0; color: var(--fg-pencil); text-align: center;">
+						Ao amortizar um valor extra todos os meses, você poupa juros e liquida o crédito do casamento vários meses antes do previsto!
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Plano Oficial de Reembolso do Crédito</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportado a: <span id="print-date"></span> | Capital: <span id="print-principal"></span> | Prestação Mensal: <span id="print-monthly"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: center;">Mês</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Prestação</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Capital</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Juros</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Saldo Devedor</th>
+					</tr>
+				</thead>
+				<tbody id="print-schedule-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 2.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Resumo Direto ao Assunto (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Regra Prática: Amortização e Custo de Empréstimos
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 750px; margin: 0 auto; font-weight: 500;">
+					Sem tempo a perder? Conheça a fórmula de cálculo da prestação constante e a tabela comparativa para créditos de 10.000 €, 20.000 € e 30.000 €.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📐 Fórmula Financeira da Prestação Mensal:
+				</strong>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 700; font-family: monospace;">
+					M = P × [ r(1 + r)ⁿ ] / [ (1 + r)ⁿ − 1 ]
+				</p>
+				<p class="font-body" style="font-size: 0.88rem; line-height: 1.5; margin: 0.5rem 0 0 0; color: var(--text-secondary); text-align: center;">
+					Onde <strong>P</strong> = Capital Financiado, <strong>r</strong> = Taxa de Juro Mensal (TAEG ÷ 1200) e <strong>n</strong> = Número Total de Mensalidades.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 600px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Capital (Prazo 36 Meses)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">7,5% TAEG (Excelente Perfil)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">9,5% TAEG (Perfil Médio)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">11,5% TAEG (Taxa Superior)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Diferença de Juros</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">10.000 € Financiados</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;"><strong>311 €/mês</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary);">1.196 € juros tot.</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;"><strong>320 €/mês</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary);">1.533 € juros tot.</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;"><strong>330 €/mês</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary);">1.876 € juros tot.</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: var(--accent-red);">+680 € Juros</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">20.000 € Financiados</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;"><strong>622 €/mês</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary);">2.392 € juros tot.</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;"><strong>641 €/mês</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary);">3.066 € juros tot.</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;"><strong>660 €/mês</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary);">3.752 € juros tot.</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: var(--accent-red);">+1.360 € Juros</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">30.000 € Financiados</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;"><strong>933 €/mês</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary);">3.588 € juros tot.</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;"><strong>961 €/mês</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary);">4.599 € juros tot.</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;"><strong>990 €/mês</strong><br><span style="font-size: 0.8rem; color: var(--text-secondary);">5.628 € juros tot.</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: var(--accent-red);">+2.040 € Juros</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Manual de Financiamento Responsável</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Guia Completo de Financiamento e Crédito para Casamento
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Compreenda o impacto da TAEG, prazos de amortização, comissões de abertura e as melhores estratégias para evitar dívidas prolongadas.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/bank_vault_sketch.webp" 
+					alt="Simulador de Crédito para Casamento — Amortização e Prestações" 
+					loading="lazy"
+					decoding="async"
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					Visualizar a proporção entre capital e juros evita decisões financeiras impulsivas no início da vida a dois.
+				</p>
+			</div>
+
+			<!-- Section 1: Detailed Step-by-Step Guide -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Estratégias para um Financiamento Consciente
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Antes de assinar qualquer contrato de crédito, siga estas diretrizes para proteger as finanças do novo casal:
+				</p>
+
+				<div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.4rem;">
+							Passo 1: Peça Apenas o Défice Estrito de Liquidez
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Nunca financie o casamento na totalidade. Subtraia a poupança acumulada pelo casal e as contribuições familiares aos custos orçamentados. Peça crédito apenas para o valor estritamente em falta para fechar os sinais contratuais.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.4rem;">
+							Passo 2: Compare a TAEG (Taxa Anual Efetiva Global)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							A TAN (Taxa Anual Nominal) apenas mede os juros brutos. A TAEG inclui todos os custos obrigatórios: juros, impostos de selo, comissões de abertura e eventuais seguros associados. É a única métrica fiável para comparar propostas de várias instituições financeiras.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.4rem;">
+							Passo 3: Utilize as Prendas de Casamento para Amortizar Rapidamente
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Ao receber prendas em dinheiro após a cerimónia, faça uma amortização antecipada de capital. Ao reduzir o saldo devedor nos primeiros meses, elimina uma grande fatia dos juros compostos que pagaria ao longo dos anos seguintes.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 2: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem; text-align: center;">
+					🔗 Ferramentas de Orçamento de Casamento Integradas
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/pt/master-budget-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Calculadora Geral de Orçamento</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Planeie todas as despesas por categoria e evite recorrer a endividamento.</span>
+					</a>
+					<a href="/pt/catering-cost-estimator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Estimador de Custos de Catering</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calcule o preço por pessoa com precisão para ajustar o número de convidados.</span>
+					</a>
+					<a href="/pt/gift-cash-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Calculadora de Prendas em Dinheiro</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Estime o valor das prendas monetárias para liquidar o empréstimo mais cedo.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Perguntas Frequentes
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Qual é a taxa de esforço máxima recomendada pelos bancos?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						A maioria das instituições bancárias e reguladores recomenda que o conjunto de todas as prestações de crédito do agregado familiar (crédito habitação + créditos pessoais) não ultrapasse <strong>30% a 35%</strong> do rendimento líquido mensal.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						É melhor escolher um prazo curto ou um prazo longo?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Um prazo curto (24 a 36 meses) exige uma mensalidade mais alta, mas reduz significativamente o montante total de juros pagos. Um prazo longo (48 a 60 meses) dá maior folga no orçamento mensal, mas pode quase duplicar o custo total do crédito.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Como exportar o mapa de amortização mensal?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Clique no botão <strong>"📝 Exportar Word (.doc)"</strong> ou <strong>"🖨️ Exportar PDF / Imprimir"</strong> no topo da página para descarregar o documento detalhado com todos os meses e valores.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.loan-preset-btn {
+		background: #fff;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.35rem 0.65rem;
+		font-family: var(--font-heading);
+		font-size: 0.82rem;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+	.loan-preset-btn:hover {
+		background: var(--muted-paper);
+	}
+	.loan-preset-btn.active-preset {
+		background: var(--accent-blue) !important;
+		color: #fff !important;
+		border-color: #1e40af !important;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '€';
+
+	const loanAmountInput = document.getElementById('input-loan-amount');
+	const aprInput = document.getElementById('input-apr');
+	const loanTermSelect = document.getElementById('select-loan-term');
+	const originationPctInput = document.getElementById('input-origination-pct');
+	const extraPaymentInput = document.getElementById('input-extra-payment');
+	const currencySelect = document.getElementById('currency-select');
+	const currencySymbolDisplay = document.getElementById('currency-symbol-display');
+
+	const originationFeeDisplay = document.getElementById('origination-fee-display');
+	const originationPctLabel = document.getElementById('origination-pct-label');
+	const extraPaymentDisplay = document.getElementById('extra-payment-display');
+	const extraPaymentLabel = document.getElementById('extra-payment-label');
+
+	const resMonthlyPayment = document.getElementById('res-monthly-payment');
+	const resTermNote = document.getElementById('res-term-note');
+	const resPrincipalAmount = document.getElementById('res-principal-amount');
+	const resInterestAmount = document.getElementById('res-interest-amount');
+	const resOriginationFee = document.getElementById('res-origination-fee');
+	const resGrandTotalPaid = document.getElementById('res-grand-total-paid');
+
+	const barPrincipal = document.getElementById('bar-principal');
+	const barInterest = document.getElementById('bar-interest');
+	const barPrincipalPct = document.getElementById('bar-principal-pct');
+	const barInterestPct = document.getElementById('bar-interest-pct');
+
+	const extraSavingsCard = document.getElementById('extra-savings-card');
+	const extraSavingsText = document.getElementById('extra-savings-text');
+
+	let amortizationSchedule = [];
+
+	function formatMoney(amount) {
+		const formatted = amount.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+		if (currencySymbol === '€' || currencySymbol === 'CHF') {
+			return `${formatted} ${currencySymbol}`;
+		}
+		return `${currencySymbol}${formatted}`;
+	}
+
+	function calculateLoan() {
+		currencySymbol = currencySelect.value;
+		currencySymbolDisplay.textContent = currencySymbol;
+
+		const P = parseFloat(loanAmountInput.value) || 0;
+		const annualRate = parseFloat(aprInput.value) || 0;
+		const n = parseInt(loanTermSelect.value) || 12;
+		const origPct = parseFloat(originationPctInput.value) || 0;
+		const extraPay = parseFloat(extraPaymentInput.value) || 0;
+
+		originationPctLabel.textContent = `${origPct}%`;
+		const originationFee = P * (origPct / 100);
+		originationFeeDisplay.textContent = formatMoney(originationFee);
+
+		extraPaymentLabel.textContent = formatMoney(extraPay);
+		extraPaymentDisplay.textContent = `+${formatMoney(extraPay)}/mês`;
+
+		let monthlyBase = 0;
+		const i = annualRate / 100 / 12;
+
+		if (P > 0 && n > 0) {
+			if (i > 0) {
+				monthlyBase = P * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+			} else {
+				monthlyBase = P / n;
+			}
+		}
+
+		// Calculate Amortization Schedule
+		amortizationSchedule = [];
+		let balance = P;
+		let totalInterestPaid = 0;
+		let totalPaid = 0;
+		let monthsElapsed = 0;
+
+		const standardTotalInterest = (monthlyBase * n) - P;
+
+		while (balance > 0.01 && monthsElapsed < 360) {
+			monthsElapsed++;
+			const monthlyInterest = balance * i;
+			let actualMonthlyPayment = monthlyBase + extraPay;
+
+			if (balance + monthlyInterest < actualMonthlyPayment) {
+				actualMonthlyPayment = balance + monthlyInterest;
+			}
+
+			const principalPortion = actualMonthlyPayment - monthlyInterest;
+			balance -= principalPortion;
+			if (balance < 0) balance = 0;
+
+			totalInterestPaid += monthlyInterest;
+			totalPaid += actualMonthlyPayment;
+
+			amortizationSchedule.push({
+				month: monthsElapsed,
+				payment: actualMonthlyPayment,
+				principal: principalPortion,
+				interest: monthlyInterest,
+				balance: balance
+			});
+		}
+
+		const grandTotal = totalPaid + originationFee;
+
+		// Update UI
+		resMonthlyPayment.textContent = formatMoney(monthlyBase + extraPay);
+		resTermNote.textContent = `Durante ${monthsElapsed} Meses a ${annualRate}% TAEG`;
+		resPrincipalAmount.textContent = formatMoney(P);
+		resInterestAmount.textContent = formatMoney(totalInterestPaid);
+		resOriginationFee.textContent = formatMoney(originationFee);
+		resGrandTotalPaid.textContent = formatMoney(grandTotal);
+
+		// Proportions
+		if (grandTotal > 0) {
+			const pPct = Math.round((P / grandTotal) * 100);
+			const iPct = 100 - pPct;
+			barPrincipal.style.width = `${pPct}%`;
+			barInterest.style.width = `${iPct}%`;
+			barPrincipalPct.textContent = `${pPct}%`;
+			barInterestPct.textContent = `${iPct}%`;
+		}
+
+		// Extra payment alert
+		if (extraPay > 0 && monthsElapsed < n) {
+			const interestSaved = standardTotalInterest - totalInterestPaid;
+			const monthsSaved = n - monthsElapsed;
+			extraSavingsCard.style.display = 'block';
+			extraSavingsText.innerHTML = `
+				Ao amortizar <strong>+${formatMoney(extraPay)}/mês</strong>, irá poupar <strong>${formatMoney(interestSaved)} em juros</strong> e liquidar a dívida <strong>${monthsSaved} meses antes do prazo</strong>!
+			`;
+		} else {
+			extraSavingsCard.style.display = 'none';
+		}
+	}
+
+	// Listeners
+	[loanAmountInput, aprInput, originationPctInput, extraPaymentInput].forEach(el => {
+		el.addEventListener('input', calculateLoan);
+	});
+	[loanTermSelect, currencySelect].forEach(el => {
+		el.addEventListener('change', calculateLoan);
+	});
+
+	// Presets
+	document.querySelectorAll('.loan-preset-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			document.querySelectorAll('.loan-preset-btn').forEach(b => b.classList.remove('active-preset'));
+			btn.classList.add('active-preset');
+
+			loanAmountInput.value = btn.getAttribute('data-amt');
+			aprInput.value = btn.getAttribute('data-apr');
+			loanTermSelect.value = btn.getAttribute('data-term');
+			extraPaymentInput.value = 0;
+			originationPctInput.value = 0;
+
+			calculateLoan();
+		});
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		let rows = '';
+		amortizationSchedule.forEach(row => {
+			rows += `
+				<tr>
+					<td style="border:1px solid #ccc; padding:6px; text-align:center;">Mês ${row.month}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right;">${formatMoney(row.payment)}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right;">${formatMoney(row.principal)}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right; color:#b91c1c;">${formatMoney(row.interest)}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${formatMoney(row.balance)}</td>
+				</tr>
+			`;
+		});
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Plano de Amortização do Crédito</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 6px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Plano Oficial de Reembolso do Empréstimo</h1>
+				<p>Gerado a ${new Date().toLocaleDateString('pt-PT')} | Capital Solicitado: <strong>${resPrincipalAmount.textContent}</strong> | TAEG: <strong>${aprInput.value}%</strong> | Total de Juros: <strong>${resInterestAmount.textContent}</strong></p>
+				
+				<h3>Plano de Amortização Mensal:</h3>
+				<table>
+					<thead>
+						<tr>
+							<th style="text-align:center;">Mês</th>
+							<th style="text-align:right;">Prestação Mensal</th>
+							<th style="text-align:right;">Amortização de Capital</th>
+							<th style="text-align:right;">Juros Pagos</th>
+							<th style="text-align:right;">Saldo Devedor</th>
+						</tr>
+					</thead>
+					<tbody>
+						${rows}
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Amortizacao_Credito_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('pt-PT');
+		document.getElementById('print-principal').textContent = resPrincipalAmount.textContent;
+		document.getElementById('print-monthly').textContent = resMonthlyPayment.textContent;
+
+		const tbody = document.getElementById('print-schedule-body');
+		tbody.innerHTML = '';
+
+		amortizationSchedule.forEach(row => {
+			const tr = document.createElement('tr');
+			tr.innerHTML = `
+				<td style="border:1px solid #ccc; padding:5px; text-align:center;">Mês ${row.month}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right;">${formatMoney(row.payment)}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right;">${formatMoney(row.principal)}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right; color:#b91c1c;">${formatMoney(row.interest)}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right; font-weight:bold;">${formatMoney(row.balance)}</td>
+			`;
+			tbody.appendChild(tr);
+		});
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Mes,Prestacao,Capital,Juros,Saldo Devedor\n";
+		amortizationSchedule.forEach(row => {
+			csv += `Mes ${row.month},${row.payment.toFixed(2)},${row.principal.toFixed(2)},${row.interest.toFixed(2)},${row.balance.toFixed(2)}\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Amortizacao_Credito_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateLoan();
+</script>

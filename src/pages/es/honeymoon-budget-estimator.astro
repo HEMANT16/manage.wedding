@@ -1,0 +1,813 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/honeymoon-budget-estimator/#webapp",
+      "name": "Estimador de Presupuesto de Luna de Miel por Destino y Tipo de Viaje",
+      "url": "https://manage.wedding/es/honeymoon-budget-estimator",
+      "inLanguage": "es",
+      "description": "Calculadora gratuita de viaje de novios y luna de miel: estima costes para vuelos de pareja, hoteles de 5 estrellas, villas sobre el agua, cenas románticas, excursiones y seguro con exportación en Word y PDF.",
+      "applicationCategory": "TravelApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Presupuestar y Planificar el Viaje de Luna de Miel",
+      "description": "Guía paso a paso para estimar los costes de vuelos, resorts, gastronomía y actividades según el país de destino.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Elige la Categoría del Destino",
+          "text": "Selecciona entre destinos tropicales económicos (Sudeste Asiático), grandes clásicos internacionales (Japón, Costa Amalfitana) o viajes de ultra lujo (Maldivas, Bora Bora)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Destina el 50% al Alojamiento y Resorts",
+          "text": "Reserva la mitad de tu presupuesto de viaje para hoteles con encanto, resorts frente al mar o cabañas sobre el agua."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Asigna el 25% a Vuelos y Traslados",
+          "text": "Calcula vuelos de ida y vuelta para dos, ferrys entre islas, trenes panorámicos y traslados privados."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Destina el 15% a Cenas Románticas y 10% a Excursiones",
+          "text": "Planifica cenas a la luz de las velas, catas de vino, masajes en pareja, snorkel y recuerdos de viaje."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuánto cuesta de media una luna de miel para dos personas?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El coste medio de un viaje de novios oscila entre 4.000€ y 8.000€ para una estancia de 10 a 14 días. Sin embargo, varía mucho según el destino: un viaje a Bali o Tailandia ronda los 3.000€ a 5.000€, una ruta por Japón o la Costa Amalfitana se sitúa entre 6.000€ y 9.500€, mientras que villas sobre el agua en Maldivas o Polinesia alcanzan los 10.000€ a 20.000€+."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué el poder adquisitivo del país cambia tanto el presupuesto del viaje?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Porque el coste de vida local es muy dispar. En países con moneda favorable (como Tailandia o Vietnam), una villa de lujo con piscina privada y cenas de autor cuesta una fracción (120€–200€/día) de lo que cuesta el mismo estándar en Suiza, Maldivas o Hawái (600€–1.500€/día)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Con cuánta antelación se debe reservar el viaje de novios?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Para vuelos transcontinentales y hoteles exclusivos en temporada alta, lo ideal es reservar entre 6 y 9 meses antes para asegurar las mejores tarifas aéreas y habitaciones con mejores vistas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Podemos financiar la luna de miel con los regalos de los invitados?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "¡Por supuesto! La gran mayoría de parejas actuales financian su luna de miel mediante transferencias de los invitados o listas de boda con experiencias concretas (vuelos, cenas románticas, excursiones de buceo o masajes)."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Presupuesto de Luna de Miel y Viaje de Novios | Manage.Wedding"
+	description="Calcula el presupuesto de tu luna de miel según el país de destino. Estima vuelos para dos, hoteles de lujo, cenas y excursiones con exportación a Word y PDF."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Presupuesto de Luna de Miel" category="budget-finance" />
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Presupuesto de <span class="accent-italic">Luna de Miel</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Calcula el presupuesto realista de vuestro viaje según el <strong>nivel de coste del destino</strong>, tipo de resort, clase de vuelo y días de viaje. Exporta vuestro plan a <strong>Word (.doc)</strong> o <strong>PDF</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Cómo Planificar la Luna de Miel en 3 Sencillos Pasos
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Selecciona el Tipo de Destino
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Elige el nivel de precio del destino: desde paraísos tropicales asequibles (Bali, Tailandia) hasta clásicos mediterráneos o villas sobre el agua (Maldivas, Bora Bora).
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Personaliza Alojamiento y Vuelos
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Ajusta la clase de vuelo, categoría de hotel (boutique, 5 estrellas o villa privada), cenas románticas y duración total del viaje para dos personas.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Exporta vuestro Plan de Viaje
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Haz clic en <strong>"📝 Exportar a Word"</strong> o <strong>"🖨️ Imprimir PDF"</strong> para guardar el desglose de costes o incluir experiencias en vuestra lista de bodas.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="honeymoon-calc-grid">
+			
+			<!-- Left Column: Travel Parameters Form -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							✈️ Parámetros del Destino y Viaje
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">
+							Todos los cálculos incluyen el importe conjunto para dos personas
+						</span>
+					</div>
+
+					<!-- Currency Selector -->
+					<div style="display: flex; align-items: center; gap: 0.3rem;">
+						<span style="font-size: 0.85rem; font-weight: bold;">Moneda:</span>
+						<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="€" selected>€ (EUR)</option>
+							<option value="$">$ (USD/CAD/AUD)</option>
+							<option value="£">£ (GBP)</option>
+							<option value="₹">₹ (INR)</option>
+						</select>
+					</div>
+				</div>
+
+				<form id="honeymoon-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+					
+					<!-- 1. Destination Country Tier -->
+					<div>
+						<label for="select-country-tier" class="font-heading" style="display: block; font-size: 1rem; color: var(--accent-red); margin-bottom: 0.3rem;">
+							1. Destino y Nivel de Coste *
+						</label>
+						<select id="select-country-tier" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+							<option value="tier1">🌴 Nivel 1: Tropical Económico y Cultura (Bali, Tailandia, Vietnam, Costa Rica, Portugal)</option>
+							<option value="tier2" selected>🏖️ Nivel 2: Clásicos Mediterráneos y Resorts (Riviera Maya, Italia, Japón, Hawái, Grecia)</option>
+							<option value="tier3">💎 Nivel 3: Ultra Lujo y Cabañas sobre el Agua (Maldivas, Bora Bora, Costa Amalfitana, Suiza)</option>
+							<option value="tier4">🦁 Nivel 4: Grandes Viajes Exclusivos (Safari en Kenia/Tanzania, Galápagos, Isla Privada)</option>
+							<option value="domestic">🚗 Nivel 5: Escapadas Nacionales y Rutas en Coche (Baleares, Costa Brava, Asturias, Paradores)</option>
+						</select>
+					</div>
+
+					<!-- 2. Trip Duration & Flight Class -->
+					<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem;">
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-trip-days" class="font-heading" style="font-size: 0.9rem; color: var(--fg-pencil);">
+									Duración (Días / Noches)
+								</label>
+								<span id="trip-days-display" style="font-size: 0.95rem; font-weight: bold; color: var(--accent-blue);">10 Días</span>
+							</div>
+							<div style="display: flex; align-items: center; gap: 0.5rem;">
+								<input type="range" id="input-trip-days" min="3" max="28" value="10" step="1" style="flex: 1; accent-color: var(--accent-blue);">
+								<input type="number" id="input-trip-days-num" value="10" min="3" max="28" style="width: 50px; padding: 0.3rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-align: center; font-weight: bold;">
+							</div>
+						</div>
+
+						<div>
+							<label for="select-flight-class" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Vuelos para Dos (Ida y Vuelta)
+							</label>
+							<select id="select-flight-class" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.88rem; background: #fff;">
+								<option value="economy" selected>Clase Turista Estándar</option>
+								<option value="premium">Turista Premium (+40%)</option>
+								<option value="business">Clase Business / Preferente (2,5×)</option>
+								<option value="points">Canje de Millas / Puntos (Tasas 150€)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- 3. Resort & Lodging Standard -->
+					<div>
+						<label for="select-lodging-style" class="font-heading" style="display: block; font-size: 1rem; color: var(--accent-blue); margin-bottom: 0.3rem;">
+							2. Categoría de Alojamiento (Por Noche para 2)
+						</label>
+						<select id="select-lodging-style" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="boutique">Hotel Boutique con Encanto / Apartamento Premium</option>
+							<option value="resort4" selected>Resort 4 Estrellas Frente al Mar / Hotel Histórico</option>
+							<option value="luxury5">Resort 5 Estrellas Gran Lujo / Villa con Piscina Privada</option>
+							<option value="overwater">Villa Sobre el Agua / Lodge Safari de Lujo</option>
+						</select>
+					</div>
+
+					<!-- 4. Dining, Excursions & Extras -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.75rem;">
+						<span class="font-heading" style="font-size: 0.95rem; color: #16a34a; display: block;">
+							3. Gastronomía, Excursiones e Imprevistos (Pareja)
+						</span>
+						
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 0.2rem;">Estilo de Restauración</span>
+								<select id="select-dining-style" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+									<option value="moderate">Combinación de Restaurantes Locales y Cenas Románticas</option>
+									<option value="fine_dining" selected>Alta Gastronomía y Cócteles al Atardecer a Diario</option>
+									<option value="budget">Comida Tradicional, Mercados y Trattorias</option>
+									<option value="michelin">Menús Degustación con Estrella Michelin y Cenas Privadas</option>
+								</select>
+							</div>
+
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary); display: block; margin-bottom: 0.2rem;">Actividades y Excursiones</span>
+								<select id="select-excursions-style" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+									<option value="moderate" selected>Masaje en Pareja, Catamarán y Visitas Guiadas</option>
+									<option value="light">Días Relajados de Playa y Paseos por Libre</option>
+									<option value="heavy">Aventura Diaria (Helicóptero, Buceo, Guías Privados)</option>
+								</select>
+							</div>
+						</div>
+
+						<div style="display: flex; gap: 1rem; flex-wrap: wrap; padding-top: 0.3rem;">
+							<label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+								<input type="checkbox" id="chk-travel-insurance" checked style="accent-color: var(--fg-pencil);">
+								<span>Seguro Médico de Viaje y Traslados Privados (220 €)</span>
+							</label>
+							<label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+								<input type="checkbox" id="chk-shopping-buffer" checked style="accent-color: var(--fg-pencil);">
+								<span>Fondo para Recuerdos y Compras (300 €)</span>
+							</label>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Financial Results & Cost Breakdown -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Honeymoon Total Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								🏖️ Presupuesto Total de la Luna de Miel
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Previsión completa todo incluido para los novios
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Exportar a Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Imprimir PDF
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Budget Total Highlight -->
+					<div style="background: #f0fdf4; border: 2.5px solid #16a34a; border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: #16a34a; display: block; font-weight: bold;">Presupuesto Total Estimado</span>
+						<strong id="res-grand-total" class="font-heading" style="font-size: 2.6rem; color: #16a34a; display: block; line-height: 1.2;">7.620 €</strong>
+						<span id="res-per-day-note" style="font-size: 0.8rem; color: #16a34a;">Aprox. 762 € / Día para la Pareja</span>
+					</div>
+
+					<!-- Line-Item Category Breakdown Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Desglose de Gastos del Viaje
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.92rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">✈️ Vuelos de Ida y Vuelta (2 Personas):</td>
+									<td id="res-flight-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">2.000,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🏨 Alojamiento (<span id="res-nights-count">10</span> Noches):</td>
+									<td id="res-hotel-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">3.500,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🍽️ Restauración y Cenas Románticas:</td>
+									<td id="res-food-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">1.500,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🏄 Excursiones, Buceo y Spa:</td>
+									<td id="res-excursions-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">1.100,00 €</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #fafafa;">
+									<td style="padding: 0.35rem 0;">🛡️ Seguro Médico y Extras:</td>
+									<td id="res-extras-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">520,00 €</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Visual Travel Proportion Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span style="color: var(--accent-red);">Vuelos (<span id="pct-flights">26%</span>)</span>
+							<span style="color: var(--accent-blue);">Hotel (<span id="pct-hotel">46%</span>)</span>
+							<span style="color: #16a34a;">Comidas (<span id="pct-food">20%</span>)</span>
+							<span style="color: #7c3aed;">Planes (<span id="pct-excursions">14%</span>)</span>
+						</div>
+						<div style="display: flex; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="bar-flights" style="width: 26%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+							<div id="bar-hotel" style="width: 46%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+							<div id="bar-food" style="width: 20%; background: #16a34a; transition: width 0.3s ease;"></div>
+							<div id="bar-excursions" style="width: 14%; background: #7c3aed; transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Registry Cash Fund Tip Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						💡 Consejo para la Lista de Bodas:
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; line-height: 1.5; margin: 0; color: var(--fg-pencil); text-align: center;">
+						¡Convierte estas partidas en regalos concretos en tu lista de bodas! A los invitados les encanta regalar experiencias reales como <em>"Cena Romántica en Roma (150€)"</em> o <em>"Excursión en Catamarán al Atardecer (180€)"</em>.
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Presupuesto Oficial de Luna de Miel</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportado el: <span id="print-date"></span> | Presupuesto Total: <span id="print-total"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Partida del Viaje</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 120px; text-align: right;">Coste Estimado (€)</th>
+					</tr>
+				</thead>
+				<tbody id="print-honeymoon-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 2.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Resumen Rápido</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Fórmula 50/25/15/10 y Costes Medios por Tipo de Destino
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 750px; margin: 0 auto; font-weight: 500;">
+					¿Poco tiempo? Aquí tienes la regla de distribución presupuestaria y la tabla comparativa entre destinos internacionales.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📐 La Fórmula de Reparto para Viajes de Novios:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					50% Alojamiento y Resorts + 25% Vuelos y Traslados + 15% Restauración y Cenas + 10% Actividades y Seguro = 100% Presupuesto de Luna de Miel
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 620px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Destino</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Ejemplos Habituales</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">Total Medio (10 Noches)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">Hotel Diario (Pareja)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">Comida y Ocio Diario</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Nacional / Islas / Paradores</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Menorca, Formentera, Lanzarote, Costa Brava</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">2.800 € – 4.500 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">180 € – 300 €/noche</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">120 € – 180 €/día</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Tropical Asequible (Nivel 1)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Bali, Tailandia, Vietnam, Costa Rica, Riviera Maya</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">3.800 € – 5.800 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">150 € – 320 €/noche</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">80 € – 150 €/día</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Clásicos Mediterráneos y Asia (Nivel 2)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Japón, Costa Amalfitana, Santorini, Hawái</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">6.000 € – 9.800 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">300 € – 600 €/noche</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">200 € – 350 €/día</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Ultra Lujo y Villas Overwater (Nivel 3)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Maldivas, Bora Bora, Alpes Suizos, Safari Kenia</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">11.000 € – 20.000 €+</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">700 € – 1.800 €/noche</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">350 € – 600 €/día</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Guía de Viajes Nupciales</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Guía Completa para Presupuestar vuestra Luna de Miel
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Estrategias de vuelos, temporadas medias, régimen todo incluido y cómo financiar el viaje con la lista de bodas.
+				</p>
+			</div>
+
+			<!-- Section 1: Detailed Step-by-Step Guide on How to Use This Tool Flawlessly -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Cómo Maximizar vuestro Presupuesto de Viaje
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Disfrutar de un viaje de novios inolvidable consiste en priorizar las vivencias que más valoráis como pareja:
+				</p>
+
+				<div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.4rem;">
+							Aprovecha el Poder Adquisitivo del Destino
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Con un presupuesto de 5.000€ podéis alojaros 14 noches en villas con piscina privada y chófer propio en Bali o Tailandia, mientras que ese mismo presupuesto en Polinesia solo cubriría 4 noches de hotel tras pagar los billetes de avión.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.4rem;">
+							Viaja en Temporada Media (Shoulder Season)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Viajar en mayo, junio o septiembre permite ahorrar hasta un 35% en billetes y tarifas hoteleras en comparación con julio o agosto, evitando además la masificación turística.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.4rem;">
+							Contrata un Seguro de Viaje Completo
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Una póliza de cancelación y asistencia médica internacional garantiza cobertura total ante imprevistos de salud o cambios de fecha.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Preguntas Frecuentes sobre el Viaje de Novios
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						¿Merece la pena el régimen de todo incluido en la luna de miel?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						En resorts del Caribe o islas privadas de Maldivas, el régimen todo incluido ahorra mucho dinero en bebidas, cócteles y cenas. Sin embargo, en viajes culturales por Europa o Japón, comer en restaurantes locales es mucho más económico y auténtico.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						¿Cómo exportar el presupuesto para la lista de boda?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Haz clic en el botón <strong>"📝 Exportar a Word"</strong> para generar un resumen detallado con cada experiencia y su coste estimado para compartirlo con tu agencia de viajes o incluirlo en tu web de boda.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/es/honeymoon-budget-estimator" category="budget" />
+
+	</main>
+</Layout>
+
+<style>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '€';
+
+	const tierRates = {
+		tier1: {
+			flightsBase: 1300,
+			lodging: { boutique: 80, resort4: 150, luxury5: 290, overwater: 580 },
+			dining: { budget: 45, moderate: 80, fine_dining: 140, michelin: 250 },
+			excursions: { light: 25, moderate: 60, heavy: 140 }
+		},
+		tier2: {
+			flightsBase: 1800,
+			lodging: { boutique: 160, resort4: 310, luxury5: 580, overwater: 980 },
+			dining: { budget: 80, moderate: 150, fine_dining: 230, michelin: 400 },
+			excursions: { light: 45, moderate: 100, heavy: 220 }
+		},
+		tier3: {
+			flightsBase: 2800,
+			lodging: { boutique: 320, resort4: 580, luxury5: 1100, overwater: 1700 },
+			dining: { budget: 120, moderate: 220, fine_dining: 380, michelin: 680 },
+			excursions: { light: 80, moderate: 180, heavy: 400 }
+		},
+		tier4: {
+			flightsBase: 3400,
+			lodging: { boutique: 400, resort4: 750, luxury5: 1350, overwater: 2100 },
+			dining: { budget: 140, moderate: 250, fine_dining: 400, michelin: 720 },
+			excursions: { light: 100, moderate: 250, heavy: 540 }
+		},
+		domestic: {
+			flightsBase: 400,
+			lodging: { boutique: 130, resort4: 240, luxury5: 480, overwater: 780 },
+			dining: { budget: 70, moderate: 130, fine_dining: 210, michelin: 380 },
+			excursions: { light: 35, moderate: 80, heavy: 180 }
+		}
+	};
+
+	const countryTierSelect = document.getElementById('select-country-tier');
+	const tripDaysSlider = document.getElementById('input-trip-days');
+	const tripDaysNum = document.getElementById('input-trip-days-num');
+	const tripDaysDisplay = document.getElementById('trip-days-display');
+
+	const flightClassSelect = document.getElementById('select-flight-class');
+	const lodgingStyleSelect = document.getElementById('select-lodging-style');
+	const diningStyleSelect = document.getElementById('select-dining-style');
+	const excursionsStyleSelect = document.getElementById('select-excursions-style');
+
+	const chkInsurance = document.getElementById('chk-travel-insurance');
+	const chkBuffer = document.getElementById('chk-shopping-buffer');
+	const currencySelect = document.getElementById('currency-select');
+
+	const resGrandTotal = document.getElementById('res-grand-total');
+	const resPerDayNote = document.getElementById('res-per-day-note');
+	const resFlightTotal = document.getElementById('res-flight-total');
+	const resHotelTotal = document.getElementById('res-hotel-total');
+	const resFoodTotal = document.getElementById('res-food-total');
+	const resExcursionsTotal = document.getElementById('res-excursions-total');
+	const resExtrasTotal = document.getElementById('res-extras-total');
+	const resNightsCount = document.getElementById('res-nights-count');
+
+	const barFlights = document.getElementById('bar-flights');
+	const barHotel = document.getElementById('bar-hotel');
+	const barFood = document.getElementById('bar-food');
+	const barExcursions = document.getElementById('bar-excursions');
+
+	const pctFlights = document.getElementById('pct-flights');
+	const pctHotel = document.getElementById('pct-hotel');
+	const pctFood = document.getElementById('pct-food');
+	const pctExcursions = document.getElementById('pct-excursions');
+
+	function formatMoney(amount) {
+		return `${Math.round(amount).toLocaleString('es-ES')} ${currencySymbol}`;
+	}
+
+	function calculateHoneymoon() {
+		currencySymbol = currencySelect.value;
+		const tierKey = countryTierSelect.value;
+		const tier = tierRates[tierKey] || tierRates.tier2;
+
+		const days = parseInt(tripDaysSlider.value) || 10;
+		tripDaysNum.value = days;
+		tripDaysDisplay.textContent = `${days} Días / ${days} Noches`;
+		resNightsCount.textContent = days;
+
+		let flightCost = tier.flightsBase;
+		const flightClass = flightClassSelect.value;
+		if (flightClass === 'premium') flightCost *= 1.4;
+		else if (flightClass === 'business') flightCost *= 2.5;
+		else if (flightClass === 'points') flightCost = 150;
+
+		const lodgingPerNight = tier.lodging[lodgingStyleSelect.value] || tier.lodging.resort4;
+		const hotelCost = lodgingPerNight * days;
+
+		const diningPerDay = tier.dining[diningStyleSelect.value] || tier.dining.fine_dining;
+		const foodCost = diningPerDay * days;
+
+		const excursionsPerDay = tier.excursions[excursionsStyleSelect.value] || tier.excursions.moderate;
+		const excursionsCost = excursionsPerDay * days;
+
+		let extrasCost = 0;
+		if (chkInsurance.checked) extrasCost += 220;
+		if (chkBuffer.checked) extrasCost += 300;
+
+		const grandTotal = flightCost + hotelCost + foodCost + excursionsCost + extrasCost;
+		const perDayCost = Math.round(grandTotal / days);
+
+		resGrandTotal.textContent = formatMoney(grandTotal);
+		resPerDayNote.textContent = `Aprox. ${formatMoney(perDayCost)} / Día para la Pareja`;
+		resFlightTotal.textContent = formatMoney(flightCost);
+		resHotelTotal.textContent = formatMoney(hotelCost);
+		resFoodTotal.textContent = formatMoney(foodCost);
+		resExcursionsTotal.textContent = formatMoney(excursionsCost);
+		resExtrasTotal.textContent = formatMoney(extrasCost);
+
+		if (grandTotal > 0) {
+			const pF = Math.round((flightCost / grandTotal) * 100);
+			const pH = Math.round((hotelCost / grandTotal) * 100);
+			const pD = Math.round((foodCost / grandTotal) * 100);
+			const pE = 100 - pF - pH - pD;
+
+			barFlights.style.width = `${pF}%`;
+			barHotel.style.width = `${pH}%`;
+			barFood.style.width = `${pD}%`;
+			barExcursions.style.width = `${Math.max(2, pE)}%`;
+
+			pctFlights.textContent = `${pF}%`;
+			pctHotel.textContent = `${pH}%`;
+			pctFood.textContent = `${pD}%`;
+			pctExcursions.textContent = `${Math.max(2, pE)}%`;
+		}
+	}
+
+	tripDaysSlider.addEventListener('input', () => {
+		tripDaysNum.value = tripDaysSlider.value;
+		calculateHoneymoon();
+	});
+	tripDaysNum.addEventListener('input', () => {
+		tripDaysSlider.value = tripDaysNum.value;
+		calculateHoneymoon();
+	});
+
+	[countryTierSelect, flightClassSelect, lodgingStyleSelect, diningStyleSelect, excursionsStyleSelect, chkInsurance, chkBuffer, currencySelect].forEach(el => {
+		el.addEventListener('change', calculateHoneymoon);
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Presupuesto de Luna de Miel</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Presupuesto Oficial de Luna de Miel</h1>
+				<p>Generado el ${new Date().toLocaleDateString('es-ES')} | Destino: <strong>${countryTierSelect.options[countryTierSelect.selectedIndex].text.split('(')[0]}</strong> | Duración: <strong>${tripDaysSlider.value} Días</strong> | Presupuesto Total: <strong>${resGrandTotal.textContent}</strong> (${resPerDayNote.textContent})</p>
+				
+				<h3>Desglose de Gastos del Viaje:</h3>
+				<table>
+					<thead>
+						<tr>
+							<th>Partida del Viaje</th>
+							<th style="text-align:right;">Coste Estimado (€)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td>Vuelos de Ida y Vuelta para Dos (${flightClassSelect.options[flightClassSelect.selectedIndex].text})</td><td style="text-align:right; font-weight:bold;">${resFlightTotal.textContent}</td></tr>
+						<tr><td>Alojamiento (${tripDaysSlider.value} Noches en ${lodgingStyleSelect.options[lodgingStyleSelect.selectedIndex].text})</td><td style="text-align:right; font-weight:bold;">${resHotelTotal.textContent}</td></tr>
+						<tr><td>Comidas y Cenas Románticas (${diningStyleSelect.options[diningStyleSelect.selectedIndex].text})</td><td style="text-align:right; font-weight:bold;">${resFoodTotal.textContent}</td></tr>
+						<tr><td>Excursiones y Actividades (${excursionsStyleSelect.options[excursionsStyleSelect.selectedIndex].text})</td><td style="text-align:right; font-weight:bold;">${resExcursionsTotal.textContent}</td></tr>
+						<tr><td>Seguro Médico, Traslados y Fondo de Compras</td><td style="text-align:right; font-weight:bold;">${resExtrasTotal.textContent}</td></tr>
+						<tr style="background:#f2f2f2; font-weight:bold; font-size:15px;">
+							<td>Presupuesto Total del Viaje</td>
+							<td style="text-align:right; color:#16a34a;">${resGrandTotal.textContent}</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 style="margin-top:25px;">Consejos Prácticos:</h3>
+				<p>• Comprueba la caducidad del pasaporte (mínimo 6 meses de vigencia).</p>
+				<p>• Avisa a tu banco de los pagos en el extranjero para evitar bloqueos en tarjetas.</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Presupuesto_Luna_de_Miel_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('es-ES');
+		document.getElementById('print-total').textContent = resGrandTotal.textContent;
+
+		const tbody = document.getElementById('print-honeymoon-body');
+		tbody.innerHTML = `
+			<tr><td style="border:1px solid #ccc; padding:6px;">Vuelos de Ida y Vuelta para Dos</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resFlightTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Alojamiento y Resorts (${tripDaysSlider.value} Noches)</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resHotelTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Comidas y Cenas Románticas</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resFoodTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Excursiones y Actividades</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resExcursionsTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Seguro de Viaje, Traslados y Extras</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resExtrasTotal.textContent}</td></tr>
+			<tr style="background:#f2f2f2;"><td style="border:1px solid #ccc; padding:6px; font-weight:bold; font-size:13px;">Presupuesto Total de la Luna de Miel</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold; font-size:13px; color:#16a34a;">${resGrandTotal.textContent}</td></tr>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Partida,Importe Estimado\n";
+		csv += `"Vuelos Ida y Vuelta (2 Personas)","${resFlightTotal.textContent}"\n`;
+		csv += `"Alojamiento (${tripDaysSlider.value} Noches)","${resHotelTotal.textContent}"\n`;
+		csv += `"Restauracion y Cenas","${resFoodTotal.textContent}"\n`;
+		csv += `"Excursiones y Ocio","${resExcursionsTotal.textContent}"\n`;
+		csv += `"Seguro y Traslados","${resExtrasTotal.textContent}"\n`;
+		csv += `"Total Luna de Miel","${resGrandTotal.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Presupuesto_Luna_Miel_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateHoneymoon();
+</script>

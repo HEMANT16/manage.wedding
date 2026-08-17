@@ -1,0 +1,827 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/pt/wedding-name-change-calculator/#webapp",
+      "name": "Mudança de Apelido / Nome após Casamento e Custos",
+      "url": "https://manage.wedding/pt/wedding-name-change-calculator",
+      "inLanguage": "pt",
+      "description": "Calculadora interativa de mudança de apelidos e custos de documentos após o casamento. Configure os sobrenomes de família, calcule taxas do Cartão de Cidadão, Passaporte e IMT, e exporte o dossier em PDF e Word.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Como Mudar de Nome e Atualizar Documentos após o Casamento",
+      "description": "Guia passo a passo com a ordem legal de procedimentos para renovar Cartão de Cidadão, Passaporte, Carta de Condução e usufruir da licença de casamento.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Passo 1: Pedir a Certidão de Casamento na Conservatória",
+          "text": "Solicite a certidão de casamento na Conservatória do Registo Civil ou peça a certidão permanente online no portal Civil Online (10€ a 20€)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 2: Renovar o Cartão de Cidadão",
+          "text": "Faça a renovação do Cartão de Cidadão no Espaço Cidadão ou IRN para averbar os novos apelidos de casado (Emolumento normal: 18,00€)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 3: Renovar o Passaporte Eletrónico Português (PEP)",
+          "text": "Requisite o novo Passaporte nos serviços do IRN ou Governo Civil com os dados correspondentes ao Cartão de Cidadão (Emolumento: 65,00€)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 4: Atualizar Carta de Condução (IMT) e Segurança Social",
+          "text": "Atualize a Carta de Condução no portal do IMT Online (27€) e atualize os seus dados no portal da Segurança Social Direta e Autoridade Tributária (Finanças)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 5: Licença de Casamento no Trabalho e Notificação a Bancos",
+          "text": "Entregue a certidão de casamento nos Recursos Humanos para usufruir dos 15 dias seguidos de licença retribuída (Código do Trabalho art. 249.º) e atualize os seus bancos."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "É obrigatório mudar de nome ao casar em Portugal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não. De acordo com o Código Civil português (art. 1672.º), a mudança ou acréscimo de apelidos é totalmente facultativa. Qualquer um dos cônjuges pode manter os seus apelidos de solteiro ou acrescentar até ao limite legal os apelidos de família do outro cônjuge."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto custa alterar todos os documentos após o casamento em Portugal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "O custo total médio situa-se entre 110€ e 140€: Certidão de casamento online (10€–20€), Cartão de Cidadão (18,00€), Passaporte Eletrónico PEP (65,00€) e Carta de Condução no IMT (27€–30€)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Posso viajar de lua de mel com bilhetes no novo nome de casada?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cuidado com o risco de recusa de embarque! Os bilhetes de avião têm de coincidir letra por letra com o passaporte ou Cartão de Cidadão que tiver fisicamente consigo no dia do voo. Como os documentos novos demoram algumas semanas, reserve sempre a lua de mel com o seu nome de solteira atual."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "A quantos dias de licença de casamento tenho direito no trabalho?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Em Portugal, o Código do Trabalho (art. 249.º) confere 15 dias seguidos de faltas justificadas com remuneração integral (licença de casamento). No Brasil, a CLT concede 3 dias úteis consecutivos (licença de gala)."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Mudança de Apelido / Nome após Casamento e Custos (Checklist & Trâmites)"
+	description="Calculadora interativa de mudança de apelidos e custos de documentos após o casamento. Configure os sobrenomes de família, calcule taxas do Cartão de Cidadão, Passaporte e IMT, e exporte o dossier em PDF e Word."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Apelidos e Documentos" category="budget-finance" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Registo Civil, IRN & Simulador de Emolumentos</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Mudança de Apelidos & Trâmites <span class="accent-italic">após o Casamento</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Configure a sua nova composição de apelidos, calcule as taxas oficiais de renovação (Cartão de Cidadão, Passaporte, IMT) e organize todos os passos no timing legal correto.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; margin-bottom: 3rem; align-items: start;">
+			
+			<!-- Left Column: Simulador de Apelidos -->
+			<div class="hand-card" style="padding: clamp(1.25rem, 3vw, 2rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.45rem; margin: 0; color: var(--fg-pencil);">
+						1. Simulador de Apelidos e Identidade
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Pré-visualização
+					</span>
+				</div>
+
+				<!-- Cônjuge 1 Inputs -->
+				<div style="margin-bottom: 1.25rem;">
+					<label class="form-label" style="font-weight: 700; font-size: 0.95rem;">O Seu Nome e Apelidos Atuais (Solteiro)</label>
+					<div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 0.5rem;">
+						<div>
+							<input type="text" id="p1-first" class="form-input" value="Inês" placeholder="Nome próprio" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Nome Próprio</span>
+						</div>
+						<div>
+							<input type="text" id="p1-middle" class="form-input" value="Maria" placeholder="2º Nome" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">2º Nome</span>
+						</div>
+						<div>
+							<input type="text" id="p1-maiden" class="form-input" value="Silva" placeholder="Apelido de família" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Apelido Família</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Cônjuge 2 Inputs -->
+				<div style="margin-bottom: 1.25rem;">
+					<label class="form-label" style="font-weight: 700; font-size: 0.95rem;">Nome e Apelidos do Cônjuge</label>
+					<div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.5rem;">
+						<div>
+							<input type="text" id="p2-first" class="form-input" value="Rodrigo" placeholder="Nome cônjuge" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Nome</span>
+						</div>
+						<div>
+							<input type="text" id="p2-surname" class="form-input" value="Santos" placeholder="Apelido cônjuge" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Apelido Cônjuge</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Estrutura de Apelidos Dropdown -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="naming-format-select" style="font-weight: 700;">Opção de Composição de Apelidos</label>
+					<select id="naming-format-select" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600; padding: 0.65rem; width: 100%;">
+						<option value="take-spouse" selected>💍 Acréscimo Tradicional: Silva Santos (Inês Maria Silva Santos)</option>
+						<option value="hyphenated-1">🔗 Apelidos com Hífen: Silva-Santos (Inês Maria Silva-Santos)</option>
+						<option value="take-full-spouse">🌍 Adoção Exclusiva: Usar apenas Santos (Inês Maria Santos)</option>
+						<option value="keep-maiden">🏛️ Manter Apelidos de Solteiro: (Inês Maria Silva - 0€)</option>
+					</select>
+				</div>
+
+				<!-- Cartão de Pré-visualização -->
+				<div style="background: #f8fafc; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; box-shadow: 3px 3px 0 var(--fg-pencil); margin-top: 1rem;">
+					<div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: var(--accent-red); letter-spacing: 0.05em; margin-bottom: 0.35rem;">
+						Nome Oficial no Cartão de Cidadão
+					</div>
+					
+					<div id="preview-full-legal" class="font-heading" style="font-size: 1.55rem; color: var(--fg-pencil); line-height: 1.2; margin-bottom: 0.75rem;">
+						Inês Maria Silva Santos
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.88rem; padding-top: 0.75rem; border-top: 1px dashed #cbd5e1;">
+						<div>
+							<span style="color: var(--text-secondary); display: block; font-size: 0.75rem;">Monograma / Iniciais:</span>
+							<strong id="preview-monogram" style="font-family: var(--font-hand); font-size: 1.3rem; color: var(--accent-blue);">I S S</strong>
+						</div>
+						<div>
+							<span style="color: var(--text-secondary); display: block; font-size: 0.75rem;">Via do Registo Civil:</span>
+							<strong id="preview-route-badge" style="color: #16a34a; font-size: 0.82rem;">✅ Averbamento Direto IRN</strong>
+						</div>
+						<div style="grid-column: span 2;">
+							<span style="color: var(--text-secondary); display: block; font-size: 0.75rem;">Email Profissional Estimado:</span>
+							<code id="preview-email" style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px; font-size: 0.85rem;">ines.santos@empresa.pt</code>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Emolumentos e Prazos -->
+			<div class="hand-card" style="padding: clamp(1.25rem, 3vw, 2rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.45rem; margin: 0; color: var(--fg-pencil);">
+						2. Emolumentos Oficiais & Prazos
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: #e0f2fe; border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Em Tempo Real
+					</span>
+				</div>
+
+				<!-- Big Metric Hero Cards -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+					
+					<!-- Métrica 1: Total Emolumentos -->
+					<div style="background: #fef08a; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; text-align: center; box-shadow: 3px 3px 0 var(--fg-pencil);">
+						<span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--fg-pencil); display: block;">
+							Total de Emolumentos
+						</span>
+						<div id="display-total-fee" class="font-heading" style="font-size: 2.2rem; color: var(--fg-pencil); line-height: 1.1; margin: 0.25rem 0;">
+							120,00 €
+						</div>
+						<span id="display-fee-range" style="font-size: 0.8rem; color: var(--text-secondary);">
+							CC, Passaporte, IMT & Certidão
+						</span>
+					</div>
+
+					<!-- Métrica 2: Prazos -->
+					<div style="background: #e0e7ff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; text-align: center; box-shadow: 3px 3px 0 var(--fg-pencil);">
+						<span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--fg-pencil); display: block;">
+							Prazo de Emissão
+						</span>
+						<div id="display-total-weeks" class="font-heading" style="font-size: 2.2rem; color: var(--accent-blue); line-height: 1.1; margin: 0.25rem 0;">
+							2–4 Sem.
+						</div>
+						<span style="font-size: 0.8rem; color: var(--text-secondary);">
+							Levantamento no IRN
+						</span>
+					</div>
+
+				</div>
+
+				<!-- Barra de Progresso -->
+				<div style="margin-bottom: 1.5rem; background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem;">
+					<div style="display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.4rem;">
+						<span>Passos Concluídos:</span>
+						<span id="progress-text">0 de 14 Trâmites Realizados (0%)</span>
+					</div>
+					<div style="width: 100%; height: 16px; background: #e2e8f0; border-radius: 8px; border: 1.5px solid var(--fg-pencil); overflow: hidden;">
+						<div id="progress-bar-fill" style="width: 0%; height: 100%; background: #22c55e; transition: width 0.3s ease;"></div>
+					</div>
+				</div>
+
+				<!-- Filtros Rápidos -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+					<button type="button" id="btn-filter-all" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem; background: var(--fg-pencil); color: #fff;">
+						Todos os Passos
+					</button>
+					<button type="button" id="btn-filter-vital" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem;">
+						Cartão de Cidadão & IRN
+					</button>
+					<button type="button" id="btn-filter-travel" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem;">
+						Passaporte & IMT
+					</button>
+					<button type="button" id="btn-check-all" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem; margin-left: auto;">
+						Reiniciar
+					</button>
+				</div>
+
+				<!-- Botões de Exportação -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="background: #fecdd3; border-color: var(--fg-pencil); color: var(--fg-pencil); font-size: 0.95rem; padding: 10px;">
+						🖨️ Imprimir / PDF
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="background: #dbeafe; border-color: var(--fg-pencil); color: var(--fg-pencil); font-size: 0.95rem; padding: 10px;">
+						📄 Exportar Word (.doc)
+					</button>
+					<button type="button" id="btn-copy-checklist" class="hand-btn" style="grid-column: span 2; background: #dcfce7; border-color: var(--fg-pencil); color: var(--fg-pencil); font-size: 0.95rem; padding: 10px;">
+						📋 Copiar Guia de Trâmites
+					</button>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Checklist de Trâmites por Fase -->
+		<section class="hand-card" style="padding: clamp(1.25rem, 3vw, 2.5rem); background: #fff; margin-bottom: 3.5rem;">
+			
+			<div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 1rem;">
+				<div>
+					<span class="badge-postit" style="font-size: 0.85rem;">Sequência Legal em Portugal</span>
+					<h2 class="font-heading" style="font-size: 1.85rem; margin: 0.35rem 0 0 0; color: var(--fg-pencil);">
+						A Ordem Correta dos Trâmites Oficiais
+					</h2>
+				</div>
+				<p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0; max-width: 480px;">
+					Assinale as etapas concluídas e ajuste os emolumentos conforme a modalidade de entrega normal ou urgente.
+				</p>
+			</div>
+
+			<!-- FASE 1: Conservatória & Cartão de Cidadão -->
+			<div class="checklist-stage" data-stage="vital" style="margin-bottom: 2rem;">
+				<div style="background: #f1f5f9; border-left: 5px solid var(--accent-red); padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin: 0; color: var(--fg-pencil);">
+						Fase 1: Conservatória (Civil Online) e Cartão de Cidadão (IRN)
+					</h3>
+					<p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary);">
+						Obtenção da certidão de casamento e renovação do documento de identificação principal.
+					</p>
+				</div>
+
+				<!-- Trâmite 1: Certidão de Casamento -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-1" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-1" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									1. Certidão Permanente de Casamento (Civil Online / Conservatória)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Código de acesso da certidão permanente online (válido por 6 meses) ou certidão em papel.
+								</div>
+								<div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+									<span style="font-size: 0.85rem;">Emolumento Certidão: </span>
+									<input type="number" id="input-cert-fee" min="0" max="30" value="10" style="width: 60px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+									<span style="font-size: 0.85rem;">€</span>
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Certidão:</span>
+							<strong id="fee-item-1" class="item-cost-display" style="font-size: 1.2rem; color: var(--accent-red);">10,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 24–48 Horas</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Trâmite 2: Cartão de Cidadão -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-2" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-2" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									2. Renovação do Cartão de Cidadão (Espaço Cidadão / IRN)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Apresentação presencial com biometria e fotografia atualizada no balcão de atendimento.
+								</div>
+								<div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+									<span style="font-size: 0.85rem;">Taxa CC (Entrega normal): </span>
+									<input type="number" id="input-cc-fee" min="0" max="40" value="18" style="width: 60px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+									<span style="font-size: 0.85rem;">€</span>
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Cartão Cidadão:</span>
+							<strong id="fee-item-2" class="item-cost-display" style="font-size: 1.2rem; color: var(--accent-red);">18,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 7–10 Dias</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- FASE 2: Passaporte e Carta de Condução -->
+			<div class="checklist-stage" data-stage="travel" style="margin-bottom: 2rem;">
+				<div style="background: #f1f5f9; border-left: 5px solid var(--accent-blue); padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin: 0; color: var(--fg-pencil);">
+						Fase 2: Passaporte Eletrónico (PEP) & Carta de Condução (IMT)
+					</h3>
+					<p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary);">
+						⚠️ <strong>Aviso Lua de Mel:</strong> Reserve os voos sempre no nome de solteiro que consta no passaporte atual em sua posse.
+					</p>
+				</div>
+
+				<!-- Trâmite 3: Passaporte PEP -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-3" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-3" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									3. Passaporte Eletrónico Português (PEP)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Requerido após o novo Cartão de Cidadão estar emitido.
+								</div>
+								<div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+									<span style="font-size: 0.85rem;">Emolumento Passaporte: </span>
+									<input type="number" id="input-pep-fee" min="0" max="100" value="65" style="width: 60px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+									<span style="font-size: 0.85rem;">€</span>
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Passaporte:</span>
+							<strong id="fee-item-3" class="item-cost-display" style="font-size: 1.2rem; color: var(--accent-red);">65,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 5 Dias Úteis</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Trâmite 4: Carta de Condução IMT -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-4" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-4" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									4. Carta de Condução (IMT Online / Pedido de 2.ª Via por Alteração de Nome)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Pedido submetido no portal IMT Online com 10% de desconto (27€ vs 30€ no balcão).
+								</div>
+								<div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+									<span style="font-size: 0.85rem;">Taxa IMT Online: </span>
+									<input type="number" id="input-imt-fee" min="0" max="50" value="27" style="width: 60px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+									<span style="font-size: 0.85rem;">€</span>
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Carta Condução:</span>
+							<strong id="fee-item-4" class="item-cost-display" style="font-size: 1.2rem; color: var(--accent-red);">27,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 2–3 Semanas</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- FASE 3: Trabalho, Finanças e Segurança Social -->
+			<div class="checklist-stage" data-stage="vital" style="margin-bottom: 2rem;">
+				<div style="background: #f1f5f9; border-left: 5px solid #10b981; padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin: 0; color: var(--fg-pencil);">
+						Fase 3: Licença de Casamento (15 Dias), Finanças & Segurança Social
+					</h3>
+					<p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary);">
+						Direitos laborais legais e atualização tributária.
+					</p>
+				</div>
+
+				<!-- Trâmite 5: Licença de Casamento 15 Dias -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-5" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-5" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									5. Licença de Casamento (15 Dias Seguidos Retribuídos — Art. 249.º CT)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Entrega da cópia da certidão de casamento na entidade patronal / Recursos Humanos.
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Trabalho:</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 15 Dias Direito</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Trâmite 6: Finanças & Segurança Social -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-6" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-6" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									6. Autoridade Tributária (Portal das Finanças - Agregado Familiar) e Seg. Social
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Comunicação de alteração de estado civil no Portal das Finanças até 15 de fevereiro do ano seguinte (IRS conjunto).
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Finanças:</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 € (GRATIS)</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ Online</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- FASE 4: Bancos e Contratos -->
+			<div class="checklist-stage" data-stage="finance" style="margin-bottom: 1rem;">
+				<div style="background: #f1f5f9; border-left: 5px solid #d97706; padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin: 0; color: var(--fg-pencil);">
+						Fase 4: Bancos, Crédito Habitação, Seguros e Serviços
+					</h3>
+					<p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary);">
+						Atualização das contas bancárias e apólices de seguros.
+					</p>
+				</div>
+
+				<!-- Trâmite 7: Bancos -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-7" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-7" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									7. Contas Bancárias, Cartões de Débito/Crédito e Crédito Habitação
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Apresentação do novo Cartão de Cidadão no balcão do banco para atualização dos dados de titularidade.
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Bancos:</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ No Balcão</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</section>
+
+		<!-- Guia Jurídico SEO -->
+		<section class="hand-card" style="padding: clamp(1.25rem, 3vw, 2.5rem); background: #fff; margin-bottom: 3.5rem;">
+			<div class="tape" style="margin: 0 auto 1.5rem;"></div>
+			<h2 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.5rem;">
+				Guia Jurídico: Apelidos e Direitos após o Casamento
+			</h2>
+
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+				
+				<div style="border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; background: #fffbeb;">
+					<h3 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin-top: 0; display: flex; align-items: center; gap: 0.4rem;">
+						<span>🏛️</span> 1. Artigo 1672.º do Código Civil
+					</h3>
+					<p class="font-body" style="font-size: 0.95rem; color: var(--text-color); margin: 0;">
+						A adoção de apelidos do cônjuge é facultativa. Qualquer membro do casal pode acrescentar até aos limites legais os apelidos do outro sem perder os seus.
+					</p>
+				</div>
+
+				<div style="border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; background: #fef2f2;">
+					<h3 class="font-heading" style="font-size: 1.25rem; color: var(--accent-red); margin-top: 0; display: flex; align-items: center; gap: 0.4rem;">
+						<span>✈️</span> 2. Regra dos Bilhetes de Lua de Mel
+					</h3>
+					<p class="font-body" style="font-size: 0.95rem; color: var(--text-color); margin: 0;">
+						Os bilhetes aéreos têm de corresponder com rigor absoluto ao passaporte que apresentar na alfândega. Reserve sempre com os apelidos de solteiro.
+					</p>
+				</div>
+
+				<div style="border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; background: #f0fdf4;">
+					<h3 class="font-heading" style="font-size: 1.25rem; color: #16a34a; margin-top: 0; display: flex; align-items: center; gap: 0.4rem;">
+						<span>💼</span> 3. 15 Dias de Faltas Justificadas
+					</h3>
+					<p class="font-body" style="font-size: 0.95rem; color: var(--text-color); margin: 0;">
+						Em Portugal, o artigo 249.º do Código do Trabalho garante 15 dias consecutivos de licença paga que se iniciam obrigatoriamente no dia do casamento.
+					</p>
+				</div>
+
+			</div>
+
+			<!-- FAQ -->
+			<h3 class="font-heading" style="font-size: 1.45rem; color: var(--fg-pencil); margin-bottom: 1rem;">
+				Perguntas Frequentes sobre a Mudança de Apelidos
+			</h3>
+
+			<div style="display: flex; flex-direction: column; gap: 0.85rem;">
+				<details class="hand-card" style="padding: 1rem; background: #fafafa; border: 1.5px solid var(--fg-pencil); cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">
+						É obrigatório mudar de nome ao casar em Portugal?
+					</summary>
+					<p style="margin: 0.75rem 0 0 0; font-size: 0.95rem; color: var(--text-color); line-height: 1.6;">
+						<strong>Não.</strong> De acordo com o Código Civil português (art. 1672.º), a mudança ou acréscimo de apelidos é totalmente facultativa. Qualquer um dos cônjuges pode manter os seus apelidos de solteiro ou acrescentar até ao limite legal os apelidos de família do outro cônjuge.
+					</p>
+				</details>
+
+				<details class="hand-card" style="padding: 1rem; background: #fafafa; border: 1.5px solid var(--fg-pencil); cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">
+						Quanto custa alterar todos os documentos após o casamento em Portugal?
+					</summary>
+					<p style="margin: 0.75rem 0 0 0; font-size: 0.95rem; color: var(--text-color); line-height: 1.6;">
+						O custo total médio situa-se entre <strong>110€ e 140€</strong>: Certidão de casamento online (10€–20€), Cartão de Cidadão (<strong>18,00€</strong>), Passaporte Eletrónico PEP (<strong>65,00€</strong>) e Carta de Condução no IMT (<strong>27€</strong>).
+					</p>
+				</details>
+			</div>
+
+		</section>
+
+		<!-- Ferramentas Relacionadas -->
+		<RelatedTools currentPath="/pt/wedding-name-change-calculator" category="budget" />
+
+	</main>
+
+	<!-- Scripts de Cálculo -->
+	<script is:inline>
+		const p1First = document.getElementById('p1-first');
+		const p1Middle = document.getElementById('p1-middle');
+		const p1Maiden = document.getElementById('p1-maiden');
+		const p2First = document.getElementById('p2-first');
+		const p2Surname = document.getElementById('p2-surname');
+		const namingFormatSelect = document.getElementById('naming-format-select');
+
+		const previewFullLegal = document.getElementById('preview-full-legal');
+		const previewMonogram = document.getElementById('preview-monogram');
+		const previewEmail = document.getElementById('preview-email');
+
+		const displayTotalFee = document.getElementById('display-total-fee');
+		const progressText = document.getElementById('progress-text');
+		const progressBarFill = document.getElementById('progress-bar-fill');
+
+		const inputCertFee = document.getElementById('input-cert-fee');
+		const feeItem1 = document.getElementById('fee-item-1');
+		const inputCcFee = document.getElementById('input-cc-fee');
+		const feeItem2 = document.getElementById('fee-item-2');
+		const inputPepFee = document.getElementById('input-pep-fee');
+		const feeItem3 = document.getElementById('fee-item-3');
+		const inputImtFee = document.getElementById('input-imt-fee');
+		const feeItem4 = document.getElementById('fee-item-4');
+
+		const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+
+		const btnFilterAll = document.getElementById('btn-filter-all');
+		const btnFilterVital = document.getElementById('btn-filter-vital');
+		const btnFilterTravel = document.getElementById('btn-filter-travel');
+		const btnCheckAll = document.getElementById('btn-check-all');
+
+		const btnExportPdf = document.getElementById('btn-export-pdf');
+		const btnExportDoc = document.getElementById('btn-export-doc');
+		const btnCopyChecklist = document.getElementById('btn-copy-checklist');
+
+		function cap(str) {
+			if (!str) return '';
+			return str.trim().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+		}
+
+		function sanitizeForEmail(str) {
+			return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, '');
+		}
+
+		function updatePersona() {
+			const f1 = cap(p1First.value) || 'Inês';
+			const m1 = cap(p1Middle.value) || 'Maria';
+			const maid = cap(p1Maiden.value) || 'Silva';
+			const sp = cap(p2Surname.value) || 'Santos';
+			const format = namingFormatSelect.value;
+
+			let newFullName = '';
+			let monogram = '';
+
+			switch (format) {
+				case 'take-spouse':
+					newFullName = `${f1} ${m1} ${maid} ${sp}`;
+					monogram = `${f1.charAt(0)} ${maid.charAt(0)} ${sp.charAt(0)}`;
+					break;
+				case 'hyphenated-1':
+					newFullName = `${f1} ${m1} ${maid}-${sp}`;
+					monogram = `${f1.charAt(0)} ${maid.charAt(0)} ${sp.charAt(0)}`;
+					break;
+				case 'take-full-spouse':
+					newFullName = `${f1} ${m1} ${sp}`;
+					monogram = `${f1.charAt(0)} ${sp.charAt(0)} ${maid.charAt(0)}`;
+					break;
+				case 'keep-maiden':
+					newFullName = `${f1} ${m1} ${maid}`;
+					monogram = `${f1.charAt(0)} ${maid.charAt(0)} ${m1 ? m1.charAt(0) : 'S'}`;
+					break;
+			}
+
+			previewFullLegal.textContent = newFullName;
+			previewMonogram.textContent = monogram.toUpperCase();
+
+			const cleanFirst = sanitizeForEmail(f1);
+			const cleanLast = format === 'keep-maiden' ? sanitizeForEmail(maid) : sanitizeForEmail(sp);
+			previewEmail.textContent = `${cleanFirst}.${cleanLast}@empresa.pt`;
+		}
+
+		function calculateFees() {
+			const certFee = parseFloat(inputCertFee.value) || 0;
+			feeItem1.textContent = `${certFee.toFixed(2).replace('.', ',')} €`;
+
+			const ccFee = parseFloat(inputCcFee.value) || 0;
+			feeItem2.textContent = `${ccFee.toFixed(2).replace('.', ',')} €`;
+
+			const pepFee = parseFloat(inputPepFee.value) || 0;
+			feeItem3.textContent = `${pepFee.toFixed(2).replace('.', ',')} €`;
+
+			const imtFee = parseFloat(inputImtFee.value) || 0;
+			feeItem4.textContent = `${imtFee.toFixed(2).replace('.', ',')} €`;
+
+			const total = certFee + ccFee + pepFee + imtFee;
+			displayTotalFee.textContent = `${total.toFixed(2).replace('.', ',')} €`;
+
+			let checkedCount = 0;
+			taskCheckboxes.forEach(chk => { if (chk.checked) checkedCount++; });
+
+			const totalTasks = taskCheckboxes.length;
+			const pct = Math.round((checkedCount / totalTasks) * 100);
+			progressText.textContent = `${checkedCount} de ${totalTasks} Trâmites Realizados (${pct}%)`;
+			progressBarFill.style.width = `${pct}%`;
+		}
+
+		btnFilterAll.addEventListener('click', () => {
+			document.querySelectorAll('.checklist-stage').forEach(st => st.style.display = 'block');
+			btnFilterAll.style.background = 'var(--fg-pencil)';
+			btnFilterAll.style.color = '#fff';
+			btnFilterVital.style.background = '#fff';
+			btnFilterVital.style.color = 'var(--fg-pencil)';
+			btnFilterTravel.style.background = '#fff';
+			btnFilterTravel.style.color = 'var(--fg-pencil)';
+		});
+
+		btnFilterVital.addEventListener('click', () => {
+			document.querySelectorAll('.checklist-stage').forEach(st => {
+				st.style.display = st.getAttribute('data-stage') === 'vital' ? 'block' : 'none';
+			});
+			btnFilterVital.style.background = 'var(--fg-pencil)';
+			btnFilterVital.style.color = '#fff';
+			btnFilterAll.style.background = '#fff';
+			btnFilterAll.style.color = 'var(--fg-pencil)';
+			btnFilterTravel.style.background = '#fff';
+			btnFilterTravel.style.color = 'var(--fg-pencil)';
+		});
+
+		btnFilterTravel.addEventListener('click', () => {
+			document.querySelectorAll('.checklist-stage').forEach(st => {
+				st.style.display = st.getAttribute('data-stage') === 'travel' ? 'block' : 'none';
+			});
+			btnFilterTravel.style.background = 'var(--fg-pencil)';
+			btnFilterTravel.style.color = '#fff';
+			btnFilterAll.style.background = '#fff';
+			btnFilterAll.style.color = 'var(--fg-pencil)';
+			btnFilterVital.style.background = '#fff';
+			btnFilterVital.style.color = 'var(--fg-pencil)';
+		});
+
+		btnCheckAll.addEventListener('click', () => {
+			taskCheckboxes.forEach(chk => { chk.checked = false; });
+			calculateFees();
+		});
+
+		btnCopyChecklist.addEventListener('click', () => {
+			const legalName = previewFullLegal.textContent;
+			const totalCost = displayTotalFee.textContent;
+
+			let text = `💍 GUIA DE TRÂMITES E MUDANÇA DE APELIDOS APÓS O CASAMENTO\n`;
+			text += `==========================================================\n`;
+			text += `Nome Oficial: ${legalName}\n`;
+			text += `Total de Emolumentos: ${totalCost}\n\n`;
+			text += `[ ] 1. Certidão Permanente de Casamento (${feeItem1.textContent})\n`;
+			text += `[ ] 2. Renovação do Cartão de Cidadão (${feeItem2.textContent})\n`;
+			text += `[ ] 3. Passaporte Eletrónico PEP (${feeItem3.textContent})\n`;
+			text += `[ ] 4. Carta de Condução IMT (${feeItem4.textContent})\n`;
+			text += `[ ] 5. Licença de Casamento (15 Dias de Faltas Justificadas)\n`;
+			text += `[ ] 6. Finanças (Portal das Finanças) e Seg. Social\n`;
+			text += `[ ] 7. Atualização nos Bancos e Seguros\n\n`;
+			text += `Gerado no Manage.Wedding`;
+
+			navigator.clipboard.writeText(text).then(() => {
+				const orig = btnCopyChecklist.innerHTML;
+				btnCopyChecklist.innerHTML = '<span>✅</span> Guia copiado para a área de transferência!';
+				setTimeout(() => { btnCopyChecklist.innerHTML = orig; }, 2500);
+			});
+		});
+
+		btnExportDoc.addEventListener('click', () => {
+			const legalName = previewFullLegal.textContent;
+			const totalCost = displayTotalFee.textContent;
+			const dateStr = new Date().toLocaleDateString('pt-PT', { year: 'numeric', month: 'long', day: 'numeric' });
+
+			const html = `
+				<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+				<head><meta charset="utf-8"><title>Trâmites Casamento — ${legalName}</title></head>
+				<body style="font-family: Calibri, sans-serif; padding: 24px;">
+					<h1>💍 Plano de Trâmites e Apelidos após o Casamento</h1>
+					<p>Gerado a ${dateStr} • Manage.Wedding</p>
+					<p><strong>Nome Oficial:</strong> ${legalName}</p>
+					<p><strong>Total de Emolumentos:</strong> ${totalCost}</p>
+					<h3>Lista de Passos Oficiais:</h3>
+					<ol>
+						<li>Certidão Permanente no Civil Online (${feeItem1.textContent})</li>
+						<li>Cartão de Cidadão no IRN (${feeItem2.textContent})</li>
+						<li>Passaporte Eletrónico Português (${feeItem3.textContent})</li>
+						<li>Carta de Condução no IMT (${feeItem4.textContent})</li>
+						<li>Licença de Casamento de 15 Dias</li>
+						<li>Finanças e Segurança Social</li>
+						<li>Bancos e Seguros</li>
+					</ol>
+				</body></html>
+			`;
+
+			const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `Tramites_Casamento_${sanitizeForEmail(legalName)}.doc`;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		});
+
+		btnExportPdf.addEventListener('click', () => { window.print(); });
+
+		[p1First, p1Middle, p1Maiden, p2First, p2Surname, namingFormatSelect, inputCertFee, inputCcFee, inputPepFee, inputImtFee].forEach(el => {
+			if (el) {
+				el.addEventListener('input', () => { updatePersona(); calculateFees(); });
+				el.addEventListener('change', () => { updatePersona(); calculateFees(); });
+			}
+		});
+
+		taskCheckboxes.forEach(chk => { chk.addEventListener('change', calculateFees); });
+
+		updatePersona();
+		calculateFees();
+	</script>
+</Layout>

@@ -1,0 +1,242 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Calcolatori Banchetto Nozze, Open Bar & Torta Nuziale (Gratuiti)";
+const description = "Calcola il fabbisogno di prosecco, vino e distillati per l'open bar, stima le porzioni e i prezzi della torta nuziale e impagina i menù da stampare.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://manage.wedding/it/dining/#collection",
+      "name": "Calcolatori Banchetto Nozze, Open Bar & Torta Nuziale | Manage.Wedding",
+      "url": "https://manage.wedding/it/dining",
+      "inLanguage": "it",
+      "description": "Suite completa di strumenti per il ricevimento: calcolo bevande e open bar, porzioni torta nuziale, preventivo catering e menù stampabili.",
+      "hasPart": [
+        { "@type": "WebApplication", "name": "Calcolatore Open Bar & Prosecco", "url": "https://manage.wedding/it/wedding-drink-calculator" },
+        { "@type": "WebApplication", "name": "Distillati & Bottiglie per Cocktail", "url": "https://manage.wedding/it/liquor-wedding-calculator" },
+        { "@type": "WebApplication", "name": "Crea Menù da Stampare", "url": "https://manage.wedding/it/reception-menu-maker" },
+        { "@type": "WebApplication", "name": "Calcolatore Prezzo Torta Nuziale", "url": "https://manage.wedding/it/cake-pricing-calculator" },
+        { "@type": "WebApplication", "name": "Piani e Porzioni Torta Nuziale", "url": "https://manage.wedding/it/cake-serving-calculator" },
+        { "@type": "WebApplication", "name": "Catering: Menù Servito vs Buffet", "url": "https://manage.wedding/it/catering-cost-estimator" },
+        { "@type": "WebApplication", "name": "Gradazione Alcolica & Diluizione", "url": "https://manage.wedding/it/alcohol-dilution-calculator" },
+        { "@type": "WebApplication", "name": "Preventivo Fiori & Allestimenti", "url": "https://manage.wedding/it/floral-cost-estimator" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quante bevande calcolare a persona per il ricevimento di nozze?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La regola generale prevede: 2 calici a persona durante l'aperitivo di benvenuto (prima ora), seguiti da 1 bevanda all'ora per le ore successive della festa e dell'open bar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quante bottiglie di vino e spumante servono per 100 invitati?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Per 100 ospiti si calcolano solitamente circa 20–25 bottiglie di Prosecco/Spumante per il brindisi e l'aperitivo, e 35–45 bottiglie di vino (tra bianco e rosso) per il pranzo o la cena."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto costa una torta nuziale artigianale a porzione?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In Italia il prezzo di una torta nuziale (cake design all'americana o classica millefoglie/crostata monumentale) varia generalmente tra 4,50 € e 10,00 € a porzione."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const diningTools = [
+  {
+    title: "Calcolatore Open Bar & Prosecco",
+    url: "/it/wedding-drink-calculator",
+    icon: "🍾",
+    badge: "Più Usato",
+    desc: "Calcola il numero esatto di bottiglie di Prosecco, vino bianco, rosso, birra e bibite analcoliche per aperitivo e festa serale.",
+    tags: ["Open Bar", "Lista Spesa", "PDF Immediato"]
+  },
+  {
+    title: "Distillati & Bottiglie per Cocktail",
+    url: "/it/liquor-wedding-calculator",
+    icon: "🍸",
+    badge: "Open Bar Serale",
+    desc: "Ottimizza le proporzioni per Gin Tonic, Spritz, Rum e Vodka. Calcola bottiglie da 70 cl, ghiaccio e soft drink.",
+    tags: ["Cocktail", "Formati 70cl", "Costi Bar"]
+  },
+  {
+    title: "Crea Menù da Stampare (4x9 DL)",
+    url: "/it/reception-menu-maker",
+    icon: "📜",
+    badge: "PDF Vettoriale",
+    desc: "Impagina eleganti menù per i tavoli in formato DL 4x9 e 5x7 con bordi floreali, caratteri raffinati e note per intolleranze.",
+    tags: ["Grafica Nozze", "Menù da Stampare", "Intolleranze"]
+  },
+  {
+    title: "Calcolatore Prezzo Torta Nuziale",
+    url: "/it/cake-pricing-calculator",
+    icon: "🎂",
+    badge: "Costo a Fetta",
+    desc: "Per coppie e pasticcieri: calcola materie prime, ore di decorazione, costo per fetta e preventivo dettagliato.",
+    tags: ["Pasticceria", "Prezzo a Fetta", "Preventivo PDF"]
+  },
+  {
+    title: "Piani e Porzioni Torta Nuziale",
+    url: "/it/cake-serving-calculator",
+    icon: "🍰",
+    badge: "Guida Piani",
+    desc: "Dimensioni e altezze dei piani tondi o quadrati per matrimoni da 50 a oltre 300 invitati, con guida al taglio.",
+    tags: ["Diametri Piani", "Buffet Dolci", "Guida Taglio"]
+  },
+  {
+    title: "Tavolo dei Dolci, Confettata & Candy Bar",
+    url: "/it/wedding-dessert-table-calculator",
+    icon: "🧁",
+    badge: "Buffet Dolci",
+    desc: "Calcola pasticceria mignon, dozzine da ordinare in pasticceria, chili di confetti e stampa cartelli 8x10 'L'amore è dolce'.",
+    tags: ["Pasticceria Mignon", "Confettata kg", "Ordine Pasticceria"]
+  },
+  {
+    title: "Catering: Menù Servito vs Buffet",
+    url: "/it/catering-cost-estimator",
+    icon: "🍽️",
+    badge: "Costo a Persona",
+    desc: "Confronta il costo a persona tra servizio a tavola tradizionale, buffet a isole e costi per il personale di sala.",
+    tags: ["Servito vs Buffet", "Costo a Persona", "Personale Sala"]
+  },
+  {
+    title: "Gradazione Alcolica & Diluizione",
+    url: "/it/alcohol-dilution-calculator",
+    icon: "🧪",
+    badge: "Barman & Mixology",
+    desc: "Bilancia il grado alcolico dei cocktail pre-miscelati e infusi artigianali per un servizio rapido e impeccabile.",
+    tags: ["Grado Alcolico", "Premix Cocktail", "Mixology"]
+  },
+  {
+    title: "Preventivo Fiori & Allestimenti",
+    url: "/it/floral-cost-estimator",
+    icon: "💐",
+    badge: "Allestimento",
+    desc: "Stima i costi per bouquet sposa, bottoniere testimoni, centrotavola per i tavoli e arco floreale per la cerimonia.",
+    tags: ["Bouquet Sposa", "Centrotavola", "Arco Cerimonia"]
+  }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+    
+    <!-- Hero Header -->
+    <header class="fade-in category-header" style="text-align: center; margin-bottom: 3rem; position: relative;">
+      <div class="tape" style="margin: 0 auto 1rem;"></div>
+      <span class="badge-postit">Hub Banchetto & Bar</span>
+      <h1 class="font-heading" style="font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+        Calcolatori <span class="accent-italic">Banchetto, Bar & Torta</span> Nozze
+      </h1>
+      <p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+        Calcola le quantità perfette di alcolici per l'open bar, stima le porzioni della torta nuziale, confronta i preventivi catering e genera menù coordinati da stampare.
+      </p>
+    </header>
+
+    <!-- Category Nav Bar -->
+    <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+      <span style="font-size: 0.9rem; font-weight: 700; color: #64748b; align-self: center;">Categorie:</span>
+      <a href="/it/budget" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💰 Budget</a>
+      <a href="/it/dining" class="tool-tag" style="background: var(--post-it); font-weight: 700; text-decoration: none; padding: 6px 14px; border: 2px solid var(--fg-pencil);">🍾 Banchetto (Attivo)</a>
+      <a href="/it/guests" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">👥 Invitati & Logistica</a>
+      <a href="/it/stationery" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💌 Partecipazioni & Ricordi</a>
+    </div>
+
+    <!-- Tools Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem; margin-bottom: 4rem;">
+      {diningTools.map(tool => (
+        <div class="hand-card" style="padding: 1.75rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span style="font-size: 2.2rem;">{tool.icon}</span>
+              <span style="font-size: 0.78rem; font-weight: 700; background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+                {tool.badge}
+              </span>
+            </div>
+            
+            <h2 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+              {tool.title}
+            </h2>
+            
+            <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 0.75rem;">
+              {tool.tags.map(t => (
+                <span class="tool-tag" style="font-size: 0.75rem; padding: 2px 6px;">{t}</span>
+              ))}
+            </div>
+
+            <p class="font-body" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+              {tool.desc}
+            </p>
+          </div>
+
+          <a href={tool.url} class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem; text-decoration: none; display: block; box-sizing: border-box;">
+            Apri Strumento →
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- In-Depth Dining & Bar Guide -->
+    <article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+        <span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">Regole di Calcolo</span>
+        <h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+          Come Calcolare Cibo e Bevande per il Ricevimento
+        </h2>
+        <p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+          Evita di rimanere a secco durante l'open bar o di sprecare porzioni di cibo grazie alle formule dei migliori banqueting.
+        </p>
+      </div>
+
+      <section style="margin-bottom: 3rem;">
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+          1. La Formula 1-Drink all'Ora
+        </h3>
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+          Gli invitati bevono a ritmo più sostenuto durante l'aperitivo di benvenuto, stabilizzandosi poi a circa una consumazione all'ora:
+        </p>
+        
+        <div style="background: #faf8f5; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-family: var(--font-body); font-size: 1rem; line-height: 1.6;">
+          <strong>Totale Consumazioni = (Numero Ospiti × 2 Drink per l'Aperitivo) + (Numero Ospiti × 1 Drink × Ore Rimanenti)</strong>
+          <br/><br/>
+          <em>Esempio per 150 Ospiti (5 ore totali di ricevimento):</em> (150 × 2) + (150 × 4) = <strong>900 Calici/Drink</strong>.
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section>
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.25rem; text-align: center;">
+          Domande Frequenti (FAQ)
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--accent-blue); outline: none;">
+              È meglio optare per un menù servito a tavola o per un buffet?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--fg-pencil); line-height: 1.6;">
+              In Italia il format più apprezzato unisce un ricco aperitivo e antipasti a buffet (con isole tematiche), seguiti da primi e secondi piatti serviti a tavola, per poi concludere con buffet di dolci, torta nuziale e open bar all'aperto.
+            </p>
+          </details>
+        </div>
+      </section>
+
+    </article>
+
+  </main>
+</Layout>

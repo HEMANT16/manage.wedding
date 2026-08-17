@@ -1,0 +1,299 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Calcolatori Budget Matrimonio & Gestione Spese Nozze (Gratuiti)";
+const description = "Calcolatori gratuiti per il budget di matrimonio: ripartisci le spese per categorie, scopri i costi nascosti di location e catering, suddividi i costi tra famiglie.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://manage.wedding/it/budget/#collection",
+      "name": "Calcolatori Budget Matrimonio & Finanze Nozze | Manage.Wedding",
+      "url": "https://manage.wedding/it/budget",
+      "inLanguage": "it",
+      "description": "Suite completa di strumenti per il budget del matrimonio: ripartizione spese per categorie, calcolo costi location, suddivisione tra famiglie e stima mance.",
+      "hasPart": [
+        { "@type": "WebApplication", "name": "Calcolatore Budget Matrimonio", "url": "https://manage.wedding/it/master-budget-calculator" },
+        { "@type": "WebApplication", "name": "Costi Nascosti Location & Villa", "url": "https://manage.wedding/it/wedding-venue-cost-calculator" },
+        { "@type": "WebApplication", "name": "Chi Paga Cosa al Matrimonio?", "url": "https://manage.wedding/it/who-pays-for-what-wedding" },
+        { "@type": "WebApplication", "name": "Budget Addio al Nubilato & Celibato", "url": "https://manage.wedding/it/bachelorette-budget-calculator" },
+        { "@type": "WebApplication", "name": "Guida alle Mance per Fornitori", "url": "https://manage.wedding/it/vendor-tipping-calculator" },
+        { "@type": "WebApplication", "name": "Budget Viaggio di Nozze", "url": "https://manage.wedding/it/honeymoon-budget-estimator" },
+        { "@type": "WebApplication", "name": "Simulatore Prestito Matrimonio", "url": "https://manage.wedding/it/wedding-loan-calculator" },
+        { "@type": "WebApplication", "name": "Cambio Cognome dopo il Matrimonio e Pratiche Burocratiche", "url": "https://manage.wedding/it/wedding-name-change-calculator" },
+        { "@type": "WebApplication", "name": "Busta Regalo in Denaro", "url": "https://manage.wedding/it/gift-cash-calculator" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qual è la formula standard per la ripartizione del budget di nozze?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La ripartizione percentuale collaudata nel settore nozze è: 45–50% Ricevimento (Location, Catering & Open Bar), 12–15% Foto & Video, 8–10% Abiti & Bellezza, 8–10% Musica & Intrattenimento, 8–10% Fiori & Allestimenti, 3–5% Partecipazioni & Bomboniere, e 5% Fondo Imprevisti."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quali sono i costi nascosti tipici di location e ville?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "I costi non preventivati più frequenti includono il costo per l'esclusiva della location, le ore extra dopo la mezzanotte, il diritto di tappo per il vino, la tassa SIAE per la musica, il consumo minimo garantito e le pulizie finali."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto regalare nella busta di matrimonio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In Italia l'importo per la classica busta parte solitamente dal valore del coperto (100 € – 150 € per conoscenti/colleghi, 150 € – 250 € per amici intimi, 250 € – 500 €+ per parenti stretti e testimoni di nozze)."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const budgetTools = [
+  {
+    title: "Budget Addio al Celibato",
+    url: "/it/bachelor-party-budget-calculator",
+    icon: "🍻",
+    badge: "Offrire allo Sposo",
+    desc: "Dividi le spese di viaggio, alloggio, serate e attività tra gli amici coprendo la quota dello sposo in parti uguali.",
+    tags: ["Divisione N-1", "Messaggi Satispay/PayPal", "Weekend Celibato"]
+  },
+
+  {
+    title: "Calcolatore Budget Matrimonio",
+    url: "/it/master-budget-calculator",
+    icon: "💰",
+    badge: "Ripartizione %",
+    desc: "Inserisci il tuo budget totale per ottenere una suddivisione automatica per location, catering, fotografo, abiti e fondo imprevisti.",
+    tags: ["Ripartizione %", "Fondo Imprevisti", "Controllo Spese"]
+  },
+  {
+    title: "Costi Nascosti Location & Villa",
+    url: "/it/wedding-venue-cost-calculator",
+    icon: "🏰",
+    badge: "Costi Extra",
+    desc: "Calcola il costo reale della location oltre all'affitto base: diritto di tappo, orari extra, SIAE e minimi garantiti.",
+    tags: ["Minimo Coperti", "Diritto di Tappo", "Costi Reali"]
+  },
+  {
+    title: "Chi Paga Cosa al Matrimonio?",
+    url: "/it/who-pays-for-what-wedding",
+    icon: "👥",
+    badge: "Tradizione vs Oggi",
+    desc: "Confronta il galateo tradizionale con la moderna suddivisione a 3 vie tra sposi e famiglie per oltre 20 voci di spesa.",
+    tags: ["Famiglie", "Accordo Spese", "Stampa PDF"]
+  },
+  {
+    title: "Budget Addio al Nubilato & Celibato",
+    url: "/it/bachelorette-budget-calculator",
+    icon: "🍸",
+    badge: "Quota Sposa",
+    desc: "Dividi alloggio, cene e attività tra i partecipanti coprendo la quota del festeggiato. Genera riepiloghi WhatsApp.",
+    tags: ["Divisione N-1", "Copia WhatsApp", "Quote Gruppo"]
+  },
+  {
+    title: "Guida alle Mance per Fornitori",
+    url: "/it/vendor-tipping-calculator",
+    icon: "💵",
+    badge: "Mance & Staff",
+    desc: "Evita dubbi il giorno del sì: calcola le mance consigliate e prepara le buste per musicisti, autisti e brigata di sala.",
+    tags: ["Buste Mancia", "Regole Galateo", "Checklist Giorno"]
+  },
+  {
+    title: "Budget Viaggio di Nozze",
+    url: "/it/honeymoon-budget-estimator",
+    icon: "✈️",
+    badge: "Luna di Miele",
+    desc: "Stima i costi complessivi per voli, hotel da sogno, cene romantiche, escursioni e assicurazione viaggio.",
+    tags: ["Resort & Voli", "Spesa Giornaliera", "Lista Valigia"]
+  },
+  {
+    title: "Simulatore Prestito Matrimonio",
+    url: "/it/wedding-loan-calculator",
+    icon: "🏦",
+    badge: "Piano Rate",
+    desc: "Calcola la rata mensile esatta, il TAEG e gli interessi totali per finanziare le spese di nozze in serenità.",
+    tags: ["Calcolo TAEG", "Rata Mensile", "Ammortamento"]
+  },
+  {
+    title: "Cambio Cognome & Pratiche Burocratiche",
+    url: "/it/wedding-name-change-calculator",
+    icon: "✍️",
+    badge: "Pratiche & Bolli",
+    desc: "Calcola le marche da bollo per Passaporto, Carta d'Identità CIE e Anagrafe, e organizza le pratiche post-matrimonio.",
+    tags: ["Art. 143-bis", "CIE e Passaporto", "Stato Civile"]
+  },
+  {
+    title: "Busta Regalo in Denaro (Invitati)",
+    url: "/it/gift-cash-calculator",
+    icon: "🎁",
+    badge: "Guida Busta",
+    desc: "Non sai quanto mettere nella busta? Calcola l'importo ideale in base al legame di parentela, coperto e accompagnatori.",
+    tags: ["Galateo Busta", "Valore Coperto", "Parenti & Testimoni"]
+  }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+    
+    <!-- Hero Header -->
+    <header class="fade-in category-header" style="text-align: center; margin-bottom: 3rem; position: relative;">
+      <div class="tape" style="margin: 0 auto 1rem;"></div>
+      <span class="badge-postit">Hub Finanze & Spese</span>
+      <h1 class="font-heading" style="font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+        Calcolatori <span class="accent-italic">Budget & Finanze</span> Nozze
+      </h1>
+      <p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+        Prendi il pieno controllo delle spese del tuo matrimonio. Strumenti 100% gratuiti, riservati nel tuo browser per ripartire il budget e prevenire costi imprevisti.
+      </p>
+    </header>
+
+    <!-- Category Nav Bar -->
+    <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+      <span style="font-size: 0.9rem; font-weight: 700; color: #64748b; align-self: center;">Categorie:</span>
+      <a href="/it/budget" class="tool-tag" style="background: var(--post-it); font-weight: 700; text-decoration: none; padding: 6px 14px; border: 2px solid var(--fg-pencil);">💰 Budget (Attivo)</a>
+      <a href="/it/dining" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">🍾 Banchetto & Bar</a>
+      <a href="/it/guests" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">👥 Invitati & Logistica</a>
+      <a href="/it/stationery" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💌 Partecipazioni & Ricordi</a>
+    </div>
+
+    <!-- Tools Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem; margin-bottom: 4rem;">
+      {budgetTools.map(tool => (
+        <div class="hand-card" style="padding: 1.75rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span style="font-size: 2.2rem;">{tool.icon}</span>
+              <span style="font-size: 0.78rem; font-weight: 700; background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+                {tool.badge}
+              </span>
+            </div>
+            
+            <h2 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+              {tool.title}
+            </h2>
+            
+            <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 0.75rem;">
+              {tool.tags.map(t => (
+                <span class="tool-tag" style="font-size: 0.75rem; padding: 2px 6px;">{t}</span>
+              ))}
+            </div>
+
+            <p class="font-body" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+              {tool.desc}
+            </p>
+          </div>
+
+          <a href={tool.url} class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem; text-decoration: none; display: block; box-sizing: border-box;">
+            Apri Calcolatore →
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- In-Depth Budgeting Guide -->
+    <article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+        <span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">Guida Finanziaria</span>
+        <h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+          Come Gestire il Budget delle Nozze Senza Sorprese
+        </h2>
+        <p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+          Regole strategiche per evitare costi nascosti, non contrarre debiti eccessivi e allocare i fondi con serenità.
+        </p>
+      </div>
+
+      <section style="margin-bottom: 3rem;">
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+          1. La Regola Percentuale 50/15/10/10/10/5
+        </h3>
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+          Invece di tirare a indovinare, affidati ai benchmark percentuali collaudati su migliaia di matrimoni:
+        </p>
+        
+        <div style="overflow-x: auto; margin-top: 1rem; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+            <thead>
+              <tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Categoria</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Percentuale</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Cosa Include</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Location & Banchetto</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 700;">45% – 50%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Affitto villa/castello, catering, open bar, torta nuziale, servizio.</td>
+              </tr>
+              <tr style="background: #faf8f5;">
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Foto & Video</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">12% – 15%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Fotografo principale, secondo operatore, video con drone, album sposi.</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Abiti & Bellezza</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">8% – 10%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Abito da sposa, abito sposo, sartoria, prove trucco e acconciatura.</td>
+              </tr>
+              <tr style="background: #faf8f5;">
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Musica & Intrattenimento</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">8% – 10%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Band dal vivo o DJ set, musica per la cerimonia, diritti SIAE.</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Fiori & Allestimenti</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">8% – 10%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Bouquet sposa, centrotavola, bottoniere, arco cerimonia e tableau.</td>
+              </tr>
+              <tr style="background: #faf8f5;">
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Fondo Imprevisti</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-blue); font-weight: 700;">5%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Conferme dell'ultimo minuto, tensostruttura per pioggia, mance e pasti staff.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section>
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.25rem; text-align: center;">
+          Domande Frequenti (FAQ)
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--accent-blue); outline: none;">
+              Qual è la percentuale di budget da destinare al ricevimento?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--fg-pencil); line-height: 1.6;">
+              In Italia il ricevimento (affitto della location, menù catering, open bar e torta nuziale) rappresenta tradizionalmente tra il 45% e il 50% dell'intero budget di nozze.
+            </p>
+          </details>
+
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--accent-blue); outline: none;">
+              Come evitare di sforare il budget iniziale?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--fg-pencil); line-height: 1.6;">
+              Imposta sin da subito un fondo di emergenza del 5%, richiedi sempre preventivi comprensivi di IVA (22% per i servizi, 10% per la ristorazione) e tieni traccia puntuale di ogni acconto versato.
+            </p>
+          </details>
+        </div>
+      </section>
+
+    </article>
+
+  </main>
+</Layout>

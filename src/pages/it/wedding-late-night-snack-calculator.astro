@@ -1,0 +1,460 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Calcolatore Spuntino di Mezzanotte e Pizza per Matrimonio",
+      "url": "https://manage.wedding/it/wedding-late-night-snack-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calcola le quantità esatte di pizze, mini-hamburger o snack notturni per il matrimonio in base agli ospiti rimasti a ballare e all'open bar.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<Layout
+	title="Calcolatore Spuntino di Mezzanotte & Pizza Matrimonio — Quantità e Orari"
+	description="Calcola quante teglie di pizza, porzioni o hamburger ordinare per lo spuntino notturno del matrimonio in base agli invitati rimasti e agli orari di consegna."
+	lang="it"
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/it/" style="color: var(--text-secondary); text-decoration: none;">Home</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/it/dining" style="color: var(--text-secondary); text-decoration: none;">Banchetto e Ristorazione</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Spuntino di Mezzanotte</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>🍕</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Energia per la Pista & Ristoro Notturno</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Calcolatore Spuntino di Mezzanotte & Pizza
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Evita di rimanere a corto di cibo a notte fonda o di sprecare decine di cartoni. Calcola la <strong>stima reale di invitati presenti a tarda notte</strong>, i gusti di pizza e la scaletta di consegna.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Inputs -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>👥</span> 1. Invitati e Ritmo Festa
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div>
+						<label for="input-total-guests" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Ospiti a Cena:</label>
+						<input type="number" id="input-total-guests" min="20" max="500" value="120" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+					</div>
+					<div>
+						<label for="select-crowd-stay" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">% che rimane fino a tardi:</label>
+						<select id="select-crowd-stay" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="0.55">Festa Tranquilla / Più Anziani (55%)</option>
+							<option value="0.65" selected>Festa Matrimonio Tipica (65%)</option>
+							<option value="0.80">Molti Amici Giovani / Scatenati (80%)</option>
+						</select>
+					</div>
+				</div>
+
+				<h2 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 1.25rem 0 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.4rem;">
+					🍔 2. Scelta Snack e Open Bar
+				</h2>
+
+				<div style="margin-bottom: 1rem;">
+					<label for="select-snack-type" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Tipo di Spuntino Notturno:</label>
+					<select id="select-snack-type" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+						<option value="pizza" selected>🍕 Pizza a Domicilio (Pizze grandi da 8 fette)</option>
+						<option value="sliders">🍔 Mini Burger & Coni di Patatine Fritte</option>
+						<option value="tacos">🌮 Tacos / Street Food Messicano</option>
+						<option value="pretzels">🥨 Pretzel Caldi con Salsa al Formaggio</option>
+						<option value="donuts">🍩 Cornetti Caldi / Bomboloni alla Crema</option>
+					</select>
+				</div>
+
+				<div style="margin-bottom: 1rem;">
+					<label for="select-bar-factor" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Intensità Open Bar & Fame Notturna:</label>
+					<select id="select-bar-factor" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+						<option value="1.0">🍺 Consumo Moderato (1,8 - 2 porzioni/pers.)</option>
+						<option value="1.15" selected>🍸 Open Bar Attivo / Balli Scatenati (2,2 - 2,5 porzioni/pers.)</option>
+						<option value="1.30">🔥 Open Bar Intenso / Notte Fonda (2,8 - 3 porzioni/pers.)</option>
+					</select>
+				</div>
+
+				<h2 class="font-heading" style="font-size: 1.15rem; color: var(--fg-pencil); margin: 1.25rem 0 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.4rem;">
+					⏰ 3. Fine Ricevimento e Costi
+				</h2>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+					<div>
+						<label for="input-reception-end" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Chiusura Ricevimento:</label>
+						<select id="input-reception-end" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="02:00">02:00</option>
+							<option value="03:00">03:00</option>
+							<option value="04:00" selected>04:00</option>
+							<option value="05:00">05:00</option>
+						</select>
+					</div>
+					<div>
+						<label for="input-unit-cost" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Prezzo Indicativo (€/pizza o €/pers.):</label>
+						<input type="number" id="input-unit-cost" min="1" max="100" value="18" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem;" />
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Stima Ordine</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Quantità Consigliata
+						</h2>
+					</div>
+					<span id="badge-night-guests" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">78 Ospiti Notturni</span>
+				</div>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Totale da Ordinare</span>
+						<strong id="stat-primary-quantity" style="font-size: 2rem; font-weight: 900; color: #b91c1c; line-height: 1.1;">22 Pizze</strong>
+						<span id="stat-primary-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(176 tranci totali)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Costo Stimato</span>
+						<strong id="stat-total-cost" style="font-size: 2rem; font-weight: 900; color: #1e40af; line-height: 1.1;">396 €</strong>
+						<span id="stat-cost-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">~5,08 € a persona presente</span>
+					</div>
+				</div>
+
+				<div id="box-pizza-breakdown" style="background: #fef3c7; border: 1.5px solid #d97706; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.85rem;">
+					<strong style="color: #92400e; display: block; margin-bottom: 0.35rem;">🍕 Suddivisione Gusti Consigliata:</strong>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; color: #78350f;">
+						<div>• <strong id="stat-top-pep">11 Diavola / Prosciutto / BBQ</strong></div>
+						<div>• <strong id="stat-top-cheese">7 Margherita / 4 Formaggi</strong></div>
+						<div>• <strong id="stat-top-veg">3 Vegetariana / Funghi</strong></div>
+						<div>• <strong id="stat-top-gf">1 Senza Glutine / Vegana</strong></div>
+					</div>
+				</div>
+
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🚚 Arrivo Consegna / Food Truck:</span>
+						<strong id="stat-time-delivery" style="color: #1e40af;">02:30</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🛎️ Servizio in Pista da Ballo:</span>
+						<strong id="stat-time-serve" style="color: #b91c1c;">02:45</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.25rem 0;">
+						<span style="color: #475569;">🎆 Chiusura Ricevimento:</span>
+						<strong id="stat-time-exit" style="color: var(--fg-pencil);">04:00</strong>
+					</div>
+				</div>
+
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-print-summary" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Stampa Ordine (PDF)
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Esporta Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/it/wedding-late-night-snack-calculator" category="dining" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-snack-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Ordine Spuntino di Mezzanotte e Pizza Matrimonio</h1>
+				<p id="print-snack-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Coordinamento Catering e Consegna | Manage.Wedding</p>
+			</div>
+			<div id="print-snack-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	const inputTotalGuests = document.getElementById('input-total-guests');
+	const selectCrowdStay = document.getElementById('select-crowd-stay');
+	const selectSnackType = document.getElementById('select-snack-type');
+	const selectBarFactor = document.getElementById('select-bar-factor');
+	const inputReceptionEnd = document.getElementById('input-reception-end');
+	const inputUnitCost = document.getElementById('input-unit-cost');
+
+	const badgeNightGuests = document.getElementById('badge-night-guests');
+	const statPrimaryQuantity = document.getElementById('stat-primary-quantity');
+	const statPrimarySub = document.getElementById('stat-primary-sub');
+	const statTotalCost = document.getElementById('stat-total-cost');
+	const statCostSub = document.getElementById('stat-cost-sub');
+
+	const boxPizzaBreakdown = document.getElementById('box-pizza-breakdown');
+	const statTopPep = document.getElementById('stat-top-pep');
+	const statTopCheese = document.getElementById('stat-top-cheese');
+	const statTopVeg = document.getElementById('stat-top-veg');
+	const statTopGf = document.getElementById('stat-top-gf');
+
+	const statTimeDelivery = document.getElementById('stat-time-delivery');
+	const statTimeServe = document.getElementById('stat-time-serve');
+	const statTimeExit = document.getElementById('stat-time-exit');
+
+	function calculateSnacks() {
+		const totalGuests = Math.max(10, parseInt(inputTotalGuests.value, 10) || 120);
+		const stayRate = parseFloat(selectCrowdStay.value) || 0.65;
+		const lateGuests = Math.round(totalGuests * stayRate);
+		const barMultiplier = parseFloat(selectBarFactor.value) || 1.15;
+		const unitCost = parseFloat(inputUnitCost.value) || 18;
+		const snackType = selectSnackType.value;
+
+		badgeNightGuests.textContent = `${lateGuests} Ospiti Notturni`;
+
+		let totalCost = 0;
+
+		if (snackType === 'pizza') {
+			boxPizzaBreakdown.style.display = 'block';
+			const slicesPerPerson = 2.25 * barMultiplier;
+			const totalSlices = Math.round(lateGuests * slicesPerPerson);
+			const totalPies = Math.ceil(totalSlices / 8);
+
+			statPrimaryQuantity.textContent = `${totalPies} Pizze Grandi`;
+			statPrimarySub.textContent = `(${totalSlices} fette da 8 tagli)`;
+
+			const pepPies = Math.round(totalPies * 0.50);
+			const cheesePies = Math.round(totalPies * 0.30);
+			const vegPies = Math.max(1, Math.round(totalPies * 0.15));
+			const gfPies = Math.max(1, totalPies - pepPies - cheesePies - vegPies);
+
+			statTopPep.textContent = `${pepPies} Diavola / Prosciutto / BBQ`;
+			statTopCheese.textContent = `${cheesePies} Margherita / 4 Formaggi`;
+			statTopVeg.textContent = `${vegPies} Vegetariana / Funghi`;
+			statTopGf.textContent = `${gfPies} Senza Glutine / Vegana`;
+
+			totalCost = totalPies * unitCost;
+		} else if (snackType === 'sliders') {
+			boxPizzaBreakdown.style.display = 'none';
+			const slidersPerPerson = Math.round(2.3 * barMultiplier);
+			const totalSliders = lateGuests * slidersPerPerson;
+			const fryCones = Math.round(lateGuests * 0.9);
+
+			statPrimaryQuantity.textContent = `${totalSliders} Mini Burger`;
+			statPrimarySub.textContent = `+ ${fryCones} Coni Patatine`;
+			totalCost = lateGuests * unitCost;
+		} else if (snackType === 'tacos') {
+			boxPizzaBreakdown.style.display = 'none';
+			const tacosPerPerson = Math.round(2.6 * barMultiplier);
+			const totalTacos = lateGuests * tacosPerPerson;
+
+			statPrimaryQuantity.textContent = `${totalTacos} Tacos`;
+			statPrimarySub.textContent = `(~${tacosPerPerson} tacos per persona)`;
+			totalCost = lateGuests * unitCost;
+		} else if (snackType === 'pretzels') {
+			boxPizzaBreakdown.style.display = 'none';
+			const totalPretzels = Math.round(lateGuests * 1.15);
+
+			statPrimaryQuantity.textContent = `${totalPretzels} Pretzel`;
+			statPrimarySub.textContent = `+ Salsa formaggio fuso`;
+			totalCost = lateGuests * unitCost;
+		} else {
+			boxPizzaBreakdown.style.display = 'none';
+			const totalDonuts = Math.round(lateGuests * 1.5);
+
+			statPrimaryQuantity.textContent = `${totalDonuts} Bomboloni / Cornetti`;
+			statPrimarySub.textContent = `(~1,5 dolci per invitato)`;
+			totalCost = lateGuests * unitCost;
+		}
+
+		statTotalCost.textContent = `${Math.round(totalCost).toLocaleString()} €`;
+		statCostSub.textContent = `~${(totalCost / lateGuests).toFixed(2)} € per invitato notturno`;
+
+		const endTime = inputReceptionEnd.value;
+		let [endH, endM] = endTime.split(':').map(Number);
+
+		const formatTime = (h, m) => {
+			return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}`;
+		};
+
+		let serveH = (endH - 1 + 24) % 24;
+		let serveM = (endM - 15 + 60) % 60;
+		if (endM < 15) serveH = (serveH - 1 + 24) % 24;
+
+		let delivH = (serveH + 24) % 24;
+		let delivM = (serveM - 15 + 60) % 60;
+		if (serveM < 15) delivH = (delivH - 1 + 24) % 24;
+
+		statTimeDelivery.textContent = formatTime(delivH, delivM);
+		statTimeServe.textContent = formatTime(serveH, serveM);
+		statTimeExit.textContent = formatTime(endH, endM);
+
+		document.getElementById('print-snack-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Elemento</th>
+						<th style="padding:6pt;">Dettaglio</th>
+						<th style="padding:6pt; text-align:right;">Quantità da Ordinare</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Ospiti Notturni</td>
+						<td style="padding:6pt;">${totalGuests} totali x ${Math.round(stayRate * 100)}% permanenza</td>
+						<td style="padding:6pt; text-align:right;"><strong>${lateGuests} persone</strong></td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Ordine Spuntino</td>
+						<td style="padding:6pt;">${selectSnackType.options[selectSnackType.selectedIndex].text}</td>
+						<td style="padding:6pt; text-align:right; font-weight:bold; color:#b91c1c;">${statPrimaryQuantity.textContent}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Orario Consegna</td>
+						<td style="padding:6pt;">Finestra di consegna cibo caldo</td>
+						<td style="padding:6pt; text-align:right; font-weight:bold; color:#1e40af;">${statTimeDelivery.textContent}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Servizio in Pista</td>
+						<td style="padding:6pt;">75 min prima della chiusura</td>
+						<td style="padding:6pt; text-align:right; font-weight:bold;">${statTimeServe.textContent}</td>
+					</tr>
+					<tr style="background:#f0fdf4; font-weight:bold; font-size:11pt; border-top:2pt solid #15803d;">
+						<td style="padding:8pt; color:#15803d;">COSTO STIMATO</td>
+						<td style="padding:8pt; color:#15803d;">Totale Ristorazione / Food Truck</td>
+						<td style="padding:8pt; text-align:right; color:#15803d;">${Math.round(totalCost)} €</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	[inputTotalGuests, selectCrowdStay, selectSnackType, selectBarFactor, inputReceptionEnd, inputUnitCost].forEach(el => {
+		el.addEventListener('input', calculateSnacks);
+		el.addEventListener('change', calculateSnacks);
+	});
+
+	document.getElementById('btn-print-summary').addEventListener('click', () => {
+		calculateSnacks();
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateSnacks();
+		const totalCost = statTotalCost.textContent;
+		const quantity = statPrimaryQuantity.textContent;
+		const lateGuests = badgeNightGuests.textContent;
+		const deliveryTime = statTimeDelivery.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Spuntino di Mezzanotte</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Ordine Spuntino di Mezzanotte Matrimonio</h1>
+				<p><strong>Ospiti Notturni:</strong> ${lateGuests} | <strong>Quantità:</strong> ${quantity} | <strong>Orario Consegna:</strong> ${deliveryTime} | <strong>Costo:</strong> ${totalCost}</p>
+				<hr/>
+				<p><em>Generato da Manage.Wedding</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Spuntino-Mezzanotte-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateSnacks();
+</script>

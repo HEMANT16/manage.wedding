@@ -1,0 +1,434 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/wedding-drink-calculator/#webapp",
+      "name": "Calculadora de Bebidas y Barra Libre para Bodas",
+      "url": "https://manage.wedding/es/wedding-drink-calculator",
+      "inLanguage": "es",
+      "description": "Calculadora gratuita de barra libre y bebidas de boda: calcula la cantidad exacta de botellas de vino, cajas de cerveza, licores/destilados, refrescos, cava/champán y kilos de hielo.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Calcular las Bebidas para una Boda o Barra Libre",
+      "description": "Método paso a paso para estimar el vino, cerveza, licores y hielo necesarios para la celebración y el baile.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Indica Invitados y Horas de Barra Libre",
+          "text": "Introduce el número de invitados adultos y la duración prevista de la barra libre (habitualmente entre 3 y 5 horas)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Elige el Tipo de Barra y Perfil de los Invitados",
+          "text": "Selecciona Barra Libre Completa (Cerveza, Vino y Copas/Licores) o Solo Cerveza y Vino, ajustando el ritmo de consumo (moderado o fiestero)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Añade Brindis con Cava o Champán",
+          "text": "Activa la opción de brindis para calcular 1 copa por invitado (6 copas por botella de 750 ml) para discursos y corte de tarta."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Obtén tu Lista de Compra Detallada",
+          "text": "Consulta el recuento exacto de botellas de vino, cajas de cerveza de 24 unidades, botellas de destilados (ginebra, ron, whisky, vodka), litros de refrescos y kilos de hielo."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuántas consumiciones se calculan por persona y hora en una boda?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La regla estándar de catering y barra libre calcula 1 consumición por persona por cada hora de fiesta (por ejemplo, 4 consumiciones por invitado en una barra libre de 4 horas). Aunque algunos invitados beben más y otros menos, este promedio asegura que nunca falte bebida."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuántas copas salen de una botella de vino y de licor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "De una botella estándar de vino de 750 ml se obtienen 5 copas (unos 150 ml por servicio). De una botella de licor/destilado de 750 ml para combinados (ginebra, ron, whisky, vodka) salen unas 15 a 16 copas (unos 50 ml de alcohol por copa)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto hielo se necesita para una boda?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Se recomienda calcular aproximadamente entre 0,7 kg y 1 kg de hielo por invitado para mantener frías las botellas y preparar combinados durante todo el evento."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuántas copas salen de una botella de cava o champán?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Para el brindis nupcial en copa tipo flauta, una botella de 750 ml rinde exactamente 6 copas."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Bebidas y Barra Libre para Bodas (Gratis) | Manage.Wedding"
+	description="Calcula cuánto alcohol, vino, cerveza, combinados y hielo necesitas para la barra libre de tu boda. Lista de compra exacta e instantánea."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<Breadcrumb title="Calculadora de Bebidas para Bodas" category="food-dining" />
+		<header class="fade-in category-header" style="text-align: center;">
+			<h1 class="font-heading" style="font-size: 3.5rem; margin-bottom: 0.5rem; font-weight: 500;">Calculadora de <span class="accent-italic">Bebidas para Bodas</span></h1>
+			<p class="font-body" style="color: var(--secondary-ink); max-width: 600px; margin: 0 auto;">Introduce los datos de tu boda para obtener la lista de compra exacta de cerveza, vino, licores, refrescos y hielo para tu barra libre.</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 800px;">
+			<div class="hand-card">
+				<form id="calc-form">
+					<div class="form-group">
+						<label class="form-label" for="guests">Número de Invitados Adultos</label>
+						<input type="number" id="guests" class="form-input" value="100" min="1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="hours">Horas de Barra Libre / Celebración</label>
+						<input type="number" id="hours" class="form-input" value="4" min="1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="barType">Tipo de Barra</label>
+						<select id="barType" class="form-input">
+							<option value="open">Barra Libre Completa (Cerveza, Vino y Combinados/Copas)</option>
+							<option value="soft">Barra Suave (Solo Cerveza y Vino)</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="vibe">Perfil de Consumo de los Invitados</label>
+						<select id="vibe" class="form-input">
+							<option value="average">Consumo Estándar (1 consumición/hora)</option>
+							<option value="light">Consumo Moderado (-25% bebidas)</option>
+							<option value="heavy">Consumo Fiestero (+25% bebidas)</option>
+						</select>
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="champagne">¿Habrá Brindis con Cava / Champán?</label>
+						<select id="champagne" class="form-input">
+							<option value="no">No</option>
+							<option value="yes">Sí (1 copa por invitado)</option>
+						</select>
+					</div>
+
+					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%;">Calcular Bebidas</button>
+				</form>
+			</div>
+
+			<div class="hand-card result-box" id="result-container">
+				<h3 class="font-heading" style="margin-bottom: 2rem;">Tu Lista de Compra de Bebidas</h3>
+				
+				<div class="result-item">
+					<span class="item-label">TOTAL</span>
+					<span class="item-desc">Total consumiciones estimadas</span>
+					<span class="item-value" id="res-total">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">CERVEZA</span>
+					<span class="item-desc">Cajas de 24 botellines / latas</span>
+					<span class="item-value" id="res-beer">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">VINO</span>
+					<span class="item-desc">Botellas estándar de 750 ml</span>
+					<span class="item-value" id="res-wine">0</span>
+				</div>
+
+				<div class="result-item" id="liquor-box">
+					<span class="item-label">LICORES / DESTILADOS</span>
+					<span class="item-desc">Botellas de 750 ml (Ginebra, Ron, Whisky, Vodka)</span>
+					<span class="item-value" id="res-liquor">0</span>
+				</div>
+
+				<div class="result-item" id="mixer-box">
+					<span class="item-label">REFRESCOS Y MIXERS</span>
+					<span class="item-desc">Litros de tónica, cola, limón y zumos</span>
+					<span class="item-value" id="res-mixers">0</span>
+				</div>
+
+				<div class="result-item" id="champagne-box" style="display: none;">
+					<span class="item-label">CAVA / CHAMPÁN</span>
+					<span class="item-desc">Botellas de 750 ml para brindis</span>
+					<span class="item-value" id="res-champagne">0</span>
+				</div>
+
+				<div class="result-item">
+					<span class="item-label">HIELO</span>
+					<span class="item-desc">Kilos de hielo (bolsas)</span>
+					<span class="item-value" id="res-ice">0</span>
+				</div>
+
+				<div id="explanation-box" style="background-color: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 2px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.1); margin-top: 2rem; padding: 1.5rem; text-align: left;">
+					<strong class="font-heading" style="font-size: 1.2rem; display: block; margin-bottom: 0.5rem; color: var(--accent-red);">Cómo hemos calculado esto:</strong>
+					<p id="explanation-text" class="font-body" style="font-size: 1.1rem; margin: 0; line-height: 1.5;">Cálculo basado en 1 consumición por invitado por hora.</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 800px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape"></div>
+			
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Resumen Rápido (Regla de Oro)
+				</h3>
+				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
+					Fórmula en 1 Minuto
+				</span>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
+					📐 La Fórmula Estándar de Barra Libre:
+				</div>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
+					<strong>1 consumición por persona y hora</strong> con un reparto estándar de <strong>40% Vino</strong> (5 copas/botella), <strong>30% Cerveza</strong> (24 botellines/caja), <strong>30% Combinados/Copas</strong> (16 copas/botella de 750 ml), y <strong>0,8 kg de hielo por invitado</strong>.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 560px;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Invitados (4 Horas)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Total Copas</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Vino (750ml)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue); text-align: center;">Cerveza (Cajas 24)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: #7c3aed; text-align: center;">Licores (750ml)</th>
+							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--fg-pencil); text-align: right;">Hielo Necesario</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">50 Invitados</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">200 bebidas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">16 botellas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">2,5 cajas (60 uds)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">4 botellas</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">35–40 kg</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ 100 Invitados</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">400 bebidas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">32 botellas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">5 cajas (120 uds)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: #7c3aed;">8 botellas</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">70–80 kg</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">150 Invitados</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">600 bebidas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">48 botellas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">7,5 cajas (180 uds)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">12 botellas</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">105–120 kg</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">200 Invitados</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">800 bebidas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">64 botellas</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">10 cajas (240 uds)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">15 botellas</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">140–160 kg</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p class="font-body" style="font-size: 0.85rem; color: var(--fg-pencil); margin: 0; line-height: 1.4;">
+				💡 <strong>Nota para el Brindis con Cava:</strong> Si organizas un brindis formal, añade <strong>1 botella de cava por cada 6 comensales</strong> (ej. 17 botellas para 100 invitados).
+			</p>
+		</div>
+
+		<article class="hand-card" style="margin: 4rem auto; max-width: 800px; padding: 3rem;">
+			<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Cómo Comprar y Gestionar las Bebidas de tu Boda</h2>
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				Calcular la bebida para una boda suele generar muchas dudas: nadie quiere que la barra libre se quede sin ginebra a mitad de la fiesta, pero tampoco interesa comprar cajas de vino de más que luego no se consuman.
+			</p>
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				Esta calculadora resuelve los cálculos automáticamente para que puedas acudir a distribuidoras o bodegas con una lista exacta.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-red);">La Regla de 1 Bebida por Persona y Hora</h3>
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem;">
+				Los bármanes y empresas de catering utilizan esta referencia probada: cada invitado consume de media <strong>1 bebida por hora</strong>. Aunque algunos amigos tomen 3 combinados y otros solo un refresco o una copa de vino, el promedio se equilibra con gran precisión.
+			</p>
+
+			<h3 class="font-heading" style="font-size: 2rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-blue);">Consejos para una Barra Libre de Éxito</h3>
+			<ul class="font-body" style="font-size: 1.2rem; margin-bottom: 2rem; padding-left: 1.5rem; line-height: 1.6;">
+				<li style="margin-bottom: 0.5rem;"><strong>Cócteles de Autor Sencillos:</strong> Si ofrecéis cócteles especiales (como Mojito o Moscow Mule), preparad premezclas para evitar colas eternas en la barra.</li>
+				<li style="margin-bottom: 0.5rem;"><strong>Pacta Devolución de Botellas Cerradas:</strong> Muchas distribuidoras de bebidas permiten devolver las cajas y botellas de licor precintadas que no se hayan abierto tras el evento.</li>
+				<li style="margin-bottom: 0.5rem;"><strong>Adapta las Bebidas al Clima:</strong> En bodas de verano al mediodía triunfan la cerveza bien fría, el vino blanco y los tintos de verano. En bodas de noche en otoño o invierno aumentan el vino tinto y los combinados con whisky o ron.</li>
+			</ul>
+
+			<h3 class="font-heading" style="font-size: 2rem; margin-top: 3rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Preguntas Frecuentes sobre Bebidas de Boda</h3>
+			
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">¿Cuántas consumiciones se calculan por persona y hora?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Se calcula 1 consumición por persona por hora. En una boda de 4 horas de barra libre para 100 invitados se calculan 400 consumiciones totales.</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">¿Cuántas copas rinde una botella de vino?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Una botella de vino estándar de 750 ml rinde exactamente <strong>5 copas</strong> (150 ml por copa).</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">¿Cuántas copas salen de una botella de licor o ginebra?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Una botella de 750 ml de destilado para combinados rinde unas <strong>15 a 16 copas</strong> (con un servicio estándar de 50 ml).</p>
+			</details>
+
+			<details style="margin-bottom: 1rem; cursor: pointer; padding: 1rem; border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+				<summary class="font-heading" style="font-size: 1.2rem; margin-bottom: 0.5rem; outline: none;">¿Cuánto hielo debo comprar?</summary>
+				<p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0;">Calcula entre <strong>0,7 y 1 kg de hielo por invitado</strong> para enfriar botellas y servir en vasos durante toda la fiesta.</p>
+			</details>
+		</article>
+
+		<RelatedTools currentPath="/es/wedding-drink-calculator" category="dining" />
+	</main>
+
+	<script>
+		function calculateDrink() {
+			const guests = parseInt((document.getElementById('guests') as HTMLInputElement)?.value) || 0;
+			const hours = parseInt((document.getElementById('hours') as HTMLInputElement)?.value) || 0;
+			const barType = (document.getElementById('barType') as HTMLSelectElement)?.value || 'full';
+			const vibe = (document.getElementById('vibe') as HTMLSelectElement)?.value || 'average';
+			const champagne = (document.getElementById('champagne') as HTMLSelectElement)?.value || 'yes';
+
+			let multiplier = 1.0;
+			let vibeText = "consumo estándar";
+			if (vibe === 'light') {
+				multiplier = 0.75;
+				vibeText = "consumo moderado (-25%)";
+			} else if (vibe === 'heavy') {
+				multiplier = 1.25;
+				vibeText = "consumo fiestero (+25%)";
+			}
+
+			const totalServings = Math.ceil(guests * hours * multiplier);
+
+			let beerRatio = 0.3;
+			let wineRatio = 0.4;
+			let liquorRatio = 0.3;
+
+			if (barType === 'soft') {
+				beerRatio = 0.5;
+				wineRatio = 0.5;
+				liquorRatio = 0;
+			}
+
+			const beerServings = totalServings * beerRatio;
+			const wineServings = totalServings * wineRatio;
+			const liquorServings = totalServings * liquorRatio;
+
+			const beerCases = Math.ceil(beerServings / 24);
+			const wineBottles = Math.ceil(wineServings / 5);
+			const liquorBottles = Math.ceil(liquorServings / 16);
+
+			const champagneBottles = Math.ceil(guests / 6);
+
+			const iceKg = Math.ceil(guests * 0.8);
+			const mixersLiters = barType === 'full' || barType === 'open' ? Math.ceil(guests * 0.4) : 0;
+
+			const resTotal = document.getElementById('res-total');
+			const resBeer = document.getElementById('res-beer');
+			const resWine = document.getElementById('res-wine');
+			const liquorBox = document.getElementById('liquor-box');
+			const mixerBox = document.getElementById('mixer-box');
+			const champagneBox = document.getElementById('champagne-box');
+			const resLiquor = document.getElementById('res-liquor');
+			const resMixers = document.getElementById('res-mixers');
+			const resChampagne = document.getElementById('res-champagne');
+			const resIce = document.getElementById('res-ice');
+			const explText = document.getElementById('explanation-text');
+
+			if (resTotal) resTotal.textContent = totalServings.toString();
+			if (resBeer) resBeer.textContent = beerCases.toString();
+			if (resWine) resWine.textContent = wineBottles.toString();
+			
+			if (liquorBox && mixerBox) {
+				if (barType === 'soft') {
+					liquorBox.style.display = 'none';
+					mixerBox.style.display = 'none';
+				} else {
+					liquorBox.style.display = 'block';
+					mixerBox.style.display = 'block';
+					if (resLiquor) resLiquor.textContent = liquorBottles.toString();
+					if (resMixers) resMixers.textContent = mixersLiters.toString();
+				}
+			}
+
+			if (champagneBox) {
+				if (champagne === 'yes') {
+					champagneBox.style.display = 'block';
+					if (resChampagne) resChampagne.textContent = champagneBottles.toString();
+				} else {
+					champagneBox.style.display = 'none';
+				}
+			}
+
+			if (resIce) resIce.textContent = `${iceKg} kg`;
+
+			let expl = `Cálculo basado en 1 consumición por persona por hora con ajuste para ${vibeText}.`;
+			if (barType === 'soft') {
+				expl += ` Reparto al 50% entre cerveza y vino.`;
+			} else {
+				expl += ` Reparto estimado del 40% vino, 30% cerveza y 30% combinados/copas.`;
+			}
+			if (champagne === 'yes') {
+				expl += ` Se añaden ${champagneBottles} botellas de cava/champán para 1 copa por comensal (6 copas/botella).`;
+			}
+			expl += ` Se recomiendan unos ${iceKg} kg de hielo (aprox. 0,8 kg por invitado) para mantener todo bien frío.`;
+			
+			if (explText) explText.textContent = expl;
+		}
+
+		document.getElementById('calc-form')?.addEventListener('submit', function(e) {
+			e.preventDefault();
+			calculateDrink();
+		});
+
+		['guests', 'hours', 'barType', 'vibe', 'champagne'].forEach(id => {
+			const el = document.getElementById(id);
+			if (el) {
+				el.addEventListener('input', calculateDrink);
+				el.addEventListener('change', calculateDrink);
+			}
+		});
+
+		calculateDrink();
+	</script>
+</Layout>

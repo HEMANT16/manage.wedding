@@ -1,0 +1,808 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/wedding-name-change-calculator/#webapp",
+      "name": "Calculateur de Démarches & Nom d'Usage après Mariage",
+      "url": "https://manage.wedding/fr/wedding-name-change-calculator",
+      "inLanguage": "fr",
+      "description": "Calculateur interactif des démarches de mariage, nom d'usage et frais administratifs. Personnalisez votre nom d'usage (double nom, nom d'époux), calculez les timbres fiscaux (Passeport, CNI) et exportez votre dossier en PDF et Word.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment changer de nom et effectuer les démarches après le mariage",
+      "description": "Guide officiel étape par étape pour déclarer votre nom d'usage, renouveler vos papiers d'identité (CNI, Passeport ANTS) et avertir les organismes publics.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Obtenir les Actes de Mariage et le Livret de Famille",
+          "text": "Récupérez le Livret de famille remis par la Mairie lors de la cérémonie et commandez 3 à 4 copies intégrales de l'acte de mariage (Gratuit sur le site de la mairie ou service-public.fr)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Renouveler la Carte Nationale d'Identité (CNI)",
+          "text": "Faites une pré-demande sur le site de l'ANTS pour ajouter votre nom d'usage sur votre CNI (Gratuit sur présentation de l'ancienne carte)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Renouveler le Passeport Biométrique (ANTS)",
+          "text": "Achetez le timbre fiscal de 86€ et déposez votre dossier en mairie avec vos photos d'identité conformes aux normes."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Déclarer le mariage aux Impôts, CPAM (Ameli) et CAF",
+          "text": "Signalez votre changement d'état civil dans les 60 jours sur impots.gouv.fr pour actualiser votre taux de prélèvement à la source, sur Ameli et auprès de la CAF."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 5 : Prévenir l'Employeur, les Banques et Assurances",
+          "text": "Fournissez un extrait d'acte de mariage pour vos jours de congés légaux (4 jours minimum en France), mettez à jour vos comptes bancaires et contrats d'assurance."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Le mariage change-t-il automatiquement mon nom de famille en France ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Non. En droit français, vous conservez toujours votre nom de naissance (nom de famille officiel inscrit à l'état civil). Le mariage vous confère uniquement un 'nom d'usage' facultatif (prendre le nom de votre conjoint(e) ou accoler les deux noms). Vous n'êtes jamais obligé(e) d'en changer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien coûtent les démarches et le changement de papiers après le mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La grande majorité des démarches en France sont 100% gratuites (Livret de famille, Acte de mariage, CNI, Permis de conduire ANTS, CPAM, CAF et Impôts). Le seul coût officiel obligatoire est le passeport biométrique si vous souhaitez l'actualiser (Timbre fiscal : 86€ + 10€ à 15€ pour les photos d'identité certifiées)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Peut-on partir en voyage de noces avec des billets au nom d'épouse ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Attention danger ! Les billets d'avion doivent être STRICTEMENT identiques aux nom et prénom figurant sur la pièce d'identité (passeport) que vous présentez à l'aéroport. Si votre voyage a lieu peu après le mariage, réservez toujours vos billets sous votre nom de naissance."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelles sont les options pour le nom d'usage après le mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Chaque époux(se) a 4 options : 1) Conserver uniquement son nom de naissance ; 2) Prendre le nom de son conjoint(e) à titre d'usage ; 3) Accoler les deux noms dans l'ordre de son choix (ex: Nom1-Nom2) ; 4) Utiliser un double nom pour les deux conjoints."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Changement de Nom après Mariage & Démarches: Calculateur de Frais et Check-list"
+	description="Calculateur interactif des démarches de mariage, nom d'usage et frais administratifs. Personnalisez votre nom d'usage (double nom, nom d'époux), calculez les timbres fiscaux (Passeport, CNI) et exportez votre dossier en PDF et Word."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Démarches et Nom d'Usage" category="budget-finance" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Ordre Légal des Démarches & Simulateur de Timbres Fiscaux</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Changement de Nom & Démarches <span class="accent-italic">après Mariage</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Choisissez votre nom d'usage, simulez les frais administratifs officiels (Passeport ANTS, CNI, Mairie) et effectuez vos déclarations dans le bon ordre chronologique. Exportez votre dossier en 1 clic.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; margin-bottom: 3rem; align-items: start;">
+			
+			<!-- Left Column: Simulateur Nom d'Usage -->
+			<div class="hand-card" style="padding: clamp(1.25rem, 3vw, 2rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.45rem; margin: 0; color: var(--fg-pencil);">
+						1. Simulateur de Nom d'Usage
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Aperçu Direct
+					</span>
+				</div>
+
+				<!-- Données Conjoint 1 -->
+				<div style="margin-bottom: 1.25rem;">
+					<label class="form-label" style="font-weight: 700; font-size: 0.95rem;">Votre Identité Actuelle (Nom de Naissance)</label>
+					<div style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 0.5rem;">
+						<div>
+							<input type="text" id="p1-first" class="form-input" value="Camille" placeholder="Prénom" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Prénom</span>
+						</div>
+						<div>
+							<input type="text" id="p1-middle" class="form-input" value="Marie" placeholder="2e Prénom" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">2e Prénom</span>
+						</div>
+						<div>
+							<input type="text" id="p1-maiden" class="form-input" value="Dupont" placeholder="Nom de naissance" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Nom de Naissance</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Données Conjoint 2 -->
+				<div style="margin-bottom: 1.25rem;">
+					<label class="form-label" style="font-weight: 700; font-size: 0.95rem;">Identité de votre Conjoint(e)</label>
+					<div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.5rem;">
+						<div>
+							<input type="text" id="p2-first" class="form-input" value="Julien" placeholder="Prénom conjoint" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Prénom</span>
+						</div>
+						<div>
+							<input type="text" id="p2-surname" class="form-input" value="Martin" placeholder="Nom conjoint" style="width: 100%; font-size: 0.95rem; padding: 0.5rem;" />
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Nom de Famille</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Choix de Formule de Nom d'Usage -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="naming-format-select" style="font-weight: 700;">Choix du Nom d'Usage Légal</label>
+					<select id="naming-format-select" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600; padding: 0.65rem; width: 100%;">
+						<option value="take-spouse" selected>💍 Nom d'époux(se) : Adopter le nom du conjoint (Camille Martin)</option>
+						<option value="hyphenated-1">🔗 Double Nom : Nom de naissance-Conjoint (Camille Dupont-Martin)</option>
+						<option value="hyphenated-2">🔗 Double Nom Inversé : Conjoint-Naissance (Camille Martin-Dupont)</option>
+						<option value="keep-maiden">🏛️ Nom de Naissance Seul : Aucun changement d'usage (Camille Dupont)</option>
+					</select>
+				</div>
+
+				<!-- Aperçu Carte d'Identité -->
+				<div style="background: #f8fafc; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; box-shadow: 3px 3px 0 var(--fg-pencil); margin-top: 1rem;">
+					<div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 800; color: var(--accent-red); letter-spacing: 0.05em; margin-bottom: 0.35rem;">
+						Aperçu Titre d'Identité (CNI / Passeport)
+					</div>
+					
+					<div id="preview-full-legal" class="font-heading" style="font-size: 1.55rem; color: var(--fg-pencil); line-height: 1.2; margin-bottom: 0.75rem;">
+						Camille Marie Dupont (ép. Martin)
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.88rem; padding-top: 0.75rem; border-top: 1px dashed #cbd5e1;">
+						<div>
+							<span style="color: var(--text-secondary); display: block; font-size: 0.75rem;">Monogramme :</span>
+							<strong id="preview-monogram" style="font-family: var(--font-hand); font-size: 1.3rem; color: var(--accent-blue);">C M D</strong>
+						</div>
+						<div>
+							<span style="color: var(--text-secondary); display: block; font-size: 0.75rem;">Statut Juridique :</span>
+							<strong id="preview-route-badge" style="color: #16a34a; font-size: 0.82rem;">✅ Nom d'Usage Déclaratif</strong>
+						</div>
+						<div style="grid-column: span 2;">
+							<span style="color: var(--text-secondary); display: block; font-size: 0.75rem;">Email Professionnel Estimé :</span>
+							<code id="preview-email" style="background: #e2e8f0; padding: 2px 6px; border-radius: 3px; font-size: 0.85rem;">camille.martin@entreprise.fr</code>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Budget & Calendrier -->
+			<div class="hand-card" style="padding: clamp(1.25rem, 3vw, 2rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.45rem; margin: 0; color: var(--fg-pencil);">
+						2. Coût des Timbres & Délais
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: #e0f2fe; border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Temps Réel
+					</span>
+				</div>
+
+				<!-- Big Metric Hero Cards -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+					
+					<!-- Métrique 1: Coût Total -->
+					<div style="background: #fef08a; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; text-align: center; box-shadow: 3px 3px 0 var(--fg-pencil);">
+						<span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--fg-pencil); display: block;">
+							Total Timbres Fiscaux
+						</span>
+						<div id="display-total-fee" class="font-heading" style="font-size: 2.2rem; color: var(--fg-pencil); line-height: 1.1; margin: 0.25rem 0;">
+							96,00 €
+						</div>
+						<span id="display-fee-range" style="font-size: 0.8rem; color: var(--text-secondary);">
+							Passeport + photos certifiées
+						</span>
+					</div>
+
+					<!-- Métrique 2: Semaines de Délais -->
+					<div style="background: #e0e7ff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; text-align: center; box-shadow: 3px 3px 0 var(--fg-pencil);">
+						<span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--fg-pencil); display: block;">
+							Délai Global ANTS
+						</span>
+						<div id="display-total-weeks" class="font-heading" style="font-size: 2.2rem; color: var(--accent-blue); line-height: 1.1; margin: 0.25rem 0;">
+							3–6 Sem.
+						</div>
+						<span style="font-size: 0.8rem; color: var(--text-secondary);">
+							Traitement préfecture
+						</span>
+					</div>
+
+				</div>
+
+				<!-- Barre de Progression -->
+				<div style="margin-bottom: 1.5rem; background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem;">
+					<div style="display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.4rem;">
+						<span>Progression des Démarches :</span>
+						<span id="progress-text">0 sur 14 Démarches Validées (0%)</span>
+					</div>
+					<div style="width: 100%; height: 16px; background: #e2e8f0; border-radius: 8px; border: 1.5px solid var(--fg-pencil); overflow: hidden;">
+						<div id="progress-bar-fill" style="width: 0%; height: 100%; background: #22c55e; transition: width 0.3s ease;"></div>
+					</div>
+				</div>
+
+				<!-- Filtres Rapides -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+					<button type="button" id="btn-filter-all" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem; background: var(--fg-pencil); color: #fff;">
+						Toutes les Démarches
+					</button>
+					<button type="button" id="btn-filter-vital" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem;">
+						CNI & Mairie
+					</button>
+					<button type="button" id="btn-filter-travel" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem;">
+						Passeport ANTS
+					</button>
+					<button type="button" id="btn-check-all" class="hand-btn" style="padding: 6px 12px; font-size: 0.85rem; margin-left: auto;">
+						Réinitialiser
+					</button>
+				</div>
+
+				<!-- Boutons d'Action -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="background: #fecdd3; border-color: var(--fg-pencil); color: var(--fg-pencil); font-size: 0.95rem; padding: 10px;">
+						🖨️ Imprimer / PDF
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="background: #dbeafe; border-color: var(--fg-pencil); color: var(--fg-pencil); font-size: 0.95rem; padding: 10px;">
+						📄 Exporter Word (.doc)
+					</button>
+					<button type="button" id="btn-copy-checklist" class="hand-btn" style="grid-column: span 2; background: #dcfce7; border-color: var(--fg-pencil); color: var(--fg-pencil); font-size: 0.95rem; padding: 10px;">
+						📋 Copier le Guide des Démarches
+					</button>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Check-list des Démarches par Phase -->
+		<section class="hand-card" style="padding: clamp(1.25rem, 3vw, 2.5rem); background: #fff; margin-bottom: 3.5rem;">
+			
+			<div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 1rem;">
+				<div>
+					<span class="badge-postit" style="font-size: 0.85rem;">Plan d'Action Officiel</span>
+					<h2 class="font-heading" style="font-size: 1.85rem; margin: 0.35rem 0 0 0; color: var(--fg-pencil);">
+						L'Ordre Chronologique des Démarches
+					</h2>
+				</div>
+				<p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0; max-width: 480px;">
+					Cochez vos démarches au fur et à mesure. Tous les formulaires et services publics français essentiels.
+				</p>
+			</div>
+
+			<!-- PHASE 1: Mairie & Titres d'Identité -->
+			<div class="checklist-stage" data-stage="vital" style="margin-bottom: 2rem;">
+				<div style="background: #f1f5f9; border-left: 5px solid var(--accent-red); padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin: 0; color: var(--fg-pencil);">
+						Phase 1 : Mairie, Livret de Famille et Titres d'Identité (ANTS)
+					</h3>
+					<p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary);">
+						Obtention des justificatifs indispensables pour toutes vos démarches auprès des tiers.
+					</p>
+				</div>
+
+				<!-- Démarche 1: Livret de famille & Actes -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-1" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-1" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									1. Livret de Famille et Copies Intégrales d'Acte de Mariage
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Délivrés gratuitement par la mairie de célébration du mariage. Recommandé : 3 copies d'acte de mariage.
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Mairie :</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 € (GRATUIT)</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ Jour J / 48h</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Démarche 2: CNI ANTS -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-2" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-2" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									2. Carte Nationale d'Identité (CNI) avec Nom d'Usage
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Pré-demande ANTS + rendez-vous mairie avec acte de mariage et justificatif de domicile. Gratuit si ancienne carte rendue.
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Coût CNI :</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 € (GRATUIT)</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 3–4 Semaines</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Démarche 3: Passeport Biométrique -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-3" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-3" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									3. Passeport Biométrique Adulte (Timbre Fiscal ANTS)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Timbre fiscal obligatoire (86€) + planche de photos conformes aux normes e-photo (~10€).
+								</div>
+								<div style="margin-top: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+									<span style="font-size: 0.85rem;">Timbre + Photo : </span>
+									<input type="number" id="input-passeport-fee" min="0" max="150" value="96" style="width: 65px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+									<span style="font-size: 0.85rem;">€</span>
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Timbre Fiscal :</span>
+							<strong id="fee-item-3" class="item-cost-display" style="font-size: 1.2rem; color: var(--accent-red);">96,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 4–6 Semaines</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- PHASE 2: Organismes Sociaux & Impôts -->
+			<div class="checklist-stage" data-stage="vital" style="margin-bottom: 2rem;">
+				<div style="background: #f1f5f9; border-left: 5px solid #10b981; padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin: 0; color: var(--fg-pencil);">
+						Phase 2 : Organismes Publics, Sécurité Sociale & Impôts
+					</h3>
+					<p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary);">
+						Démarches en ligne simples et gratuites à réaliser dans les 60 jours.
+					</p>
+				</div>
+
+				<!-- Démarche 4: Impôts -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-4" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-4" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									4. Impôts (DGFiP / impots.gouv.fr - Changement de Situation)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Déclarez votre mariage sous 60 jours dans votre espace particulier pour actualiser votre taux de prélèvement à la source et le foyer fiscal.
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Impôts :</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 € (GRATUIT)</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ Sous 60 Jours</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Démarche 5: CPAM & Carte Vitale -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-5" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-5" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									5. Sécurité Sociale (Ameli / CPAM) et Mise à Jour Carte Vitale
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Téléversez la copie de l'acte de mariage sur votre compte Ameli et mettez à jour votre Carte Vitale en pharmacie.
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Ameli :</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 1–2 Semaines</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Démarche 6: CAF -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-6" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-6" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									6. Caisse d'Allocations Familiales (CAF)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Déclarez le changement d'état civil dans l'espace 'Mon Compte' pour recalculer les droits aux prestations familiales ou logement.
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">CAF :</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 48 Heures</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- PHASE 3: Travail, Banques et Vie Quotidienne -->
+			<div class="checklist-stage" data-stage="finance" style="margin-bottom: 1rem;">
+				<div style="background: #f1f5f9; border-left: 5px solid #d97706; padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin: 0; color: var(--fg-pencil);">
+						Phase 3 : Employeur, Banques, Assurances & Contrats
+					</h3>
+					<p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary);">
+						Notification aux partenaires privés et organismes de prévoyance.
+					</p>
+				</div>
+
+				<!-- Démarche 7: Employeur -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-7" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-7" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									7. Employeur / RH (Congé de Mariage de 4 Jours & Bulletin de Paie)
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Transmettez l'acte de mariage pour bénéficier des 4 jours ouvrés de congés payés légaux (Code du travail art. L3142-1).
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Employeur :</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 1–2 Jours</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Démarche 8: Banques -->
+				<div class="checklist-item hand-card" style="padding: 1rem; margin-bottom: 0.85rem; background: #fafafa; border: 1.5px solid var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+						<div style="display: flex; align-items: flex-start; gap: 0.75rem; flex: 1; min-width: 260px;">
+							<input type="checkbox" id="chk-item-8" class="task-checkbox" style="width: 20px; height: 20px; margin-top: 3px; cursor: pointer;" />
+							<div>
+								<label for="chk-item-8" style="font-weight: 700; font-size: 1.05rem; color: var(--fg-pencil); cursor: pointer;">
+									8. Comptes Bancaires, Chéquiers et Cartes Bancaires
+								</label>
+								<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+									Ajout du nom d'usage sur les chéquiers et cartes bancaires. Présentez la copie de l'acte de mariage ou la nouvelle CNI.
+								</div>
+							</div>
+						</div>
+						<div style="text-align: right; min-width: 110px;">
+							<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Banques :</span>
+							<strong class="item-cost-display" style="font-size: 1.2rem; color: #16a34a;">0,00 €</strong>
+							<span style="display: block; font-size: 0.75rem; color: #16a34a; font-weight: 600;">⏱️ 3–7 Jours</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</section>
+
+		<!-- Guide Éducatif SEO -->
+		<section class="hand-card" style="padding: clamp(1.25rem, 3vw, 2.5rem); background: #fff; margin-bottom: 3.5rem;">
+			<div class="tape" style="margin: 0 auto 1.5rem;"></div>
+			<h2 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.5rem;">
+				Guide Juridique : Comprendre le Nom d'Usage en Droit Français
+			</h2>
+
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+				
+				<div style="border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; background: #fffbeb;">
+					<h3 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin-top: 0; display: flex; align-items: center; gap: 0.4rem;">
+						<span>🏛️</span> 1. Nom de Famille vs Nom d'Usage
+					</h3>
+					<p class="font-body" style="font-size: 0.95rem; color: var(--text-color); margin: 0;">
+						Votre nom de naissance ne s'efface jamais. Le nom d'époux ou le double nom n'est qu'un droit d'usage dans la vie quotidienne et professionnelle.
+					</p>
+				</div>
+
+				<div style="border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; background: #fef2f2;">
+					<h3 class="font-heading" style="font-size: 1.25rem; color: var(--accent-red); margin-top: 0; display: flex; align-items: center; gap: 0.4rem;">
+						<span>✈️</span> 2. Piège des Billets d'Avion
+					</h3>
+					<p class="font-body" style="font-size: 0.95rem; color: var(--text-color); margin: 0;">
+						Pour votre lune de miel, vos billets d'avion doivent porter scrupuleusement le même nom que le passeport que vous tenez en main.
+					</p>
+				</div>
+
+				<div style="border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.25rem; background: #f0fdf4;">
+					<h3 class="font-heading" style="font-size: 1.25rem; color: #16a34a; margin-top: 0; display: flex; align-items: center; gap: 0.4rem;">
+						<span>💼</span> 3. Congé Légal de 4 Jours
+					</h3>
+					<p class="font-body" style="font-size: 0.95rem; color: var(--text-color); margin: 0;">
+						Le Code du travail accorde 4 jours ouvrés rémunérés sans condition d'ancienneté. Vérifiez votre convention collective qui prévoit souvent 5 ou 6 jours.
+					</p>
+				</div>
+
+			</div>
+
+			<!-- FAQ -->
+			<h3 class="font-heading" style="font-size: 1.45rem; color: var(--fg-pencil); margin-bottom: 1rem;">
+				Questions Fréquentes sur le Changement de Nom
+			</h3>
+
+			<div style="display: flex; flex-direction: column; gap: 0.85rem;">
+				<details class="hand-card" style="padding: 1rem; background: #fafafa; border: 1.5px solid var(--fg-pencil); cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">
+						Le mariage change-t-il automatiquement mon nom de famille en France ?
+					</summary>
+					<p style="margin: 0.75rem 0 0 0; font-size: 0.95rem; color: var(--text-color); line-height: 1.6;">
+						<strong>Non.</strong> En droit français, vous conservez toujours votre nom de naissance (nom de famille officiel inscrit à l'état civil). Le mariage vous confère uniquement un 'nom d'usage' facultatif (prendre le nom de votre conjoint(e) ou accoler les deux noms). Vous n'êtes jamais obligé(e) d'en changer.
+					</p>
+				</details>
+
+				<details class="hand-card" style="padding: 1rem; background: #fafafa; border: 1.5px solid var(--fg-pencil); cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">
+						Combien coûtent les démarches et le changement de papiers après le mariage ?
+					</summary>
+					<p style="margin: 0.75rem 0 0 0; font-size: 0.95rem; color: var(--text-color); line-height: 1.6;">
+						La grande majorité des démarches en France sont <strong>100% gratuites</strong> (Livret de famille, Acte de mariage, CNI, Permis de conduire ANTS, CPAM, CAF et Impôts). Le seul coût officiel obligatoire est le passeport biométrique si vous souhaitez l'actualiser (Timbre fiscal : <strong>86€</strong> + 10€ à 15€ pour les photos d'identité certifiées).
+					</p>
+				</details>
+			</div>
+
+		</section>
+
+		<!-- Outils Liés -->
+		<RelatedTools currentPath="/fr/wedding-name-change-calculator" category="budget" />
+
+	</main>
+
+	<!-- Scripts de Calcul & Exportation -->
+	<script is:inline>
+		const p1First = document.getElementById('p1-first');
+		const p1Middle = document.getElementById('p1-middle');
+		const p1Maiden = document.getElementById('p1-maiden');
+		const p2First = document.getElementById('p2-first');
+		const p2Surname = document.getElementById('p2-surname');
+		const namingFormatSelect = document.getElementById('naming-format-select');
+
+		const previewFullLegal = document.getElementById('preview-full-legal');
+		const previewMonogram = document.getElementById('preview-monogram');
+		const previewRouteBadge = document.getElementById('preview-route-badge');
+		const previewEmail = document.getElementById('preview-email');
+
+		const displayTotalFee = document.getElementById('display-total-fee');
+		const displayTotalWeeks = document.getElementById('display-total-weeks');
+		const progressText = document.getElementById('progress-text');
+		const progressBarFill = document.getElementById('progress-bar-fill');
+
+		const inputPasseportFee = document.getElementById('input-passeport-fee');
+		const feeItem3 = document.getElementById('fee-item-3');
+
+		const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+
+		const btnFilterAll = document.getElementById('btn-filter-all');
+		const btnFilterVital = document.getElementById('btn-filter-vital');
+		const btnFilterTravel = document.getElementById('btn-filter-travel');
+		const btnCheckAll = document.getElementById('btn-check-all');
+
+		const btnExportPdf = document.getElementById('btn-export-pdf');
+		const btnExportDoc = document.getElementById('btn-export-doc');
+		const btnCopyChecklist = document.getElementById('btn-copy-checklist');
+
+		function cap(str) {
+			if (!str) return '';
+			return str.trim().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+		}
+
+		function sanitizeForEmail(str) {
+			return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, '');
+		}
+
+		function updatePersona() {
+			const f1 = cap(p1First.value) || 'Camille';
+			const m1 = cap(p1Middle.value) || 'Marie';
+			const maid = cap(p1Maiden.value) || 'Dupont';
+			const sp = cap(p2Surname.value) || 'Martin';
+			const format = namingFormatSelect.value;
+
+			let newFullName = '';
+			let monogram = '';
+
+			switch (format) {
+				case 'take-spouse':
+					newFullName = `${f1} ${m1} ${maid} (ép. ${sp})`;
+					monogram = `${f1.charAt(0)} ${sp.charAt(0)} ${maid.charAt(0)}`;
+					break;
+				case 'hyphenated-1':
+					newFullName = `${f1} ${m1} ${maid}-${sp}`;
+					monogram = `${f1.charAt(0)} ${maid.charAt(0)} ${sp.charAt(0)}`;
+					break;
+				case 'hyphenated-2':
+					newFullName = `${f1} ${m1} ${sp}-${maid}`;
+					monogram = `${f1.charAt(0)} ${sp.charAt(0)} ${maid.charAt(0)}`;
+					break;
+				case 'keep-maiden':
+					newFullName = `${f1} ${m1} ${maid}`;
+					monogram = `${f1.charAt(0)} ${maid.charAt(0)} ${m1.charAt(0)}`;
+					break;
+			}
+
+			previewFullLegal.textContent = newFullName;
+			previewMonogram.textContent = monogram.toUpperCase();
+
+			const cleanFirst = sanitizeForEmail(f1);
+			const cleanLast = format === 'keep-maiden' ? sanitizeForEmail(maid) : sanitizeForEmail(sp);
+			previewEmail.textContent = `${cleanFirst}.${cleanLast}@entreprise.fr`;
+		}
+
+		function calculateFees() {
+			const passFee = parseFloat(inputPasseportFee.value) || 0;
+			feeItem3.textContent = `${passFee.toFixed(2).replace('.', ',')} €`;
+			displayTotalFee.textContent = `${passFee.toFixed(2).replace('.', ',')} €`;
+
+			let checkedCount = 0;
+			taskCheckboxes.forEach(chk => { if (chk.checked) checkedCount++; });
+
+			const totalTasks = taskCheckboxes.length;
+			const pct = Math.round((checkedCount / totalTasks) * 100);
+			progressText.textContent = `${checkedCount} sur ${totalTasks} Démarches Validées (${pct}%)`;
+			progressBarFill.style.width = `${pct}%`;
+		}
+
+		btnFilterAll.addEventListener('click', () => {
+			document.querySelectorAll('.checklist-stage').forEach(st => st.style.display = 'block');
+			btnFilterAll.style.background = 'var(--fg-pencil)';
+			btnFilterAll.style.color = '#fff';
+			btnFilterVital.style.background = '#fff';
+			btnFilterVital.style.color = 'var(--fg-pencil)';
+			btnFilterTravel.style.background = '#fff';
+			btnFilterTravel.style.color = 'var(--fg-pencil)';
+		});
+
+		btnFilterVital.addEventListener('click', () => {
+			document.querySelectorAll('.checklist-stage').forEach(st => {
+				st.style.display = st.getAttribute('data-stage') === 'vital' ? 'block' : 'none';
+			});
+			btnFilterVital.style.background = 'var(--fg-pencil)';
+			btnFilterVital.style.color = '#fff';
+			btnFilterAll.style.background = '#fff';
+			btnFilterAll.style.color = 'var(--fg-pencil)';
+			btnFilterTravel.style.background = '#fff';
+			btnFilterTravel.style.color = 'var(--fg-pencil)';
+		});
+
+		btnFilterTravel.addEventListener('click', () => {
+			document.querySelectorAll('.checklist-stage').forEach(st => {
+				st.style.display = st.getAttribute('data-stage') === 'travel' ? 'block' : 'none';
+			});
+			btnFilterTravel.style.background = 'var(--fg-pencil)';
+			btnFilterTravel.style.color = '#fff';
+			btnFilterAll.style.background = '#fff';
+			btnFilterAll.style.color = 'var(--fg-pencil)';
+			btnFilterVital.style.background = '#fff';
+			btnFilterVital.style.color = 'var(--fg-pencil)';
+		});
+
+		btnCheckAll.addEventListener('click', () => {
+			taskCheckboxes.forEach(chk => { chk.checked = false; });
+			calculateFees();
+		});
+
+		btnCopyChecklist.addEventListener('click', () => {
+			const legalName = previewFullLegal.textContent;
+			const totalCost = displayTotalFee.textContent;
+
+			let text = `💍 DOSSIER DES DÉMARCHES & NOM D'USAGE APRÈS MARIAGE\n`;
+			text += `====================================================\n`;
+			text += `Identité / Nom d'usage : ${legalName}\n`;
+			text += `Coût total timbres fiscaux : ${totalCost}\n\n`;
+			text += `[ ] 1. Livret de famille & Acte de mariage en Mairie (Gratuit)\n`;
+			text += `[ ] 2. Carte d'Identité (CNI) sur ANTS (Gratuit)\n`;
+			text += `[ ] 3. Passeport biométrique ANTS (${feeItem3.textContent})\n`;
+			text += `[ ] 4. Impôts / DGFiP (Déclaration sous 60 jours)\n`;
+			text += `[ ] 5. CPAM (Ameli) et mise à jour Carte Vitale\n`;
+			text += `[ ] 6. Caisse d'Allocations Familiales (CAF)\n`;
+			text += `[ ] 7. Employeur / RH (Congé légal de mariage 4 jours)\n`;
+			text += `[ ] 8. Banques, Chéquiers et Assurances\n\n`;
+			text += `Généré sur Manage.Wedding`;
+
+			navigator.clipboard.writeText(text).then(() => {
+				const orig = btnCopyChecklist.innerHTML;
+				btnCopyChecklist.innerHTML = '<span>✅</span> Dossier copié dans le presse-papiers !';
+				setTimeout(() => { btnCopyChecklist.innerHTML = orig; }, 2500);
+			});
+		});
+
+		btnExportDoc.addEventListener('click', () => {
+			const legalName = previewFullLegal.textContent;
+			const totalCost = displayTotalFee.textContent;
+			const dateStr = new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+
+			const html = `
+				<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+				<head><meta charset="utf-8"><title>Démarches Mariage — ${legalName}</title></head>
+				<body style="font-family: Calibri, sans-serif; padding: 24px;">
+					<h1>💍 Dossier des Démarches Administratives après Mariage</h1>
+					<p>Généré le ${dateStr} • Manage.Wedding</p>
+					<p><strong>Nom d'usage / Identité :</strong> ${legalName}</p>
+					<p><strong>Total Timbres Fiscaux :</strong> ${totalCost}</p>
+					<h3>Démarches Officielles :</h3>
+					<ol>
+						<li>Livret de Famille et Actes de mariage en Mairie (Gratuit)</li>
+						<li>Carte Nationale d'Identité CNI (Gratuit)</li>
+						<li>Passeport Biométrique (${feeItem3.textContent})</li>
+						<li>Impôts (Déclaration sous 60 jours)</li>
+						<li>CPAM / Ameli et Carte Vitale</li>
+						<li>CAF</li>
+						<li>Employeur / RH (Congé légal 4 jours)</li>
+						<li>Banques et Assurances</li>
+					</ol>
+				</body></html>
+			`;
+
+			const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `Demarches_Mariage_${sanitizeForEmail(legalName)}.doc`;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		});
+
+		btnExportPdf.addEventListener('click', () => { window.print(); });
+
+		[p1First, p1Middle, p1Maiden, p2First, p2Surname, namingFormatSelect, inputPasseportFee].forEach(el => {
+			if (el) {
+				el.addEventListener('input', () => { updatePersona(); calculateFees(); });
+				el.addEventListener('change', () => { updatePersona(); calculateFees(); });
+			}
+		});
+
+		taskCheckboxes.forEach(chk => { chk.addEventListener('change', calculateFees); });
+
+		updatePersona();
+		calculateFees();
+	</script>
+</Layout>

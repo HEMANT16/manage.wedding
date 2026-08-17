@@ -1,0 +1,709 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/dress-alterations-estimator/#webapp",
+      "name": "Brautkleid-Änderungskosten Rechner",
+      "url": "https://manage.wedding/de/dress-alterations-estimator",
+      "description": "Kostenloser Rechner für Brautkleid-Änderungen: Berechnen Sie präzise Schneiderkosten für Saumkürzungen, Schleppenaufhängung, Miederanpassung, eingenähte BH-Cups und Express-Zuschläge. Mit Word- & PDF-Export.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "de",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie man die Änderungskosten für das Brautkleid kalkuliert und Anproben plant",
+      "description": "Braut-Leitfaden zur Schätzung von Schneiderkosten, Vorbereitung der 3 Anprobetermine und Auswahl der passenden Schleppenaufhängung.",
+      "inLanguage": "de",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Rockaufbau und Saumverarbeitung prüfen",
+          "text": "Ermitteln Sie die Saumart (glatter Saum, Rosshaar-Bordüre oder Spitzenkante) und zählen Sie die Tüll- und Futterlagen."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Passform-Anpassungen & Schleppe wählen",
+          "text": "Wählen Sie Mieder enger/weiter nähen, Träger kürzen, BH-Cups einnähen und die Art der Schleppenhochsteckung."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. 3 Anprobetermine rechtzeitig buchen",
+          "text": "Planen Sie Termin 1 (8–10 Wochen vorher), Termin 2 (4–5 Wochen vorher) und die finale Abholung (10–14 Tage vor der Hochzeit)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Original-Brautschuh und Unterwäsche mitbringen",
+          "text": "Tragen Sie bei jeder Anprobe exakt die Brautschuh-Absatzhöhe und die geplante Shapewear, damit der Saum millimetergenau fällt."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wie viel kosten Brautkleid-Änderungen im Durchschnitt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Im deutschsprachigen Raum kosten Standard-Änderungen (Kürzen des Saums, Mieder enger nähen und Schleppe hochstecken) meist zwischen 250 € und 550 €. Bei Kleidern mit vielen Tülllagen, handbestickter Spitze oder aufwendigen Schnürungen können die Schneiderkosten 600 € bis 950 € erreichen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Warum ist das Kürzen von Spitzenkleidern so teuer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bei einer Bogenspitzen-Kante (Scalloped Lace) kann der Saum nicht einfach abgeschnitten werden. Die Schneiderin muss die Spitze in stundenlanger Handarbeit abtrennen, die darunterliegenden Futter- und Tüllröcke kürzen und die Spitze anschließend von Hand auf die neue Rocklänge versetzen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wann sollte die erste Brautkleid-Anprobe stattfinden?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ideal ist die 1. Anprobe 8 bis 10 Wochen vor der Hochzeit. Die 2. Anprobe erfolgt 4 bis 5 Wochen vorher, und die finale Abholung mit Anprobe findet etwa 10 bis 14 Tage vor dem großen Tag statt."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Brautkleid-Änderungskosten Rechner (Schneiderkosten & Anproben-Guide) | Manage.Wedding"
+	description="Kostenloser Rechner für Brautkleid-Änderungen: Berechnen Sie Schneiderkosten für Saum kürzen, Schleppe hochstecken, Mieder anpassen, BH-Cups & Eilzuschläge. Mit Word- & PDF-Export."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Brautkleid-Änderungsrechner" category="budget" />
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Brautkleid <span class="accent-italic">Änderungskosten Rechner</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Berechnen Sie realistische Schneiderpreise für Saumkürzungen, Schleppenaufhängung, Miederanpassung, eingenähte Cups und Stoffkomplexität. Exportieren Sie Ihre <strong>Änderungs-Checkliste</strong> in <strong>Word (.doc)</strong> oder <strong>PDF</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Änderungskosten in 3 Schritten berechnen
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Saum & Rocklagen wählen
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Wählen Sie die Kantenverarbeitung (glatt, Rosshaar/Crinoline oder Bogenspitze) und die Anzahl der Tüll- und Futterlagen.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Mieder & Schleppen-Details wählen
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Haken Sie Miederanpassung, Trägerkürzung, eingenähte BH-Cups und die Schleppenhochsteckung ab.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Kostenvoranschlag exportieren
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Klicken Sie auf <strong>„📝 Export Word (.doc)“</strong> oder <strong>„🖨️ Export PDF“</strong> als Vorlage für Ihre Schneiderin.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="alterations-calc-grid">
+			
+			<!-- Left Column: Alterations Configuration Form -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							✂️ Gewünschte Schneiderarbeiten
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							Passform, Saum, Schleppe & Spezialwünsche
+						</span>
+					</div>
+
+					<!-- Currency Selector -->
+					<div style="display: flex; align-items: center; gap: 0.3rem;">
+						<span style="font-size: 0.85rem; font-weight: bold;">Währung:</span>
+						<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="€" selected>€ (EUR)</option>
+							<option value="CHF">CHF (Schweiz)</option>
+							<option value="$">$ (USD)</option>
+							<option value="£">£ (GBP)</option>
+						</select>
+					</div>
+				</div>
+
+				<form id="alterations-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+					
+					<!-- 1. Skirt Hemming -->
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<h3 class="font-heading" style="font-size: 1.1rem; color: var(--accent-red); margin-bottom: 0.5rem;">
+							👗 1. Rocksaum kürzen
+						</h3>
+						
+						<div style="margin-bottom: 0.75rem;">
+							<label for="select-hem-type" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block; margin-bottom: 0.2rem;">
+								Saumart & Kantenverarbeitung *
+							</label>
+							<select id="select-hem-type" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.9rem;">
+								<option value="0">Kein Kürzen erforderlich (0 €)</option>
+								<option value="90" selected>Glatter Saum (Chiffon / Crêpe / Satin) (90 €)</option>
+								<option value="150">Saum mit Rosshaarband / Crinoline (150 €)</option>
+								<option value="220">Bogenspitzen-Bordüre (Abtrennen & Versetzen von Hand) (220 €)</option>
+							</select>
+						</div>
+
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-skirt-layers" class="font-body" style="font-size: 0.85rem; font-weight: bold;">
+									Zusätzliche Tüll- / Futterlagen (je 35 €)
+								</label>
+								<span id="label-skirt-layers" style="font-size: 0.85rem; font-weight: bold; color: var(--accent-red);">2 Lagen</span>
+							</div>
+							<input type="range" id="input-skirt-layers" min="0" max="6" value="2" step="1" style="width: 100%; accent-color: var(--accent-red);">
+						</div>
+					</div>
+
+					<!-- 2. Bodice & Fit Adjustments -->
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<h3 class="font-heading" style="font-size: 1.1rem; color: var(--accent-blue); margin-bottom: 0.5rem;">
+							🪡 2. Mieder- & Oberteil-Anpassung
+						</h3>
+						
+						<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+							<label style="font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+								<input type="checkbox" id="chk-take-in-bodice" value="95" checked class="alt-checkbox" style="accent-color: var(--fg-pencil);">
+								<span>Mieder an Seitennähten enger/weiter nähen (95 €)</span>
+							</label>
+
+							<label style="font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+								<input type="checkbox" id="chk-shorten-straps" value="45" checked class="alt-checkbox" style="accent-color: var(--fg-pencil);">
+								<span>Träger oder Ärmel anheben / kürzen (45 €)</span>
+							</label>
+
+							<label style="font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+								<input type="checkbox" id="chk-sew-in-cups" value="35" checked class="alt-checkbox" style="accent-color: var(--fg-pencil);">
+								<span>Push-up / Schaumstoff BH-Cups einnähen (35 €)</span>
+							</label>
+
+							<label style="font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+								<input type="checkbox" id="chk-reshape-neckline" value="65" class="alt-checkbox" style="accent-color: var(--fg-pencil);">
+								<span>Ausschnitt oder Rückenausschnitt anpassen (65 €)</span>
+							</label>
+
+							<label style="font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+								<input type="checkbox" id="chk-corset-back" value="120" class="alt-checkbox" style="accent-color: var(--fg-pencil);">
+								<span>Reißverschluss auf Schnürung/Korsage umbauen (120 €)</span>
+							</label>
+						</div>
+					</div>
+
+					<!-- 3. Train Bustle & Finishing -->
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<h3 class="font-heading" style="font-size: 1.1rem; color: #16a34a; margin-bottom: 0.5rem;">
+							🎀 3. Schleppe hochstecken & Finish
+						</h3>
+						
+						<div style="margin-bottom: 0.75rem;">
+							<label for="select-bustle-style" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block; margin-bottom: 0.2rem;">
+								Schleppen-Hochsteckung (Bustle) *
+							</label>
+							<select id="select-bustle-style" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.9rem;">
+								<option value="0">Keine Schleppe / Nicht hochstecken (0 €)</option>
+								<option value="45">Einfache Schleppennadel / 1-Punkt-Aufhängung (45 €)</option>
+								<option value="85" selected>Französische / 3- bis 5-Punkt-Aufhängung (85 €)</option>
+								<option value="140">Ballsaal-Schleppe / Mehrfach-Aufhängung unter Rock (140 €)</option>
+							</select>
+						</div>
+
+						<div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem;">
+							<label style="font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+								<input type="checkbox" id="chk-beading-repair" value="60" class="alt-checkbox" style="accent-color: var(--fg-pencil);">
+								<span>Perlenstickerei & Spitzen-Applikationen sichern (60 €)</span>
+							</label>
+
+							<label style="font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+								<input type="checkbox" id="chk-steaming-press" value="50" checked class="alt-checkbox" style="accent-color: var(--fg-pencil);">
+								<span>Professionelles Aufdämpfen & Bügeln vor Abholung (50 €)</span>
+							</label>
+						</div>
+
+						<div>
+							<label for="select-timeline-rush" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block; margin-bottom: 0.2rem;">
+								Zeitplan & Eilservice
+							</label>
+							<select id="select-timeline-rush" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+								<option value="1.0" selected>Regulär (8–12 Wochen Vorlauf) (Kein Zuschlag)</option>
+								<option value="1.3">Eilservice (3–4 Wochen Vorlauf) (+30% Zuschlag)</option>
+								<option value="1.6">Express-Notfall (< 2 Wochen Vorlauf) (+60% Zuschlag)</option>
+							</select>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Financial Results & Line-Item Invoice -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Total Alterations Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								👗 Schneiderkosten-Prognose
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Geschätzte Kosten für alle Anpassungen
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Export PDF / Drucken
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Grand Total Highlight -->
+					<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: var(--accent-red); display: block; font-weight: bold;">Geschätzte Gesamtkosten Änderung</span>
+						<strong id="res-grand-total" class="font-heading" style="font-size: 2.6rem; color: var(--accent-red); display: block; line-height: 1.2;">470 €</strong>
+						<span id="res-range-subtext" style="font-size: 0.85rem; color: var(--accent-red);">Typischer Rahmen: 415 € – 540 €</span>
+					</div>
+
+					<!-- Line-Item Category Breakdown Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Aufgeschlüsselte Schneiderposten
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.92rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">👗 Saumkürzung & Extralagen:</td>
+									<td id="res-hem-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">160 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🪡 Mieder, Träger & BH-Cups:</td>
+									<td id="res-bodice-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">175 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🎀 Schleppen-Hochsteckung:</td>
+									<td id="res-bustle-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">85 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">✨ Perlen, Spitze & Dämpfen:</td>
+									<td id="res-extras-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">50 €</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #fafafa;">
+									<td style="padding: 0.35rem 0; color: var(--accent-red);">⚡ Eilzuschlag:</td>
+									<td id="res-rush-total" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">0 €</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Visual Proportion Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span>Günstig (250 €)</span>
+							<span>Standard (500 €)</span>
+							<span style="color: var(--accent-red);">Aufwendig (900 €+)</span>
+						</div>
+						<div style="width: 100%; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="cost-gauge-bar" style="width: 48%; height: 100%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Fitting Tips Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						📌 Zur 1. Anprobe unbedingt mitbringen:
+					</strong>
+					<ul class="font-body" style="font-size: 0.85rem; line-height: 1.5; padding-left: 1.1rem; margin: 0; color: var(--fg-pencil);">
+						<li><strong>Original-Brautschuh:</strong> Die genaue Absatzhöhe bestimmt millimetergenau den Saum.</li>
+						<li><strong>Geplante Wäsche:</strong> Korsage, trägerloser BH oder nahtlose Shapewear für den perfekten Miedersitz.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Brautkleid-Änderungsübersicht</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportiert am: <span id="print-date"></span> | Geschätzte Gesamtkosten: <span id="print-total"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Änderungsposition</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 120px; text-align: right;">Geschätzter Betrag</th>
+					</tr>
+				</thead>
+				<tbody id="print-alteration-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 2.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Auf einen Blick</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Typische Kosten für Brautkleid-Änderungen
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 750px; margin: 0 auto; font-weight: 500;">
+					Preise für typische Schneiderarbeiten bei Brautmode im Überblick.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📐 Richtwerte für die Schneiderei:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Saum kürzen: 80–220 € • Mieder anpassen: 60–150 € • Schleppe hochstecken: 45–140 € • BH-Cups: 30–45 € • Dämpfen: 40–60 €
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 640px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Änderung</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Einfaches Kleid</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Mehrlagig / Tüll</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Spitze & Perlen</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Saum kürzen</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">70 € – 100 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">120 € – 180 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">190 € – 280 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Mieder enger / weiter</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">60 € – 90 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">90 € – 130 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">130 € – 200 €</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Schleppen-Aufhängung</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">40 € – 60 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">70 € – 100 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">110 € – 160 €</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Ratgeber: Brautkleid-Änderungen stressfrei planen
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Der ideale Zeitplan für Ihre Anproben und wie Sie böse Überraschungen bei den Schneiderkosten vermeiden.
+				</p>
+			</div>
+
+			<!-- Section 1: Anprobetermine -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Der 3-Stufen-Plan für perfekte Passform
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Beginnen Sie <strong>8 bis 10 Wochen vor der Hochzeit</strong> mit dem Abstecken von Saum und Mieder. Bei der zweiten Anprobe (4–5 Wochen vor dem Fest) werden die genähten Änderungen kontrolliert. Die finale Abholung erfolgt 10–14 Tage vor der Hochzeit, inklusive frisch aufgedämpftem Kleid im blickdichten Kleidersack.
+				</p>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/de/dress-alterations-estimator" category="budget" />
+
+	</main>
+</Layout>
+
+<style>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '€';
+
+	const currencySelect = document.getElementById('currency-select');
+	const hemSelect = document.getElementById('select-hem-type');
+	const skirtLayersInput = document.getElementById('input-skirt-layers');
+	const labelSkirtLayers = document.getElementById('label-skirt-layers');
+
+	const chkTakeIn = document.getElementById('chk-take-in-bodice');
+	const chkStraps = document.getElementById('chk-shorten-straps');
+	const chkCups = document.getElementById('chk-sew-in-cups');
+	const chkNeckline = document.getElementById('chk-reshape-neckline');
+	const chkCorset = document.getElementById('chk-corset-back');
+
+	const bustleSelect = document.getElementById('select-bustle-style');
+	const chkBeading = document.getElementById('chk-beading-repair');
+	const chkSteaming = document.getElementById('chk-steaming-press');
+	const rushSelect = document.getElementById('select-timeline-rush');
+
+	// Result Elements
+	const resGrandTotal = document.getElementById('res-grand-total');
+	const resRangeSubtext = document.getElementById('res-range-subtext');
+	const resHemTotal = document.getElementById('res-hem-total');
+	const resBodiceTotal = document.getElementById('res-bodice-total');
+	const resBustleTotal = document.getElementById('res-bustle-total');
+	const resExtrasTotal = document.getElementById('res-extras-total');
+	const resRushTotal = document.getElementById('res-rush-total');
+	const costGaugeBar = document.getElementById('cost-gauge-bar');
+
+	function formatMoney(amount) {
+		const val = Math.round(amount).toLocaleString('de-DE');
+		if (currencySymbol === '€' || currencySymbol === 'CHF') {
+			return `${val} ${currencySymbol}`;
+		}
+		return `${currencySymbol}${val}`;
+	}
+
+	function calculateAlterations() {
+		currencySymbol = currencySelect.value;
+		const rushMultiplier = parseFloat(rushSelect.value) || 1.0;
+
+		const extraLayers = parseInt(skirtLayersInput.value) || 0;
+		labelSkirtLayers.textContent = `${extraLayers} Lagen`;
+
+		// 1. Hemming
+		const baseHem = parseFloat(hemSelect.value) || 0;
+		const layersCost = baseHem > 0 ? (extraLayers * 35) : 0;
+		const hemSubtotal = baseHem + layersCost;
+
+		// 2. Bodice
+		let bodiceSubtotal = 0;
+		if (chkTakeIn.checked) bodiceSubtotal += parseFloat(chkTakeIn.value);
+		if (chkStraps.checked) bodiceSubtotal += parseFloat(chkStraps.value);
+		if (chkCups.checked) bodiceSubtotal += parseFloat(chkCups.value);
+		if (chkNeckline.checked) bodiceSubtotal += parseFloat(chkNeckline.value);
+		if (chkCorset.checked) bodiceSubtotal += parseFloat(chkCorset.value);
+
+		// 3. Bustle
+		const bustleSubtotal = parseFloat(bustleSelect.value) || 0;
+
+		// 4. Extras
+		let extrasSubtotal = 0;
+		if (chkBeading.checked) extrasSubtotal += parseFloat(chkBeading.value);
+		if (chkSteaming.checked) extrasSubtotal += parseFloat(chkSteaming.value);
+
+		// Pre-rush subtotal
+		const preRushTotal = hemSubtotal + bodiceSubtotal + bustleSubtotal + extrasSubtotal;
+		const finalTotal = preRushTotal * rushMultiplier;
+		const rushFeeAmount = finalTotal - preRushTotal;
+
+		// Update UI
+		resGrandTotal.textContent = formatMoney(finalTotal);
+		const lowRange = Math.round(finalTotal * 0.88);
+		const highRange = Math.round(finalTotal * 1.15);
+		resRangeSubtext.textContent = `Typischer Rahmen: ${formatMoney(lowRange)} – ${formatMoney(highRange)}`;
+
+		resHemTotal.textContent = formatMoney(hemSubtotal);
+		resBodiceTotal.textContent = formatMoney(bodiceSubtotal);
+		resBustleTotal.textContent = formatMoney(bustleSubtotal);
+		resExtrasTotal.textContent = formatMoney(extrasSubtotal);
+		resRushTotal.textContent = formatMoney(rushFeeAmount);
+
+		// Gauge
+		const gaugePct = Math.min(100, Math.max(10, Math.round((finalTotal / 900) * 100)));
+		costGaugeBar.style.width = `${gaugePct}%`;
+	}
+
+	// Listeners
+	document.querySelectorAll('.alt-checkbox, #input-skirt-layers').forEach(el => {
+		el.addEventListener('input', calculateAlterations);
+		el.addEventListener('change', calculateAlterations);
+	});
+	[hemSelect, bustleSelect, rushSelect, currencySelect].forEach(el => {
+		el.addEventListener('change', calculateAlterations);
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		let rows = '';
+		if (parseFloat(hemSelect.value) > 0) {
+			rows += `<tr><td>Rocksaum kürzen (${hemSelect.options[hemSelect.selectedIndex].text.split('(')[0]})</td><td style="text-align:right;">${resHemTotal.textContent}</td></tr>`;
+		}
+		if (chkTakeIn.checked) rows += `<tr><td>Mieder an Seitennähten enger/weiter nähen</td><td style="text-align:right;">${formatMoney(chkTakeIn.value)}</td></tr>`;
+		if (chkStraps.checked) rows += `<tr><td>Träger / Ärmel anheben & anpassen</td><td style="text-align:right;">${formatMoney(chkStraps.value)}</td></tr>`;
+		if (chkCups.checked) rows += `<tr><td>Push-up / BH-Cups einnähen</td><td style="text-align:right;">${formatMoney(chkCups.value)}</td></tr>`;
+		if (chkNeckline.checked) rows += `<tr><td>Ausschnitt / Rückenausschnitt anpassen</td><td style="text-align:right;">${formatMoney(chkNeckline.value)}</td></tr>`;
+		if (chkCorset.checked) rows += `<tr><td>Umbau auf Schnürung / Korsage</td><td style="text-align:right;">${formatMoney(chkCorset.value)}</td></tr>`;
+		if (parseFloat(bustleSelect.value) > 0) {
+			rows += `<tr><td>Schleppenaufhängung (${bustleSelect.options[bustleSelect.selectedIndex].text.split('(')[0]})</td><td style="text-align:right;">${resBustleTotal.textContent}</td></tr>`;
+		}
+		if (chkBeading.checked) rows += `<tr><td>Perlen- & Spitzenreparatur</td><td style="text-align:right;">${formatMoney(chkBeading.value)}</td></tr>`;
+		if (chkSteaming.checked) rows += `<tr><td>Professionelles Aufdämpfen & Bügeln</td><td style="text-align:right;">${formatMoney(chkSteaming.value)}</td></tr>`;
+		if (parseFloat(rushSelect.value) > 1.0) {
+			rows += `<tr><td>Eilzuschlag (${rushSelect.options[rushSelect.selectedIndex].text.split('(')[0]})</td><td style="text-align:right;">${resRushTotal.textContent}</td></tr>`;
+		}
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Brautkleid Änderungsplan</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Offizieller Brautkleid-Änderungsplan</h1>
+				<p>Erstellt am ${new Date().toLocaleDateString('de-DE')} | Geschätzte Gesamtkosten: <strong>${resGrandTotal.textContent}</strong> (${resRangeSubtext.textContent})</p>
+				
+				<h3>Gewählte Schneiderarbeiten:</h3>
+				<table>
+					<thead>
+						<tr><th>Arbeitsschritt</th><th style="text-align:right;">Geschätzter Betrag</th></tr>
+					</thead>
+					<tbody>
+						${rows}
+						<tr style="background:#f2f2f2; font-weight:bold; font-size:15px;"><td>Gesamtsumme Schneiderarbeiten</td><td style="text-align:right; color:#b91c1c;">${resGrandTotal.textContent}</td></tr>
+					</tbody>
+				</table>
+
+				<h3 style="margin-top:20px;">Wichtige Hinweise zur Anprobe:</h3>
+				<p>• Unbedingt Original-Brautschuh mitnehmen (bestimmt die Rocklänge).</p>
+				<p>• Geplante Unterwäsche / Shapewear bei jeder Anprobe tragen.</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Brautkleid_Aenderungen_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('de-DE');
+		document.getElementById('print-total').textContent = resGrandTotal.textContent;
+
+		const tbody = document.getElementById('print-alteration-body');
+		tbody.innerHTML = `
+			<tr><td style="border:1px solid #ccc; padding:6px;">Saumkürzung & Rocklagen</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resHemTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Mieder, Träger & BH-Cups</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resBodiceTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Schleppen-Aufhängung</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resBustleTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Perlen, Spitze & Dämpfen</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resExtrasTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Eilservice-Zuschlag</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resRushTotal.textContent}</td></tr>
+			<tr style="background:#f2f2f2;"><td style="border:1px solid #ccc; padding:6px; font-weight:bold; font-size:14px;">Geschätzte Gesamtkosten</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold; font-size:14px;">${resGrandTotal.textContent}</td></tr>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Arbeitsschritt,Geschaetzter Betrag\n";
+		csv += `"Saumkuerzung & Rocklagen","${resHemTotal.textContent}"\n`;
+		csv += `"Mieder, Traeger & BH-Cups","${resBodiceTotal.textContent}"\n`;
+		csv += `"Schleppen-Aufhaengung","${resBustleTotal.textContent}"\n`;
+		csv += `"Perlen, Spitze & Daempfen","${resExtrasTotal.textContent}"\n`;
+		csv += `"Eilservice-Zuschlag","${resRushTotal.textContent}"\n`;
+		csv += `"Gesamtsumme Aenderungskosten","${resGrandTotal.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Brautkleid_Aenderungen_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateAlterations();
+</script>

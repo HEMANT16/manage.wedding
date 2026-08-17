@@ -1,0 +1,788 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/dress-alterations-estimator/#webapp",
+      "name": "Estimador de Coste de Arreglos de Vestido de Novia",
+      "url": "https://manage.wedding/es/dress-alterations-estimator",
+      "inLanguage": "es",
+      "description": "Calculadora gratuita de arreglos de modistería nupcial: calcula precios para coger el bajo (dobladillo), ajustar cuerpo y pecho, poner copas, sistema para recoger la cola y planchado profesional.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Presupuestar y Planificar las Pruebas de Arreglo del Vestido de Novia",
+      "description": "Guía paso a paso para calcular el coste de costura y programar las 3 citas de prueba del vestido con la modista.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Evalúa la Falda y el Dobladillo del Bajo",
+          "text": "Comprueba si el bajo es liso (crepé/satén), con cinta de crin o encaje con puntilla que requiera descoser y coser a mano."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Selecciona Ajustes de Pecho, Talle y Tirantes",
+          "text": "Indica si es necesario meter o sacar de los costados, acortar tirantes e incorporar copas de sujetador cosidas."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Elige el Sistema para Recoger la Cola (Polonesa)",
+          "text": "Instala presillas o botones invisibles (1, 3 o 5 puntos) para bailar cómodamente durante el banquete y la fiesta."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Lleva los Zapatos y Ropa Interior Exactos",
+          "text": "Es imprescindible llevar los tacones exactos y la faja/ropa interior a todas las pruebas para clavar la medida del suelo."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuánto cuestan de media los arreglos de un vestido de novia?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El coste medio de modistería nupcial en España oscila entre 250€ y 600€ para ajustes habituales (coger el bajo, ajustar talle/costados y colocar el recogido de la cola). Vestidos con múltiples capas de tul o encajes artesanales pueden alcanzar entre 650€ y 900€."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué es más caro cortar el bajo de un vestido con encaje?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En vestidos con blonda o puntilla festoneada en el bajo, la modista no puede cortar la tela directamente. Debe descoser a mano cada motivo de encaje, cortar el forro y el cancán, subir la tela y volver a coser a mano la puntilla original."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuándo se deben hacer las pruebas de costura del vestido?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Se recomiendan 3 citas: 1) Primera prueba (8–10 semanas antes): para coger alfileres en el bajo con los zapatos definitivos, ajustar costados y diseñar el recogecolas; 2) Segunda prueba (4–5 semanas antes): para comprobar costuras y probar el recogido; 3) Recogida final (10–14 días antes): última prueba de seguridad y planchado profesional."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué debo llevar obligatoriamente a la primera prueba de modistería?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Debes llevar los zapatos de novia exactos (la altura del tacón define la caída del bajo) y la ropa interior o corsetería que llevarás el gran día."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Arreglos de Vestido de Novia (Precios de Costura) | Manage.Wedding"
+	description="Calcula el precio de arreglar tu vestido de novia: coger el bajo, meter talle, copas de sujetador, recoger la cola y planchado. Exporta a Word y PDF."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Arreglos de Vestido de Novia" category="budget-finance" />
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Arreglos de <span class="accent-italic">Vestido de Novia</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Estima el presupuesto realista de modistería para coger el bajo, ajustar talle, copas, botones para la cola y planchado. Exporta tu <strong>Lista para la Modista</strong> a <strong>Word</strong> o <strong>PDF</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Cómo Presupuestar tus Arreglos en 3 Pasos
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Tipo de Bajo y Capas de Falda
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Elige el acabado del bajo (liso, con cinta de crin o encaje festoneado) e indica si lleva capas extra de forro y tul.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Ajustes de Cuerpo y Recogecolas
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Marca las casillas para meter talle, tirantes, copas cosidas y el sistema para recoger la cola durante el baile.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Descarga la Ficha de Pruebas
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Haz clic en <strong>"📝 Exportar a Word"</strong> o <strong>"🖨️ Imprimir PDF"</strong> para llevar la lista completa a tu modista o taller.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="alterations-calc-grid">
+			
+			<!-- Left Column: Itemized Tailoring Services -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div style="width: 100%;">
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							✂️ Selecciona los Arreglos Necesarios
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							Marca los retoques de costura que requiere tu vestido
+						</span>
+					</div>
+
+					<!-- Currency Selector -->
+					<div style="display: flex; align-items: center; gap: 0.3rem;">
+						<span style="font-size: 0.85rem; font-weight: bold;">Moneda:</span>
+						<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="€" selected>€ (EUR)</option>
+							<option value="$">$ (USD/CAD/AUD)</option>
+							<option value="£">£ (GBP)</option>
+							<option value="₹">₹ (INR)</option>
+						</select>
+					</div>
+				</div>
+
+				<form id="alterations-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+					
+					<!-- 1. Hemming & Skirt Layers -->
+					<div>
+						<h3 class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.6rem; border-bottom: 1px solid var(--fg-pencil); padding-bottom: 0.2rem;">
+							1. Dobladillo del Bajo y Capas de Falda
+						</h3>
+						<div style="display: flex; flex-direction: column; gap: 0.5rem;">
+							<div>
+								<label for="select-hem-type" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block; margin-bottom: 0.2rem;">
+									Tipo de Bajo y Complejidad del Tejido
+								</label>
+								<select id="select-hem-type" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.9rem;">
+									<option value="0">No Requiere Cortar el Bajo (0 €)</option>
+									<option value="120" selected>Bajo Liso Limpio (Crepé, Satén, Mikado, Gasa) (120 €)</option>
+									<option value="180">Bajo con Cinta de Crin / Crinolina Rígida (180 €)</option>
+									<option value="280">Bajo con Blonda / Encaje Festoneado (Descoser y volver a coser a mano) (280 €)</option>
+								</select>
+							</div>
+
+							<div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-paper); padding: 0.5rem 0.75rem; border: 1px dashed var(--fg-pencil); border-radius: 4px;">
+								<div>
+									<label for="input-skirt-layers" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block;">Capas Interiores de Falda (Tul / Forros)</label>
+									<span style="font-size: 0.75rem; color: var(--text-secondary);">30 € por cada capa adicional que haya que acortar</span>
+								</div>
+								<div style="display: flex; align-items: center; gap: 0.3rem;">
+									<input type="number" id="input-skirt-layers" value="2" min="0" max="10" style="width: 50px; padding: 0.3rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-align: center; background: #fff;">
+									<span style="font-size: 0.85rem;">capas</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2. Bodice, Straps & Bra Structure -->
+					<div>
+						<h3 class="font-heading" style="font-size: 1.15rem; color: var(--accent-blue); margin-bottom: 0.6rem; border-bottom: 1px solid var(--fg-pencil); padding-bottom: 0.2rem;">
+							2. Ajustes de Cuerpo, Pecho y Tirantes
+						</h3>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+							<label class="service-checkbox-label">
+								<input type="checkbox" id="chk-take-in-bodice" value="100" checked class="alt-checkbox">
+								<span>Meter / Sacar Costados y Talle (100 €)</span>
+							</label>
+
+							<label class="service-checkbox-label">
+								<input type="checkbox" id="chk-shorten-straps" value="40" checked class="alt-checkbox">
+								<span>Acortar Tirantes o Mangas (40 €)</span>
+							</label>
+
+							<label class="service-checkbox-label">
+								<input type="checkbox" id="chk-sew-in-cups" value="35" checked class="alt-checkbox">
+								<span>Coser Copas de Sujetador Moldeadas (35 €)</span>
+							</label>
+
+							<label class="service-checkbox-label">
+								<input type="checkbox" id="chk-reshape-neckline" value="110" class="alt-checkbox">
+								<span>Modificar Escote o Espalda (110 €)</span>
+							</label>
+
+							<label class="service-checkbox-label" style="grid-column: span 2;">
+								<input type="checkbox" id="chk-corset-back" value="150" class="alt-checkbox">
+								<span>Cambiar Cremallera por Espalda de Corsé Enlazado (150 €)</span>
+							</label>
+						</div>
+					</div>
+
+					<!-- 3. Bustle & Train Management -->
+					<div>
+						<h3 class="font-heading" style="font-size: 1.15rem; color: #16a34a; margin-bottom: 0.6rem; border-bottom: 1px solid var(--fg-pencil); padding-bottom: 0.2rem;">
+							3. Sistema para Recoger la Cola (Polonesa)
+						</h3>
+						<div>
+							<label for="select-bustle-style" class="font-body" style="font-size: 0.85rem; font-weight: bold; display: block; margin-bottom: 0.2rem;">
+								Tipo de Recogido y Puntos de Sujeción
+							</label>
+							<select id="select-bustle-style" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.9rem;">
+								<option value="0">Sin Recogecolas / Vestido sin Cola (0 €)</option>
+								<option value="60">Recogido Simple de 1 Punto (Botón exterior) (60 €)</option>
+								<option value="110" selected>Recogido Francés de 3 a 5 Puntos (Cintas interiores invisibles) (110 €)</option>
+								<option value="180">Recogido Imperial / Salón Real de 7 a 10 Puntos (180 €)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- 4. Embellishments, Steaming & Rush Surcharge -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.6rem;">
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+							<label class="service-checkbox-label" style="background:#fff;">
+								<input type="checkbox" id="chk-beading-repair" value="80" class="alt-checkbox">
+								<span>Repaso de Pedrería y Bordados (80 €)</span>
+							</label>
+
+							<label class="service-checkbox-label" style="background:#fff;">
+								<input type="checkbox" id="chk-steaming-press" value="70" checked class="alt-checkbox">
+								<span>Planchado y Vaporizado Profesional (70 €)</span>
+							</label>
+						</div>
+
+						<div style="margin-top: 0.25rem;">
+							<label for="select-timeline-rush" class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+								Plazo de Entrega y Recargo por Urgencia
+							</label>
+							<select id="select-timeline-rush" style="width: 100%; box-sizing: border-box; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+								<option value="1.0" selected>Plazo Estándar (8 a 12 semanas antes) (Sin recargo)</option>
+								<option value="1.2">Servicio Exprés (4 a 6 semanas antes) (+20% Recargo)</option>
+								<option value="1.4">Urgencia Máxima (Menos de 3 semanas) (+40% Recargo)</option>
+							</select>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Financial Results & Line-Item Invoice -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Total Alteration Quote Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								👗 Presupuesto Estimado de Costura
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Desglose de arreglos para tu modista o taller nupcial
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Exportar a Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Imprimir PDF
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Estimated Range Highlight -->
+					<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: var(--accent-red); display: block; font-weight: bold;">Coste Estimado de Modistería</span>
+						<strong id="res-grand-total" class="font-heading" style="font-size: 2.6rem; color: var(--accent-red); display: block; line-height: 1.2;">475 €</strong>
+						<span id="res-range-subtext" style="font-size: 0.8rem; color: var(--accent-red);">Rango Habitual: 420 € - 545 €</span>
+					</div>
+
+					<!-- Line-Item Category Breakdown Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Desglose de Servicios Seleccionados
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.95rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">✂️ Dobladillo y Capas de Falda:</td>
+									<td id="res-hem-total" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">180,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">🪡 Cuerpo, Tirantes y Copas:</td>
+									<td id="res-bodice-total" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">175,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">👗 Recogecolas / Polonesa:</td>
+									<td id="res-bustle-total" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">110,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.4rem 0;">✨ Pedrería y Planchado:</td>
+									<td id="res-extras-total" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">70,00 €</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #fafafa;">
+									<td style="padding: 0.4rem 0; font-weight: bold;">Recargo por Urgencia:</td>
+									<td id="res-rush-total" style="padding: 0.4rem 0; text-align: right; font-weight: bold;">0,00 €</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Visual Cost Scale Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span>Básico (200 €)</span>
+							<span>Media (500 €)</span>
+							<span style="color: var(--accent-red);">Complejo (900 €+)</span>
+						</div>
+						<div style="width: 100%; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="cost-gauge-bar" style="width: 48%; height: 100%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Fitting Appointment Reminder Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						📌 Recordatorio Imprescindible para la Prueba:
+					</strong>
+					<ul class="font-body" style="font-size: 0.85rem; line-height: 1.5; padding-left: 1.1rem; margin: 0; color: var(--fg-pencil);">
+						<li><strong>Zapatos:</strong> Debes llevar los tacones exactos para marcar la caída del bajo.</li>
+						<li><strong>Ropa interior:</strong> Lleva la faja, body o sujetador que usarás en la boda.</li>
+						<li><strong>Acompañante:</strong> Lleva a tu madrina o amiga para aprender a abotonar la cola.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Presupuesto Oficial de Arreglos de Vestido</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportado el: <span id="print-date"></span> | Total Estimado: <span id="print-total"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Servicio de Costura</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 120px; text-align: right;">Coste Estimado (€)</th>
+					</tr>
+				</thead>
+				<tbody id="print-alteration-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="result-box" style="margin-bottom: 2.5rem; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); padding: 1.5rem 1.75rem; position: relative;">
+			<div class="badge-postit" style="top: -12px; right: 15px;">⚡ Resumen Rápido</div>
+			<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+				<span>⚡</span> Precios de Referencia de Arreglos Nupciales en España
+			</h3>
+			<p class="font-body" style="font-size: 1rem; line-height: 1.6; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				<strong>Regla General:</strong> Los arreglos de modistería suelen situarse entre <strong>250 € y 600 €</strong> repartidos en 3 citas de prueba. Cuenta con <strong>120 €–250 €</strong> para cortar el bajo, <strong>60 €–120 €</strong> para el sistema de recogida de cola y <strong>80 €–180 €</strong> para ajustar el cuerpo y costados.
+			</p>
+			
+			<!-- Benchmark Alterations Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Tipo de Arreglo</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Precio Habitual</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Tiempo de Confección</th>
+							<th style="padding: 0.65rem 0.8rem; font-family: var(--font-heading); color: var(--fg-pencil);">Consejo de Modistería</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">Bajo Liso Simple</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">120 € – 180 €</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">2–3 semanas</td>
+							<td style="padding: 0.6rem 0.8rem;">Imprescindible llevar los tacones a la primera prueba</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">Bajo con Encaje / Crinolina</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">220 € – 380 €+</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">4–5 semanas</td>
+							<td style="padding: 0.6rem 0.8rem;">Requiere descoser y coser a mano cada puntilla</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">Recogecolas (Polonesa 3 a 5 puntos)</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">60 € – 130 €</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">1–2 semanas</td>
+							<td style="padding: 0.6rem 0.8rem;">Lleva a la madrina a la 2ª prueba para practicar</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">Meter / Sacar Costados y Talle</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">80 € – 180 €</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">2–3 semanas</td>
+							<td style="padding: 0.6rem 0.8rem;">Lleva la ropa interior exacta para fijar las ballenas</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">Copas Cosidas y Tirantes</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">40 € – 80 €</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">1 semana</td>
+							<td style="padding: 0.6rem 0.8rem;">Evita sujetadores adhesivos incómodos</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Modistería Nupcial y Alta Costura</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Guía Completa para las Pruebas y Arreglos del Vestido
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Calendario de citas, sistemas para recoger la cola, tejidos complejos y consejos de prueba.
+				</p>
+			</div>
+
+			<!-- Section 1: Detailed Step-by-Step Guide on How to Use This Tool -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. El Calendario de Pruebas con la Modista
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Para que el vestido quede perfectamente ajustado a tu silueta, es fundamental seguir el calendario de pruebas adecuado:
+				</p>
+
+				<div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.4rem;">
+							Primera Prueba (8 a 10 semanas antes)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							La modista coloca los alfileres en el bajo con los zapatos definitivos, ajusta los costados del corsé y selecciona las copas de pecho y el sistema para sujetar la cola.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.4rem;">
+							Segunda Prueba (4 a 5 semanas antes)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Te pruebas el vestido ya cosido. Se comprueba la comodidad al sentarse, caminar y bailar, y se practica la colocación de la cola recogida con tu acompañante.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.4rem;">
+							Recogida y Prueba Final (10 a 14 días antes)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Última prueba de seguridad para verificar que el peso se mantiene estable. El taller vaporiza y plancha profesionalmente el vestido y lo guarda en su funda transpirable.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Preguntas Frecuentes sobre Arreglos de Novia
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						¿Se puede ensanchar un vestido de novia si queda pequeño?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Los vestidos de novia tienen muy poco margen de costura interior (apenas 1 a 2 cm). Si necesitas ganar talla, la mejor solución es sustituir la cremallera trasera por un corsé con ojetes y cinta enlazada, lo que permite ganar fácilmente entre 3 y 6 cm de comodidad.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						¿A qué altura exacta debe quedar el bajo del vestido?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						El dobladillo debe quedar a exactamente <strong>2 a 2,5 cm del suelo</strong> con los tacones puestos. Si queda a ras del suelo, pisarás la tela al dar cada paso hacia adelante y correrás el riesgo de tropezar.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/es/dress-alterations-estimator" category="budget" />
+
+	</main>
+</Layout>
+
+<style>
+	.service-checkbox-label {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 0.65rem;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: var(--bg-paper);
+		cursor: pointer;
+		font-family: var(--font-body);
+		font-size: 0.88rem;
+		transition: background 0.15s ease;
+	}
+	.service-checkbox-label:hover {
+		background: #f0fdf4;
+	}
+	.alt-checkbox {
+		width: 18px;
+		height: 18px;
+		accent-color: var(--fg-pencil);
+		cursor: pointer;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '€';
+
+	const currencySelect = document.getElementById('currency-select');
+	const hemSelect = document.getElementById('select-hem-type');
+	const skirtLayersInput = document.getElementById('input-skirt-layers');
+
+	const chkTakeIn = document.getElementById('chk-take-in-bodice');
+	const chkStraps = document.getElementById('chk-shorten-straps');
+	const chkCups = document.getElementById('chk-sew-in-cups');
+	const chkNeckline = document.getElementById('chk-reshape-neckline');
+	const chkCorset = document.getElementById('chk-corset-back');
+
+	const bustleSelect = document.getElementById('select-bustle-style');
+	const chkBeading = document.getElementById('chk-beading-repair');
+	const chkSteaming = document.getElementById('chk-steaming-press');
+	const rushSelect = document.getElementById('select-timeline-rush');
+
+	// Result Elements
+	const resGrandTotal = document.getElementById('res-grand-total');
+	const resRangeSubtext = document.getElementById('res-range-subtext');
+	const resHemTotal = document.getElementById('res-hem-total');
+	const resBodiceTotal = document.getElementById('res-bodice-total');
+	const resBustleTotal = document.getElementById('res-bustle-total');
+	const resExtrasTotal = document.getElementById('res-extras-total');
+	const resRushTotal = document.getElementById('res-rush-total');
+	const costGaugeBar = document.getElementById('cost-gauge-bar');
+
+	function formatMoney(amount) {
+		return `${Math.round(amount).toLocaleString('es-ES')} ${currencySymbol}`;
+	}
+
+	function calculateAlterations() {
+		currencySymbol = currencySelect.value;
+		const rushMultiplier = parseFloat(rushSelect.value) || 1.0;
+
+		// 1. Hemming
+		const baseHem = parseFloat(hemSelect.value) || 0;
+		const extraLayers = parseInt(skirtLayersInput.value) || 0;
+		const layersCost = baseHem > 0 ? (extraLayers * 30) : 0;
+		const hemSubtotal = baseHem + layersCost;
+
+		// 2. Bodice
+		let bodiceSubtotal = 0;
+		if (chkTakeIn.checked) bodiceSubtotal += parseFloat(chkTakeIn.value);
+		if (chkStraps.checked) bodiceSubtotal += parseFloat(chkStraps.value);
+		if (chkCups.checked) bodiceSubtotal += parseFloat(chkCups.value);
+		if (chkNeckline.checked) bodiceSubtotal += parseFloat(chkNeckline.value);
+		if (chkCorset.checked) bodiceSubtotal += parseFloat(chkCorset.value);
+
+		// 3. Bustle
+		const bustleSubtotal = parseFloat(bustleSelect.value) || 0;
+
+		// 4. Extras
+		let extrasSubtotal = 0;
+		if (chkBeading.checked) extrasSubtotal += parseFloat(chkBeading.value);
+		if (chkSteaming.checked) extrasSubtotal += parseFloat(chkSteaming.value);
+
+		// Pre-rush subtotal
+		const preRushTotal = hemSubtotal + bodiceSubtotal + bustleSubtotal + extrasSubtotal;
+		const finalTotal = preRushTotal * rushMultiplier;
+		const rushFeeAmount = finalTotal - preRushTotal;
+
+		// Update UI
+		resGrandTotal.textContent = formatMoney(finalTotal);
+		const lowRange = Math.round(finalTotal * 0.9);
+		const highRange = Math.round(finalTotal * 1.15);
+		resRangeSubtext.textContent = `Rango Habitual: ${formatMoney(lowRange)} - ${formatMoney(highRange)}`;
+
+		resHemTotal.textContent = formatMoney(hemSubtotal);
+		resBodiceTotal.textContent = formatMoney(bodiceSubtotal);
+		resBustleTotal.textContent = formatMoney(bustleSubtotal);
+		resExtrasTotal.textContent = formatMoney(extrasSubtotal);
+		resRushTotal.textContent = formatMoney(rushFeeAmount);
+
+		// Gauge
+		const gaugePct = Math.min(100, Math.max(10, Math.round((finalTotal / 900) * 100)));
+		costGaugeBar.style.width = `${gaugePct}%`;
+	}
+
+	document.querySelectorAll('.alt-checkbox, #input-skirt-layers').forEach(el => {
+		el.addEventListener('input', calculateAlterations);
+		el.addEventListener('change', calculateAlterations);
+	});
+	[hemSelect, bustleSelect, rushSelect, currencySelect].forEach(el => {
+		el.addEventListener('change', calculateAlterations);
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		let rows = '';
+		if (parseFloat(hemSelect.value) > 0) {
+			rows += `<tr><td>Bajo de Falda y Capas (${hemSelect.options[hemSelect.selectedIndex].text.split('(')[0]})</td><td style="text-align:right;">${resHemTotal.textContent}</td></tr>`;
+		}
+		if (chkTakeIn.checked) rows += `<tr><td>Meter / Sacar Costados y Talle</td><td style="text-align:right;">${formatMoney(chkTakeIn.value)}</td></tr>`;
+		if (chkStraps.checked) rows += `<tr><td>Acortar Tirantes / Mangas</td><td style="text-align:right;">${formatMoney(chkStraps.value)}</td></tr>`;
+		if (chkCups.checked) rows += `<tr><td>Coser Copas de Sujetador Moldeadas</td><td style="text-align:right;">${formatMoney(chkCups.value)}</td></tr>`;
+		if (chkNeckline.checked) rows += `<tr><td>Modificar Escote / Espalda</td><td style="text-align:right;">${formatMoney(chkNeckline.value)}</td></tr>`;
+		if (chkCorset.checked) rows += `<tr><td>Cambiar Cremallera por Corsé con Lazos</td><td style="text-align:right;">${formatMoney(chkCorset.value)}</td></tr>`;
+		if (parseFloat(bustleSelect.value) > 0) {
+			rows += `<tr><td>Sistema Recogecolas / Polonesa (${bustleSelect.options[bustleSelect.selectedIndex].text.split('(')[0]})</td><td style="text-align:right;">${resBustleTotal.textContent}</td></tr>`;
+		}
+		if (chkBeading.checked) rows += `<tr><td>Repaso de Pedrería y Bordados</td><td style="text-align:right;">${formatMoney(chkBeading.value)}</td></tr>`;
+		if (chkSteaming.checked) rows += `<tr><td>Planchado y Vaporizado Profesional</td><td style="text-align:right;">${formatMoney(chkSteaming.value)}</td></tr>`;
+		if (parseFloat(rushSelect.value) > 1.0) {
+			rows += `<tr><td>Recargo por Urgencia (${rushSelect.options[rushSelect.selectedIndex].text.split('(')[0]})</td><td style="text-align:right;">${resRushTotal.textContent}</td></tr>`;
+		}
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Presupuesto de Arreglos de Vestido de Novia</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Ficha Oficial de Arreglos del Vestido</h1>
+				<p>Generado el ${new Date().toLocaleDateString('es-ES')} | Coste Estimado: <strong>${resGrandTotal.textContent}</strong> (${resRangeSubtext.textContent})</p>
+				
+				<h3>Servicios de Modistería Seleccionados:</h3>
+				<table>
+					<thead>
+						<tr><th>Descripción del Arreglo</th><th style="text-align:right;">Precio Estimado (€)</th></tr>
+					</thead>
+					<tbody>
+						${rows}
+						<tr style="background:#f2f2f2; font-weight:bold; font-size:15px;"><td>Total Estimado de Arreglos</td><td style="text-align:right; color:#b91c1c;">${resGrandTotal.textContent}</td></tr>
+					</tbody>
+				</table>
+
+				<h3 style="margin-top:20px;">Recordatorios para las Citas:</h3>
+				<p>• Llevar siempre los zapatos definitivos con el tacón exacto.</p>
+				<p>• Llevar la ropa interior o corsetería que se usará en la boda.</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Arreglos_Vestido_Novia_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('es-ES');
+		document.getElementById('print-total').textContent = resGrandTotal.textContent;
+
+		const tbody = document.getElementById('print-alteration-body');
+		tbody.innerHTML = `
+			<tr><td style="border:1px solid #ccc; padding:6px;">Bajo de Falda y Capas Interiores</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resHemTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Costados, Tirantes y Copas de Pecho</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resBodiceTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Sistema Recogecolas (Polonesa)</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resBustleTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Pedrería y Planchado Profesional</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resExtrasTotal.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px;">Recargo por Urgencia</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resRushTotal.textContent}</td></tr>
+			<tr style="background:#f2f2f2;"><td style="border:1px solid #ccc; padding:6px; font-weight:bold; font-size:14px;">Total Estimado de Modistería</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold; font-size:14px;">${resGrandTotal.textContent}</td></tr>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Servicio de Modisteria,Coste Estimado\n";
+		csv += `"Bajo de Falda y Capas","${resHemTotal.textContent}"\n`;
+		csv += `"Cuerpo, Tirantes y Copas","${resBodiceTotal.textContent}"\n`;
+		csv += `"Recogecolas / Polonesa","${resBustleTotal.textContent}"\n`;
+		csv += `"Pedreria y Planchado","${resExtrasTotal.textContent}"\n`;
+		csv += `"Recargo por Urgencia","${resRushTotal.textContent}"\n`;
+		csv += `"Total Estimado","${resGrandTotal.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Arreglos_Vestido_Novia_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateAlterations();
+</script>

@@ -1,0 +1,467 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Calcolatore Orari Trucco e Parrucco Sposa",
+      "url": "https://manage.wedding/it/hair-makeup-timeline-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calcola l'orario esatto di inizio trucco e acconciatura per la mattina delle nozze, turni damigelle, numero di truccatori e margine per indossare l'abito.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<Layout
+	title="Calcolatore Orari Trucco & Parrucco Sposa — Planning Mattina Nozze"
+	description="Calcola l'orario di inizio preparazione per trucco e capelli, turni damigelle e mamme, margine per vestirsi ed esporta il programma della mattina."
+	lang="it"
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/it/" style="color: var(--text-secondary); text-decoration: none;">Home</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/it/budget" style="color: var(--text-secondary); text-decoration: none;">Budget</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Orari Trucco e Parrucco</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>💄</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Cronoprogramma Dettagliato Mattina delle Nozze</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Calcolatore Orari Trucco e Parrucco Sposa
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Calcola l'ora esatta di <strong>sveglia e inizio trucco e capelli</strong>, verifica quanti professionisti ti occorrono per damigelle e mamme, organizza i singoli turni e proteggi il margine di 45 minuti per l'abito.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Inputs -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>👰</span> 1. Orario Limite & Persone da Preparare
+				</h2>
+
+				<!-- Target Ready Time -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<label for="input-target-ready-time" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+						Orario Limite (Arrivo Fotografo / Partenza):
+					</label>
+					<div style="display: flex; gap: 0.75rem; align-items: center;">
+						<input type="time" id="input-target-ready-time" value="13:30" style="padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700; font-size: 1rem;" />
+						<span style="font-size: 0.8rem; color: #64748b;">(Momento in cui tutte sono vestite e pronte)</span>
+					</div>
+				</div>
+
+				<!-- Party Roster Matrix -->
+				<div style="margin-bottom: 1.25rem;">
+					<strong style="color: var(--fg-pencil); display: block; font-size: 0.9rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+						Persone da Preparare
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+						<div>
+							<label for="input-bridesmaids-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Damigelle (Capelli + Trucco):</label>
+							<input type="number" id="input-bridesmaids-count" min="0" max="15" value="5" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+						<div>
+							<label for="input-mothers-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Mamme / Suocere / Nonne:</label>
+							<input type="number" id="input-mothers-count" min="0" max="8" value="2" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-flower-girls-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Damigelle Piccole (Solo capelli):</label>
+							<input type="number" id="input-flower-girls-count" min="0" max="6" value="1" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+						<div>
+							<label for="input-hair-only-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Ospiti (Solo 1 servizio):</label>
+							<input type="number" id="input-hair-only-count" min="0" max="10" value="0" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Artist Team Staffing -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong style="color: var(--fg-pencil); display: block; font-size: 0.9rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+						Team Professionisti Previsto
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="select-hair-stylists" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Parrucchieri/e:</label>
+							<select id="select-hair-stylists" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="1" selected>1 Parrucchiere/a</option>
+								<option value="2">2 Parrucchieri/e (Principale + Assistente)</option>
+								<option value="3">3 Parrucchieri/e (Grande team)</option>
+							</select>
+						</div>
+						<div>
+							<label for="select-makeup-artists" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Make-up Artist:</label>
+							<select id="select-makeup-artists" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="1" selected>1 Truccatore/rice</option>
+								<option value="2">2 Truccatori/rici (Principale + Assistente)</option>
+								<option value="3">3 Truccatori/rici (Grande team)</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<!-- Buffer Margin Selector -->
+				<div class="form-group">
+					<label for="select-buffer-dress" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Margine per Indossare l'Abito, Velo e Foto Vestaglia:
+					</label>
+					<select id="select-buffer-dress" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="45" selected>⭐ Consigliato 45 Min (Abito, gioielli, velo e brindisi)</option>
+						<option value="30">⚡ Veloce 30 Min (Abito scivolato senza bottoni complessi)</option>
+						<option value="60">🛡️ Rilassato 60 Min (Abito con corsetto e bottoncini lunghi)</option>
+					</select>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Programma Mattina</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Cronoprogramma Trucco & Parrucco
+						</h2>
+					</div>
+					<span id="badge-total-services" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">16 Servizi</span>
+				</div>
+
+				<!-- Big Number Highlights -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Inizio Preparativi</span>
+						<strong id="stat-start-time" style="font-size: 2rem; font-weight: 900; color: #b91c1c; line-height: 1.1;">07:15</strong>
+						<span id="stat-wakeup-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(Sveglia ~06:30 per colazione)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Turno della Sposa</span>
+						<strong id="stat-bride-slot" style="font-size: 1.25rem; font-weight: 900; color: #1e40af; line-height: 1.2; display: block; margin-top: 4px;">10:45 – 12:45</strong>
+						<span style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">Penultima posizione (ideale)</span>
+					</div>
+				</div>
+
+				<!-- Summary Breakdown -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">💇 Servizi Parrucco:</span>
+						<strong id="stat-hair-services-count" style="color: var(--fg-pencil);">9 acconciature (6,0 h totali)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">💄 Servizi Trucco:</span>
+						<strong id="stat-makeup-services-count" style="color: var(--fg-pencil);">8 trucchi (5,5 h totali)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">👗 Spazio per Vestirsi:</span>
+						<strong id="stat-dress-window" style="color: #15803d;">12:45 – 13:30 (45 min)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
+						<span style="color: #475569;">👩‍🎨 Stato del Team:</span>
+						<strong id="stat-staffing-status" style="color: #1e40af;">Team Equilibrato</strong>
+					</div>
+				</div>
+
+				<!-- Staffing Recommendation Box -->
+				<div style="background: #fef08a; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.85rem;" id="box-staffing-warning">
+					<strong style="color: var(--fg-pencil); display: block; margin-bottom: 0.25rem;">💡 Consiglio per la Mattina delle Nozze:</strong>
+					<span id="stat-staffing-tip" style="color: #334155;">
+						Chiedi alle damigelle di arrivare con i capelli lavati e asciutti dalla sera prima e con una vestaglia o camicia con bottoni per non rovinare l'acconciatura.
+					</span>
+				</div>
+
+				<!-- Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Stampa PDF
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Esporta Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/it/hair-makeup-timeline-calculator" category="budget" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-glam-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Programma Mattina Nozze: Trucco e Acconciatura</h1>
+				<p id="print-glam-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Piano Bellezza Giorno del Matrimonio | Generato da Manage.Wedding</p>
+			</div>
+			<div id="print-glam-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	const inputTargetReadyTime = document.getElementById('input-target-ready-time');
+	const inputBridesmaidsCount = document.getElementById('input-bridesmaids-count');
+	const inputMothersCount = document.getElementById('input-mothers-count');
+	const inputFlowerGirlsCount = document.getElementById('input-flower-girls-count');
+	const inputHairOnlyCount = document.getElementById('input-hair-only-count');
+	const selectHairStylists = document.getElementById('select-hair-stylists');
+	const selectMakeupArtists = document.getElementById('select-makeup-artists');
+	const selectBufferDress = document.getElementById('select-buffer-dress');
+
+	const badgeTotalServices = document.getElementById('badge-total-services');
+	const statStartTime = document.getElementById('stat-start-time');
+	const statWakeupSub = document.getElementById('stat-wakeup-sub');
+	const statBrideSlot = document.getElementById('stat-bride-slot');
+	const statHairServicesCount = document.getElementById('stat-hair-services-count');
+	const statMakeupServicesCount = document.getElementById('stat-makeup-services-count');
+	const statDressWindow = document.getElementById('stat-dress-window');
+	const statStaffingStatus = document.getElementById('stat-staffing-status');
+	const statStaffingTip = document.getElementById('stat-staffing-tip');
+
+	function formatTime(minutesSinceMidnight) {
+		let totalMins = Math.round(minutesSinceMidnight);
+		while (totalMins < 0) totalMins += 24 * 60;
+		while (totalMins >= 24 * 60) totalMins -= 24 * 60;
+
+		const h = Math.floor(totalMins / 60);
+		const m = totalMins % 60;
+		const displayH = h < 10 ? `0${h}` : h;
+		const displayM = m < 10 ? `0${m}` : m;
+		return `${displayH}:${displayM}`;
+	}
+
+	function calculateTimeline() {
+		const targetStr = inputTargetReadyTime.value || "13:30";
+		const [targetH, targetM] = targetStr.split(':').map(Number);
+		const targetMinutes = targetH * 60 + targetM;
+
+		const dressBuffer = parseInt(selectBufferDress.value, 10) || 45;
+		const glamFinishMinutes = targetMinutes - dressBuffer;
+
+		const bridesmaids = parseInt(inputBridesmaidsCount.value, 10) || 0;
+		const mothers = parseInt(inputMothersCount.value, 10) || 0;
+		const flowerGirls = parseInt(inputFlowerGirlsCount.value, 10) || 0;
+		const extraSingle = parseInt(inputHairOnlyCount.value, 10) || 0;
+
+		const totalHairMinutes = (60) + (bridesmaids * 40) + (mothers * 35) + (flowerGirls * 20) + (extraSingle * 35);
+		const totalMakeupMinutes = (60) + (bridesmaids * 40) + (mothers * 35);
+
+		const numHairStylists = parseInt(selectHairStylists.value, 10) || 1;
+		const numMakeupArtists = parseInt(selectMakeupArtists.value, 10) || 1;
+
+		const effectiveHairDuration = Math.ceil(totalHairMinutes / numHairStylists);
+		const effectiveMakeupDuration = Math.ceil(totalMakeupMinutes / numMakeupArtists);
+
+		const totalWorkingDuration = Math.max(effectiveHairDuration, effectiveMakeupDuration);
+
+		const startMinutes = glamFinishMinutes - totalWorkingDuration;
+		const wakeupMinutes = startMinutes - 45;
+
+		statStartTime.textContent = formatTime(startMinutes);
+		statWakeupSub.textContent = `(Sveglia ~${formatTime(wakeupMinutes)} per colazione)`;
+
+		const brideEnd = glamFinishMinutes;
+		const brideStart = brideEnd - 100;
+		statBrideSlot.textContent = `${formatTime(brideStart)} – ${formatTime(brideEnd)}`;
+
+		const totalHairCount = 1 + bridesmaids + mothers + flowerGirls + extraSingle;
+		const totalMakeupCount = 1 + bridesmaids + mothers;
+		const totalServices = totalHairCount + totalMakeupCount;
+		badgeTotalServices.textContent = `${totalServices} Servizi in totale`;
+
+		statHairServicesCount.textContent = `${totalHairCount} acconciature (${(totalHairMinutes/60).toFixed(1)} h totali)`;
+		statMakeupServicesCount.textContent = `${totalMakeupCount} trucchi (${(totalMakeupMinutes/60).toFixed(1)} h totali)`;
+		statDressWindow.textContent = `${formatTime(glamFinishMinutes)} – ${formatTime(targetMinutes)} (${dressBuffer} min)`;
+
+		if (totalWorkingDuration > 300) {
+			statStaffingStatus.textContent = '⚠️ Preparazione molto lunga (+1 professionista)';
+			statStaffingStatus.style.color = '#dc2626';
+			statStaffingTip.innerHTML = `⚠️ Con <strong>${totalServices} servizi</strong> e 1 solo operatore per ruolo, l'orario di inizio è alle <strong>${formatTime(startMinutes)}</strong>. Aggiungere un'assistente ridurrà di 2 ore la mattina.`;
+		} else {
+			statStaffingStatus.textContent = '✅ Team Equilibrato';
+			statStaffingStatus.style.color = '#15803d';
+			statStaffingTip.innerHTML = `Il programma garantisce una mattina senza fretta con inizio alle <strong>${formatTime(startMinutes)}</strong> e ${dressBuffer} min per indossare l'abito.`;
+		}
+
+		document.getElementById('print-glam-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Orario</th>
+						<th style="padding:6pt;">Servizio & Ruolo</th>
+						<th style="padding:6pt;">Note Importanti</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1; background:#fdf2f8;">
+						<td style="padding:6pt; font-weight:bold;">${formatTime(startMinutes)}</td>
+						<td style="padding:6pt; font-weight:bold; color:#b91c1c;">Arrivo e Montaggio Team Bellezza</td>
+						<td style="padding:6pt;">Posizionare sedie vicino a finestre luminose, prese di corrente e tavoli liberi.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">${formatTime(startMinutes + 15)} – ${formatTime(startMinutes + 90)}</td>
+						<td style="padding:6pt;">Turno 1: Damigelle / Mamme</td>
+						<td style="padding:6pt;">Capelli lavati e asciutti dalla sera prima, viso pulito, camicie con bottoni o vestaglie.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">${formatTime(startMinutes + 90)} – ${formatTime(brideStart)}</td>
+						<td style="padding:6pt;">Turno 2: Altre Damigelle</td>
+						<td style="padding:6pt;">Mamme pronte per assistere la sposa nella vestizione.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1; background:#eff6ff;">
+						<td style="padding:6pt; font-weight:bold; color:#1e40af;">${formatTime(brideStart)} – ${formatTime(brideEnd)}</td>
+						<td style="padding:6pt; font-weight:bold; color:#1e40af;">👰 SPOSA: Trucco e Acconciatura</td>
+						<td style="padding:6pt;">Spazio esclusivo sposa. Penultima posizione per una tenuta ottimale.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1; background:#f0fdf4;">
+						<td style="padding:6pt; font-weight:bold; color:#15803d;">${formatTime(glamFinishMinutes)} – ${formatTime(targetMinutes)}</td>
+						<td style="padding:6pt; font-weight:bold; color:#15803d;">Vestizione, Velo & Ritocchi</td>
+						<td style="padding:6pt;">${dressBuffer} minuti di tranquillità per abito, scarpe, profumo, velo e foto in vestaglia.</td>
+					</tr>
+					<tr style="background:#f8fafc; font-weight:bold;">
+						<td style="padding:8pt; font-size:11pt; color:#1e40af;">${formatTime(targetMinutes)}</td>
+						<td style="padding:8pt; font-size:11pt; color:#1e40af;">100% PRONTE E VESTITE</td>
+						<td style="padding:8pt;">Arrivo fotografo / Partenza per la cerimonia.</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	[inputTargetReadyTime, inputBridesmaidsCount, inputMothersCount, inputFlowerGirlsCount, inputHairOnlyCount, selectHairStylists, selectMakeupArtists, selectBufferDress].forEach(el => {
+		el.addEventListener('input', calculateTimeline);
+		el.addEventListener('change', calculateTimeline);
+	});
+
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		calculateTimeline();
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateTimeline();
+		const startTime = statStartTime.textContent;
+		const brideSlot = statBrideSlot.textContent;
+		const dressWindow = statDressWindow.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Programma Mattina Matrimonio</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Programma Trucco e Parrucco della Mattina delle Nozze</h1>
+				<p><strong>Inizio Trucco/Parrucco:</strong> ${startTime} | <strong>Turno Sposa:</strong> ${brideSlot} | <strong>Vestizione Abito:</strong> ${dressWindow}</p>
+				<hr/>
+				<h2>Regole per le Damigelle</h2>
+				<p>• Capelli lavati e asciutti dalla sera prima.</p>
+				<p>• Viso pulito e idratato senza crema solare oleosa.</p>
+				<p>• Indossare solo camicie con bottoni o vestaglie.</p>
+				<hr/>
+				<p><em>Generato da Manage.Wedding</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Programma-Bellezza-Nozze-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateTimeline();
+</script>

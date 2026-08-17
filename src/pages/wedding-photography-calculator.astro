@@ -1,0 +1,675 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Wedding Photography Coverage & Timeline Calculator",
+      "url": "https://manage.wedding/wedding-photography-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calculate exact wedding photography coverage hours (6h, 8h, 10h, or 12h), second shooter necessity, estimated photo gallery delivery, and print customized shot lists.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "How to Calculate How Many Hours of Wedding Photography You Need",
+      "description": "A step-by-step framework to calculate wedding photography package hours and avoid paying for unnecessary overtime.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Select Timeline Events",
+          "text": "Select your planned milestones: getting ready, first look, family formals, ceremony, golden hour portraits, dinner speeches, and send-off."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Factor in Travel & Buffer Time",
+          "text": "Add 30 to 45 minutes of buffer for driving between getting ready locations, church/venue, and unexpected schedule delays."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Determine Second Shooter Need",
+          "text": "Check if a second photographer is required based on guest counts exceeding 120 guests or separate prep venues."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Export Photographer Shot List & Timeline",
+          "text": "Generate a printable day-of photography brief with assigned family formal groups and designated portrait time slots."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How many hours of photography do you need for a wedding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most weddings require 8 hours of coverage. This captures final getting-ready moments, first look, wedding party, family formals, ceremony, golden hour portraits, speeches, and first dances. An intimate wedding or single-venue event often needs 6 hours, while full-day celebrations with a formal send-off or large guest list require 10 to 12 hours."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I really need a second photographer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A second shooter is strongly recommended if you have over 120 guests, if both partners are getting ready at different locations more than 15 minutes apart, or if you want cocktail hour candid photos captured while the lead photographer takes family portraits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many photos should you expect from an 8-hour wedding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Professional wedding photographers typically deliver between 50 and 75 edited, high-resolution images per hour of coverage. For an 8-hour wedding, expect a final delivered gallery of 400 to 600 professionally edited images."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a 'fake exit' in wedding photography?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A fake or mock exit is staged with immediate family, wedding party, and close friends 15 to 30 minutes before the photographer's coverage ends (typically around 9:00 PM or 9:30 PM). This captures stunning sparkler or confetti send-off photos without paying for 2 to 3 hours of extra late-night coverage."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout
+	title="Wedding Photography Coverage & Timeline Calculator — Package Sizer"
+	description="Calculate exact wedding photography coverage hours (6h, 8h, 10h, or 12h), second shooter necessity, photo gallery yield, budget, and 1-click printable shot lists."
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/" style="color: var(--text-secondary); text-decoration: none;">Home</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/budget" style="color: var(--text-secondary); text-decoration: none;">Budget & Planning</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Photography Calculator</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>📸</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Coverage Sizer & Day-Of Shot List Architect</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Wedding Photography Coverage Calculator
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Determine your ideal photography package (<strong>6, 8, 10, or 12 hours</strong>), evaluate second shooter necessity, estimate your delivered photo count, and export a customized family formal & VIP shot list.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Milestone Checklist -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>⏱️</span> 1. Select Timeline Milestones
+				</h2>
+
+				<!-- Headcount & General Parameters -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div>
+						<label for="input-guest-count" style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+							Guest Count:
+						</label>
+						<input type="number" id="input-guest-count" min="10" max="600" value="120" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+					</div>
+					<div>
+						<label for="select-venue-locations" style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.2rem;">
+							Venues / Driving:
+						</label>
+						<select id="select-venue-locations" style="width: 100%; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+							<option value="single" selected>1 All-Inclusive Venue (0m drive)</option>
+							<option value="two">2 Locations (Hotel -> Venue, +30m)</option>
+							<option value="three">3 Locations (Hotel -> Church -> Venue, +60m)</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Milestones Checkboxes -->
+				<div style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem;">
+					
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-prep-details" checked data-minutes="90" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Getting Ready & Details Flat-Lay (+1.5 hrs)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Robe portraits, champagne pop, dress, rings, invitation suite.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-first-look" checked data-minutes="45" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">First Look & Couple Romance Session (+45 min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Private couple reveal & stress-free relaxed portraits before ceremony.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-wedding-party" checked data-minutes="35" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Wedding Party Group Portraits (+35 min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Bridesmaids, groomsmen, flower girls, combined group shots.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-family-formals" checked data-minutes="40" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Family Formal Combinations (+40 min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">10–12 VIP groupings (parents, siblings, grandparents @ 3-4 min/group).</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #fef08a;" class="milestone-label">
+						<input type="checkbox" id="chk-ceremony" checked disabled data-minutes="60" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Ceremony & Guest Seating Buffer (+60 min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Processional, vows, ring exchange, first kiss, recessional walk.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-cocktail-details" checked data-minutes="45" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Cocktail Hour Candids & Untouched Reception Room (+45 min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Appetizer mingling, stationery, untouched tablescapes before guest seating.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-reception-events" checked data-minutes="90" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Grand Entrance, Speeches & Dinner (+1.5 hrs)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Toasts, champagne toasts, cake cutting, table visits.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-sunset-portraits" checked data-minutes="20" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Golden Hour / Sunset Mini-Session (+20 min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Dreamy golden lighting couple portraits during dinner or dessert.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-dancing" checked data-minutes="45" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">First Dances & Open Dance Floor (+45 min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Couple first dance, parent dances, energetic dance floor party.</span>
+						</div>
+					</label>
+
+					<label style="border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.65rem 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; background: #f8fafc;" class="milestone-label">
+						<input type="checkbox" id="chk-grand-exit" data-minutes="30" style="margin-top: 3px; accent-color: var(--fg-pencil);" />
+						<div>
+							<strong style="display: block; font-size: 0.9rem; color: var(--fg-pencil);">Late-Night Grand Exit / Sparklers (+30 min)</strong>
+							<span style="font-size: 0.78rem; color: #64748b;">Sparkler tunnel, fireworks, getaway car exit at end of night.</span>
+						</div>
+					</label>
+
+				</div>
+
+				<!-- Hourly Rate Sizer -->
+				<div style="border-top: 2px dashed var(--fg-pencil); padding-top: 1rem;">
+					<label for="input-hourly-rate" style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+						Estimated Photographer Hourly Rate ($/hr):
+					</label>
+					<div style="display: flex; gap: 0.5rem; align-items: center;">
+						<input type="number" id="input-hourly-rate" min="150" max="1500" step="50" value="400" style="width: 120px; padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						<span style="font-size: 0.8rem; color: var(--text-muted);">(National average ranges from $300 to $600/hr)</span>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Recommendation & Package Blueprint -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Exact Recommendation</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Coverage Package Blueprint
+						</h2>
+					</div>
+					<span id="badge-package-tier" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">8-Hour Package</span>
+				</div>
+
+				<!-- Big Number Highlights -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Optimal Package Size</span>
+						<strong id="stat-package-hours" style="font-size: 2rem; font-weight: 900; color: #1e40af; line-height: 1.1;">8 Hours</strong>
+						<span id="stat-exact-time-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(7 hrs 25 min total event time)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Estimated Photo Spend</span>
+						<strong id="stat-estimated-budget" style="font-size: 2rem; font-weight: 900; color: #15803d; line-height: 1.1;">$3,200</strong>
+						<span id="stat-budget-subtext" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">Based on $400/hr package</span>
+					</div>
+				</div>
+
+				<!-- Secondary Details & Second Shooter Matrix -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">📷 Second Photographer:</span>
+						<strong id="stat-second-shooter" style="color: #1e40af;">Highly Recommended</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🖼️ Delivered Photo Yield:</span>
+						<strong id="stat-gallery-yield" style="color: #15803d;">450 to 600 Edited Photos</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">🚗 Driving & Transition Time:</span>
+						<strong id="stat-travel-time" style="color: var(--fg-pencil);">0 min (Single Venue)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
+						<span style="color: #475569;">🛡️ Overtime Risk Buffer:</span>
+						<strong id="stat-overtime-buffer" style="color: #16a34a;">Safe (35 min buffer margin)</strong>
+					</div>
+				</div>
+
+				<!-- Second Shooter Decision Box -->
+				<div style="background: #fef08a; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.85rem;" id="box-second-shooter-reason">
+					<strong style="color: var(--fg-pencil); display: block; margin-bottom: 0.25rem;">📸 Second Shooter Analysis:</strong>
+					<span id="stat-shooter-reason" style="color: #334155;">
+						With <strong>120+ guests</strong>, a second shooter captures cocktail hour candids while your lead photographer finishes family formals, plus alternate ceremony angles (groom reaction + bride aisle walk).
+					</span>
+				</div>
+
+				<!-- Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Export PDF / Print
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Export Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Section: Sample Photo Timeline Schedule -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1rem;">
+				📅 Sample 8-Hour Wedding Photography Timeline (With First Look)
+			</h2>
+			
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; font-size: 0.88rem;">
+				<div style="border-left: 3px solid #3b82f6; padding-left: 0.85rem;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem;">1:30 PM — Details & Final Prep</strong>
+					<p style="color: #475569; margin: 0.2rem 0 0;">Photographer arrives for dress, shoes, jewelry, invitation flat-lay, and final hair/makeup touches.</p>
+				</div>
+				<div style="border-left: 3px solid #3b82f6; padding-left: 0.85rem;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem;">3:00 PM — First Look & Couple Portraits</strong>
+					<p style="color: #475569; margin: 0.2rem 0 0;">Emotional private first look followed by 30 minutes of romantic portraits around venue grounds.</p>
+				</div>
+				<div style="border-left: 3px solid #3b82f6; padding-left: 0.85rem;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem;">3:45 PM — Wedding Party Portraits</strong>
+					<p style="color: #475569; margin: 0.2rem 0 0;">Bridesmaids, groomsmen, and full wedding party group shots while hair & makeup is fresh.</p>
+				</div>
+				<div style="border-left: 3px solid #3b82f6; padding-left: 0.85rem;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem;">4:30 PM — Pre-Ceremony Buffer</strong>
+					<p style="color: #475569; margin: 0.2rem 0 0;">Couple tucked away as guests arrive. Photographer shoots empty ceremony & reception decor.</p>
+				</div>
+				<div style="border-left: 3px solid #3b82f6; padding-left: 0.85rem;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem;">5:00 PM — Ceremony</strong>
+					<p style="color: #475569; margin: 0.2rem 0 0;">Processional, vows, first kiss, and joyous recessional walk.</p>
+				</div>
+				<div style="border-left: 3px solid #3b82f6; padding-left: 0.85rem;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem;">5:35 PM — Family Formal Portraits</strong>
+					<p style="color: #475569; margin: 0.2rem 0 0;">10 to 12 pre-assigned family group photos at the altar or ceremony backdrop.</p>
+				</div>
+				<div style="border-left: 3px solid #3b82f6; padding-left: 0.85rem;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem;">6:30 PM — Grand Entrance & Dinner</strong>
+					<p style="color: #475569; margin: 0.2rem 0 0;">Entrances, welcome toasts, dinner service, and heartfelt speeches.</p>
+				</div>
+				<div style="border-left: 3px solid #3b82f6; padding-left: 0.85rem;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem;">7:30 PM — Sunset Mini-Session & First Dances</strong>
+					<p style="color: #475569; margin: 0.2rem 0 0;">15-minute golden hour portraits outside, followed by first dance and parent dances.</p>
+				</div>
+				<div style="border-left: 3px solid #3b82f6; padding-left: 0.85rem;">
+					<strong style="color: #1e40af; display: block; font-size: 0.95rem;">9:30 PM — Staged Sparkler Exit & Coverage Ends</strong>
+					<p style="color: #475569; margin: 0.2rem 0 0;">Mock sparkler send-off with VIPs before photography coverage concludes.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Frequently Asked Questions -->
+		<section class="hand-card" style="padding: 1.75rem; background: #fff; margin-bottom: 2.5rem;">
+			<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0 0 1.25rem;">
+				❓ Frequently Asked Questions: Wedding Photography Coverage
+			</h2>
+			
+			<div style="display: flex; flex-direction: column; gap: 1rem;">
+				<div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.85rem;">
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						Is 6 hours of wedding photography enough?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						6 hours is suitable for intimate weddings, elopements, or single-venue weddings without extensive getting-ready coverage or a formal sparkler exit. You will typically begin coverage right before the ceremony or first look and end after major dinner speeches and first dances.
+					</p>
+				</div>
+
+				<div style="border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.85rem;">
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						What happens if family formals run over time?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						Family formals are the single most common cause of wedding day delays. Always assign an outspoken bridesmaid or groomsman with a printed list to call names and gather family members. Budgeting 3 to 4 minutes per group ensures you finish in under 35 minutes.
+					</p>
+				</div>
+
+				<div>
+					<h3 style="font-size: 1rem; font-weight: 700; color: var(--fg-pencil); margin: 0 0 0.35rem;">
+						Do we need to feed the photographers during the reception?
+					</h3>
+					<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+						Yes. Almost all professional wedding photography contracts require a hot vendor meal for packages of 6 hours or longer. Always ensure the caterer feeds the photographers at the exact same time as the couple so they finish eating when speeches begin.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/wedding-photography-calculator" category="budget" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-photo-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Wedding Photography Day-Of Master Brief & Shot List</h1>
+				<p id="print-photo-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Coverage Package Brief | Generated by Manage.Wedding</p>
+			</div>
+			<div id="print-photo-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	// Input references
+	const inputGuestCount = document.getElementById('input-guest-count');
+	const selectVenueLocations = document.getElementById('select-venue-locations');
+	const inputHourlyRate = document.getElementById('input-hourly-rate');
+
+	// Checkboxes
+	const checkboxes = [
+		document.getElementById('chk-prep-details'),
+		document.getElementById('chk-first-look'),
+		document.getElementById('chk-wedding-party'),
+		document.getElementById('chk-family-formals'),
+		document.getElementById('chk-ceremony'),
+		document.getElementById('chk-cocktail-details'),
+		document.getElementById('chk-reception-events'),
+		document.getElementById('chk-sunset-portraits'),
+		document.getElementById('chk-dancing'),
+		document.getElementById('chk-grand-exit')
+	];
+
+	// Output references
+	const badgePackageTier = document.getElementById('badge-package-tier');
+	const statPackageHours = document.getElementById('stat-package-hours');
+	const statExactTimeSub = document.getElementById('stat-exact-time-sub');
+	const statEstimatedBudget = document.getElementById('stat-estimated-budget');
+	const statBudgetSubtext = document.getElementById('stat-budget-subtext');
+	const statSecondShooter = document.getElementById('stat-second-shooter');
+	const statGalleryYield = document.getElementById('stat-gallery-yield');
+	const statTravelTime = document.getElementById('stat-travel-time');
+	const statOvertimeBuffer = document.getElementById('stat-overtime-buffer');
+	const statShooterReason = document.getElementById('stat-shooter-reason');
+
+	function calculateCoverage() {
+		let totalMinutes = 0;
+		checkboxes.forEach(chk => {
+			if (chk.checked) {
+				totalMinutes += parseInt(chk.getAttribute('data-minutes'), 10) || 0;
+			}
+		});
+
+		// Travel time addition
+		const venueType = selectVenueLocations.value;
+		let travelMins = 0;
+		if (venueType === 'two') travelMins = 30;
+		else if (venueType === 'three') travelMins = 60;
+		totalMinutes += travelMins;
+
+		statTravelTime.textContent = travelMins > 0 ? `${travelMins} min travel` : '0 min (Single Venue)';
+
+		// Convert to hours
+		const calculatedHours = totalMinutes / 60;
+		const hrs = Math.floor(totalMinutes / 60);
+		const mins = totalMinutes % 60;
+		statExactTimeSub.textContent = `(${hrs} hrs ${mins} min total event time)`;
+
+		// Recommended package standard tiers: 6h, 8h, 10h, 12h
+		let packageHours = 8;
+		if (calculatedHours <= 6.25) packageHours = 6;
+		else if (calculatedHours <= 8.5) packageHours = 8;
+		else if (calculatedHours <= 10.5) packageHours = 10;
+		else packageHours = 12;
+
+		badgePackageTier.textContent = `${packageHours}-Hour Package`;
+		statPackageHours.textContent = `${packageHours} Hours`;
+
+		// Overtime buffer margin
+		const bufferDiffMins = (packageHours * 60) - totalMinutes;
+		if (bufferDiffMins >= 0) {
+			statOvertimeBuffer.textContent = `Safe (${bufferDiffMins} min buffer margin)`;
+			statOvertimeBuffer.style.color = '#16a34a';
+		} else {
+			statOvertimeBuffer.textContent = `Tight (${Math.abs(bufferDiffMins)} min over 8h — consider 10h)`;
+			statOvertimeBuffer.style.color = '#dc2626';
+		}
+
+		// Cost estimation
+		const rate = parseFloat(inputHourlyRate.value) || 400;
+		const totalSpend = packageHours * rate;
+		statEstimatedBudget.textContent = `$${totalSpend.toLocaleString('en-US')}`;
+		statBudgetSubtext.textContent = `Based on $${rate}/hr package`;
+
+		// Gallery Yield (50 - 75 photos per hour)
+		const minPhotos = packageHours * 50;
+		const maxPhotos = packageHours * 75;
+		statGalleryYield.textContent = `${minPhotos} to ${maxPhotos} Edited Photos`;
+
+		// Second Shooter Recommendation
+		const guests = parseInt(inputGuestCount.value, 10) || 120;
+		const hasMultipleLocations = venueType !== 'single';
+		const needsSecond = guests > 120 || hasMultipleLocations || packageHours >= 10;
+
+		if (needsSecond) {
+			statSecondShooter.textContent = 'Highly Recommended';
+			statSecondShooter.style.color = '#1e40af';
+			statShooterReason.innerHTML = `With <strong>${guests} guests</strong> and <strong>${packageHours}h coverage</strong>, a second shooter captures cocktail hour candids while your lead finishes formals, plus alternate ceremony angles (groom reaction + bride aisle walk).`;
+		} else {
+			statSecondShooter.textContent = 'Optional (1 Lead is Sufficient)';
+			statSecondShooter.style.color = '#15803d';
+			statShooterReason.innerHTML = `With an intimate count of <strong>${guests} guests</strong> at a single venue, a skilled single lead photographer can seamlessly capture all chosen milestones.`;
+		}
+
+		// Print Table Generation
+		document.getElementById('print-photo-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Milestone / Coverage Block</th>
+						<th style="padding:6pt; text-align:center;">Allocated Duration</th>
+						<th style="padding:6pt;">Key Must-Have Shots & Instructions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Package Size & Investment</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; font-size:12pt; color:#1e40af;">${packageHours} Hours</td>
+						<td style="padding:6pt;">Estimated Total: $${totalSpend.toLocaleString('en-US')} ($${rate}/hr) | Delivered Gallery: ${minPhotos}–${maxPhotos} photos</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Second Photographer</td>
+						<td style="padding:6pt; text-align:center;">${statSecondShooter.textContent}</td>
+						<td style="padding:6pt;">${needsSecond ? 'Required for groom prep & cocktail hour candids' : 'Single lead photographer sufficient'}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Venue Transition & Driving</td>
+						<td style="padding:6pt; text-align:center;">${travelMins} min</td>
+						<td style="padding:6pt;">${venueType === 'single' ? 'Single all-inclusive venue (0m drive)' : 'Includes buffer for equipment pack-down & venue drive'}</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">Total Active Milestone Time</td>
+						<td style="padding:6pt; text-align:center; font-weight:bold; color:#15803d;">${hrs}h ${mins}m</td>
+						<td style="padding:6pt;">Leaves ${bufferDiffMins >= 0 ? `${bufferDiffMins} minutes of safety buffer` : '0 min buffer (consider adding 1-2 hours)'}</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	// Listeners
+	inputGuestCount.addEventListener('input', calculateCoverage);
+	selectVenueLocations.addEventListener('change', calculateCoverage);
+	inputHourlyRate.addEventListener('input', calculateCoverage);
+
+	checkboxes.forEach(chk => {
+		chk.addEventListener('change', calculateCoverage);
+	});
+
+	// Direct In-Page Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		calculateCoverage();
+		window.print();
+	});
+
+	// Export Word Document
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateCoverage();
+		const pkg = statPackageHours.textContent;
+		const spend = statEstimatedBudget.textContent;
+		const shooter = statSecondShooter.textContent;
+		const yieldPhotos = statGalleryYield.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Wedding Photography Brief</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Wedding Photography Coverage & Timeline Brief</h1>
+				<p><strong>Optimal Package:</strong> ${pkg} | <strong>Estimated Spend:</strong> ${spend} | <strong>Second Shooter:</strong> ${shooter}</p>
+				<hr/>
+				<h2>Coverage & Deliverable Summary</h2>
+				<table>
+					<tr style="background:#f1f5f9;">
+						<th>Parameter</th><th>Details</th>
+					</tr>
+					<tr><td><strong>Package Hours:</strong></td><td><strong>${pkg}</strong></td></tr>
+					<tr><td><strong>Delivered Gallery:</strong></td><td>${yieldPhotos}</td></tr>
+					<tr><td><strong>Second Shooter:</strong></td><td>${shooter}</td></tr>
+					<tr><td><strong>Estimated Cost:</strong></td><td>${spend}</td></tr>
+				</table>
+				<br/>
+				<h2>Day-Of Photography Rules</h2>
+				<p>• Assign family formal list coordinator (bridesmaid/groomsman).</p>
+				<p>• Schedule hot vendor meal concurrently with couple's dinner service.</p>
+				<hr/>
+				<p><em>Generated by Manage.Wedding Photography Calculator</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Wedding-Photography-Brief-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateCoverage();
+</script>

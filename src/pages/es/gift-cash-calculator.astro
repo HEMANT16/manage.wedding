@@ -1,0 +1,775 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/gift-cash-calculator/#webapp",
+      "name": "Calculadora de Regalo en Efectivo para Bodas y Previsión de Sobres",
+      "url": "https://manage.wedding/es/gift-cash-calculator",
+      "inLanguage": "es",
+      "description": "Calculadora gratuita de dinero para bodas: calcula cuánto dar en un sobre o transferencia según protocolo y cercanía, o estima la recaudación total de regalos para los novios.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Calcular Cuánto Dinero Dar en una Boda",
+      "description": "Guía paso a paso sobre el protocolo y la cantidad adecuada para regalar a los novios según parentesco y gastos de desplazamiento.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Evalúa el Grado de Cercanía",
+          "text": "La referencia habitual en España es de 100€–150€ para compañeros y conocidos, 150€–250€ para amigos cercanos y primos, y 250€–500€+ para familiares directos y testigos."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Multiplica si Acudes con Pareja (Acompañante)",
+          "text": "Si vas acompañado, multiplica la aportación habitual por 1,8x para cubrir el importe de los dos comensales."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Descuenta Gastos de Viaje o Despedida",
+          "text": "Si has gastado cientos de euros en vuelos de larga distancia, noches de hotel o vestimenta de dama de honor/testigo, ajusta el regalo un 20%–25%."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Acompaña el Dinero con una Dedicatoria Emotiva",
+          "text": "Entrega el sobre o haz el Bizum/transferencia junto con una tarjeta de felicitación manuscrita y cariñosa."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuánto dinero se suele dar de regalo en una boda en España?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El importe estándar en España ronda los 150€ por persona para amigos y familiares habituales (300€ por pareja). Para familiares muy cercanos (hermanos, padres, padrinos) suele subir a 250€–500€ por persona, mientras que para conocidos o compañeros de trabajo se sitúa entre 100€ y 150€."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Sigue vigente la regla de 'cubrir el cubierto'?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aunque tradicionalmente se decía que el regalo debía cubrir el precio del menú (unos 120€–180€ en España), el protocolo actual recuerda que eres un invitado y no un cliente de restaurante. El regalo debe basarse en el cariño hacia la pareja y en tus posibilidades económicas reales."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Se debe dar menos si la boda requiere desplazamiento y hotel?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Si tienes que pagar billetes de avión, tren o noches de hotel para acudir a otra ciudad o país, tu presencia ya supone un gran esfuerzo económico. En estos casos, hacer un regalo algo más modesto (100€ por persona o 150€–200€ por pareja) es completamente correcto."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto recaudan de media los novios en regalos de boda?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En una boda española media de 130 invitados, los novios suelen recibir entre 16.000€ y 22.000€ en total (con una media de unos 130€–160€ por comensal asistente)."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Regalo de Boda en Efectivo (¿Cuánto Dar en el Sobre?) | Manage.Wedding"
+	description="Calcula cuánto dinero dar en una boda según el protocolo y grado de cercanía, o estima la recaudación total de regalos para los novios. Exporta dedicatorias a Word y PDF."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Regalo de Boda en Efectivo" category="budget-finance" />
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Calculadora de <span class="accent-italic">Regalo en Efectivo</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Calcula el importe exacto para el sobre o transferencia según tu cercanía con la pareja, acompañante y gastos de viaje—o <strong>estima la recaudación total</strong> si sois los novios.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Cómo Usar la Calculadora en 3 Pasos
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Elige el Modo de Cálculo
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Selecciona <strong>"Soy Invitado"</strong> (cuánto dar) o <strong>"Somos los Novios"</strong> (previsión de recaudación total de la boda).
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Ajusta Parentesco y Desplazamientos
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Indica si vas solo o en pareja, si tienes gastos de hotel/avión o si eres testigo/dama de honor.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Descarga Dedicatorias y Desglose
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Haz clic en <strong>"📝 Exportar Dedicatoria"</strong> o <strong>"🖨️ Imprimir PDF"</strong> para obtener ideas de frases para la tarjeta.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Config Form + Live Results & Breakdown -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="gift-calc-grid">
+			
+			<!-- Left Column: Input Form -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<!-- Mode Switcher Tabs -->
+				<div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<button type="button" id="tab-guest-mode" class="mode-tab-btn active-tab" style="flex: 1; padding: 0.55rem; font-family: var(--font-heading); font-size: 0.95rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; cursor: pointer;">
+						🎁 Soy Invitado (Mi Regalo)
+					</button>
+					<button type="button" id="tab-couple-mode" class="mode-tab-btn" style="flex: 1; padding: 0.55rem; font-family: var(--font-heading); font-size: 0.95rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; cursor: pointer; background: var(--bg-paper);">
+						💒 Somos los Novios (Recaudación)
+					</button>
+				</div>
+
+				<!-- GUEST MODE FORM -->
+				<div id="section-guest-mode">
+					<form id="guest-gift-form" style="display: flex; flex-direction: column; gap: 1rem;">
+						
+						<!-- Closeness to Couple -->
+						<div>
+							<label for="select-relationship" class="font-heading" style="display: block; font-size: 0.95rem; color: var(--accent-red); margin-bottom: 0.25rem;">
+								1. Relación y Cercanía con los Novios *
+							</label>
+							<select id="select-relationship" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+								<option value="225">👑 Familia Directa / Hermano(a) / Mejor Amigo(a) / Testigo (200 € – 350 €+)</option>
+								<option value="150" selected>🌸 Amigo Cercano / Primo / Tío (150 € – 200 €)</option>
+								<option value="120">🤝 Amigo Ocasional / Familia Lejana / Vecino (100 € – 140 €)</option>
+								<option value="90">💼 Compañero de Trabajo / Conocido (80 € – 110 €)</option>
+							</select>
+						</div>
+
+						<!-- Attendance & Plus-One -->
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+							<div>
+								<label for="select-attendance" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+									¿Quién Asiste?
+								</label>
+								<select id="select-attendance" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.88rem;">
+									<option value="1.0">Solo (1 Persona)</option>
+									<option value="1.8" selected>En Pareja (2 Personas)</option>
+									<option value="2.3">Familia (Pareja + Hijos)</option>
+								</select>
+							</div>
+
+							<div>
+								<label for="select-venue-tier" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+									Tipo de Boda
+								</label>
+								<select id="select-venue-tier" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.88rem;">
+									<option value="1.0">Finca / Salón de Bodas Estándar</option>
+									<option value="1.2">Boda de Gran Gala / Hotel 5 Estrellas (+20%)</option>
+									<option value="0.85">Boda Informal / Jardín / Cóctel Ligero (-15%)</option>
+								</select>
+							</div>
+						</div>
+
+						<!-- Offsets: Travel & Wedding Party -->
+						<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem;">
+							<span class="font-heading" style="font-size: 0.88rem; color: var(--fg-pencil); display: block;">
+								✈️ Gastos de Desplazamiento y Compromiso:
+							</span>
+							
+							<label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+								<input type="checkbox" id="chk-destination-travel" style="accent-color: var(--fg-pencil);">
+								<span>He pagado viaje en avión / tren y hotel (Ajuste por desplazamiento: -25%)</span>
+							</label>
+
+							<label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+								<input type="checkbox" id="chk-bridal-party-role" style="accent-color: var(--fg-pencil);">
+								<span>Soy Testigo / Dama de Honor (Gastos en traje y despedida: -20%)</span>
+							</label>
+						</div>
+
+					</form>
+				</div>
+
+				<!-- COUPLE MODE FORM (HIDDEN INITIALLY) -->
+				<div id="section-couple-mode" style="display: none;">
+					<form id="couple-gift-form" style="display: flex; flex-direction: column; gap: 1rem;">
+						
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-guest-count" class="font-heading" style="font-size: 0.95rem; color: var(--accent-red);">
+									Número de Invitados Confirmados
+								</label>
+								<span id="display-guest-count" style="font-size: 1.1rem; font-weight: bold; color: var(--accent-red);">130 Invitados</span>
+							</div>
+							<input type="range" id="input-guest-count" min="20" max="350" value="130" step="5" style="width: 100%; accent-color: var(--accent-red);">
+						</div>
+
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+							<div>
+								<label for="select-couple-venue-tier" class="font-heading" style="display: block; font-size: 0.88rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+									Tipo de Celebración
+								</label>
+								<select id="select-couple-venue-tier" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+									<option value="1.0" selected>Banquete Tradicional (140 €/invitado)</option>
+									<option value="1.25">Gran Lujo / Alta Cocina (175 €/invitado)</option>
+									<option value="0.85">Boda Informal / Tipo Cóctel (110 €/invitado)</option>
+								</select>
+							</div>
+
+							<div>
+								<label for="select-destination-mode" class="font-heading" style="display: block; font-size: 0.88rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+									Ubicación del Evento
+								</label>
+								<select id="select-destination-mode" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-size: 0.85rem;">
+									<option value="1.0" selected>Boda Local (Misma Ciudad/Provincia)</option>
+									<option value="0.80">Boda de Destino (Invitados Viajan)</option>
+								</select>
+							</div>
+						</div>
+
+						<p class="font-body" style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin: 0; background: var(--bg-paper); padding: 0.6rem; border-radius: 4px;">
+							*Estimación basada en la distribución real: familia directa (30%), amigos íntimos (40%), compromisos y compañeros (30%).
+						</p>
+
+					</form>
+				</div>
+
+				<!-- Currency Selector -->
+				<div style="display: flex; align-items: center; justify-content: flex-end; gap: 0.3rem; margin-top: 1rem; border-top: 1px dashed #ccc; padding-top: 0.75rem;">
+					<span style="font-size: 0.85rem; font-weight: bold;">Moneda:</span>
+					<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+						<option value="€" selected>€ (EUR)</option>
+						<option value="$">$ (USD/CAD/AUD)</option>
+						<option value="£">£ (GBP)</option>
+						<option value="₹">₹ (INR)</option>
+					</select>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Live Results & Card Message Recommendations -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Gift Result Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 id="res-card-title" class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								✉️ Regalo Recomendado
+							</h3>
+							<span id="res-card-subtitle" class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Protocolo habitual y cantidad sugerida para el sobre
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Exportar Dedicatoria (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Imprimir PDF
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Gift Range Highlight -->
+					<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span id="res-range-label" class="font-body" style="font-size: 0.9rem; color: var(--accent-red); display: block; font-weight: bold;">Importe Sugerido</span>
+						<strong id="res-primary-amount" class="font-heading" style="font-size: 2.6rem; color: var(--accent-red); display: block; line-height: 1.2;">270 €</strong>
+						<span id="res-range-subtext" style="font-size: 0.85rem; color: var(--accent-red);">Rango Habitual: 250 € - 300 €</span>
+					</div>
+
+					<!-- Detailed Math Breakdown List -->
+					<div style="margin-bottom: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil); margin-bottom: 0.4rem; text-align: center;">
+							🧾 Factores del Cálculo
+						</h4>
+						<ul id="res-factors-list" class="font-body" style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.35rem; color: var(--fg-pencil);">
+							<li style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:0.2rem;">
+								<span>Base por Parentesco:</span> <strong id="fact-base">150 €</strong>
+							</li>
+							<li style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:0.2rem;">
+								<span>Asistencia (En Pareja):</span> <strong id="fact-attendance">x 1,8</strong>
+							</li>
+							<li style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:0.2rem;">
+								<span>Ajuste por Tipo de Boda y Viaje:</span> <strong id="fact-adjustments">1,0x (Estándar)</strong>
+							</li>
+						</ul>
+					</div>
+
+					<!-- Visual Proportion Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span>Modesto (75 €)</span>
+							<span>Media (150 €)</span>
+							<span style="color: var(--accent-red);">Generoso (300 €+)</span>
+						</div>
+						<div style="width: 100%; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="gift-gauge-bar" style="width: 60%; height: 100%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Ready-to-Write Card Wishes Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; color: var(--fg-pencil); display: block; margin-bottom: 0.3rem; text-align: center;">
+						💌 Frase Sugerida para la Tarjeta:
+					</strong>
+					<p id="card-wish-text" class="font-body" style="font-size: 0.88rem; line-height: 1.45; margin: 0; color: var(--fg-pencil); font-style: italic; text-align: center;">
+						"¡Que este regalo os ayude a disfrutar de una luna de miel inolvidable! Os deseamos una vida llena de amor, risas y momentos maravillosos."
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 15px; text-align: center;">
+				<h1 style="font-size: 22px; margin: 0 0 4px 0;">Manage.Wedding — Guía de Regalos de Boda y Dedicatorias</h1>
+				<p style="margin: 0; font-size: 12px; color: #555;">Exportado el: <span id="print-date"></span> | Regalo Sugerido: <span id="print-amount"></span></p>
+			</div>
+			<div id="print-content-body"></div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 2.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Resumen Rápido</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Cantidades Medias para el Sobre en España
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 750px; margin: 0 auto; font-weight: 500;">
+					¿Poco tiempo? Aquí tienes la guía de importes según tu relación con los novios y el tipo de asistencia.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📐 Referencia General por Persona:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Familia Directa / Testigos: 250 €–400 €+ • Amigos Cercanos: 150 €–200 € • Compañeros / Conocidos: 100 €–130 € • Asistencia en Pareja: multiplicar por 1,8x
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 640px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Parentesco / Relación</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">Invitado Individual</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">En Pareja (2 Personas)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">Boda con Desplazamiento</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Consejo de Protocolo</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Familia Directa (Hermanos, Padres, Testigos)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">200 € – 350 €+</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">400 € – 700 €+</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">180 € – 250 €+</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-size: 0.85rem;">Regalo muy generoso o detalle especial</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Amigos Íntimos / Primos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">150 € – 200 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">280 € – 350 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">120 € – 180 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-size: 0.85rem;">Sobre con dinero y tarjeta muy emotiva</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a;">Familiares Lejanos / Vecinos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">120 € – 150 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">220 € – 280 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">100 € – 140 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-size: 0.85rem;">Transferencia o regalo de lista de bodas</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed;">Compañeros de Trabajo / Conocidos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">90 € – 130 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">180 € – 240 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">80 € – 110 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-size: 0.85rem;">Felicitación cordial y sobre conjunto</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Protocolo de Regalos Nupciales</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Guía Completa de Dinero para Regalar en una Boda
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Bizum, transferencias bancarias, sobres físicos y cómo escribir una tarjeta perfecta.
+				</p>
+			</div>
+
+			<!-- Section 1: Detailed Step-by-Step Guide on How to Use This Tool Flawlessly -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Métodos de Entrega del Regalo
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Actualmente existen varias formas cómodas de hacer llegar el regalo a los novios:
+				</p>
+
+				<div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.4rem;">
+							Transferencia Bancaria o Número de Cuenta (El Método Preferido)
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							La mayoría de parejas incluyen su número de cuenta (IBAN) en la invitación. Hacer una transferencia 1 o 2 semanas antes del enlace permite a los novios contar con liquidez para los pagos finales y evita el peligro de extraviar sobres en el banquete.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.4rem;">
+							Sobre Físico con Billetes en la Celebración
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Si prefieres entregar efectivo, hazlo durante el banquete o el baile junto a una tarjeta con vuestros nombres bien claros para que los novios puedan identificar el regalo al hacer el recuento.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Preguntas Frecuentes sobre el Dinero en las Bodas
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						¿Qué concepto poner en la transferencia de boda?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Lo ideal es indicar: <em>"Regalo boda [Tus Nombres y Apellidos]"</em>. Evita conceptos confusos o bromas que puedan dificultar a los novios saber quién ha realizado el ingreso.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						¿Hay que regalar si no puedes asistir a la boda?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Si declinas la invitación pero se trata de un familiar o buen amigo, es costumbre enviar un detalle simbólico o una aportación menor (por ejemplo, 50€ a 100€) junto a una tarjeta expresando cuánto sientes no poder acompañarles.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/es/gift-cash-calculator" category="budget" />
+
+	</main>
+</Layout>
+
+<style>
+	.mode-tab-btn.active-tab {
+		background: var(--fg-pencil) !important;
+		color: #fff !important;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '€';
+	let currentMode = 'guest';
+
+	const tabGuest = document.getElementById('tab-guest-mode');
+	const tabCouple = document.getElementById('tab-couple-mode');
+	const secGuest = document.getElementById('section-guest-mode');
+	const secCouple = document.getElementById('section-couple-mode');
+
+	const selectRelationship = document.getElementById('select-relationship');
+	const selectAttendance = document.getElementById('select-attendance');
+	const selectVenueTier = document.getElementById('select-venue-tier');
+	const chkDestination = document.getElementById('chk-destination-travel');
+	const chkBridalParty = document.getElementById('chk-bridal-party-role');
+
+	const inputGuestCount = document.getElementById('input-guest-count');
+	const displayGuestCount = document.getElementById('display-guest-count');
+	const selectCoupleVenue = document.getElementById('select-couple-venue-tier');
+	const selectCoupleDest = document.getElementById('select-destination-mode');
+
+	const currencySelect = document.getElementById('currency-select');
+
+	const resCardTitle = document.getElementById('res-card-title');
+	const resCardSubtitle = document.getElementById('res-card-subtitle');
+	const resRangeLabel = document.getElementById('res-range-label');
+	const resPrimaryAmount = document.getElementById('res-primary-amount');
+	const resRangeSubtext = document.getElementById('res-range-subtext');
+	const factBase = document.getElementById('fact-base');
+	const factAttendance = document.getElementById('fact-attendance');
+	const factAdjustments = document.getElementById('fact-adjustments');
+	const giftGaugeBar = document.getElementById('gift-gauge-bar');
+	const cardWishText = document.getElementById('card-wish-text');
+
+	function formatMoney(amt) {
+		return `${Math.round(amt).toLocaleString('es-ES')} ${currencySymbol}`;
+	}
+
+	function calculateGift() {
+		currencySymbol = currencySelect.value;
+
+		if (currentMode === 'guest') {
+			resCardTitle.textContent = "✉️ Regalo Recomendado";
+			resCardSubtitle.textContent = "Protocolo habitual y cantidad sugerida para el sobre";
+			resRangeLabel.textContent = "Importe Sugerido";
+
+			const base = parseFloat(selectRelationship.value) || 150;
+			const attMultiplier = parseFloat(selectAttendance.value) || 1.8;
+			const venueMultiplier = parseFloat(selectVenueTier.value) || 1.0;
+
+			let offsetMultiplier = 1.0;
+			if (chkDestination.checked) offsetMultiplier *= 0.75;
+			if (chkBridalParty.checked) offsetMultiplier *= 0.80;
+
+			const targetAmount = base * attMultiplier * venueMultiplier * offsetMultiplier;
+			const roundedTarget = Math.round(targetAmount / 10) * 10;
+			const low = Math.max(50, Math.round((roundedTarget * 0.9) / 10) * 10);
+			const high = Math.round((roundedTarget * 1.15) / 10) * 10;
+
+			resPrimaryAmount.textContent = formatMoney(roundedTarget);
+			resRangeSubtext.textContent = `Rango Habitual: ${formatMoney(low)} - ${formatMoney(high)}`;
+
+			factBase.textContent = formatMoney(base);
+			factAttendance.textContent = `x ${attMultiplier.toString().replace('.', ',')}`;
+			
+			let adjText = `${venueMultiplier}x`;
+			if (offsetMultiplier < 1.0) adjText += ` (ajuste ${Math.round((1 - offsetMultiplier) * 100)}%)`;
+			factAdjustments.textContent = adjText;
+
+			const gaugePct = Math.min(100, Math.max(15, Math.round((roundedTarget / 450) * 100)));
+			giftGaugeBar.style.width = `${gaugePct}%`;
+
+			if (base >= 200) {
+				cardWishText.textContent = `"¡Para una pareja verdaderamente única! Os deseamos de corazón una vida repleta de felicidad, risas y complicidad. ¡Que disfrutéis de una luna de miel inolvidable!"`;
+			} else if (chkDestination.checked) {
+				cardWishText.textContent = `"¡Muchísimas gracias por hacernos partícipes de esta celebración tan maravillosa! Brindamos por vosotros y por un futuro lleno de grandes aventuras."`;
+			} else {
+				cardWishText.textContent = `"¡Que este regalo os ayude a disfrutar de una luna de miel mágica! Os deseamos lo mejor en esta nueva etapa juntos."`;
+			}
+
+		} else {
+			resCardTitle.textContent = "💒 Previsión de Recaudación Total";
+			resCardSubtitle.textContent = "Estimación global de regalos de todos los asistentes";
+			resRangeLabel.textContent = "Total Estimado en Regalos";
+
+			const guests = parseInt(inputGuestCount.value) || 130;
+			displayGuestCount.textContent = `${guests} Invitados`;
+
+			const vTier = parseFloat(selectCoupleVenue.value) || 1.0;
+			const dMode = parseFloat(selectCoupleDest.value) || 1.0;
+
+			const avgPerGuest = 145 * vTier * dMode;
+			const totalForecast = guests * avgPerGuest;
+			const low = totalForecast * 0.85;
+			const high = totalForecast * 1.15;
+
+			resPrimaryAmount.textContent = formatMoney(totalForecast);
+			resRangeSubtext.textContent = `Rango Estimado: ${formatMoney(low)} - ${formatMoney(high)}`;
+
+			factBase.textContent = `${formatMoney(avgPerGuest)} / invitado`;
+			factAttendance.textContent = `${guests} Confirmados`;
+			factAdjustments.textContent = `${selectCoupleVenue.options[selectCoupleVenue.selectedIndex].text.split('(')[0]}`;
+
+			const gaugePct = Math.min(100, Math.max(20, Math.round((totalForecast / 35000) * 100)));
+			giftGaugeBar.style.width = `${gaugePct}%`;
+
+			cardWishText.textContent = `"Consejo: Destinad un 60% de los regalos a la luna de miel y reservad el 40% como fondo de ahorro para vuestro nuevo hogar."`;
+		}
+	}
+
+	tabGuest.addEventListener('click', () => {
+		currentMode = 'guest';
+		tabGuest.classList.add('active-tab');
+		tabGuest.style.background = 'var(--fg-pencil)';
+		tabGuest.style.color = '#fff';
+		tabCouple.classList.remove('active-tab');
+		tabCouple.style.background = 'var(--bg-paper)';
+		tabCouple.style.color = 'var(--fg-pencil)';
+
+		secGuest.style.display = 'block';
+		secCouple.style.display = 'none';
+		calculateGift();
+	});
+
+	tabCouple.addEventListener('click', () => {
+		currentMode = 'couple';
+		tabCouple.classList.add('active-tab');
+		tabCouple.style.background = 'var(--fg-pencil)';
+		tabCouple.style.color = '#fff';
+		tabGuest.classList.remove('active-tab');
+		tabGuest.style.background = 'var(--bg-paper)';
+		tabGuest.style.color = 'var(--fg-pencil)';
+
+		secCouple.style.display = 'block';
+		secGuest.style.display = 'none';
+		calculateGift();
+	});
+
+	[selectRelationship, selectAttendance, selectVenueTier, chkDestination, chkBridalParty, inputGuestCount, selectCoupleVenue, selectCoupleDest, currencySelect].forEach(el => {
+		el.addEventListener('input', calculateGift);
+		el.addEventListener('change', calculateGift);
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Regalo de Boda y Dedicatoria</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					.card-box { border: 1px solid #ccc; background: #fafafa; padding: 15px; margin-bottom: 15px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Guía de Regalo de Boda y Dedicatorias</h1>
+				<p>Generado el ${new Date().toLocaleDateString('es-ES')} | Regalo Sugerido: <strong>${resPrimaryAmount.textContent}</strong> (${resRangeSubtext.textContent})</p>
+				
+				<h3>Factores del Cálculo:</h3>
+				<p>• Base de cálculo: ${factBase.textContent}</p>
+				<p>• Asistencia: ${factAttendance.textContent}</p>
+				<p>• Ajustes: ${factAdjustments.textContent}</p>
+
+				<h3 style="margin-top:20px;">Frases Sugeridas para la Tarjeta:</h3>
+				<div class="card-box">
+					<p style="font-style:italic; font-size:15px; margin:0;">${cardWishText.textContent}</p>
+				</div>
+
+				<div class="card-box">
+					<p style="font-style:italic; font-size:15px; margin:0;">"Que vuestra vida juntos esté llena de amor eterno, risas y momentos inolvidables. ¡Felicidades de corazón!"</p>
+				</div>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Regalo_Boda_Dedicatoria_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('es-ES');
+		document.getElementById('print-amount').textContent = resPrimaryAmount.textContent;
+
+		const body = document.getElementById('print-content-body');
+		body.innerHTML = `
+			<div style="border:1px solid #ccc; padding:15px; margin-bottom:15px;">
+				<h3 style="margin:0 0 5px 0;">${resCardTitle.textContent}</h3>
+				<p style="font-size:24px; font-weight:bold; color:#b91c1c; margin:5px 0;">${resPrimaryAmount.textContent}</p>
+				<p style="margin:0; font-size:12px;">${resRangeSubtext.textContent}</p>
+			</div>
+			<div style="border:1px solid #ccc; padding:15px;">
+				<h4 style="margin:0 0 8px 0;">Dedicatoria Sugerida:</h4>
+				<p style="font-style:italic; font-size:13px; margin:0;">${cardWishText.textContent}</p>
+			</div>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Modo,Importe Sugerido,Rango,Base,Asistencia,Ajustes\n";
+		csv += `"${currentMode}","${resPrimaryAmount.textContent}","${resRangeSubtext.textContent}","${factBase.textContent}","${factAttendance.textContent}","${factAdjustments.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Regalo_Boda_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateGift();
+</script>

@@ -1,0 +1,293 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/alcohol-dilution-calculator/#webapp",
+      "name": "Calculadora de Dilución de Alcohol y Graduación (ABV)",
+      "url": "https://manage.wedding/es/alcohol-dilution-calculator",
+      "inLanguage": "es",
+      "description": "Calcula la cantidad exacta de agua o mezclador necesaria para rebajar la graduación alcohólica de licores o preparar cócteles en lotes para barras libres de boda.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Diluir Alcohol para Alcanzar una Graduación Deseada (ABV)",
+      "description": "Fórmula y método paso a paso para rebajar la graduación de destilados y preparar cócteles en grandes dispensadores.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Introduce el Volumen Inicial (ml)",
+          "text": "Indica el volumen de partida del alcohol base en mililitros (ej. 750 ml o 1.000 ml)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Indica el Grado Alcohólico Inicial (% Vol / ABV)",
+          "text": "Escribe el porcentaje de alcohol inicial (ej. 96% para alcohol de uso alimentario, o 40% para ginebra/vodka)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Establece la Graduación Final Deseada (%)",
+          "text": "Especifica el grado alcohólico objetivo (ej. 20% para cócteles premezclados o 15% para ponches ligeros)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Comprueba el Agua a Añadir y el Volumen Final",
+          "text": "La herramienta aplica la fórmula C1 × V1 = C2 × V2 para calcular los mililitros exactos de agua o mezclador a incorporar."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cómo funciona la fórmula de dilución de alcohol?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Se utiliza la ecuación de conservación de masa C1 × V1 = C2 × V2. El agua a añadir es igual a [(Graduación Inicial × Volumen Inicial) ÷ Graduación Final] - Volumen Inicial."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué es importante para preparar cócteles de boda en lote?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Al preparar grandes dispensadores de cócteles (como Mojitos, Margaritas o Sangría), calcular la dilución exacta garantiza que todas las copas tengan el mismo sabor y una graduación agradable (entre 12% y 18% ABV) sin emborrachar en exceso a los invitados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué tipo de agua se debe utilizar para diluir licores?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Se recomienda usar agua destilada o de mineralización muy débil. El agua del grifo contiene cal y cloro que pueden enturbiar la mezcla y alterar el perfil aromático de la bebida."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Dilución de Alcohol y Grados ABV | Manage.Wedding"
+	description="Calcula la cantidad exacta de agua o zumo para rebajar alcohol y preparar cócteles en lote para tu boda o evento. Fórmula exacta C1V1=C2V2."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<Breadcrumb title="Calculadora de Dilución de Alcohol" category="food-dining" />
+		<header class="fade-in category-header" style="text-align: center;">
+			<h1 class="font-heading" style="font-size: 3.5rem; margin-bottom: 0.5rem; font-weight: 500;">Calculadora de <span class="accent-italic">Dilución de Alcohol</span></h1>
+			<p class="font-body" style="color: var(--secondary-ink); max-width: 600px; margin: 0 auto;">¿Necesitas ajustar la graduación de cócteles en lote o licores caseros? Calcula cuánta agua o mezclador añadir para conseguir el porcentaje alcohólico deseado.</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 900px; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 0 auto;">
+			<div class="hand-card">
+				<form id="calc-form">
+					<div class="form-group">
+						<label class="form-label" for="initialVolume">Volumen Inicial de Alcohol (ml)</label>
+						<input type="number" id="initialVolume" class="form-input" value="1000" min="1" step="0.1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="initialABV">Graduación Alcohólica Inicial (% Vol)</label>
+						<input type="number" id="initialABV" class="form-input" value="40" min="1" max="100" step="0.1" required />
+					</div>
+
+					<div class="form-group">
+						<label class="form-label" for="targetABV">Graduación Objetivo (% Vol)</label>
+						<input type="number" id="targetABV" class="form-input" value="15" min="1" max="100" step="0.1" required />
+					</div>
+
+					<button type="submit" id="calc-btn" class="hand-btn" style="width: 100%;">Calcular Dilución</button>
+				</form>
+			</div>
+
+			<div class="hand-card result-box" id="result-container">
+				<h3 class="font-heading" style="margin-bottom: 1.5rem;">Resultado de la Dilución</h3>
+				
+				<div class="result-item" style="margin-bottom: 1rem;">
+					<span class="item-label">AGUA / MEZCLADOR</span>
+					<span class="item-desc">Cantidad a añadir (ml)</span>
+					<span class="item-value" id="res-water" style="color: var(--accent-blue); font-size: 2.5rem; display: block; margin-top: 0.5rem;">1666.67</span>
+				</div>
+
+				<div class="result-item" style="margin-bottom: 2rem;">
+					<span class="item-label">VOLUMEN FINAL</span>
+					<span class="item-desc">Volumen total de la mezcla (ml)</span>
+					<span class="item-value" id="res-final" style="font-size: 1.5rem; display: block; margin-top: 0.5rem;">2666.67</span>
+				</div>
+
+				<div class="chart-container" style="border: 2px solid var(--fg-pencil); padding: 1rem; border-radius: 8px;">
+					<p class="font-body" style="font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: bold;">Proporción de la Mezcla</p>
+					<div style="display: flex; height: 30px; border: 1px solid var(--fg-pencil); border-radius: 4px; overflow: hidden;">
+						<div id="chart-alcohol" style="width: 37.5%; background-color: var(--fg-pencil); color: var(--bg-paper); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; transition: width 0.3s ease;">Alcohol Base</div>
+						<div id="chart-water" style="width: 62.5%; background-color: transparent; background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, var(--fg-pencil) 5px, var(--fg-pencil) 6px); color: var(--fg-pencil); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; transition: width 0.3s ease;">Agua / Zumo</div>
+					</div>
+					<div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem; color: var(--secondary-ink);">
+						<span>Base: <span id="lbl-alcohol">37.5%</span></span>
+						<span>Agua/Mezclador: <span id="lbl-water">62.5%</span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 800px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape"></div>
+			
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Resumen Rápido y Fórmula
+				</h3>
+				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
+					Fórmula C1 × V1 = C2 × V2
+				</span>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
+					📐 Fórmula para Añadir Agua o Mezclador:
+				</div>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
+					<strong>Agua a Añadir (ml) = [(Grado Inicial × Volumen Inicial) ÷ Grado Objetivo] - Volumen Inicial</strong>
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.90rem; min-width: 560px;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Bebida Base</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Volumen Base</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Graduación Deseada</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue); text-align: center;">Líquido a Añadir</th>
+							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--fg-pencil); text-align: right;">Volumen Final</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ Ginebra / Vodka (40% Vol)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">15% (Cóctel en Lote)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+1.250,0 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">2.000,0 ml</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Ron Blanco (37,5% Vol)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">1.000 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">12% (Mojito Lote)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+2.125,0 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">3.125,0 ml</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Tequila (38% Vol)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">750 ml</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">16% (Margarita Jarra)</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">+1.031,3 ml</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">1.781,3 ml</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p class="font-body" style="font-size: 0.85rem; color: var(--fg-pencil); margin: 0; line-height: 1.4;">
+				💡 <strong>Consejo de Coctelería:</strong> Al diluir licores, añade siempre el alcohol sobre el agua/zumo poco a poco para que la mezcla se integre de forma homogénea.
+			</p>
+		</div>
+
+		<article class="hand-card" style="margin: 4rem auto; max-width: 800px; padding: 3rem;">
+			<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--fg-pencil);">Control de Graduación en Cócteles de Boda</h2>
+			
+			<p class="font-body" style="font-size: 1.2rem; margin-bottom: 1.5rem; line-height: 1.6;">
+				Al preparar jarras o dispensadores de cócteles de autor (como Sangría blanca, Margaritas o Aperol Spritz) para el cóctel de bienvenida, controlar los mililitros exactos de mezclador evita que la bebida resulte excesivamente fuerte o aguada.
+			</p>
+			
+			<h3 class="font-heading" style="font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent-red);">Graduaciones Recomendadas por Tipo de Cóctel</h3>
+			<ul class="font-body" style="font-size: 1.1rem; line-height: 1.6; padding-left: 1.5rem; margin-bottom: 1.5rem;">
+				<li><strong>Aperitivos Ligeros y Spritz:</strong> 8% a 12% Vol.</li>
+				<li><strong>Cócteles Refrescantes (Mojitos, Margaritas, Mules):</strong> 14% a 18% Vol.</li>
+				<li><strong>Cócteles Fuertes y Digestivos:</strong> 20% a 28% Vol.</li>
+			</ul>
+		</article>
+
+		<RelatedTools currentPath="/es/alcohol-dilution-calculator" category="dining" />
+	</main>
+
+	<script>
+		const form = document.getElementById('calc-form') as HTMLFormElement;
+		const resWater = document.getElementById('res-water');
+		const resFinal = document.getElementById('res-final');
+		
+		const chartAlcohol = document.getElementById('chart-alcohol');
+		const chartWater = document.getElementById('chart-water');
+		const lblAlcohol = document.getElementById('lbl-alcohol');
+		const lblWater = document.getElementById('lbl-water');
+
+		function calculate() {
+			const initialVolume = parseFloat((document.getElementById('initialVolume') as HTMLInputElement).value);
+			const initialABV = parseFloat((document.getElementById('initialABV') as HTMLInputElement).value) / 100;
+			const targetABV = parseFloat((document.getElementById('targetABV') as HTMLInputElement).value) / 100;
+
+			if (targetABV >= initialABV) {
+				alert("La graduación objetivo debe ser estrictamente menor que la inicial.");
+				return;
+			}
+			
+			if (isNaN(initialVolume) || isNaN(initialABV) || isNaN(targetABV) || initialVolume <= 0 || initialABV <= 0 || targetABV <= 0) {
+				return;
+			}
+
+			const finalVolume = (initialABV * initialVolume) / targetABV;
+			const waterToAdd = finalVolume - initialVolume;
+
+			if (resWater && resFinal) {
+				resWater.textContent = waterToAdd.toFixed(2);
+				resFinal.textContent = finalVolume.toFixed(2);
+			}
+
+			if (chartAlcohol && chartWater && lblAlcohol && lblWater) {
+				const alcoholPct = (initialVolume / finalVolume) * 100;
+				const waterPct = (waterToAdd / finalVolume) * 100;
+
+				chartAlcohol.style.width = `${alcoholPct}%`;
+				chartWater.style.width = `${waterPct}%`;
+				lblAlcohol.textContent = `${alcoholPct.toFixed(1)}%`;
+				lblWater.textContent = `${waterPct.toFixed(1)}%`;
+			}
+		}
+
+		form?.addEventListener('submit', (e) => {
+			e.preventDefault();
+			calculate();
+		});
+
+		['initialVolume', 'initialABV', 'targetABV'].forEach(id => {
+			document.getElementById(id)?.addEventListener('input', calculate);
+		});
+
+		calculate();
+	</script>
+	
+	<style>
+		@media (max-width: 768px) {
+			.home-grid {
+				grid-template-columns: 1fr !important;
+			}
+		}
+	</style>
+</Layout>

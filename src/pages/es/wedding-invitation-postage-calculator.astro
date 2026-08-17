@@ -1,0 +1,617 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/wedding-invitation-postage-calculator/#webapp",
+      "name": "Calculadora de Franqueo, Sellos y Peso de Invitaciones de Boda",
+      "url": "https://manage.wedding/es/wedding-invitation-postage-calculator",
+      "inLanguage": "es",
+      "description": "Calcula el peso exacto en gramos de tus invitaciones de boda y el coste de sellos de Correos. Considera cartulinas de 300g/600g, sellos de lacre, lazos de seda, sobres cuadrados y suplementos para evitar cartas devueltas.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Calcular el Peso y Franqueo de las Invitaciones de Boda",
+      "description": "Guía paso a paso para pesar el conjunto de papelería y comprar los sellos correctos sin incidencias de envío.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Paso 1: Monta una Muestra Completa de la Suite",
+          "text": "Reúne todos los elementos: sobre exterior, forro interior, tarjeta principal, encarte de horarios, tarjeta y sobre de respuesta RSVP, sello de lacre y lazo."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 2: Comprueba Si Requiere Manipulación Manual",
+          "text": "Verifica si el sobre incluye sello de lacre en relieve, nudo de cuerda o forma cuadrada (15x15 cm), ya que no pasa por las clasificadoras automáticas."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 3: Pesa la Carta en una Báscula de Precisión",
+          "text": "Si el peso es inferior a 20 gramos, aplica la Tarifa A ordinaria (0,82 €). Si pesa entre 21 y 50 gramos, aplica la tarifa superior (1,25 € a 1,50 €)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 4: Franquea los Sobres de Vuelta RSVP",
+          "text": "Coloca un sello estándar en cada sobre de respuesta prepagado para que tus invitados solo tengan que depositarlo en el buzón."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuánto cuesta enviar una invitación de boda por correo ordinario?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Una invitación estándar de menos de 20 gramos requiere un sello de Tarifa A nacional (aprox. 0,82 €). Si la cartulina es gruesa (300-350 g/m²) e incluye tarjeta de detalles o lacre, suele superar los 20 g, requiriendo franqueo de hasta 50 g (1,30 € a 1,50 €)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿El sello de lacre incrementa el precio del envío?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. El sello de lacre añade entre 4 y 6 gramos de peso y genera un relieve rígido que puede atascar las máquinas clasificadoras, por lo que Correos exige clasificarlo manualmente o cobrar el tramo superior de peso."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué es el matasellado a mano y cómo se solicita?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El matasellado manual consiste en que el empleado de Correos estampa el matasellos a mano con tinta cuidada en lugar de pasar las cartas por los rodillos mecánicos negros que pueden ensuciar la caligrafía. Se solicita amablemente en ventanilla."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Franqueo y Sellos de Invitaciones de Boda | Manage.Wedding"
+	description="Calcula el peso en gramos de tu invitación de boda y el coste de sellos de Correos. Prevé suplementos por sello de lacre, lazos y sobres cuadrados."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Calculadora de Franqueo y Sellos" category="stationery-creative" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Evita Cartas Devueltas por Falta de Franqueo</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Calculadora de Franqueo <span class="accent-italic">& Peso de Invitaciones</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Evita que tus invitaciones queden retenidas. Calcula el peso exacto en gramos de cada suite, verifica si el lacre o formato cuadrado requiere suplemento y obtén tu presupuesto de sellos.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Suite Component Builder & Weight Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Componentes de la Invitación
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Tarifas Postales 2026
+					</span>
+				</div>
+
+				<!-- Suite Preset Picker -->
+				<div class="form-group">
+					<label class="form-label" for="suite-preset">Tipo de Suite Preconfigurada</label>
+					<select id="suite-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="classic" selected>💌 Clásica 3 Piezas (Sobre C5 + Tarjeta 300g + Tarjeta RSVP / ~26 g)</option>
+						<option value="luxury-wax">👑 Lujo con Lacre y Cinta (Cartulina 600g + Detalles + Lacre / ~42 g)</option>
+						<option value="square">🔲 Cuadrada 15×15 cm (Sobre 16×16 cm + Tarjeta Gruesa / No Mecanizable)</option>
+						<option value="minimalist">🌿 Minimalista con QR (Sin sobre de respuesta / ~18 g Tarifa A)</option>
+						<option value="custom">✏️ Personalizar Componentes a Medida</option>
+					</select>
+				</div>
+
+				<!-- Total Households / Invitations Count -->
+				<div class="form-group">
+					<label class="form-label" for="invitation-count">Total de Sobres a Enviar (Familias / Parejas)</label>
+					<input type="number" id="invitation-count" class="form-input" value="85" min="10" max="500" style="font-size: 1.1rem; font-weight: 700;" />
+				</div>
+
+				<!-- Outer Envelope Style -->
+				<div class="form-group">
+					<label class="form-label" for="outer-envelope-type">Formato y Tipo de Sobre Exterior</label>
+					<select id="outer-envelope-type" class="form-input" style="cursor: pointer;">
+						<option value="a7-rect" selected>C5 / B6 Rectangular (162×229 mm o 135×185 mm) — Estándar (7 g)</option>
+						<option value="square-6">Cuadrado (16×16 cm) — No Mecanizable (9 g)</option>
+						<option value="a8-rect">Sobre de Gran Formato / Artesanal (140×205 mm) (8,5 g)</option>
+					</select>
+				</div>
+
+				<!-- Cardstock Thickness (Main Invitation) -->
+				<div class="form-group">
+					<label class="form-label" for="cardstock-weight">Gramaje de la Tarjeta Principal</label>
+					<select id="cardstock-weight" class="form-input" style="cursor: pointer;">
+						<option value="110lb" selected>Cartulina Estándar (300–350 g/m²) — 10 g</option>
+						<option value="220lb">Algodón Grueso / Doble Grosor (500–600 g/m²) — 20 g</option>
+						<option value="acrylic">Metacrilato / Rígida de Madera (3 mm) — 42 g (Paquete/No Mecanizable)</option>
+					</select>
+				</div>
+
+				<!-- Additional Inserts (Checkboxes) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Encartes y Acabados Artesanales
+					</strong>
+
+					<div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.92rem;">
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-details-card" checked style="width: 18px; height: 18px;" />
+							<span>Tarjeta de Horarios / Detalles (+5 g)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-rsvp-card" checked style="width: 18px; height: 18px;" />
+							<span>Tarjeta RSVP + Sobre C6 Pequeño (+9 g)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-vellum" style="width: 18px; height: 18px;" />
+							<span>Funda de Papel Vegetal / Forro de Sobre (+5 g)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--accent-red); font-weight: 700;">
+							<input type="checkbox" id="check-wax-seal" style="width: 18px; height: 18px;" />
+							<span>Sello de Lacre (+5 g + Suplemento Manual)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--accent-blue); font-weight: 700;">
+							<input type="checkbox" id="check-ribbon" style="width: 18px; height: 18px;" />
+							<span>Lazo de Seda / Cuerda Rústica (+3,5 g)</span>
+						</label>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results, Stamp Shopping List & Non-Machinable Warnings -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Postage Rate & Stamp Recommendation Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Sello Necesario por Sobre
+						</span>
+						<span id="stamp-category-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							Tramo 20 a 50 gramos
+						</span>
+					</div>
+
+					<div id="display-rate-per-envelope" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						1,35 €
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Peso Total de la Suite: <strong id="display-total-weight-g" style="color: var(--fg-pencil);">27 g</strong> (<span id="display-total-weight-oz">0,95 oz</span>).
+					</p>
+
+					<!-- Itemized Stamp Shopping List -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<strong style="display: block; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+							📮 Presupuesto Total de Sellos (<span id="shopping-household-count">85</span> Sobres):
+						</strong>
+						
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span id="outer-stamp-desc">85 × Sellos Sobre Exterior:</span>
+							<strong id="outer-stamp-cost">114,75 €</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span id="rsvp-stamp-desc">85 × Sellos Sobre Vuelta RSVP:</span>
+							<strong id="rsvp-stamp-cost">69,70 €</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.5rem 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--accent-red);">
+							<span>PRESUPUESTO TOTAL EN SELLOS:</span>
+							<strong id="display-grand-total-postage">184,45 €</strong>
+						</div>
+					</div>
+
+					<!-- Non-Machinable Flag Alert Box -->
+					<div id="non-machinable-alert" style="display: none; background: #fef2f2; border: 1.5px solid #ef4444; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.88rem; color: #991b1b; line-height: 1.5;">
+						<strong>⚠️ Atención: Requiere Manipulación Manual:</strong><br />
+						<span id="non-machinable-reasons">Tu suite tiene sello de lacre o formato cuadrado. No puede procesarse en máquinas automáticas y debe llevarse directamente a ventanilla para matasellado manual.</span>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-postage" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Imprimir Hoja de Correos (PDF)
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Exportar a Word (.doc)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- USPS Hand-Canceling Tip Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						💌 Consejos para Enviar Invitaciones en Correos:
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>No las Eches Directamente al Buzón de Calle:</strong> Llévalas en mano a la oficina de Correos para evitar que pasen por los rodillos de clasificación que manchan de tinta negra la caligrafía.</li>
+						<li><strong>Pide Matasellado Manual:</strong> Solicita al empleado: <em>"¿Podrían matasellarlas a mano con cuidado para no estropear la caligrafía y el lacre?"</em></li>
+						<li><strong>Lleva 1 Muestra de Prueba:</strong> Pesa una invitación completa en la báscula de la oficina antes de comprar todos los sellos de golpe.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Guía Rápida Postal</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Tabla Rápida de Pesos y Tramos de Sellos
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Referencia directa para saber qué sello corresponde a cada peso y formato de sobre.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📬 Regla Postal de Franqueo de Boda:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Cartas ≤ 20 g = 0,82 € (Tarifa A ordinaria) • Cartas de 21 g a 50 g = 1,35 € • Con Sello de Lacre o Sobre Cuadrado = Matasellado Manual Recomendado.
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Tipo de Suite</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Peso Estimado</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">¿Manipulación Manual?</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Sello Recomendado</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Minimalista Simple (Sobre + Tarjeta QR)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">16 – 19 gramos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">No (Estándar Plana)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">Tarifa A (Hasta 20g / 0,82 €)</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Suite Clásica 3 Piezas (C5 + RSVP)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">24 – 32 gramos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">No (Sobre Rectangular)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">Tramo 20-50g (1,35 €)</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Suite con Lacre o Cinta de Seda</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">32 – 45 gramos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-red);">SÍ (Relieve rígido)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">Tramo 20-50g + Ventanilla</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Sobre Cuadrado (16×16 cm)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">25 – 38 gramos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-red);">SÍ (Proporción 1:1)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">Tramo 20-50g Especial</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guía Completa de Envío Postal de Invitaciones de Boda
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Consejos para evitar demoras en correos, sellos personalizados y manipulación de sobres con lacre.
+				</p>
+			</div>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Cuándo Llevar las Cartas a la Oficina
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					El mejor momento para acudir a la oficina postal es un martes o miércoles a primera hora de la mañana. Los empleados tienen más tiempo para atenderte con tranquilidad y realizar el matasellado manual con cuidado.
+				</p>
+			</section>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. Sellos de Boda Personalizados (TuSello)
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Puedes encargar a través de la web oficial de Correos pliegos de sellos con vuestras iniciales, monograma o una fotografía de pareja con valor postal legal. Asegúrate de pedir la tarifa adecuada al peso final de vuestra carta.
+				</p>
+			</section>
+
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Preguntas Frecuentes
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">¿Hay que poner sello al sobre de confirmación RSVP?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Sí, según las normas de cortesía el anfitrión debe entregar el sobre de vuelta ya franqueado con un sello de Tarifa A para que el invitado no tenga que asumir ningún gasto.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">¿Qué ocurre si una carta tiene franqueo insuficiente?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Correos la devolverá a la dirección del remitente que figure en el reverso o la entregará al destinatario exigiéndole el pago de la tasa pendiente con recargo.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<!-- Related Planning Tools -->
+		<RelatedTools currentPath="/es/wedding-invitation-postage-calculator" category="stationery" />
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('suite-preset');
+		const invitationCountInput = document.getElementById('invitation-count');
+		const outerEnvSelect = document.getElementById('outer-envelope-type');
+		const cardstockSelect = document.getElementById('cardstock-weight');
+
+		const checkDetails = document.getElementById('check-details-card');
+		const checkRsvp = document.getElementById('check-rsvp-card');
+		const checkVellum = document.getElementById('check-vellum');
+		const checkWax = document.getElementById('check-wax-seal');
+		const checkRibbon = document.getElementById('check-ribbon');
+
+		const displayRate = document.getElementById('display-rate-per-envelope');
+		const stampCategoryBadge = document.getElementById('stamp-category-badge');
+		const displayWeightOz = document.getElementById('display-total-weight-oz');
+		const displayWeightG = document.getElementById('display-total-weight-g');
+
+		const shoppingHouseholdCount = document.getElementById('shopping-household-count');
+		const outerStampDesc = document.getElementById('outer-stamp-desc');
+		const outerStampCost = document.getElementById('outer-stamp-cost');
+		const rsvpStampDesc = document.getElementById('rsvp-stamp-desc');
+		const rsvpStampCost = document.getElementById('rsvp-stamp-cost');
+		const displayGrandTotalPostage = document.getElementById('display-grand-total-postage');
+
+		const nonMachinableAlert = document.getElementById('non-machinable-alert');
+		const nonMachinableReasons = document.getElementById('non-machinable-reasons');
+
+		const btnPrint = document.getElementById('btn-print-postage');
+		const btnDoc = document.getElementById('btn-export-doc');
+
+		function calculatePostage() {
+			const count = parseInt(invitationCountInput.value, 10) || 1;
+			shoppingHouseholdCount.textContent = count;
+
+			let weightGrams = 0;
+
+			if (outerEnvSelect.value === 'a7-rect') weightGrams += 7;
+			else if (outerEnvSelect.value === 'square-6') weightGrams += 9;
+			else if (outerEnvSelect.value === 'a8-rect') weightGrams += 8.5;
+
+			if (cardstockSelect.value === '110lb') weightGrams += 10;
+			else if (cardstockSelect.value === '220lb') weightGrams += 20;
+			else if (cardstockSelect.value === 'acrylic') weightGrams += 42;
+
+			if (checkDetails.checked) weightGrams += 5;
+			if (checkRsvp.checked) weightGrams += 9;
+			if (checkVellum.checked) weightGrams += 5;
+			if (checkWax.checked) weightGrams += 5;
+			if (checkRibbon.checked) weightGrams += 3.5;
+
+			let isNonMachinable = false;
+			const reasons = [];
+
+			if (outerEnvSelect.value === 'square-6') {
+				isNonMachinable = true;
+				reasons.push('Formato cuadrado 1:1');
+			}
+			if (checkWax.checked) {
+				isNonMachinable = true;
+				reasons.push('Sello de lacre en relieve');
+			}
+			if (checkRibbon.checked) {
+				isNonMachinable = true;
+				reasons.push('Lazo o nudo de cuerda');
+			}
+			if (cardstockSelect.value === 'acrylic') {
+				isNonMachinable = true;
+				reasons.push('Tarjeta rígida de metacrilato/madera');
+			}
+
+			let outerRate = 0.82;
+			let stampName = 'Tarifa A (Hasta 20g)';
+
+			if (weightGrams <= 20) {
+				outerRate = 0.82;
+				stampName = 'Tarifa A (Hasta 20g)';
+			} else if (weightGrams <= 50) {
+				outerRate = 1.35;
+				stampName = 'Tramo 20 a 50g';
+			} else {
+				outerRate = 1.85;
+				stampName = 'Tramo 50 a 100g';
+			}
+
+			const rsvpRate = checkRsvp.checked ? 0.82 : 0;
+
+			const totalOuterPostage = outerRate * count;
+			const totalRsvpPostage = rsvpRate * count;
+			const grandTotal = totalOuterPostage + totalRsvpPostage;
+
+			displayRate.textContent = `${outerRate.toFixed(2).replace('.', ',')} €`;
+			stampCategoryBadge.textContent = stampName;
+			displayWeightG.textContent = `${Math.round(weightGrams)} g`;
+			displayWeightOz.textContent = `${(weightGrams / 28.3495).toFixed(2).replace('.', ',')} oz`;
+
+			outerStampDesc.textContent = `${count} × Sobres Exteriores (${stampName}):`;
+			outerStampCost.textContent = `${totalOuterPostage.toFixed(2).replace('.', ',')} €`;
+
+			if (checkRsvp.checked) {
+				rsvpStampDesc.textContent = `${count} × Sobres Vuelta RSVP (Tarifa A 0,82 €):`;
+				rsvpStampCost.textContent = `${totalRsvpPostage.toFixed(2).replace('.', ',')} €`;
+			} else {
+				rsvpStampDesc.textContent = `0 × Sellos RSVP (Confirmación Digital / QR):`;
+				rsvpStampCost.textContent = `0,00 €`;
+			}
+
+			displayGrandTotalPostage.textContent = `${grandTotal.toFixed(2).replace('.', ',')} €`;
+
+			if (isNonMachinable) {
+				nonMachinableAlert.style.display = 'block';
+				nonMachinableReasons.textContent = `Atención por: ${reasons.join(', ')}. No depositar en buzón de calle; llevar a ventanilla para matasellado manual.`;
+			} else {
+				nonMachinableAlert.style.display = 'none';
+			}
+		}
+
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'classic') {
+				outerEnvSelect.value = 'a7-rect';
+				cardstockSelect.value = '110lb';
+				checkDetails.checked = true;
+				checkRsvp.checked = true;
+				checkVellum.checked = false;
+				checkWax.checked = false;
+				checkRibbon.checked = false;
+			} else if (p === 'luxury-wax') {
+				outerEnvSelect.value = 'a7-rect';
+				cardstockSelect.value = '220lb';
+				checkDetails.checked = true;
+				checkRsvp.checked = true;
+				checkVellum.checked = true;
+				checkWax.checked = true;
+				checkRibbon.checked = true;
+			} else if (p === 'square') {
+				outerEnvSelect.value = 'square-6';
+				cardstockSelect.value = '220lb';
+				checkDetails.checked = true;
+				checkRsvp.checked = true;
+				checkVellum.checked = false;
+				checkWax.checked = false;
+				checkRibbon.checked = false;
+			} else if (p === 'minimalist') {
+				outerEnvSelect.value = 'a7-rect';
+				cardstockSelect.value = '110lb';
+				checkDetails.checked = false;
+				checkRsvp.checked = false;
+				checkVellum.checked = false;
+				checkWax.checked = false;
+				checkRibbon.checked = false;
+			}
+			calculatePostage();
+		});
+
+		[invitationCountInput, outerEnvSelect, cardstockSelect, checkDetails, checkRsvp, checkVellum, checkWax, checkRibbon].forEach(inp => {
+			inp.addEventListener('input', calculatePostage);
+			inp.addEventListener('change', calculatePostage);
+		});
+
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Hoja de Sellos y Franqueo de Boda — Manage.Wedding</title>
+					<style>
+						@page { size: A4; margin: 15mm; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 20pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Hoja de Compra de Sellos para Invitaciones</h1>
+					<p>Total Envíos: ${invitationCountInput.value} | Peso Estimado por Carta: ${displayWeightG.textContent}</p>
+					
+					<table>
+						<thead><tr><th>Concepto</th><th>Tarifa Unitaria</th><th>Cantidad</th><th>Total</th></tr></thead>
+						<tbody>
+							<tr><td><strong>Sobres Exteriores</strong><br /><small>${stampCategoryBadge.textContent}</small></td><td>${displayRate.textContent}</td><td>${invitationCountInput.value}</td><td>${outerStampCost.textContent}</td></tr>
+							<tr><td><strong>Sobres de Vuelta RSVP</strong><br /><small>Tarifa A (0,82 €)</small></td><td>${checkRsvp.checked ? '0,82 €' : '0,00 €'}</td><td>${checkRsvp.checked ? invitationCountInput.value : 0}</td><td>${rsvpStampCost.textContent}</td></tr>
+							<tr class="total-row"><td>TOTAL EN SELLOS</td><td>—</td><td>—</td><td>${displayGrandTotalPostage.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Presupuesto de Sellos de Boda</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Presupuesto Postal de Invitaciones</h2>
+					<p>Sobres: ${invitationCountInput.value} | Peso: ${displayWeightG.textContent} | <strong>Total Sellos: ${displayGrandTotalPostage.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Concepto</th><th>Tipo de Sello</th><th>Coste Total</th></tr></thead>
+						<tbody>
+							<tr><td>Sobre Exterior</td><td>${stampCategoryBadge.textContent} (${displayRate.textContent})</td><td>${outerStampCost.textContent}</td></tr>
+							<tr><td>Sobre RSVP</td><td>Tarifa A (0,82 €)</td><td>${rsvpStampCost.textContent}</td></tr>
+							<tr style="font-weight:bold; background-color:#eee;"><td>TOTAL</td><td>—</td><td>${displayGrandTotalPostage.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'presupuesto-sellos-invitaciones.doc';
+			link.click();
+		});
+
+		calculatePostage();
+	</script>
+</Layout>

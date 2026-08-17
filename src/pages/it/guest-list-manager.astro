@@ -1,0 +1,873 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/guest-list-manager/#webapp",
+      "name": "Gestione Lista Invitati Matrimonio & Export Word/PDF",
+      "url": "https://manage.wedding/it/guest-list-manager",
+      "inLanguage": "it",
+      "description": "Strumento gratuito per gestire la lista degli invitati al matrimonio: tracciamento presenze, accompagnatori, intolleranze alimentari, assegnazione tavoli ed esportazione Word e PDF.",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come creare e organizzare la lista degli invitati al matrimonio",
+      "description": "Guida metodologica per raggruppare i nuclei familiari, gestire le conferme e coordinare i coperti con la sala ricevimenti.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Definire il numero target di invitati",
+          "text": "Calcola la capienza massima della sala ricevimenti considerando una percentuale di adesione media dell'80–85%."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Raggruppare gli invitati per lato e nucleo familiare",
+          "text": "Assegna ciascun invitato al rispettivo gruppo (Famiglia Sposa, Famiglia Sposo, Amici, Testimoni, Colleghi) e indica i posti per nucleo."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Annotare intolleranze e diete speciali",
+          "text": "Registra tempestivamente esigenze di celiachia, allergie e scelte vegetariane o vegane."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Esportare il documento per il maître e il wedding planner",
+          "text": "Scarica la lista completa in formato Word o PDF per la consegna alla cucina e alla tipografia dei segnaposto."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Come esportare la lista degli invitati in formato Word o PDF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Clicca sul pulsante 'Esporta Word (.doc)' per generare una tabella formattata per Microsoft Word, oppure 'Stampa PDF' per salvare o stampare l'elenco completo suddiviso per gruppi e intolleranze."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Come funziona la suddivisione equa degli invitati tra gli sposi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La regola classica suggerisce di suddividere la capienza in tre terzi: 1/3 per la famiglia della sposa, 1/3 per la famiglia dello sposo e 1/3 per gli amici comuni e testimoni della coppia."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Gestione Lista Invitati Matrimonio & Export Word/PDF | Manage.Wedding"
+	description="Organizza e gestisci gratis la lista degli invitati al matrimonio: presenze, accompagnatori, intolleranze alimentari, tavoli ed esportazione immediata in Word, PDF o Excel."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Gestione Lista Invitati" category="guests-logistics" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Gestione Lista <span class="accent-italic">Invitati Matrimonio</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Traccia presenze, intolleranze alimentari, accompagnatori e assegnazione tavoli in un unico posto. Esporta l'elenco in <strong>Word (.doc)</strong>, <strong>PDF</strong> o <strong>Excel (.csv)</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Overview Metrics & Dashboard -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.5rem; background: #fff;">
+			<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+				<div>
+					<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin: 0;">
+						📊 Dashboard Invitati & Statistiche
+					</h2>
+					<span class="font-body" style="color: var(--text-secondary); font-size: 0.95rem;">
+						Sincronizzato automaticamente con il Tableau de Mariage e le conferme RSVP
+					</span>
+				</div>
+
+				<!-- Export & Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" class="export-btn-group">
+					<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #eff6ff;">
+						📝 Esporta Word (.doc)
+					</button>
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #fef2f2;">
+						🖨️ Stampa PDF
+					</button>
+					<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						📊 Excel (.csv)
+					</button>
+					<button type="button" id="btn-sample-data" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						➕ Esempio
+					</button>
+					<button type="button" id="btn-clear-all" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; color: var(--accent-red);">
+						🗑️ Cancella
+					</button>
+				</div>
+			</div>
+
+			<!-- Stat Counters Grid -->
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;" class="stats-counter-grid">
+				<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Totale Coperti</span>
+					<strong id="stat-total-seats" class="font-heading" style="font-size: 1.8rem; color: var(--fg-pencil);">0</strong>
+					<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">(<span id="stat-total-parties">0</span> inviti)</span>
+				</div>
+				<div style="background: #f0fdf4; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #166534; display: block;">Confermati (Sì)</span>
+					<strong id="stat-attending" class="font-heading" style="font-size: 1.8rem; color: #15803d;">0</strong>
+					<span id="stat-attending-pct" style="font-size: 0.75rem; color: #166534; display: block;">0% del totale</span>
+				</div>
+				<div style="background: #fefce8; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #854d0e; display: block;">In Attesa (?)</span>
+					<strong id="stat-pending" class="font-heading" style="font-size: 1.8rem; color: #a16207;">0</strong>
+					<span id="stat-pending-pct" style="font-size: 0.75rem; color: #854d0e; display: block;">0% del totale</span>
+				</div>
+				<div style="background: #fef2f2; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #991b1b; display: block;">Assenti (No)</span>
+					<strong id="stat-declined" class="font-heading" style="font-size: 1.8rem; color: var(--accent-red);">0</strong>
+					<span id="stat-declined-pct" style="font-size: 0.75rem; color: #991b1b; display: block;">0% del totale</span>
+				</div>
+				<div style="background: #faf5ff; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #6b21a8; display: block;">Diete Speciali</span>
+					<strong id="stat-dietary" class="font-heading" style="font-size: 1.8rem; color: #7e22ce;">0</strong>
+					<span style="font-size: 0.75rem; color: #6b21a8; display: block;">Per la Cucina</span>
+				</div>
+			</div>
+
+			<!-- Dynamic Visual Stacked Group Distribution Bar -->
+			<div>
+				<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem;">
+					<span class="font-heading" style="font-size: 0.95rem; color: var(--fg-pencil);">Distribuzione tra i Gruppi</span>
+					<span id="group-balance-indicator" class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">Bilanciamento lati</span>
+				</div>
+				<div id="chart-container" style="display: flex; height: 26px; border: 2px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: var(--bg-paper); margin-bottom: 0.75rem;"></div>
+				<div id="chart-legend" style="display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.85rem; color: var(--fg-pencil);"></div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Add Guest Form + Searchable Filterable List -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 360px 1fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="guest-workspace-grid">
+			
+			<!-- Left Column: Add Guest Card -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.5rem; margin-bottom: 1.25rem; color: var(--fg-pencil); display: flex; align-items: center; gap: 0.5rem;">
+					<span>➕</span> Aggiungi Nuovo Invitato
+				</h2>
+
+				<form id="guest-form" style="display: flex; flex-direction: column; gap: 1rem;">
+					
+					<!-- Primary Guest Name -->
+					<div>
+						<label for="guest-name" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+							Nome e Cognome / Famiglia *
+						</label>
+						<input type="text" id="guest-name" required placeholder="es. Sara & Marco Ferri" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper); font-family: var(--font-body); font-size: 1.05rem;">
+					</div>
+
+					<!-- Group Category -->
+					<div>
+						<label for="guest-group" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+							Gruppo / Affiliazione
+						</label>
+						<select id="guest-group" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 1.05rem;">
+							<option value="Famiglia Sposa">Famiglia Sposa</option>
+							<option value="Famiglia Sposo">Famiglia Sposo</option>
+							<option value="Amici Sposa">Amici Sposa</option>
+							<option value="Amici Sposo">Amici Sposo</option>
+							<option value="Amici Comuni">Amici Comuni</option>
+							<option value="Testimoni & VIP">Testimoni & VIP</option>
+							<option value="Colleghi di Lavoro">Colleghi di Lavoro</option>
+						</select>
+					</div>
+
+					<!-- Party Size & Plus-One -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="guest-party" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+								Coperti / Posti
+							</label>
+							<select id="guest-party" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 1.05rem;">
+								<option value="1">1 (Singolo)</option>
+								<option value="2" selected>2 (Coppia / +1)</option>
+								<option value="3">3 (Famiglia)</option>
+								<option value="4">4 (Famiglia da 4)</option>
+								<option value="5">5+ (Gruppo)</option>
+							</select>
+						</div>
+						<div>
+							<label for="guest-rsvp" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+								Stato RSVP
+							</label>
+							<select id="guest-rsvp" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 1.05rem;">
+								<option value="Pending">⏳ In Attesa</option>
+								<option value="Attending">✅ Confermato</option>
+								<option value="Declined">❌ Assente</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Dietary Restrictions -->
+					<div>
+						<label for="guest-dietary" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+							Intolleranze / Note Dietetiche
+						</label>
+						<input type="text" id="guest-dietary" placeholder="es. Celiachia, Senza Lattosio, Vegetariano" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper); font-family: var(--font-body); font-size: 1rem;">
+						<div style="display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem;">
+							<button type="button" class="diet-quick-btn" data-val="Vegetariano" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">+ Vegetariano</button>
+							<button type="button" class="diet-quick-btn" data-val="Vegano" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">+ Vegano</button>
+							<button type="button" class="diet-quick-btn" data-val="Senza Glutine" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">+ Senza Glutine</button>
+							<button type="button" class="diet-quick-btn" data-val="Senza Lattosio" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">+ Senza Lattosio</button>
+						</div>
+					</div>
+
+					<!-- Optional Table & Contact Notes -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="guest-table" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+								Tavolo / Assegnazione
+							</label>
+							<input type="text" id="guest-table" placeholder="es. Tavolo 3" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper); font-family: var(--font-body); font-size: 1rem;">
+						</div>
+						<div>
+							<label for="guest-email" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+								Email / Telefono (Opz.)
+							</label>
+							<input type="text" id="guest-email" placeholder="sara@esempio.it" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper); font-family: var(--font-body); font-size: 1rem;">
+						</div>
+					</div>
+
+					<button type="submit" class="hand-btn" style="width: 100%; padding: 0.85rem; font-size: 1.15rem; margin-top: 0.5rem;">
+						✨ Aggiungi alla Lista
+					</button>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Interactive Searchable Table & Filter Bar -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<!-- Filter Bar -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 1rem;">
+					
+					<!-- Search Input -->
+					<div style="flex: 1; min-width: 180px;">
+						<input type="text" id="search-input" placeholder="🔍 Cerca per nome, intolleranza o gruppo..." class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem;">
+					</div>
+
+					<!-- Group Filter -->
+					<div>
+						<select id="filter-group" class="form-input" style="padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+							<option value="all">Tutti i Gruppi</option>
+							<option value="Famiglia Sposa">Famiglia Sposa</option>
+							<option value="Famiglia Sposo">Famiglia Sposo</option>
+							<option value="Amici Sposa">Amici Sposa</option>
+							<option value="Amici Sposo">Amici Sposo</option>
+							<option value="Amici Comuni">Amici Comuni</option>
+							<option value="Testimoni & VIP">Testimoni & VIP</option>
+							<option value="Colleghi di Lavoro">Colleghi di Lavoro</option>
+						</select>
+					</div>
+
+					<!-- RSVP Filter -->
+					<div>
+						<select id="filter-rsvp" class="form-input" style="padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+							<option value="all">Tutti gli Stati</option>
+							<option value="Attending">Confermati (Sì)</option>
+							<option value="Pending">In Attesa (?)</option>
+							<option value="Declined">Assenti (No)</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Guest List Table Container -->
+				<div id="guest-list-table-wrap" style="overflow-x: auto; max-height: 550px;">
+					<table id="guest-table-elem" style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 1rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil); position: sticky; top: 0; z-index: 1;">
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Invitato / Nucleo</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Gruppo</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">RSVP</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Intolleranze</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Tavolo</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Azioni</th>
+							</tr>
+						</thead>
+						<tbody id="guest-table-body"></tbody>
+					</table>
+				</div>
+
+				<!-- Empty State Note -->
+				<div id="empty-state-box" style="display: none; text-align: center; padding: 3rem 1rem; color: var(--text-secondary);">
+					<div style="font-size: 2.5rem; margin-bottom: 0.5rem;">💌</div>
+					<h3 class="font-heading" style="font-size: 1.3rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">La lista invitati è vuota</h3>
+					<p class="font-body" style="font-size: 1.05rem; margin-bottom: 1.25rem;">Aggiungi il tuo primo invitato a sinistra o carica i dati di prova.</p>
+					<button type="button" id="btn-empty-sample" class="hand-btn" style="padding: 0.5rem 1.25rem; font-size: 1rem;">
+						➕ Carica 8 Invitati Esempio
+					</button>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Hidden Printable Sheet Container for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Elenco Ufficiale Invitati</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Data: <span id="print-date"></span> | Totale Coperti: <span id="print-total-seats"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Nome Invitato</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Gruppo</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: center;">Coperti</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: center;">RSVP</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Intolleranze</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: center;">Tavolo</th>
+					</tr>
+				</thead>
+				<tbody id="print-table-body"></tbody>
+			</table>
+		</div>
+
+		<!-- SEO Article -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Guida Organizzativa</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem;">
+					Come Gestire la Lista Invitati Senza Tensioni Familiari
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; margin: 0.5rem auto 0;">
+					Metodi collaudati per definire le quote di partecipazione, accompagnatori e assegnazione dei posti a tavola.
+				</p>
+			</div>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. La Gestione degli Accompagnatori (+1)
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Secondo il galateo del matrimonio italiano, l'invito si estende automaticamente al partner se la coppia è sposata, convivente o fidanzata da lungo tempo. Per i testimoni di nozze è sempre buona norma includere l'accompagnatore come segno di riguardo per l'impegno dedicato.
+				</p>
+			</section>
+		</article>
+
+		<RelatedTools currentPath="/it/guest-list-manager" category="guests-logistics" />
+	</main>
+</Layout>
+
+<style>
+	.guest-workspace-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+	@media (min-width: 992px) {
+		.guest-workspace-grid {
+			grid-template-columns: 360px 1fr;
+		}
+	}
+
+	.status-badge {
+		padding: 0.2rem 0.5rem;
+		border-radius: 4px;
+		font-size: 0.85rem;
+		font-weight: bold;
+		display: inline-block;
+		cursor: pointer;
+		user-select: none;
+		border: 1px solid var(--fg-pencil);
+	}
+	.status-attending {
+		background: #dcfce7;
+		color: #15803d;
+	}
+	.status-pending {
+		background: #fef9c3;
+		color: #a16207;
+	}
+	.status-declined {
+		background: #fee2e2;
+		color: #b91c1c;
+	}
+
+	.group-pill {
+		font-size: 0.8rem;
+		padding: 0.1rem 0.5rem;
+		border-radius: 4px;
+		border: 1px solid var(--fg-pencil);
+		display: inline-block;
+		white-space: nowrap;
+	}
+
+	.action-icon-btn {
+		background: none;
+		border: none;
+		cursor: pointer;
+		font-size: 1rem;
+		padding: 0.25rem;
+		border-radius: 3px;
+		transition: background 0.1s ease;
+	}
+	.action-icon-btn:hover {
+		background: var(--muted-paper);
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	const STORAGE_KEY = 'manage_wedding_guests_it';
+
+	const sampleGuests = [
+		{ id: '1', name: 'Eleonora & Marco', group: "Famiglia Sposa", partySize: 2, rsvpStatus: 'Attending', dietary: 'Nessuna', table: 'Tavolo 1', email: 'eleonora@esempio.it' },
+		{ id: '2', name: 'Giacomo Bianchi', group: "Famiglia Sposo", partySize: 2, rsvpStatus: 'Attending', dietary: 'Senza Glutine', table: 'Tavolo 1', email: 'giacomo@esempio.it' },
+		{ id: '3', name: 'Marta De Luca', group: "Testimoni & VIP", partySize: 1, rsvpStatus: 'Attending', dietary: 'Vegano', table: 'Tavolo d\'Onore', email: 'marta@esempio.it' },
+		{ id: '4', name: 'Davide & Sara', group: "Amici Sposo", partySize: 2, rsvpStatus: 'Pending', dietary: 'Nessuna', table: 'Tavolo 2', email: 'davide@esempio.it' },
+		{ id: '5', name: 'Chiara Moretti', group: "Amici Sposa", partySize: 2, rsvpStatus: 'Pending', dietary: 'Senza Lattosio', table: 'Tavolo 3', email: 'chiara@esempio.it' },
+		{ id: '6', name: 'Luca Valli', group: "Colleghi di Lavoro", partySize: 1, rsvpStatus: 'Declined', dietary: 'Nessuna', table: '', email: 'luca@esempio.it' },
+		{ id: '7', name: 'Zia Rosa', group: "Famiglia Sposa", partySize: 1, rsvpStatus: 'Attending', dietary: 'Vegetariano', table: 'Tavolo 1', email: 'rosa@esempio.it' }
+	];
+
+	const groupColors = {
+		"Famiglia Sposa": "#ffb3ba",
+		"Famiglia Sposo": "#bae1ff",
+		"Amici Sposa": "#ffdfba",
+		"Amici Sposo": "#baffc9",
+		"Amici Comuni": "#ffffba",
+		"Testimoni & VIP": "#fbcfe8",
+		"Colleghi di Lavoro": "#e8baff"
+	};
+
+	let guests = [];
+
+	function loadStoredGuests() {
+		const raw = localStorage.getItem(STORAGE_KEY);
+		if (raw) {
+			try {
+				guests = JSON.parse(raw);
+				guests.forEach(g => {
+					if (!g.partySize) g.partySize = 1;
+					if (!g.rsvpStatus) g.rsvpStatus = 'Pending';
+					if (!g.dietary) g.dietary = 'Nessuna';
+				});
+			} catch (e) {
+				guests = [];
+			}
+		} else {
+			guests = [...sampleGuests];
+			saveGuests();
+		}
+	}
+
+	function saveGuests() {
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(guests));
+		render();
+	}
+
+	const form = document.getElementById('guest-form');
+	const tableBody = document.getElementById('guest-table-body');
+	const emptyStateBox = document.getElementById('empty-state-box');
+	const tableWrap = document.getElementById('guest-list-table-wrap');
+
+	const statTotalSeats = document.getElementById('stat-total-seats');
+	const statTotalParties = document.getElementById('stat-total-parties');
+	const statAttending = document.getElementById('stat-attending');
+	const statAttendingPct = document.getElementById('stat-attending-pct');
+	const statPending = document.getElementById('stat-pending');
+	const statPendingPct = document.getElementById('stat-pending-pct');
+	const statDeclined = document.getElementById('stat-declined');
+	const statDeclinedPct = document.getElementById('stat-declined-pct');
+	const statDietary = document.getElementById('stat-dietary');
+
+	const chartContainer = document.getElementById('chart-container');
+	const chartLegend = document.getElementById('chart-legend');
+
+	const searchInput = document.getElementById('search-input');
+	const filterGroup = document.getElementById('filter-group');
+	const filterRsvp = document.getElementById('filter-rsvp');
+
+	form.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const name = document.getElementById('guest-name').value.trim();
+		const group = document.getElementById('guest-group').value;
+		const partySize = parseInt(document.getElementById('guest-party').value) || 1;
+		const rsvpStatus = document.getElementById('guest-rsvp').value;
+		const dietary = document.getElementById('guest-dietary').value.trim() || 'Nessuna';
+		const table = document.getElementById('guest-table').value.trim();
+		const email = document.getElementById('guest-email').value.trim();
+
+		if (!name) return;
+
+		const newGuest = {
+			id: Date.now().toString(),
+			name,
+			group,
+			partySize,
+			rsvpStatus,
+			dietary,
+			table: table || '',
+			email: email || ''
+		};
+
+		guests.unshift(newGuest);
+		saveGuests();
+		form.reset();
+		document.getElementById('guest-dietary').value = '';
+	});
+
+	document.querySelectorAll('.diet-quick-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			const input = document.getElementById('guest-dietary');
+			const val = btn.getAttribute('data-val');
+			if (!input.value || input.value === 'Nessuna') {
+				input.value = val;
+			} else if (!input.value.includes(val)) {
+				input.value += `, ${val}`;
+			}
+		});
+	});
+
+	window.deleteGuestItem = function(id) {
+		if (confirm("Rimuovere questo invitato dalla lista?")) {
+			guests = guests.filter(g => g.id !== id);
+			saveGuests();
+		}
+	};
+
+	window.cycleRsvpStatus = function(id) {
+		const g = guests.find(item => item.id === id);
+		if (!g) return;
+		if (g.rsvpStatus === 'Pending') g.rsvpStatus = 'Attending';
+		else if (g.rsvpStatus === 'Attending') g.rsvpStatus = 'Declined';
+		else g.rsvpStatus = 'Pending';
+		saveGuests();
+	};
+
+	searchInput.addEventListener('input', render);
+	filterGroup.addEventListener('change', render);
+	filterRsvp.addEventListener('change', render);
+
+	document.getElementById('btn-sample-data').addEventListener('click', () => {
+		guests = JSON.parse(JSON.stringify(sampleGuests));
+		saveGuests();
+	});
+	document.getElementById('btn-empty-sample').addEventListener('click', () => {
+		guests = JSON.parse(JSON.stringify(sampleGuests));
+		saveGuests();
+	});
+	document.getElementById('btn-clear-all').addEventListener('click', () => {
+		if (confirm("Sei sicuro di voler azzerare l'intera lista invitati?")) {
+			guests = [];
+			saveGuests();
+		}
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		if (guests.length === 0) {
+			alert("La lista invitati è vuota. Aggiungi prima dei nominativi!");
+			return;
+		}
+
+		let tableRows = '';
+		guests.forEach((g, idx) => {
+			tableRows += `
+				<tr>
+					<td style="border:1px solid #ccc; padding:8px;">${idx + 1}</td>
+					<td style="border:1px solid #ccc; padding:8px; font-weight:bold;">${g.name}</td>
+					<td style="border:1px solid #ccc; padding:8px;">${g.group}</td>
+					<td style="border:1px solid #ccc; padding:8px; text-align:center;">${g.partySize || 1}</td>
+					<td style="border:1px solid #ccc; padding:8px; text-align:center;">${g.rsvpStatus === 'Attending' ? 'Confermato' : g.rsvpStatus === 'Declined' ? 'Assente' : 'In Attesa'}</td>
+					<td style="border:1px solid #ccc; padding:8px;">${g.dietary}</td>
+					<td style="border:1px solid #ccc; padding:8px; text-align:center;">${g.table || '-'}</td>
+					<td style="border:1px solid #ccc; padding:8px;">${g.email || '-'}</td>
+				</tr>
+			`;
+		});
+
+		const totalSeats = guests.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const attendingSeats = guests.filter(g => g.rsvpStatus === 'Attending').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Lista Ufficiale Invitati Matrimonio</title>
+				<style>
+					body { font-family: Arial, sans-serif; padding: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Lista Ufficiale Invitati</h1>
+				<p>Generata il ${new Date().toLocaleDateString('it-IT')} | Totale Inviti: ${guests.length} | Totale Coperti: ${totalSeats} | Confermati: ${attendingSeats}</p>
+				<table>
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Nome Invitato</th>
+							<th>Gruppo</th>
+							<th>Coperti</th>
+							<th>Stato RSVP</th>
+							<th>Intolleranze</th>
+							<th>Tavolo</th>
+							<th>Contatti</th>
+						</tr>
+					</thead>
+					<tbody>
+						${tableRows}
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Lista_Invitati_Matrimonio_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		if (guests.length === 0) {
+			alert("La lista invitati è vuota. Aggiungi prima dei nominativi!");
+			return;
+		}
+
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('it-IT');
+		const totalSeats = guests.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		document.getElementById('print-total-seats').textContent = `${totalSeats} (${guests.length} Inviti)`;
+
+		const printTbody = document.getElementById('print-table-body');
+		printTbody.innerHTML = '';
+		guests.forEach(g => {
+			const tr = document.createElement('tr');
+			tr.innerHTML = `
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight: bold;">${g.name}</td>
+				<td style="border: 1px solid #ccc; padding: 6px;">${g.group}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align: center;">${g.partySize || 1}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align: center;">${g.rsvpStatus === 'Attending' ? 'Sì' : g.rsvpStatus === 'Declined' ? 'No' : '?'}</td>
+				<td style="border: 1px solid #ccc; padding: 6px;">${g.dietary}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align: center;">${g.table || '-'}</td>
+			`;
+			printTbody.appendChild(tr);
+		});
+
+		window.print();
+	});
+
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		if (guests.length === 0) {
+			alert("La lista invitati è vuota. Aggiungi prima dei nominativi!");
+			return;
+		}
+
+		let csv = "Nome Invitato,Gruppo,Coperti,Stato RSVP,Intolleranze,Tavolo,Contatti\n";
+		guests.forEach(g => {
+			const safeName = `"${(g.name || '').replace(/"/g, '""')}"`;
+			const safeGroup = `"${(g.group || '').replace(/"/g, '""')}"`;
+			const safeDiet = `"${(g.dietary || '').replace(/"/g, '""')}"`;
+			const safeTable = `"${(g.table || '').replace(/"/g, '""')}"`;
+			const safeEmail = `"${(g.email || '').replace(/"/g, '""')}"`;
+			csv += `${safeName},${safeGroup},${g.partySize || 1},${g.rsvpStatus},${safeDiet},${safeTable},${safeEmail}\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Lista_Invitati_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	function render() {
+		const q = searchInput.value.toLowerCase().trim();
+		const selGroup = filterGroup.value;
+		const selRsvp = filterRsvp.value;
+
+		const filtered = guests.filter(g => {
+			const matchesQuery = !q || g.name.toLowerCase().includes(q) || (g.dietary && g.dietary.toLowerCase().includes(q)) || g.group.toLowerCase().includes(q) || (g.table && g.table.toLowerCase().includes(q));
+			const matchesGroup = selGroup === 'all' || g.group === selGroup;
+			const matchesRsvp = selRsvp === 'all' || g.rsvpStatus === selRsvp;
+			return matchesQuery && matchesGroup && matchesRsvp;
+		});
+
+		const totalParties = guests.length;
+		const totalSeats = guests.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		
+		const attendingList = guests.filter(g => g.rsvpStatus === 'Attending');
+		const attendingSeats = attendingList.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+
+		const pendingList = guests.filter(g => g.rsvpStatus === 'Pending');
+		const pendingSeats = pendingList.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+
+		const declinedList = guests.filter(g => g.rsvpStatus === 'Declined');
+		const declinedSeats = declinedList.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+
+		const dietaryCount = guests.filter(g => g.dietary && g.dietary.toLowerCase() !== 'nessuna' && g.dietary.trim() !== '').length;
+
+		statTotalSeats.textContent = totalSeats;
+		statTotalParties.textContent = totalParties;
+		statAttending.textContent = attendingSeats;
+		statAttendingPct.textContent = totalSeats > 0 ? `${Math.round((attendingSeats / totalSeats) * 100)}% del totale` : '0%';
+		
+		statPending.textContent = pendingSeats;
+		statPendingPct.textContent = totalSeats > 0 ? `${Math.round((pendingSeats / totalSeats) * 100)}% del totale` : '0%';
+
+		statDeclined.textContent = declinedSeats;
+		statDeclinedPct.textContent = totalSeats > 0 ? `${Math.round((declinedSeats / totalSeats) * 100)}% del totale` : '0%';
+
+		statDietary.textContent = dietaryCount;
+
+		tableBody.innerHTML = '';
+		if (filtered.length === 0 && guests.length === 0) {
+			tableWrap.style.display = 'none';
+			emptyStateBox.style.display = 'block';
+		} else {
+			tableWrap.style.display = 'block';
+			emptyStateBox.style.display = 'none';
+
+			if (filtered.length === 0) {
+				tableBody.innerHTML = `<tr><td colspan="6" style="padding: 2rem; text-align: center; color: var(--text-secondary); font-style: italic;">Nessun invitato corrisponde ai filtri attivi.</td></tr>`;
+			} else {
+				filtered.forEach((g, idx) => {
+					const tr = document.createElement('tr');
+					tr.style.borderBottom = '1px solid var(--muted-paper)';
+					tr.style.background = idx % 2 === 0 ? '#fff' : '#faf8f5';
+
+					let rsvpBadgeClass = 'status-pending';
+					let rsvpIcon = '⏳ In Attesa';
+					if (g.rsvpStatus === 'Attending') {
+						rsvpBadgeClass = 'status-attending';
+						rsvpIcon = '✅ Confermato';
+					} else if (g.rsvpStatus === 'Declined') {
+						rsvpBadgeClass = 'status-declined';
+						rsvpIcon = '❌ Assente';
+					}
+
+					const isDietSpecial = g.dietary && g.dietary.toLowerCase() !== 'nessuna' && g.dietary.trim() !== '';
+					const dietBadge = isDietSpecial 
+						? `<span style="color: var(--accent-red); font-weight: bold; background: #fee2e2; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.85rem;">⚠️ ${g.dietary}</span>`
+						: `<span style="color: var(--text-secondary); font-size: 0.85rem;">Nessuna</span>`;
+
+					tr.innerHTML = `
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper);">
+							<strong style="display: block; font-size: 1.05rem; color: var(--fg-pencil);">${g.name}</strong>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">
+								Posti: <strong>${g.partySize || 1}</strong> ${g.email ? `• ${g.email}` : ''}
+							</span>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper);">
+							<span class="group-pill" style="background: ${groupColors[g.group] || '#e5e0d8'};">${g.group}</span>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper);">
+							<span class="status-badge ${rsvpBadgeClass}" title="Clicca per cambiare stato RSVP" onclick="cycleRsvpStatus('${g.id}')">
+								${rsvpIcon}
+							</span>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper);">
+							${dietBadge}
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper); text-align: center;">
+							<span style="font-size: 0.9rem; font-weight: bold; color: var(--fg-pencil);">${g.table || '-'}</span>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper); text-align: center;">
+							<button type="button" class="action-icon-btn" title="Elimina Invitato" onclick="deleteGuestItem('${g.id}')">
+								🗑️
+							</button>
+						</td>
+					`;
+					tableBody.appendChild(tr);
+				});
+			}
+		}
+
+		chartContainer.innerHTML = '';
+		chartLegend.innerHTML = '';
+
+		if (guests.length > 0) {
+			const groupCounts = {};
+			guests.forEach(g => {
+				const seats = parseInt(g.partySize) || 1;
+				groupCounts[g.group] = (groupCounts[g.group] || 0) + seats;
+			});
+
+			Object.entries(groupCounts).forEach(([grp, count]) => {
+				const pct = (count / totalSeats) * 100;
+				const segment = document.createElement('div');
+				segment.style.cssText = `height: 100%; width: ${pct}%; background-color: ${groupColors[grp] || '#e5e0d8'}; border-right: 1px solid var(--fg-pencil); transition: width 0.3s ease;`;
+				segment.title = `${grp}: ${count} coperti (${pct.toFixed(1)}%)`;
+				chartContainer.appendChild(segment);
+
+				const legItem = document.createElement('div');
+				legItem.style.cssText = `display: flex; align-items: center; gap: 0.25rem;`;
+				legItem.innerHTML = `
+					<div style="width: 12px; height: 12px; background-color: ${groupColors[grp] || '#e5e0d8'}; border: 1px solid var(--fg-pencil); border-radius: 2px;"></div>
+					<span><strong>${grp}:</strong> ${count} (${Math.round(pct)}%)</span>
+				`;
+				chartLegend.appendChild(legItem);
+			});
+
+			if (chartContainer.lastChild) {
+				chartContainer.lastChild.style.borderRight = 'none';
+			}
+		} else {
+			chartContainer.innerHTML = '<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--text-secondary); font-style: italic;">Nessun invitato inserito</div>';
+		}
+	}
+
+	loadStoredGuests();
+	render();
+</script>

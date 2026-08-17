@@ -1,0 +1,597 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/cake-pricing-calculator/#webapp",
+      "name": "Calculateur de Prix de Gâteau de Mariage et Pièce Montée",
+      "url": "https://manage.wedding/fr/cake-pricing-calculator",
+      "description": "Calculateur de devis pâtissier pour wedding cake et pièce montée de mariage. Calculez le prix par part, les heures de travail, les ingrédients, la structure des étages, la marge bénéficiaire et les frais de livraison. Export devis Word et PDF.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Calculer le Prix d'un Gâteau de Mariage Personnalisé",
+      "description": "Méthode professionnelle pour chiffrer le coût de fabrication d'un wedding cake et établir un devis juste et rentable.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Définir le Nombre de Parts et d'Étages",
+          "text": "Renseignez le nombre d'invités et le nombre d'étages superposés (ex. 3 étages pour 120 convives)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Chiffrer les Ingrédients et Matériaux de Structure",
+          "text": "Additionnez le coût des matières premières (beurre, ganache, chocolat, purées de fruits) et des supports (semelles, tiges dowels, boîtes)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Calculer les Heures de Travail et Salaire Horaire",
+          "text": "Multipliez le temps de confection (cuisson, garniture, lissage, montage, modelage) par le taux horaire de l'artisan pâtissier (25 € à 50 €/h)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Appliquer le Coefficient Artistique et la Livraison",
+          "text": "Ajustez le multiplicateur de complexité du décor (1.1x semi-naked à 2.5x fleurs en sucre) et intégrez le transport réfrigéré."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quel est le prix moyen d'une part de wedding cake de mariage en France ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En France, le prix moyen d'une part de wedding cake se situe entre 6,50 € et 8,50 € pour une finition en crème au beurre pochée ou semi-naked, et entre 8,50 € et 14,00 € par part pour un gâteau recouvert de pâte à sucre avec modelages de fleurs en sucre faites à la main."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment économiser avec l'astuce du 'gâteau de découpe + gâteau d'office' ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Les mariés commandent une petite pièce montée décorée 2 étages (30 à 40 parts) pour la mise en scène des photos et la découpe officielle, et complètent avec des plaques de gâteau d'office en cuisine (3,50 € / part) pour le reste des invités. Cela permet d'économiser 300 € à 600 €."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien facturer pour la livraison et le montage du gâteau sur le lieu de réception ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le tarif habituel de livraison en véhicule réfrigéré est de 1,20 € à 1,80 € par kilomètre aller-retour, plus un forfait de mise en place de 40 € à 80 € pour l'assemblage final des étages et le placement des fleurs fraîches."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculateur Prix Gâteau Mariage & Tarif par Part | Manage.Wedding"
+	description="Calculez le prix de confection d'un wedding cake : coût par part, ingrédients, heures de travail pâtissier, structure et livraison. Export Word et PDF."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Prix Gâteau de Mariage" category="dining" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Tarif par Part & Devis Pâtissier</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Calculateur de Prix <span class="accent-italic">Gâteau de Mariage</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Estimez le juste prix d'un wedding cake ou d'une pièce montée sur-mesure : parts, étages, ingrédients, heures de travail pâtissier, décor et livraison.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Controls & Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Paramètres de Confection
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Devis en Direct
+					</span>
+				</div>
+
+				<!-- Cake Design Archetype Presets -->
+				<div class="form-group" style="margin-bottom: 1rem;">
+					<label class="form-label" for="cake-preset" style="font-family: var(--font-heading); font-size: 0.95rem; display: block; margin-bottom: 0.3rem;">Style & Niveau de Finition</label>
+					<select id="cake-preset" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #f8fafc; font-weight: 600; font-size: 0.95rem;">
+						<option value="textured-buttercream" selected>🌸 Crème au Beurre Texturée & Fleurs Fraîches (Standard 1,4x)</option>
+						<option value="semi-naked">🌿 Semi-Naked Cake Champêtre (Simple 1,1x)</option>
+						<option value="smooth-fondant">👑 Pâte à Sucre Lisse & Monogramme (Élaboré 1,8x)</option>
+						<option value="sugar-art">💎 Fleurs en Sucre Fait Main & Feuille d'Or (Prestige 2,5x)</option>
+						<option value="cutting-sheet">🍰 Gâteau d'Apparat + Plaques en Cuisine (Économique 1,2x)</option>
+						<option value="custom">✏️ Configuration Personnalisée</option>
+					</select>
+				</div>
+
+				<!-- Servings & Tier Count -->
+				<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.75rem; margin-bottom: 1rem;" class="form-group">
+					<div>
+						<label class="form-label" for="servings" style="font-family: var(--font-heading); font-size: 0.95rem; display: block; margin-bottom: 0.3rem;">Nombre Total de Parts</label>
+						<input type="number" id="servings" class="form-input" value="120" min="10" max="600" step="5" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-size: 1.1rem; font-weight: 700;" />
+					</div>
+					<div>
+						<label class="form-label" for="tiers" style="font-family: var(--font-heading); font-size: 0.95rem; display: block; margin-bottom: 0.3rem;">Nombre d'Étages</label>
+						<select id="tiers" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-weight: 700; font-size: 0.95rem;">
+							<option value="1">1 Étage (Gâteau simple)</option>
+							<option value="2">2 Étages (30–60 parts)</option>
+							<option value="3" selected>3 Étages (80–140 parts)</option>
+							<option value="4">4 Étages (150–220 parts)</option>
+							<option value="5">5 Étages (240+ parts)</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Ingredients & Structural Costs -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;" class="form-group">
+					<div>
+						<label class="form-label" for="ingredientCost" style="font-family: var(--font-heading); font-size: 0.95rem; display: block; margin-bottom: 0.3rem;">Matières Premières (€)</label>
+						<input type="number" id="ingredientCost" class="form-input" value="85" min="10" max="2000" step="5" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-weight: 600;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Farine, beurre, ganaches, purées</span>
+					</div>
+					<div>
+						<label class="form-label" for="tierSupplyCost" style="font-family: var(--font-heading); font-size: 0.95rem; display: block; margin-bottom: 0.3rem;">Supports & Boîtes (€)</label>
+						<input type="number" id="tierSupplyCost" class="form-input" value="45" min="0" max="500" step="5" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-weight: 600;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Semelles, dowels, emballage pro</span>
+					</div>
+				</div>
+
+				<!-- Labor Hours & Hourly Wage -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;" class="form-group">
+					<div>
+						<label class="form-label" for="laborHours" style="font-family: var(--font-heading); font-size: 0.95rem; display: block; margin-bottom: 0.3rem;">Main d'Œuvre (Heures)</label>
+						<input type="number" id="laborHours" class="form-input" value="10" min="1" max="100" step="0.5" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Cuisson, montage, décor</span>
+					</div>
+					<div>
+						<label class="form-label" for="hourlyRate" style="font-family: var(--font-heading); font-size: 0.95rem; display: block; margin-bottom: 0.3rem;">Taux Horaire (€/h)</label>
+						<input type="number" id="hourlyRate" class="form-input" value="35" min="15" max="150" step="5" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						<span style="font-size: 0.78rem; color: #64748b;">Rémunération artisan</span>
+					</div>
+				</div>
+
+				<!-- Design Complexity Markup Slider -->
+				<div class="form-group" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+						<label class="form-label" for="complexity" style="margin: 0; font-family: var(--font-heading); font-size: 0.95rem;">
+							Coefficient de Complexité Artistique :
+						</label>
+						<span id="val-complexity" style="font-size: 1.05rem; font-weight: 800; color: var(--accent-red); background: #fef2f2; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--accent-red);">
+							1,4x
+						</span>
+					</div>
+					<input type="range" id="complexity" min="1.0" max="3.0" step="0.1" value="1.4" style="width: 100%; cursor: pointer;" />
+					<div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+						<span>Simple Champêtre (1,0x)</span>
+						<span>Texturé (1,5x)</span>
+						<span>Fleurs en Sucre Élaborées (3,0x)</span>
+					</div>
+				</div>
+
+				<!-- Delivery & Setup Optional Checkbox -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">
+						<input type="checkbox" id="check-delivery" checked style="width: 18px; height: 18px; accent-color: var(--fg-pencil);" />
+						<span>Inclure Livraison & Installation sur le Lieu de Réception</span>
+					</label>
+
+					<div id="delivery-inputs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; background: #f8fafc; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+						<div>
+							<label class="form-label" for="deliveryMiles" style="font-size: 0.85rem;">Distance A/R (km)</label>
+							<input type="number" id="deliveryMiles" class="form-input" value="40" min="0" max="300" step="5" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+						<div>
+							<label class="form-label" for="setupFee" style="font-size: 0.85rem;">Forfait Montage (€)</label>
+							<input type="number" id="setupFee" class="form-input" value="50" min="0" max="300" step="10" style="width: 100%; box-sizing: border-box; padding: 0.4rem; border: 1px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results, Slices & Profit Breakdown -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Primary Results Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Tarif Conseillé du Gâteau
+						</span>
+						<span id="tier-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							3 Étages
+						</span>
+					</div>
+
+					<div id="res-total-price" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						749,00 €
+					</div>
+					
+					<!-- Price Per Slice Hero Highlight -->
+					<div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem;">
+						<span style="font-size: 1.25rem; font-weight: 800; color: var(--accent-red); background: #fee2e2; border: 1.5px solid var(--accent-red); padding: 4px 10px; border-radius: 6px;">
+							<span id="res-price-per-slice">6,24 €</span> / part
+						</span>
+						<span style="font-size: 0.92rem; color: var(--text-secondary);">
+							pour <strong id="res-servings-label" style="color: var(--fg-pencil);">120 parts convives</strong>
+						</span>
+					</div>
+
+					<!-- Visual Cost Split Bar -->
+					<h4 class="font-heading" style="font-size: 0.95rem; margin-bottom: 0.4rem; color: var(--fg-pencil);">
+						Répartition Financière de la Prestation
+					</h4>
+					<div style="display: flex; height: 26px; border: 2px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; margin-bottom: 0.5rem; font-size: 0.78rem; font-weight: 800; color: #fff; text-align: center; line-height: 26px;">
+						<div id="bar-materials" style="background-color: var(--accent-blue); width: 18%; transition: width 0.2s;" title="Matières">Matières</div>
+						<div id="bar-labor" style="background-color: var(--fg-pencil); width: 48%; transition: width 0.2s;" title="Travail">Travail</div>
+						<div id="bar-profit" style="background-color: var(--accent-red); width: 28%; transition: width 0.2s;" title="Marge">Marge</div>
+						<div id="bar-delivery" style="background-color: #16a34a; width: 6%; transition: width 0.2s;" title="Livraison">Livraison</div>
+					</div>
+
+					<!-- Itemized Cost Breakdown Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin: 1.25rem 0;">
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>🍰 Ingrédients + Matériel :</span>
+							<strong id="res-materials-total">130,00 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>👩‍🍳 Rémunération Main d'Œuvre (<span id="res-labor-hours-label">10h @ 35 €/h</span>) :</span>
+							<strong id="res-labor-total">350,00 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>📈 Marge Nette Atelier (<span id="res-profit-margin-pct">29%</span>) :</span>
+							<strong id="res-profit-dollars" style="color: var(--accent-red);">219,00 €</strong>
+						</div>
+						<div id="row-delivery-fee" style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.92rem; border-bottom: 1px dashed #e2e8f0;">
+							<span>🚚 Livraison & Montage sur Site :</span>
+							<strong id="res-delivery-total">98,00 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.5rem 0 0 0; font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil);">
+							<span>Montant Total du Devis :</span>
+							<span id="res-invoice-total" style="color: var(--accent-red);">847,00 €</span>
+						</div>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-cake-quote" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Imprimer Devis (PDF)
+						</button>
+						<button id="btn-export-cake-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Export Word (.doc)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Cutting Cake Strategy Callout -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						💡 L'Astuce Pièce d'Apparat + Gâteau d'Office :
+					</strong>
+					<p style="margin: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						Économisez jusqu'à <strong>50% (300 € à 600 €)</strong> en commandant un gâteau d'apparat 2 étages pour la table d'honneur et les photos (35 parts), et en servant des gâteaux en plaque traiteur (3,50 €/part) découpés en coulisses !
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Repères Clés Pâtissiers</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Grille Tarifaire des Gâteaux de Mariage
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Comparatif des styles de wedding cake, coefficients de complexité, prix moyen par part et budget pour 100 à 150 convives.
+				</p>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<strong class="font-heading" style="font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; display: block; text-align: center;">
+					📐 La Formule Professionnelle du Devis Pâtissier :
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5; text-align: center; font-weight: 600;">
+					Prix du Gâteau = [Matières Premières + Matériel de Structure + (Heures de Travail × Taux Horaire)] × Multiplicateur Artistique (1,1× à 3,0×) + Frais de Livraison.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.90rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Style & Niveau de Décoration</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Coefficient</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Prix Moyen / Part</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">100 Invités</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">150 Invités</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Gâteau d'Apparat + Plaques en Cuisine</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1,1× – 1,2×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: #16a34a;">3,80 € – 5,00 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">380 € – 500 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">570 € – 750 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--fg-pencil);">Semi-Naked Cake Rustique</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1,2× – 1,3×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">5,50 € – 7,00 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">550 € – 700 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">825 € – 1 050 €</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">⭐ Crème au Beurre Texturée & Fleurs Fraîches</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1,4× – 1,6×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: var(--accent-blue);">7,00 € – 9,00 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">700 € – 900 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">1 050 € – 1 350 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Pâte à Sucre Lisse & Perles</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">1,8× – 2,2×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">9,00 € – 12,00 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">900 € – 1 200 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">1 350 € – 1 800 €</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #b45309);">Fleurs en Sucre Façon Haute Couture & Or</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: 700;">2,5× – 3,0×</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold; color: var(--accent-red);">13,00 € – 18,00 €+</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">1 300 € – 1 800 €+</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: bold;">1 950 € – 2 700 €+</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Comment Établir un Devis Pâtissier Rentable
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Les règles indispensables pour valoriser le savoir-faire artisanal sans sous-estimer son temps de création.
+				</p>
+			</div>
+
+			<!-- Section 1 -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. L'Erreur n°1 : Travailler Gratuitement
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Facturer un gâteau de mariage en multipliant simplement le coût des ingrédients par 2 ou 3 est une erreur classique. Ce mode de calcul ignore les 8 à 20 heures de main d'œuvre requises pour la cuisson, les ganaches, le montage, la structure interne et la minutie des finitions.
+				</p>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil);">
+					<strong>Règle d'or :</strong> Comptez toujours vos heures réelles de travail avec un taux horaire décent (30 € à 50 €/h), puis appliquez votre marge pour couvrir les charges de l'atelier et les investissements matériels.
+				</p>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/fr/cake-pricing-calculator" category="dining" />
+
+	</main>
+
+	<!-- Interactive Calculation Script -->
+	<script is:inline>
+		const presetSelect = document.getElementById('cake-preset');
+		const servingsInput = document.getElementById('servings');
+		const tiersSelect = document.getElementById('tiers');
+		const ingredientInput = document.getElementById('ingredientCost');
+		const tierSupplyInput = document.getElementById('tierSupplyCost');
+		const laborHoursInput = document.getElementById('laborHours');
+		const hourlyRateInput = document.getElementById('hourlyRate');
+		const complexityInput = document.getElementById('complexity');
+		const valComplexity = document.getElementById('val-complexity');
+
+		const chkDelivery = document.getElementById('check-delivery');
+		const deliveryBox = document.getElementById('delivery-inputs');
+		const deliveryMilesInput = document.getElementById('deliveryMiles');
+		const setupFeeInput = document.getElementById('setupFee');
+
+		const resTotalPrice = document.getElementById('res-total-price');
+		const resPricePerSlice = document.getElementById('res-price-per-slice');
+		const resServingsLabel = document.getElementById('res-servings-label');
+		const tierBadge = document.getElementById('tier-badge');
+
+		const barMaterials = document.getElementById('bar-materials');
+		const barLabor = document.getElementById('bar-labor');
+		const barProfit = document.getElementById('bar-profit');
+		const barDelivery = document.getElementById('bar-delivery');
+
+		const resMaterialsTotal = document.getElementById('res-materials-total');
+		const resLaborHoursLabel = document.getElementById('res-labor-hours-label');
+		const resLaborTotal = document.getElementById('res-labor-total');
+		const resProfitMarginPct = document.getElementById('res-profit-margin-pct');
+		const resProfitDollars = document.getElementById('res-profit-dollars');
+		const rowDeliveryFee = document.getElementById('row-delivery-fee');
+		const resDeliveryTotal = document.getElementById('res-delivery-total');
+		const resInvoiceTotal = document.getElementById('res-invoice-total');
+
+		const btnPrint = document.getElementById('btn-print-cake-quote');
+		const btnDoc = document.getElementById('btn-export-cake-doc');
+
+		function calculateCakePricing() {
+			const servings = parseInt(servingsInput.value, 10) || 1;
+			const tiers = parseInt(tiersSelect.value, 10) || 1;
+			const ingredients = parseFloat(ingredientInput.value) || 0;
+			const hardware = parseFloat(tierSupplyInput.value) || 0;
+			const laborHours = parseFloat(laborHoursInput.value) || 0;
+			const hourlyRate = parseFloat(hourlyRateInput.value) || 0;
+			const complexity = parseFloat(complexityInput.value) || 1.0;
+
+			valComplexity.textContent = `${complexity.toFixed(1)}x`;
+			tierBadge.textContent = `${tiers} Étage${tiers > 1 ? 's' : ''}`;
+			resServingsLabel.textContent = `${servings} parts convives`;
+
+			// Delivery Math
+			let deliveryFee = 0;
+			if (chkDelivery.checked) {
+				deliveryBox.style.display = 'grid';
+				rowDeliveryFee.style.display = 'flex';
+				const km = parseFloat(deliveryMilesInput.value) || 0;
+				const setup = parseFloat(setupFeeInput.value) || 0;
+				deliveryFee = (km * 1.2) + setup;
+				resDeliveryTotal.textContent = `${deliveryFee.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+			} else {
+				deliveryBox.style.display = 'none';
+				rowDeliveryFee.style.display = 'none';
+				deliveryFee = 0;
+			}
+
+			// Core Cost Math
+			const materialsCost = ingredients + hardware;
+			const laborCost = laborHours * hourlyRate;
+			const baseCost = materialsCost + laborCost;
+
+			// Price with complexity markup
+			const cakePrice = baseCost * complexity;
+			const profitDollars = cakePrice - baseCost;
+			const profitPct = cakePrice > 0 ? Math.round((profitDollars / cakePrice) * 100) : 0;
+			const pricePerSlice = servings > 0 ? (cakePrice / servings) : 0;
+			const finalInvoice = cakePrice + deliveryFee;
+
+			// Update Text Displays
+			resTotalPrice.textContent = `${cakePrice.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+			resPricePerSlice.textContent = `${pricePerSlice.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+			resMaterialsTotal.textContent = `${materialsCost.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+			resLaborHoursLabel.textContent = `${laborHours}h @ ${hourlyRate} €/h`;
+			resLaborTotal.textContent = `${laborCost.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+			resProfitMarginPct.textContent = `${profitPct}%`;
+			resProfitDollars.textContent = `${profitDollars.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+			resInvoiceTotal.textContent = `${finalInvoice.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €`;
+
+			// Update Financial Bar Graph
+			if (finalInvoice > 0) {
+				const matPct = (materialsCost / finalInvoice) * 100;
+				const labPct = (laborCost / finalInvoice) * 100;
+				const proPct = (profitDollars / finalInvoice) * 100;
+				const delPct = (deliveryFee / finalInvoice) * 100;
+
+				barMaterials.style.width = `${matPct}%`;
+				barLabor.style.width = `${labPct}%`;
+				barProfit.style.width = `${proPct}%`;
+				barDelivery.style.width = `${delPct}%`;
+			}
+		}
+
+		// Preset handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'textured-buttercream') {
+				complexityInput.value = 1.4;
+				laborHoursInput.value = 10;
+				ingredientInput.value = 85;
+				tierSupplyInput.value = 45;
+			} else if (p === 'semi-naked') {
+				complexityInput.value = 1.1;
+				laborHoursInput.value = 7;
+				ingredientInput.value = 70;
+				tierSupplyInput.value = 35;
+			} else if (p === 'smooth-fondant') {
+				complexityInput.value = 1.8;
+				laborHoursInput.value = 14;
+				ingredientInput.value = 120;
+				tierSupplyInput.value = 55;
+			} else if (p === 'sugar-art') {
+				complexityInput.value = 2.5;
+				laborHoursInput.value = 20;
+				ingredientInput.value = 160;
+				tierSupplyInput.value = 70;
+			} else if (p === 'cutting-sheet') {
+				complexityInput.value = 1.2;
+				laborHoursInput.value = 8;
+				ingredientInput.value = 75;
+				tierSupplyInput.value = 30;
+			}
+			calculateCakePricing();
+		});
+
+		// Live Listeners
+		[servingsInput, tiersSelect, ingredientInput, tierSupplyInput,
+		 laborHoursInput, hourlyRateInput, complexityInput, chkDelivery,
+		 deliveryMilesInput, setupFeeInput].forEach(elem => {
+			elem.addEventListener('input', calculateCakePricing);
+			elem.addEventListener('change', calculateCakePricing);
+		});
+
+		// Print Quote Handler
+		btnPrint.addEventListener('click', () => {
+			window.print();
+		});
+
+		// Export Word Doc
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Devis Gâteau de Mariage</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Devis Gâteau de Mariage</h2>
+					<p>Parts : ${servingsInput.value} | Étages : ${tiersSelect.value} | Prix / Part : ${resPricePerSlice.textContent}</p>
+					<table>
+						<thead><tr><th>Poste</th><th>Montant</th></tr></thead>
+						<tbody>
+							<tr><td>Gâteau (Ingrédients + Main d'œuvre + Finition)</td><td>${resTotalPrice.textContent}</td></tr>
+							<tr><td>Matières premières & Supports</td><td>${resMaterialsTotal.textContent}</td></tr>
+							<tr><td>Rémunération Main d'œuvre (${resLaborHoursLabel.textContent})</td><td>${resLaborTotal.textContent}</td></tr>
+							${chkDelivery.checked ? `<tr><td>Livraison & Montage sur place</td><td>${resDeliveryTotal.textContent}</td></tr>` : ''}
+							<tr><td><strong>TOTAL DU DEVIS</strong></td><td><strong>${resInvoiceTotal.textContent}</strong></td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob(['\ufeff', content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = `Devis_Gateau_Mariage_${new Date().toISOString().slice(0, 10)}.doc`;
+			link.click();
+			URL.revokeObjectURL(link.href);
+		});
+
+		// Initial Run
+		calculateCakePricing();
+	</script>
+</Layout>

@@ -1,0 +1,571 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/wedding-invitation-suite-sizer/#webapp",
+      "name": "Calculadora de Medidas de Invitaciones de Boda y Sobres",
+      "url": "https://manage.wedding/es/wedding-invitation-suite-sizer",
+      "inLanguage": "es",
+      "description": "Calcula las medidas exactas, márgenes de corte y tamaños de sobre para invitaciones de boda. Tablas de medidas en milímetros (mm) para C5, C6, A7, cuadradas y sangrados de imprenta de 3 mm a 300 DPI para Canva y Photoshop.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Dimensionar y Maquetar una Suite de Invitaciones de Boda",
+      "description": "Guía paso a paso para cuadrar sobres, cartulinas base y tarjetas secundarias con holguras de 3 mm a 5 mm.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Paso 1: Selecciona el Estándar de Sobre Exterior",
+          "text": "Los sobres más comunes en España y Europa son el C5 (162 × 229 mm para tarjetas A5) y el formato estándar A7 / B6 (135 × 185 mm para tarjetas de 13 × 18 cm)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 2: Calcula la Holgura de Deslizamiento (3 a 5 mm)",
+          "text": "La tarjeta principal debe ser entre 4 y 6 mm más pequeña que el sobre exterior para deslizarse con suavidad sin doblar las esquinas."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 3: Dimensiona la Tarjeta de Información y RSVP",
+          "text": "Diseña la tarjeta de detalles en tamaño A6 (105 × 148 mm) o 90 × 130 mm para sobre de respuesta C6."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Paso 4: Añade 3 mm de Sangre a 300 DPI",
+          "text": "En Canva, Illustrator o Photoshop, añade 3 mm por cada lado antes de enviar a imprenta para evitar bordes blancos tras el corte con guillotina."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuál es el tamaño estándar de una invitación de boda en España y Europa?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Los dos tamaños más utilizados son el formato A5 (148 × 210 mm) en sobre C5 (162 × 229 mm) y el formato clásico de 13 × 18 cm (o 127 × 178 mm) en sobre B6 / A7 (135 × 185 mm)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué tamaño de sobre se necesita para una invitación de 13x18 cm?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Requiere un sobre de 135 × 185 mm o 140 × 190 mm (estándar B6 o sobre artesanal con solapa de pico), dejando entre 4 y 5 mm de margen lateral."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuáles son las medidas en píxeles para Canva a 300 DPI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Para una invitación A5 (148 × 210 mm) con 3 mm de sangre a 300 DPI, el lienzo debe medir 1819 × 2551 píxeles. Para 13 × 18 cm con sangre, 1575 × 2175 píxeles."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Medidas de Invitaciones de Boda y Sobres (Guía Imprenta) | Manage.Wedding"
+	description="Calcula medidas exactas de corte, márgenes y sobres para invitaciones de boda. Formatos A5/C5, 13x18 cm, cuadradas y especificaciones Canva a 300 DPI."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Medidas de Invitaciones y Sobres" category="stationery-creative" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Especificaciones para Canva a 300 DPI y Guillotina</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Medidas de Invitaciones <span class="accent-italic">& Guía de Sobres</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Calcula las dimensiones exactas de la tarjeta principal, cartulina base de forro, tarjetas de detalles, sobres a juego y sangrados de 3 mm para imprenta.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Suite Format Selector & Units -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Formato y Unidades
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Alta Calidad 300 DPI
+					</span>
+				</div>
+
+				<!-- Suite Preset Picker -->
+				<div class="form-group">
+					<label class="form-label" for="suite-format-preset">Formato Estándar de Invitación</label>
+					<select id="suite-format-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="uk-metric" selected>🇪🇺 Europeo Estándar A5/C5 (Sobre 162×229 mm / Tarjeta 148×210 mm)</option>
+						<option value="a7-standard">💌 Clásico 13×18 cm (Sobre 135×185 mm / Tarjeta 127×178 mm / RSVP 90×130 mm)</option>
+						<option value="a7-layered">👑 Enmarcada con Forro Base (Base 13×18 cm / Tarjeta 12×17 cm con marco visto)</option>
+						<option value="square-6">🔲 Cuadrada Moderna 15×15 cm (Sobre 16×16 cm / Tarjeta 15×15 cm)</option>
+						<option value="tea-length">🥂 Alargada Slim / Díptico (Sobre Americano 110×220 mm / Tarjeta 100×210 mm)</option>
+						<option value="a8-luxe">🏰 Gala Luxe B6 Grande (Sobre 140×205 mm / Tarjeta 135×195 mm)</option>
+					</select>
+				</div>
+
+				<!-- Measurement Unit Selector -->
+				<div class="form-group">
+					<label class="form-label" for="unit-selector">Unidades de Visualización</label>
+					<select id="unit-selector" class="form-input" style="cursor: pointer; font-weight: 600;">
+						<option value="mm" selected>Milímetros (ej. 148 × 210 mm)</option>
+						<option value="in">Pulgadas (ej. 5,00" × 7,00")</option>
+						<option value="px">Píxeles @ 300 DPI para Canva / Photoshop (ej. 1748 × 2480 px)</option>
+					</select>
+				</div>
+
+				<!-- Backer Mat Border Width -->
+				<div class="form-group">
+					<label class="form-label" for="border-reveal">Borde Visto de Cartulina Base</label>
+					<select id="border-reveal" class="form-input" style="cursor: pointer;">
+						<option value="0.125" selected>3 mm (Fino y Elegante)</option>
+						<option value="0.25">6 mm (Marco Ancho Contrastado)</option>
+						<option value="0">Sin Cartulina Base (Tarjeta Simple)</option>
+					</select>
+				</div>
+
+				<!-- Additional Components (Checkboxes) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Elementos de la Suite Nupcial
+					</strong>
+
+					<div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.92rem;">
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="layer-details" checked style="width: 18px; height: 18px;" />
+							<span>Incluir Tarjeta de Información / Alojamiento</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="layer-rsvp" checked style="width: 18px; height: 18px;" />
+							<span>Incluir Tarjeta de Confirmación RSVP y Sobre Pequeño</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="layer-bellyband" checked style="width: 18px; height: 18px;" />
+							<span>Incluir Faja / Fajín de Papel Vegetal o Cinta</span>
+						</label>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Interactive Layering Canvas & Spec Sheet -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Spec Sheet Breakdown Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Ficha Técnica de Corte e Impresión
+						</span>
+						<span id="format-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							Europeo Estándar A5/C5
+						</span>
+					</div>
+
+					<h3 class="font-heading" style="font-size: 1.6rem; color: var(--fg-pencil); margin: 0 0 1rem 0;">
+						Medidas por Capas y Piezas
+					</h3>
+
+					<!-- Itemized Dimension Specs Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						
+						<div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span><strong>1. Sobre Exterior Principal:</strong></span>
+							<strong id="spec-outer-envelope" style="color: var(--accent-blue);">162 × 229 mm (C5)</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span><strong>2. Cartulina Base / Forro:</strong></span>
+							<strong id="spec-backer-card">148 × 210 mm (A5)</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span><strong>3. Tarjeta Impresa Principal:</strong></span>
+							<strong id="spec-main-card" style="color: var(--accent-red);">142 × 204 mm</strong>
+						</div>
+
+						<div id="row-details" style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span><strong>4. Tarjeta de Detalles / Horarios:</strong></span>
+							<strong id="spec-details-card">105 × 148 mm (A6)</strong>
+						</div>
+
+						<div id="row-rsvp" style="display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span><strong>5. Tarjeta RSVP + Sobre C6:</strong></span>
+							<strong id="spec-rsvp-card">Tarjeta: 105×148 mm | Sobre: 114×162 mm</strong>
+						</div>
+
+						<div id="row-belly" style="display: flex; justify-content: space-between; padding: 0.4rem 0; font-size: 0.92rem;">
+							<span><strong>6. Faja / Fajín de Cierre:</strong></span>
+							<strong id="spec-bellyband">45 × 330 mm</strong>
+						</div>
+
+					</div>
+
+					<!-- Print Bleed Spec Box -->
+					<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.88rem; color: var(--fg-pencil); line-height: 1.5;">
+						<strong>📐 Ajustes de Sangrado para Imprenta:</strong><br />
+						Añade <strong style="color: var(--accent-red);">+3 mm (35 px a 300 DPI)</strong> a los 4 lados de tu diseño en Canva o Illustrator antes de exportar a PDF para asegurar que el corte no deje filos blancos.
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-specs" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Imprimir Ficha de Corte (PDF)
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Exportar a Word (.doc)
+						</button>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Guía Rápida de Medidas</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Tabla Resumen: Medidas de Invitación, Sobres y Píxeles en Canva
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Consulta las dimensiones universales de las tarjetas de boda y sus sobres exactos en milímetros y resolución de 300 DPI.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📐 Regla de los 5 mm de Holgura de Sobre:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Tamaño del Sobre = [Medida de Tarjeta + 5 mm a 8 mm por lado] • Una tarjeta A5 (148 × 210 mm) requiere sobre C5 (162 × 229 mm) • Una tarjeta de 13 × 18 cm requiere sobre B6 (135 × 185 mm).
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Formato</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Medida Tarjeta (mm)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Sobre Compatible</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Lienzo Canva 300 DPI</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Europeo A5 Estándar</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">148 × 210 mm</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">C5 (162 × 229 mm)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">1748 × 2480 px</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Clásico 13 × 18 cm</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">127 × 178 mm</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">B6 / A7 (135 × 185 mm)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">1500 × 2100 px</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Cuadrado Moderno</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">150 × 150 mm</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Cuadrado (160 × 160 mm)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">1772 × 1772 px</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Alargada / Tríptico Slim</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">100 × 210 mm</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">DL / Americano (110 × 220 mm)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">1181 × 2480 px</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guía Completa de Formatos de Invitación y Gramajes de Papel
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Diferencias entre gramajes (g/m²), márgenes de guillotina y orden de colocación dentro del sobre.
+				</p>
+			</div>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Gramajes de Papel Recomendados (g/m² vs Textura)
+				</h3>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>300 – 350 g/m² (Cartulina Estándar de Boda):</strong> Firme, resistente y con cuerpo excelente para tarjeta principal. Acepta impresión digital, offset y hendidos limpios.</li>
+					<li><strong>450 – 600 g/m² (Algodón / Letterpress):</strong> Máximo lujo y grosor artesanal. Perfecto para bajorrelieve, golpe seco y estampación en oro (hot stamping).</li>
+					<li><strong>120 – 140 g/m²:</strong> Papel fino para forros interiores de sobre o fajines de papel vegetal traslúcido.</li>
+				</ul>
+			</section>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					2. Orden de Apilado Protocolario dentro del Sobre
+				</h3>
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem; font-size: 0.98rem; line-height: 1.6; color: var(--fg-pencil);">
+					<strong>📦 Secuencia de Montaje (De abajo hacia arriba):</strong><br />
+					1. <strong>Tarjeta Principal de Boda</strong> (Cara hacia arriba al fondo)<br />
+					2. <strong>Tarjeta de Información / Horarios</strong> (Encima de la principal)<br />
+					3. <strong>Sobre de Respuesta RSVP</strong> (Con la solapa hacia abajo)<br />
+					4. <strong>Tarjeta de Confirmación</strong> (Introducida bajo la solapa del sobre RSVP)<br />
+					5. <strong>Fajín o Lazo de Seda</strong> (Envolviendo todo el conjunto)<br />
+					6. <strong>Dentro del Sobre Exterior</strong> de modo que al abrir la solapa, los invitados vean inmediatamente sus nombres y la fecha.
+				</div>
+			</section>
+
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Preguntas Frecuentes
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">¿Cabe una invitación de 13×18 cm en un sobre C6?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						No. El sobre C6 mide 114 × 162 mm, por lo que es demasiado pequeño. Una tarjeta de 13 × 18 cm requiere un sobre B6 / A7 (135 × 185 mm).
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">¿Cuánto debe medir la faja o fajín para una invitación A5?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Un fajín estándar para envolver una tarjeta A5 debe medir entre 40 y 50 mm de alto por 320 a 340 mm de largo para solaparse y pegarse con facilidad.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<!-- Related Planning Tools -->
+		<RelatedTools currentPath="/es/wedding-invitation-suite-sizer" category="stationery" />
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const formatSelect = document.getElementById('suite-format-preset');
+		const unitSelect = document.getElementById('unit-selector');
+		const borderRevealSelect = document.getElementById('border-reveal');
+
+		const layerDetailsCheck = document.getElementById('layer-details');
+		const layerRsvpCheck = document.getElementById('layer-rsvp');
+		const layerBellyCheck = document.getElementById('layer-bellyband');
+
+		const formatBadge = document.getElementById('format-badge');
+		const specOuter = document.getElementById('spec-outer-envelope');
+		const specBacker = document.getElementById('spec-backer-card');
+		const specMain = document.getElementById('spec-main-card');
+		const specDetails = document.getElementById('spec-details-card');
+		const specRsvp = document.getElementById('spec-rsvp-card');
+		const specBelly = document.getElementById('spec-bellyband');
+
+		const rowDetails = document.getElementById('row-details');
+		const rowRsvp = document.getElementById('row-rsvp');
+		const rowBelly = document.getElementById('row-belly');
+
+		const btnPrint = document.getElementById('btn-print-specs');
+		const btnDoc = document.getElementById('btn-export-doc');
+
+		function formatDim(w, h, unit) {
+			if (unit === 'in') {
+				return `${w.toFixed(2)}" × ${h.toFixed(2)}"`;
+			} else if (unit === 'mm') {
+				const wMm = Math.round(w * 25.4);
+				const hMm = Math.round(h * 25.4);
+				return `${wMm} × ${hMm} mm`;
+			} else if (unit === 'px') {
+				const wPx = Math.round(w * 300);
+				const hPx = Math.round(h * 300);
+				return `${wPx} × ${hPx} px`;
+			}
+		}
+
+		function updateSuiteDimensions() {
+			const fmt = formatSelect.value;
+			const unit = unitSelect.value;
+			const border = parseFloat(borderRevealSelect.value) || 0;
+
+			let outerW = 6.38, outerH = 9.02, outerName = 'C5 (162×229 mm)';
+			let backerW = 5.83, backerH = 8.27; // A5
+			let mainW = 5.83, mainH = 8.27;
+			let detailsW = 4.13, detailsH = 5.83;
+			let rsvpCardW = 4.13, rsvpCardH = 5.83, rsvpEnvW = 4.49, rsvpEnvH = 6.38;
+			let bellyW = 1.75, bellyL = 13.00;
+
+			if (fmt === 'uk-metric') {
+				formatBadge.textContent = 'Europeo Estándar A5/C5';
+				outerW = 6.38; outerH = 9.02; outerName = 'C5 (162×229 mm)';
+				backerW = 5.83; backerH = 8.27; // A5
+				mainW = 5.83 - (border * 2); mainH = 8.27 - (border * 2);
+				detailsW = 4.13; detailsH = 5.83; // A6
+				rsvpCardW = 4.13; rsvpCardH = 5.83; rsvpEnvW = 4.49; rsvpEnvH = 6.38; // C6
+				bellyW = 1.75; bellyL = 13.00;
+			} else if (fmt === 'a7-standard') {
+				formatBadge.textContent = 'Clásico 13×18 cm';
+				outerW = 5.25; outerH = 7.25; outerName = 'B6 / A7 (135×185 mm)';
+				backerW = 5.00; backerH = 7.00;
+				mainW = 5.00 - (border * 2); mainH = 7.00 - (border * 2);
+				detailsW = 4.25; detailsH = 5.50;
+				rsvpCardW = 3.50; rsvpCardH = 5.00; rsvpEnvW = 4.375; rsvpEnvH = 5.75;
+				bellyW = 1.75; bellyL = 11.50;
+			} else if (fmt === 'a7-layered') {
+				formatBadge.textContent = 'Enmarcada con Forro Base';
+				outerW = 5.25; outerH = 7.25; outerName = 'B6 / A7';
+				backerW = 5.00; backerH = 7.00;
+				mainW = 4.75; mainH = 6.75;
+				detailsW = 4.00; detailsH = 5.25;
+				rsvpCardW = 3.50; rsvpCardH = 5.00; rsvpEnvW = 4.375; rsvpEnvH = 5.75;
+				bellyW = 1.75; bellyL = 11.50;
+			} else if (fmt === 'square-6') {
+				formatBadge.textContent = 'Cuadrada Moderna 15×15 cm';
+				outerW = 6.30; outerH = 6.30; outerName = 'Cuadrado (160×160 mm)';
+				backerW = 5.90; backerH = 5.90;
+				mainW = 5.90 - (border * 2); mainH = 5.90 - (border * 2);
+				detailsW = 4.50; detailsH = 4.50;
+				rsvpCardW = 4.00; rsvpCardH = 4.00; rsvpEnvW = 4.50; rsvpEnvH = 4.50;
+				bellyW = 1.75; bellyL = 13.50;
+			} else if (fmt === 'tea-length') {
+				formatBadge.textContent = 'Alargada Slim / Díptico';
+				outerW = 4.33; outerH = 8.66; outerName = 'Americano DL (110×220 mm)';
+				backerW = 3.93; backerH = 8.27;
+				mainW = 3.93 - (border * 2); mainH = 8.27 - (border * 2);
+				detailsW = 3.50; detailsH = 6.00;
+				rsvpCardW = 3.50; rsvpCardH = 5.00; rsvpEnvW = 4.375; rsvpEnvH = 5.75;
+				bellyW = 1.75; bellyL = 9.25;
+			} else if (fmt === 'a8-luxe') {
+				formatBadge.textContent = 'Gala Luxe B6 Grande';
+				outerW = 5.50; outerH = 8.125; outerName = 'B6 Grande';
+				backerW = 5.25; backerH = 7.75;
+				mainW = 5.25 - (border * 2); mainH = 7.75 - (border * 2);
+				detailsW = 4.25; detailsH = 6.00;
+				rsvpCardW = 3.50; rsvpCardH = 5.00; rsvpEnvW = 4.375; rsvpEnvH = 5.75;
+				bellyW = 2.00; bellyL = 12.00;
+			}
+
+			specOuter.textContent = `${formatDim(outerW, outerH, unit)} (${outerName})`;
+			specBacker.textContent = border > 0 ? formatDim(backerW, backerH, unit) : 'N/A (Sin cartulina base)';
+			specMain.textContent = formatDim(mainW, mainH, unit);
+			specDetails.textContent = formatDim(detailsW, detailsH, unit);
+			specRsvp.textContent = `Tarjeta: ${formatDim(rsvpCardW, rsvpCardH, unit)} | Sobre: ${formatDim(rsvpEnvW, rsvpEnvH, unit)}`;
+			specBelly.textContent = formatDim(bellyW, bellyL, unit);
+
+			rowDetails.style.display = layerDetailsCheck.checked ? 'flex' : 'none';
+			rowRsvp.style.display = layerRsvpCheck.checked ? 'flex' : 'none';
+			rowBelly.style.display = layerBellyCheck.checked ? 'flex' : 'none';
+		}
+
+		[formatSelect, unitSelect, borderRevealSelect, layerDetailsCheck, layerRsvpCheck, layerBellyCheck].forEach(elem => {
+			elem.addEventListener('change', updateSuiteDimensions);
+		});
+
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Ficha Técnica de Medidas de Invitaciones — Manage.Wedding</title>
+					<style>
+						@page { size: A4; margin: 15mm; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 20pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Ficha de Corte de Invitaciones de Boda</h1>
+					<p>Formato: ${formatBadge.textContent} | Unidades: ${unitSelect.options[unitSelect.selectedIndex].text}</p>
+					
+					<table>
+						<thead><tr><th>Pieza / Capa</th><th>Medida Final de Corte</th><th>Especificaciones</th></tr></thead>
+						<tbody>
+							<tr><td><strong>Sobre Exterior</strong></td><td>${specOuter.textContent}</td><td>Sobre de Envío</td></tr>
+							<tr><td><strong>Cartulina Base</strong></td><td>${specBacker.textContent}</td><td>Base de Soporte</td></tr>
+							<tr><td><strong>Tarjeta Principal</strong></td><td><strong>${specMain.textContent}</strong></td><td>Añadir 3 mm de sangre a 300 DPI</td></tr>
+							<tr><td><strong>Tarjeta de Información</strong></td><td>${specDetails.textContent}</td><td>Encarte Secundario</td></tr>
+							<tr><td><strong>Tarjeta RSVP</strong></td><td>${specRsvp.textContent}</td><td>Confirmación</td></tr>
+							<tr><td><strong>Faja / Fajín</strong></td><td>${specBelly.textContent}</td><td>Cierre</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Medidas de Invitaciones de Boda</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Ficha Técnica de Medidas de Invitaciones</h2>
+					<p>Formato: ${formatBadge.textContent}</p>
+					<table>
+						<thead><tr><th>Pieza</th><th>Medida de Corte</th></tr></thead>
+						<tbody>
+							<tr><td>Sobre Exterior</td><td>${specOuter.textContent}</td></tr>
+							<tr><td>Cartulina Base</td><td>${specBacker.textContent}</td></tr>
+							<tr><td>Tarjeta Principal</td><td>${specMain.textContent}</td></tr>
+							<tr><td>Tarjeta de Detalles</td><td>${specDetails.textContent}</td></tr>
+							<tr><td>Tarjeta RSVP</td><td>${specRsvp.textContent}</td></tr>
+							<tr><td>Fajín</td><td>${specBelly.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'ficha-tecnica-medidas-invitacion.doc';
+			link.click();
+		});
+
+		updateSuiteDimensions();
+	</script>
+</Layout>

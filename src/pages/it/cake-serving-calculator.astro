@@ -1,0 +1,530 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/cake-serving-calculator/#webapp",
+      "name": "Calcolatore Porzioni Torta Nuziale & Piani Torta",
+      "url": "https://manage.wedding/it/cake-serving-calculator",
+      "inLanguage": "it",
+      "description": "Calcola le porzioni esatte, il numero di piani, i diametri in cm e il peso in kg della torta nuziale per il tuo matrimonio con diagramma visivo.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come calcolare le porzioni e le dimensioni della torta nuziale",
+      "description": "Guida per pasticcerie e sposi per determinare diametri, piani e porzioni della torta per il matrimonio.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Inserire il numero di invitati",
+          "text": "Indica il totale dei commensali presenti al momento del taglio della torta."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Scegliere la forma (Rotonda, Quadrata o a Cuore)",
+          "text": "Le torte quadrate consentono un taglio a griglia geometrica con circa il 20% in più di porzioni a parità di ingombro."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Selezionare la configurazione dei piani",
+          "text": "Scegli tra 2 piani (30-60 ospiti), 3 piani classico (80-120 ospiti) o 4 piani monumentale (140-200 ospiti)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Calcolare il peso totale in kg",
+          "text": "Considera una media di 100–120g a porzione per ottenere il peso ideale da commissionare al pasticcere."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quanti kg di torta nuziale servono per 100 persone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Per 100 invitati si calcolano solitamente tra i 10 kg e i 12 kg di torta (circa 100–120 grammi a porzione), equivalenti a una classica torta a 3 piani con diametri di 15 cm, 22 cm e 30 cm."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qual è la differenza tra torta monumentale scenografica e torta da taglio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Molte coppie scelgono una torta scenografica a 3 o 4 piani decorata per le foto del taglio della torta, abbinata a teglie di torta fresca tenute in cucina (o al buffet dei dolci) per velocizzare il servizio e risparmiare fino al 40% sui costi di decorazione."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calcolatore Porzioni Torta Nuziale & Piani Torta | Manage.Wedding"
+	description="Calcola le porzioni della torta nuziale, il numero di piani (diametro in cm), la resa tra torte rotonde, quadrate o a cuore e il peso in kg necessario."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Calcolatore Porzioni Torta Nuziale" category="food-dining" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2.5rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Calcolatore Porzioni <span class="accent-italic">Torta Nuziale</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Calcola quanti piani, diametri in cm e chili di torta occorrono per i tuoi invitati. Confronta torte rotonde, quadrate o a cuore con rendering grafico in scala.
+				</p>
+			</div>
+		</section>
+
+		<!-- Interactive Calculator & Visual Studio Grid -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; margin-bottom: 3.5rem;" class="calc-container-grid">
+			
+			<!-- Left Column: Controls & Inputs -->
+			<div class="hand-card" style="padding: 2rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--fg-pencil); display: flex; align-items: center; gap: 0.5rem;">
+					<span>🎂</span> Specifiche Torta Nuziale
+				</h2>
+
+				<form id="cake-calc-form">
+					
+					<!-- Calculation Mode -->
+					<div style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Formula di Presentazione:
+						</label>
+						<div class="mode-select-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
+							<label class="mode-tab active" id="tab-tiered" style="border: 2px solid var(--fg-pencil); padding: 0.6rem; border-radius: 4px; text-align: center; cursor: pointer; background: var(--fg-pencil); color: #fff; font-weight: bold; font-size: 0.85rem;">
+								<input type="radio" name="cakeMode" value="tiered" checked style="display: none;"> Torta a Piani
+							</label>
+							<label class="mode-tab" id="tab-sheet" style="border: 2px solid var(--fg-pencil); padding: 0.6rem; border-radius: 4px; text-align: center; cursor: pointer; background: #fff; font-weight: bold; font-size: 0.85rem;">
+								<input type="radio" name="cakeMode" value="sheet" style="display: none;"> Torta a Vassoio
+							</label>
+							<label class="mode-tab" id="tab-combo" style="border: 2px solid var(--fg-pencil); padding: 0.6rem; border-radius: 4px; text-align: center; cursor: pointer; background: #fff; font-weight: bold; font-size: 0.85rem;">
+								<input type="radio" name="cakeMode" value="combo" style="display: none;"> Piani + Taglio
+							</label>
+						</div>
+					</div>
+
+					<!-- Guest Count -->
+					<div style="margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+							<label class="font-heading" for="guest-count" style="font-size: 1.15rem; color: var(--fg-pencil);">
+								Numero di Invitati:
+							</label>
+							<span id="guest-badge" class="font-heading" style="background: var(--accent-blue); color: #fff; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.9rem;">100 Invitati</span>
+						</div>
+						<input type="range" id="guest-slider" min="10" max="400" step="5" value="100" style="width: 100%; margin-bottom: 0.5rem; accent-color: var(--accent-blue);">
+						<input type="number" id="guest-count" class="form-input" min="1" max="1000" value="100" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Cake Shape -->
+					<div id="shape-group" style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Forma dei Piani:
+						</label>
+						<select id="cake-shape" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; background: #fff;">
+							<option value="round" selected>Rotonda (Classica ed Elegante)</option>
+							<option value="square">Quadrata (+20% di porzioni a griglia)</option>
+							<option value="heart">A Cuore (Romantica)</option>
+						</select>
+					</div>
+
+					<!-- Slice / Portion Size -->
+					<div style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Grammatura Porzione:
+						</label>
+						<select id="portion-size" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; background: #fff;">
+							<option value="wedding" selected>Porzione Nozze Standard (100g – Ideale dopo cena placé)</option>
+							<option value="party">Porzione Generosa (150g – Taglio abbondante)</option>
+							<option value="dessert">Porzione Degustazione (80g – Con ricco buffet di dolci)</option>
+						</select>
+					</div>
+
+					<!-- Tier Preference -->
+					<div id="tier-pref-group" style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Configurazione Piani:
+						</label>
+						<select id="tier-count-pref" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem; background: #fff;">
+							<option value="auto">Consiglia Automaticamente la Proporzione Migliore</option>
+							<option value="1">Monopiano (1 Piano)</option>
+							<option value="2">2 Piani (Intima 30–65 Invitati)</option>
+							<option value="3">3 Piani (Classica 75–130 Invitati)</option>
+							<option value="4">4 Piani (Monumentale 130–220 Invitati)</option>
+							<option value="5">5 Piani (Reale 220+ Invitati)</option>
+						</select>
+					</div>
+
+					<!-- Anniversary Top Tier Checkbox -->
+					<div style="margin-bottom: 1.5rem; padding: 0.75rem; background: var(--bg-paper); border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+						<label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="save-top-tier" style="margin-top: 0.3rem; transform: scale(1.2);">
+							<span class="font-body" style="font-size: 0.95rem; color: var(--fg-pencil); line-height: 1.4;">
+								<strong>Conservare il tortino superiore per gli sposi?</strong><br>
+								<span style="color: var(--text-secondary); font-size: 0.85rem;">Sottrae circa 12 porzioni dal calcolo per garantire che tutti gli invitati abbiano la propria fetta.</span>
+							</span>
+						</label>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Interactive Visuals & Results -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Results Summary Card -->
+				<div class="hand-card" style="background: #fff; padding: 1.75rem;">
+					<div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+						<h2 class="font-heading" style="font-size: 1.6rem; color: var(--accent-red); margin: 0;">
+							📐 Scheda Tecnica Torta
+						</h2>
+						<span id="match-status" class="font-heading" style="background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">
+							Porzioni Esatte
+						</span>
+					</div>
+
+					<!-- Big Stats -->
+					<div class="cake-stats-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem;">
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.8rem; color: var(--text-secondary); display: block;">Porzioni Totali</span>
+							<strong id="res-total-servings" class="font-heading" style="font-size: 1.6rem; color: var(--accent-blue); display: block;">100</strong>
+							<span id="res-servings-diff" style="font-size: 0.75rem; color: var(--text-secondary);">Per 100 ospiti</span>
+						</div>
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.8rem; color: var(--text-secondary); display: block;">Piani / Diametri</span>
+							<strong id="res-tier-count" class="font-heading" style="font-size: 1.6rem; color: var(--fg-pencil); display: block;">3 Piani</strong>
+							<span id="res-tier-detail" style="font-size: 0.75rem; color: var(--text-secondary);">15, 22, 30 cm</span>
+						</div>
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.8rem; color: var(--text-secondary); display: block;">Peso Stimato</span>
+							<strong id="res-cake-weight" class="font-heading" style="font-size: 1.6rem; color: var(--accent-red); display: block;">11,0 kg</strong>
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">110g / porzione</span>
+						</div>
+					</div>
+
+					<!-- Visual Cake Tier Render Container -->
+					<div id="visual-cake-studio" style="border: 2px dashed var(--fg-pencil); border-radius: 4px; padding: 1.5rem 0.5rem 0.5rem; background: var(--bg-paper); min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; position: relative; overflow: hidden; max-width: 100%;">
+						<div style="position: absolute; top: 8px; left: 10px; font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-heading);">
+							📐 Rendering Proporzionale dei Piani
+						</div>
+						<div id="tiers-render-box" style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 100%;"></div>
+						<!-- Alzata Torta -->
+						<div id="cake-stand-plate" style="width: min(240px, 90%); height: 10px; background: #e5e0d8; border: 2px solid var(--fg-pencil); border-radius: 10px; margin-top: -2px;"></div>
+						<div id="cake-stand-stem" style="width: 50px; height: 20px; background: #dcd6cc; border: 2px solid var(--fg-pencil); border-top: none; margin-bottom: 4px;"></div>
+						<div id="cake-stand-foot" style="width: 100px; height: 8px; background: #dcd6cc; border: 2px solid var(--fg-pencil); border-radius: 4px;"></div>
+					</div>
+
+					<!-- Breakdown List per Tier -->
+					<div id="tier-breakdown-list" style="margin-top: 1.5rem; font-family: var(--font-body); font-size: 0.95rem;"></div>
+
+					<!-- Pro-Tip Box -->
+					<div id="pro-tip-box" style="margin-top: 1.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+						<div class="font-heading" style="font-size: 1.05rem; margin-bottom: 0.25rem; color: var(--fg-pencil);">
+							💡 Consiglio del Pasticcere:
+						</div>
+						<p id="pro-tip-text" class="font-body" style="font-size: 0.9rem; margin: 0; line-height: 1.4;">
+							Se desideri una torta spettacolare a 4 o 5 piani senza sprechi, chiedi al pasticcere di realizzare i piani superiori commestibili e i piani inferiori in polistirolo scenografico rivestito in pasta di zucchero, abbinando vassoi di torta fresca serviti dalla cucina.
+						</p>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+		<!-- SEO Article -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guida Completa alla Torta Nuziale
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Millefoglie, torte a piani o naked cake: come scegliere la torta perfetta per il matrimonio.
+				</p>
+			</div>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Il Calcolo dei Chili per Ospite
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Nelle pasticcerie italiane lo standard professionale prevede 100 grammi di torta a persona in presenza di un ricco buffet di dolci, oppure 120–130 grammi a porzione se la torta nuziale rappresenta l'unico dessert dell'evento.
+				</p>
+			</section>
+
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Domande Frequenti (FAQ)
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Cos'è il taglio della millefoglie a vista?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						È uno show cooking molto amato in Italia: il maestro pasticcere compone la millefoglie gigante con crema chantilly e frutti di bosco direttamente davanti agli ospiti prima del brindisi.
+					</p>
+				</details>
+			</section>
+		</article>
+
+		<RelatedTools currentPath="/it/cake-serving-calculator" category="food-beverage" />
+
+	</main>
+</Layout>
+
+<script is:inline>
+	const guestSlider = document.getElementById('guest-slider');
+	const guestCountInput = document.getElementById('guest-count');
+	const guestBadge = document.getElementById('guest-badge');
+	const cakeShapeSelect = document.getElementById('cake-shape');
+	const portionSizeSelect = document.getElementById('portion-size');
+	const tierCountPrefSelect = document.getElementById('tier-count-pref');
+	const saveTopTierCheckbox = document.getElementById('save-top-tier');
+
+	const resTotalServings = document.getElementById('res-total-servings');
+	const resTierCount = document.getElementById('res-tier-count');
+	const resTierDetail = document.getElementById('res-tier-detail');
+	const resCakeWeight = document.getElementById('res-cake-weight');
+	const tiersRenderBox = document.getElementById('tiers-render-box');
+	const tierBreakdownList = document.getElementById('tier-breakdown-list');
+
+	// Standard Italian tier diameters (cm) and servings (round)
+	const tierStandards = [
+		{ diaCm: 15, diaIn: 6, roundServings: 12, sqServings: 16 },
+		{ diaCm: 20, diaIn: 8, roundServings: 24, sqServings: 32 },
+		{ diaCm: 25, diaIn: 10, roundServings: 38, sqServings: 50 },
+		{ diaCm: 30, diaIn: 12, roundServings: 56, sqServings: 72 },
+		{ diaCm: 35, diaIn: 14, roundServings: 78, sqServings: 98 }
+	];
+
+	function updateCakeCalc() {
+		const guests = parseInt(guestCountInput.value, 10) || 100;
+		guestSlider.value = guests;
+		guestBadge.textContent = `${guests} Invitati`;
+
+		const activeModeRadio = document.querySelector('input[name="cakeMode"]:checked');
+		const mode = activeModeRadio ? activeModeRadio.value : 'tiered';
+
+		const shape = cakeShapeSelect.value;
+		const portion = portionSizeSelect.value;
+		const tierPref = tierCountPrefSelect.value;
+		const saveTop = saveTopTierCheckbox.checked;
+
+		let portionMultiplier = 1.0;
+		let gramPerSlice = 110;
+		if (portion === 'party') { portionMultiplier = 0.75; gramPerSlice = 150; }
+		else if (portion === 'dessert') { portionMultiplier = 1.25; gramPerSlice = 85; }
+
+		let chosenTiers = [];
+		let totalServings = 0;
+		let breakdownHtml = '';
+
+		if (mode === 'sheet') {
+			// Sheet Cake Mode
+			const sheetServingsPerPan = Math.round(54 * portionMultiplier);
+			const sheetPansNeeded = Math.ceil(guests / sheetServingsPerPan);
+			totalServings = sheetPansNeeded * sheetServingsPerPan;
+
+			resTotalServings.textContent = totalServings.toString();
+			resTierCount.textContent = `${sheetPansNeeded} Vassoi`;
+			resTierDetail.textContent = `${sheetPansNeeded} Teglie Rettangolari (40×60 cm)`;
+			
+			tiersRenderBox.innerHTML = '';
+			for (let i = 0; i < sheetPansNeeded; i++) {
+				const sheetDiv = document.createElement('div');
+				sheetDiv.style.width = '85%';
+				sheetDiv.style.height = '36px';
+				sheetDiv.style.background = i % 2 === 0 ? '#fdf2f8' : '#fff';
+				sheetDiv.style.border = '2px solid var(--fg-pencil)';
+				sheetDiv.style.borderRadius = '2px';
+				sheetDiv.style.marginBottom = '6px';
+				sheetDiv.style.display = 'flex';
+				sheetDiv.style.alignItems = 'center';
+				sheetDiv.style.justifyContent = 'center';
+				sheetDiv.style.fontSize = '0.85rem';
+				sheetDiv.style.fontWeight = 'bold';
+				sheetDiv.style.color = 'var(--fg-pencil)';
+				sheetDiv.textContent = `Teglia Rettangolare ${i + 1} (~54 porzioni)`;
+				tiersRenderBox.appendChild(sheetDiv);
+			}
+
+			tierBreakdownList.innerHTML = `
+				<strong style="display:block; margin-bottom:0.5rem; color:var(--fg-pencil);">Dettaglio Vassoi da Cucina:</strong>
+				<ul style="padding-left:1.2rem; margin:0; line-height:1.6;">
+					<li>${sheetPansNeeded} Teglia/e standard (40×60 cm): circa ${totalServings} porzioni totali</li>
+					<li>Costo stimato inferiore del 40-50% rispetto a una torta a più piani decorata.</li>
+				</ul>
+			`;
+		} else if (mode === 'combo') {
+			// Combo: 2-Tier Display Cake + Kitchen Sheet Cake
+			const displayTiers = [tierStandards[0], tierStandards[2]]; // 15cm & 25cm
+			let displayServings = 0;
+			displayTiers.forEach(t => {
+				let s = shape === 'square' ? t.sqServings : t.roundServings;
+				displayServings += Math.round(s * portionMultiplier);
+			});
+			if (saveTop) displayServings = Math.max(10, displayServings - 12);
+
+			const remainingGuests = Math.max(0, guests - displayServings);
+			const sheetServingsPerPan = Math.round(54 * portionMultiplier);
+			const sheetPansNeeded = Math.ceil(remainingGuests / sheetServingsPerPan);
+			totalServings = displayServings + (sheetPansNeeded * sheetServingsPerPan);
+
+			resTotalServings.textContent = totalServings.toString();
+			resTierCount.textContent = `2 Piani + ${sheetPansNeeded} Vassoio/i`;
+			resTierDetail.textContent = `Scenografica (15, 25 cm) + ${sheetPansNeeded} Teglia Taglio`;
+
+			tiersRenderBox.innerHTML = '';
+			displayTiers.forEach((t, idx) => {
+				const widthPct = Math.min(80, Math.max(30, (t.diaCm / 35) * 80));
+				const tierDiv = document.createElement('div');
+				tierDiv.style.width = `${widthPct}%`;
+				tierDiv.style.height = '38px';
+				tierDiv.style.background = idx % 2 === 0 ? '#fdf2f8' : '#fff';
+				tierDiv.style.border = '2px solid var(--fg-pencil)';
+				tierDiv.style.borderRadius = shape === 'square' ? '2px' : '4px';
+				tierDiv.style.display = 'flex';
+				tierDiv.style.alignItems = 'center';
+				tierDiv.style.justifyContent = 'center';
+				tierDiv.style.fontSize = '0.85rem';
+				tierDiv.style.fontWeight = 'bold';
+				tierDiv.style.color = 'var(--fg-pencil)';
+				tierDiv.textContent = `Piano ${idx + 1} (Ø ${t.diaCm} cm)`;
+				tiersRenderBox.appendChild(tierDiv);
+			});
+
+			if (sheetPansNeeded > 0) {
+				const sheetNote = document.createElement('div');
+				sheetNote.style.width = '90%';
+				sheetNote.style.padding = '4px 8px';
+				sheetNote.style.marginTop = '6px';
+				sheetNote.style.background = '#fef3c7';
+				sheetNote.style.border = '1.5px dashed #d97706';
+				sheetNote.style.borderRadius = '4px';
+				sheetNote.style.fontSize = '0.75rem';
+				sheetNote.style.fontWeight = 'bold';
+				sheetNote.style.color = '#92400e';
+				sheetNote.textContent = `+ ${sheetPansNeeded} Teglia/e in Cucina per il Taglio Rapido`;
+				tiersRenderBox.appendChild(sheetNote);
+			}
+
+			tierBreakdownList.innerHTML = `
+				<strong style="display:block; margin-bottom:0.5rem; color:var(--fg-pencil);">Dettaglio Formula Mista (Ibrida):</strong>
+				<ul style="padding-left:1.2rem; margin:0; line-height:1.6;">
+					<li>Torta Scenografica (15 + 25 cm): ~${displayServings} porzioni (per foto e taglio simbolico)</li>
+					<li>Teglie in Cucina: ${sheetPansNeeded} vassoio/i (~${sheetPansNeeded * sheetServingsPerPan} porzioni) per il servizio rapido agli ospiti</li>
+				</ul>
+			`;
+		} else {
+			// Tiered Cake Mode
+			if (tierPref === '1' || (tierPref === 'auto' && guests <= 35)) {
+				chosenTiers = [tierStandards[2]]; // 25cm
+			} else if (tierPref === '2' || (tierPref === 'auto' && guests <= 65)) {
+				chosenTiers = [tierStandards[0], tierStandards[2]]; // 15, 25cm
+			} else if (tierPref === '3' || (tierPref === 'auto' && guests <= 130)) {
+				chosenTiers = [tierStandards[0], tierStandards[1], tierStandards[3]]; // 15, 20, 30cm
+			} else if (tierPref === '4' || (tierPref === 'auto' && guests <= 200)) {
+				chosenTiers = [tierStandards[0], tierStandards[1], tierStandards[2], tierStandards[3]]; // 15, 20, 25, 30cm
+			} else {
+				chosenTiers = [tierStandards[0], tierStandards[1], tierStandards[2], tierStandards[3], tierStandards[4]]; // 5 tiers
+			}
+
+			chosenTiers.forEach(t => {
+				let s = shape === 'square' ? t.sqServings : t.roundServings;
+				totalServings += Math.round(s * portionMultiplier);
+			});
+
+			if (saveTop && chosenTiers.length > 1) {
+				totalServings = Math.max(10, totalServings - 12);
+			}
+
+			resTotalServings.textContent = totalServings.toString();
+			resTierCount.textContent = `${chosenTiers.length} Piani`;
+			resTierDetail.textContent = chosenTiers.map(t => `${t.diaCm} cm`).join(', ');
+
+			// Visual Render
+			tiersRenderBox.innerHTML = '';
+			chosenTiers.forEach((t, idx) => {
+				const widthPct = Math.min(95, Math.max(25, (t.diaCm / 35) * 85));
+				const tierDiv = document.createElement('div');
+				tierDiv.style.width = `${widthPct}%`;
+				tierDiv.style.height = '42px';
+				tierDiv.style.background = idx % 2 === 0 ? '#fdf2f8' : '#fff';
+				tierDiv.style.border = '2px solid var(--fg-pencil)';
+				tierDiv.style.borderRadius = shape === 'square' ? '2px' : '4px';
+				tierDiv.style.marginBottom = '0px';
+				tierDiv.style.display = 'flex';
+				tierDiv.style.alignItems = 'center';
+				tierDiv.style.justifyContent = 'center';
+				tierDiv.style.fontSize = '0.85rem';
+				tierDiv.style.fontWeight = 'bold';
+				tierDiv.style.color = 'var(--fg-pencil)';
+				tierDiv.textContent = `Ø ${t.diaCm} cm`;
+				tiersRenderBox.appendChild(tierDiv);
+			});
+
+			// Breakdown list
+			tierBreakdownList.innerHTML = `
+				<strong style="display:block; margin-bottom:0.5rem; color:var(--fg-pencil);">Dettaglio Piani della Torta:</strong>
+				<ul style="padding-left:1.2rem; margin:0; line-height:1.6;">
+					${chosenTiers.map((t, i) => `<li>Piano ${i + 1} (${t.diaCm} cm): circa ${shape === 'square' ? t.sqServings : t.roundServings} porzioni</li>`).join('')}
+				</ul>
+			`;
+		}
+
+		const totalKg = ((guests * gramPerSlice) / 1000).toFixed(1);
+		resCakeWeight.textContent = `${totalKg.replace('.', ',')} kg`;
+	}
+
+	guestSlider.addEventListener('input', () => {
+		guestCountInput.value = guestSlider.value;
+		updateCakeCalc();
+	});
+	guestCountInput.addEventListener('input', () => {
+		guestSlider.value = guestCountInput.value;
+		updateCakeCalc();
+	});
+
+	[cakeShapeSelect, portionSizeSelect, tierCountPrefSelect, saveTopTierCheckbox].forEach(el => {
+		el.addEventListener('change', updateCakeCalc);
+	});
+
+	// Mode tabs
+	document.querySelectorAll('.mode-tab').forEach(tab => {
+		tab.addEventListener('click', () => {
+			document.querySelectorAll('.mode-tab').forEach(t => {
+				t.classList.remove('active');
+				t.style.background = '#fff';
+				t.style.color = 'var(--fg-pencil)';
+			});
+			tab.classList.add('active');
+			tab.style.background = 'var(--fg-pencil)';
+			tab.style.color = '#fff';
+			const radio = tab.querySelector('input[type="radio"]');
+			if (radio) radio.checked = true;
+			updateCakeCalc();
+		});
+	});
+
+	updateCakeCalc();
+</script>

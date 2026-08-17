@@ -1,0 +1,494 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/rehearsal-dinner-planner/#webapp",
+      "name": "Planificateur de Dîner de Répétition et Repas de Veille de Mariage",
+      "url": "https://manage.wedding/fr/rehearsal-dinner-planner",
+      "description": "Calculateur de budget et de liste d'invités pour le dîner de répétition et le repas de veille de mariage. Calculez les convives du cortège, la famille proche, les invités venus de loin et générez un planning minute par minute.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Organiser le Dîner de Répétition et le Repas de Veille de Mariage",
+      "description": "Guide pratique pour gérer le budget, la liste d'invités et le déroulé de la soirée précédant le mariage.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Lister les Participants Clés de la Cérémonie (Niveau 1)",
+          "text": "Incluez toutes les personnes impliquées dans le déroulement : mariés, témoins, demoiselles et garçons d'honneur (avec leurs conjoints), parents, frères et sœurs, officiant et lecteurs."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Gérer les Invités Venant de Loin (Niveau 2)",
+          "text": "Décidez si les invités voyageant de loin sont conviés au dîner assis complet ou à un pot de bienvenue (Welcome Drinks) plus tard en soirée pour maîtriser le budget."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Choisir la Formule de Restauration",
+          "text": "Optez pour une formule conviviale : trattoria italienne (55 €/pers), brasserie & pizzas (35 €/pers), ou restaurant traditionnel privatisé (90 €/pers)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Établir le Planning de la Soirée",
+          "text": "Planifiez la répétition sur le lieu de cérémonie à 17h00, suivie de l'apéritif à 18h30, du dîner à 19h15 et des cadeaux aux témoins à 20h30, pour une fin à 22h00 maximum."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qui doit obligatoirement être invité au dîner de répétition / repas de veille ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sont traditionnellement conviés : les mariés, leurs parents, frères et sœurs, les témoins, demoiselles et garçons d'honneur avec leurs conjoints, ainsi que l'officiant et les proches assurant une lecture lors de la cérémonie."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Doit-on inviter tous les invités qui viennent de loin au repas de veille ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Non, ce n'est pas une obligation. Si de nombreux convives arrivent la veille, une excellente alternative économique consiste à organiser un dîner assis réservé au cercle restreint (20–30 personnes), puis d'ouvrir un verre d'accueil (Welcome Drink & mignardises) à partir de 21h00 pour tous les voyageurs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qui paie traditionnellement le dîner de répétition / repas de veille ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Selon la tradition anglo-saxonne, la famille du marié prend en charge le dîner de répétition. En France, ce repas est le plus souvent financé directement par le couple ou partagé équitablement entre les deux familles."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Planificateur Dîner de Répétition & Repas de Veille de Mariage | Manage.Wedding"
+	description="Calculez le budget et le nombre d'invités pour votre repas de veille de mariage (rehearsal dinner). Cortège, famille, formule repas et planning."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Dîner de Répétition" category="dining" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Budget & Déroulé de la Soirée de Veille</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Planificateur de <span class="accent-italic">Repas de Veille & Dîner de Répétition</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Organisez sereinement la veille du mariage : déterminez la liste exacte des convives (cortège, famille, invités éloignés), chiffrez le repas et générez le planning de la soirée.
+			</p>
+		</header>
+
+		<!-- Main Interactive Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Guest Tiers & Format Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Invités & Formule de Restauration
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Cercles d'Invités
+					</span>
+				</div>
+
+				<!-- Dining Style Presets -->
+				<div class="form-group" style="margin-bottom: 1rem;">
+					<label class="form-label" for="dinner-style-preset" style="font-family: var(--font-heading); font-size: 0.95rem; display: block; margin-bottom: 0.3rem;">Formule du Repas de Veille</label>
+					<select id="dinner-style-preset" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #f8fafc; font-weight: 600; font-size: 0.95rem;">
+						<option value="italian" selected>🍝 Trattoria Italienne / Plats à Partager (55 € / pers. + Vin)</option>
+						<option value="brewery">🍕 Brasserie Conviviale / Pizzas & Bières Locales (35 € / pers.)</option>
+						<option value="steakhouse">🥩 Restaurant Traditionnel Privatisé / Menu 3 Plats (90 € / pers.)</option>
+						<option value="taco">🌮 Soirée Barbecue / Food Truck & Cocktails (28 € / pers.)</option>
+						<option value="custom">✏️ Tarifs Personnalisés</option>
+					</select>
+				</div>
+
+				<!-- Tier 1: Core Mandatory Ceremony Participants -->
+				<div style="background: #faf8f5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.5rem; color: var(--accent-red);">
+						Cercle 1 : Acteurs Clés de la Cérémonie
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="count-attendants" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Témoins & Cortège</label>
+							<input type="number" id="count-attendants" class="form-input" value="8" min="2" max="30" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+						<div>
+							<label class="form-label" for="count-plusones" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Conjoints des Témoins</label>
+							<input type="number" id="count-plusones" class="form-input" value="6" min="0" max="30" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="count-immediate-family" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Parents, Frères & Sœurs</label>
+							<input type="number" id="count-immediate-family" class="form-input" value="8" min="2" max="20" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+						<div>
+							<label class="form-label" for="count-officiant" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Officiant & Lecteurs</label>
+							<input type="number" id="count-officiant" class="form-input" value="2" min="1" max="10" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Tier 2: Extended Family & Out-of-Town Option -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.5rem; color: var(--accent-blue);">
+						Cercle 2 : Famille Élargie & Invités Éloignés
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.75rem; margin-bottom: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="count-grandparents" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Grands-Parents</label>
+							<input type="number" id="count-grandparents" class="form-input" value="4" min="0" max="12" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+						<div>
+							<label class="form-label" for="count-out-of-town" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Invités Venus de Loin</label>
+							<input type="number" id="count-out-of-town" class="form-input" value="0" min="0" max="80" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px;" />
+						</div>
+					</div>
+
+					<div class="form-group" style="margin-top: 0.5rem;">
+						<label class="form-label" for="out-of-town-mode" style="font-size: 0.88rem; display: block; margin-bottom: 0.2rem;">Formule pour les Invités Éloignés</label>
+						<select id="out-of-town-mode" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.9rem;">
+							<option value="drinks-only" selected>🥂 Verre de Bienvenue en Fin de Soirée (15 € / pers.)</option>
+							<option value="full-dinner">🍽️ Dîner Assis Complet avec le Groupe</option>
+							<option value="none">🚫 Repas Strictement Réservé au Cercle 1</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Pricing per Person & Room Rental -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="cost-per-head" style="font-family: var(--font-heading); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">Repas & Boissons (€/pers)</label>
+						<input type="number" id="cost-per-head" class="form-input" value="55" min="15" step="5" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+					</div>
+					<div>
+						<label class="form-label" for="room-fee" style="font-family: var(--font-heading); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">Privatisation Salon (€)</label>
+						<input type="number" id="room-fee" class="form-input" value="200" min="0" step="50" style="width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Budget Breakdown & Timeline Generator -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Summary Budget Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Budget Total Repas de Veille
+						</span>
+						<span id="display-headcount-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							30 Convives à Table
+						</span>
+					</div>
+
+					<div id="display-grand-total" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.5rem;">
+						2 180 €
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Restauration : <strong id="display-fb-subtotal" style="color: var(--fg-pencil);">1 650 €</strong> • Service & Taxes (20%) : <strong id="display-tax-tip" style="color: var(--fg-pencil);">330 €</strong> • Salon : <strong id="display-room-cost" style="color: var(--fg-pencil);">200 €</strong>.
+					</p>
+
+					<!-- Itemized Headcount List -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Les Futurs Mariés :</span>
+							<strong>2</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Témoins, Cortège & Conjoints :</span>
+							<strong id="item-attendant-total">14</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Parents, Frères, Sœurs & Grands-Parents :</span>
+							<strong id="item-family-total">12</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.95rem;">
+							<span>Officiant & Lecteurs :</span>
+							<strong id="item-officiant-total">2</strong>
+						</div>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-timeline" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Imprimer Planning & Liste (PDF)
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Export Word (.doc)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Master Rehearsal Night Timeline Schedule -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.75rem;">
+						🕒 Déroulé Type de la Soirée de Veille (17h00 – 22h00) :
+					</strong>
+					<div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.5;">
+						<div><strong>17h00 – 18h00 :</strong> Répétition de la Cérémonie sur le Lieu (2 passages avec l'officiant).</div>
+						<div><strong>18h30 – 19h15 :</strong> Trajet & Apéritif Convivial au Restaurant.</div>
+						<div><strong>19h15 – 20h30 :</strong> Dîner Assis & Mot d'Accueil par les Hôtes.</div>
+						<div><strong>20h30 – 21h15 :</strong> Remise des Cadeaux aux Témoins & Discours Intimes.</div>
+						<div><strong>21h15 – 22h00 :</strong> Dessert & Accueil Éventuel des Invités Venus de Loin.</div>
+						<div><strong>22h00 :</strong> Fin de Soirée & Repos Impératif pour le Grand Jour !</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Repères & Bonnes Pratiques</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Grille Budgétaire du Repas de Veille
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Comparatif des formules de repas de veille et budgets moyens pour 25 à 35 convives.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					🍷 La Règle d'Or du Repas de Veille :
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Nombre d'invités à table = [Mariés (2) + Témoins + Conjoints + Parents + Frères/Sœurs + Officiant] • Moyenne : 20 à 30 personnes (1 200 € à 2 500 € au total).
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Formule de Repas</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Coût / Personne</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Total pour 30 Convives</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Ambiance</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Brasserie & Pizzas Conviviales</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">30 € – 40 € / pers.</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">900 € – 1 200 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Détendue, informelle, zéro stress</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Trattoria Italienne & Plats à Partager</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">50 € – 65 € / pers.</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">1 500 € – 1 950 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Chaleureuse, familiale et gourmande</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Restaurant Traditionnel Privatisé</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">80 € – 110 € / pers.</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">2 400 € – 3 300 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Raffinée, intime, idéale pour discours</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Soirée Barbecue / Food Truck Extérieur</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">25 € – 35 € / pers.</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">750 € – 1 050 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Estivale, festive, adaptée aux grands groupes</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guide Complet du Dîner de Répétition
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Conseils pour réussir votre soirée de veille, gérer les discours et remercier vos proches.
+				</p>
+			</div>
+
+			<!-- Section 1 -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. L'Occasion Idéale pour les Discours Émouvants
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Alors que le dîner de mariage le lendemain est souvent rythmé par des discours formels, le repas de veille offre un cadre intimiste où les amis d'enfance, frères et sœurs et témoins peuvent partager des anecdotes touchantes sans pression.
+				</p>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/fr/rehearsal-dinner-planner" category="dining" />
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('dinner-style-preset');
+		const countAttendants = document.getElementById('count-attendants');
+		const countPlusOnes = document.getElementById('count-plusones');
+		const countImmediateFamily = document.getElementById('count-immediate-family');
+		const countOfficiant = document.getElementById('count-officiant');
+		const countGrandparents = document.getElementById('count-grandparents');
+		const countOutOfTown = document.getElementById('count-out-of-town');
+		const outOfTownMode = document.getElementById('out-of-town-mode');
+
+		const costPerHeadInput = document.getElementById('cost-per-head');
+		const roomFeeInput = document.getElementById('room-fee');
+
+		const displayHeadcountBadge = document.getElementById('display-headcount-badge');
+		const displayGrandTotal = document.getElementById('display-grand-total');
+		const displayFbSubtotal = document.getElementById('display-fb-subtotal');
+		const displayTaxTip = document.getElementById('display-tax-tip');
+		const displayRoomCost = document.getElementById('display-room-cost');
+
+		const itemAttendantTotal = document.getElementById('item-attendant-total');
+		const itemFamilyTotal = document.getElementById('item-family-total');
+		const itemOfficiantTotal = document.getElementById('item-officiant-total');
+
+		const btnPrint = document.getElementById('btn-print-timeline');
+		const btnDoc = document.getElementById('btn-export-doc');
+
+		function calculateRehearsal() {
+			const att = parseInt(countAttendants.value, 10) || 0;
+			const plus = parseInt(countPlusOnes.value, 10) || 0;
+			const fam = parseInt(countImmediateFamily.value, 10) || 0;
+			const off = parseInt(countOfficiant.value, 10) || 0;
+			const grand = parseInt(countGrandparents.value, 10) || 0;
+			const outOfTown = parseInt(countOutOfTown.value, 10) || 0;
+
+			const coreSeated = 2 + att + plus + fam + off + grand;
+			let totalSeated = coreSeated;
+			let drinksOnlyCount = 0;
+
+			if (outOfTownMode.value === 'full-dinner') {
+				totalSeated += outOfTown;
+			} else if (outOfTownMode.value === 'drinks-only') {
+				drinksOnlyCount = outOfTown;
+			}
+
+			const perHead = parseFloat(costPerHeadInput.value) || 0;
+			const roomFee = parseFloat(roomFeeInput.value) || 0;
+
+			const foodBarTotal = (totalSeated * perHead) + (drinksOnlyCount * 15);
+			const taxTip = foodBarTotal * 0.20; // 10% TVA + 10% Service
+			const grandTotal = foodBarTotal + taxTip + roomFee;
+
+			// Displays
+			displayHeadcountBadge.textContent = `${totalSeated} Convive${totalSeated > 1 ? 's' : ''} à Table`;
+			displayGrandTotal.textContent = `${Math.round(grandTotal).toLocaleString('fr-FR')} €`;
+			displayFbSubtotal.textContent = `${Math.round(foodBarTotal).toLocaleString('fr-FR')} €`;
+			displayTaxTip.textContent = `${Math.round(taxTip).toLocaleString('fr-FR')} €`;
+			displayRoomCost.textContent = `${Math.round(roomFee).toLocaleString('fr-FR')} €`;
+
+			itemAttendantTotal.textContent = (att + plus);
+			itemFamilyTotal.textContent = (fam + grand);
+			itemOfficiantTotal.textContent = off;
+		}
+
+		// Preset Selection Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'italian') {
+				costPerHeadInput.value = 55;
+				roomFeeInput.value = 200;
+			} else if (p === 'brewery') {
+				costPerHeadInput.value = 35;
+				roomFeeInput.value = 100;
+			} else if (p === 'steakhouse') {
+				costPerHeadInput.value = 90;
+				roomFeeInput.value = 400;
+			} else if (p === 'taco') {
+				costPerHeadInput.value = 28;
+				roomFeeInput.value = 0;
+			}
+			calculateRehearsal();
+		});
+
+		// Live Listeners
+		[countAttendants, countPlusOnes, countImmediateFamily, countOfficiant, countGrandparents, countOutOfTown, outOfTownMode, costPerHeadInput, roomFeeInput].forEach(inp => {
+			inp.addEventListener('input', calculateRehearsal);
+			inp.addEventListener('change', calculateRehearsal);
+		});
+
+		// Print Itinerary & Roster
+		btnPrint.addEventListener('click', () => {
+			window.print();
+		});
+
+		// Export Word Doc
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Repas de Veille de Mariage</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Organisation du Repas de Veille</h2>
+					<p>Convives à Table : ${displayHeadcountBadge.textContent} | <strong>Budget Estimé : ${displayGrandTotal.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Poste</th><th>Montant</th></tr></thead>
+						<tbody>
+							<tr><td>Restauration & Boissons</td><td>${displayFbSubtotal.textContent}</td></tr>
+							<tr><td>Service & Taxes (20%)</td><td>${displayTaxTip.textContent}</td></tr>
+							<tr><td>Privatisation Salon</td><td>${displayRoomCost.textContent}</td></tr>
+							<tr style="font-weight:bold; background-color:#eee;"><td>TOTAL ESTIMÉ</td><td>${displayGrandTotal.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob(['\ufeff', content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = `Repas_Veille_Mariage_${new Date().toISOString().slice(0, 10)}.doc`;
+			link.click();
+			URL.revokeObjectURL(link.href);
+		});
+
+		// Initial Calculation
+		calculateRehearsal();
+	</script>
+</Layout>

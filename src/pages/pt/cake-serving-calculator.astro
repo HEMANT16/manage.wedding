@@ -1,0 +1,1053 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "name": "Calculadora de Fatias de Bolo de Casamento & Guia de Andares",
+      "url": "https://manage.wedding/pt/cake-serving-calculator",
+      "inLanguage": "pt",
+      "description": "Calculadora gratuita de fatias e andares de bolo de casamento. Calcule o rendimento de bolos redondos, quadrados, formato coração e bolos de tabuleiro com simulador visual e guia de corte.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Como Calcular as Fatias e Tamanho do Bolo de Casamento",
+      "description": "Guia passo a passo para determinar o número de andares, diâmetros e fatias de bolo para casamentos e festas.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Passo 1: Selecione o Formato e Estilo do Bolo",
+          "text": "Escolha entre andares redondos clássicos, quadrados (que rendem +25% de fatias) ou formato coração."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 2: Defina as Dimensões da Fatia",
+          "text": "Selecione Fatia de Casamento (2,5 x 5 x 10 cm para refeições com sobremesa) ou Fatia de Festa (5 x 5 x 10 cm para lanches e aniversários)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 3: Escolha a Combinação de Andares",
+          "text": "Opte por combinações clássicas de 2, 3 ou 4 andares (ex.: 15 cm / 23 cm / 30 cm para 100 convidados) ou deixe o cálculo automático atuar."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 4: Considere um Bolo de Apoio de Cozinha",
+          "text": "Adicione um bolo de tabuleiro na cozinha de apoio para alimentar convidados adicionais poupando nas despesas de decoração personalizada."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qual o tamanho de bolo de casamento necessário para 100 convidados?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Para 100 convidados, a opção mais clássica é um bolo redondo de 3 andares com 15 cm, 23 cm e 30 cm de diâmetro (6\", 9\" e 12\"), que rende exatamente 100 fatias padrão de casamento (2,5 x 5 cm)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qual é a diferença entre uma fatia de casamento e uma fatia de aniversário?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A fatia de casamento mede 2,5 cm x 5 cm x 10 cm de altura, ideal para ser servida após um banquete completo com várias sobremesas. A fatia de festa mede 5 cm x 5 cm (o dobro do volume), ideal para festas de aniversário onde o bolo é o doce principal."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Devemos contar o topo do bolo nas fatias dos convidados?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Se seguir a tradição de congelar o andar superior de 15 cm para comemorar o 1.º aniversário de casamento ou as bodas de papel, não o conte para os convidados. Subtraia cerca de 12 fatias ao total."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como é que os pasteleiros cortam bolos de casamento altos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Os profissionais nunca cortam bolos grandes em fatias triangulares. Utilizam o método dos círculos concêntricos: cortam um círculo interior a 5 cm da borda e fatiam o anel exterior em retângulos perfeitos de 2,5 cm."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Fatias de Bolo de Casamento & Andares | Manage.Wedding"
+	description="Calcule fatias de bolo de noiva, diâmetro dos andares, rendimento de bolos redondos e quadrados, e bolos de tabuleiro com simulador em escala."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2.5rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Calculadora de Fatias de Bolo de Casamento
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Descubra o tamanho e andares ideais para o bolo dos noivos. Escolha o formato, dimensões da fatia e explore o simulador visual em escala.
+				</p>
+			</div>
+		</section>
+
+		<!-- Interactive Calculator & Visual Studio Grid -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.1fr 0.9fr; gap: 2rem; margin-bottom: 3.5rem;" class="calc-container-grid">
+			
+			<!-- Left Column: Controls & Inputs -->
+			<div class="hand-card" style="padding: 2rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--fg-pencil); display: flex; align-items: center; gap: 0.5rem;">
+					<span>🎂</span> Especificações do Bolo
+				</h2>
+
+				<form id="cake-calc-form">
+					
+					<!-- Calculation Mode -->
+					<div style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Estilo / Tipo de Bolo:
+						</label>
+						<div class="mode-select-grid">
+							<label class="mode-tab active" id="tab-tiered">
+								<input type="radio" name="cakeMode" value="tiered" checked style="display: none;"> Bolo com Andares
+							</label>
+							<label class="mode-tab" id="tab-sheet">
+								<input type="radio" name="cakeMode" value="sheet" style="display: none;"> Bolo de Tabuleiro
+							</label>
+							<label class="mode-tab" id="tab-combo">
+								<input type="radio" name="cakeMode" value="combo" style="display: none;"> Andares + Apoio
+							</label>
+						</div>
+					</div>
+
+					<!-- Guest Count -->
+					<div style="margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+							<label class="font-heading" for="guest-count" style="font-size: 1.15rem; color: var(--fg-pencil);">
+								Número de Convidados:
+							</label>
+							<span id="guest-badge" class="font-heading" style="background: var(--accent-blue); color: #fff; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.9rem;">100 Convidados</span>
+						</div>
+						<input type="range" id="guest-slider" min="10" max="400" step="5" value="100" style="width: 100%; margin-bottom: 0.5rem; accent-color: var(--accent-blue);">
+						<div style="display: flex; align-items: center; gap: 0.5rem;">
+							<input type="number" id="guest-count" class="form-input" min="1" max="1000" value="100" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.15rem;">
+						</div>
+					</div>
+
+					<!-- Cake Shape -->
+					<div id="shape-group" style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Formato dos Andares:
+						</label>
+						<select id="cake-shape" class="form-input" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.15rem; background: #fff;">
+							<option value="round" selected>Redondo (Clássico, Elegante e Tradicional)</option>
+							<option value="square">Quadrado (~25% mais fatias por andar)</option>
+							<option value="heart">Formato Coração (Romântico & Tendência)</option>
+						</select>
+					</div>
+
+					<!-- Slice / Portion Size -->
+					<div style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Tamanho da Fatia:
+						</label>
+						<select id="portion-size" class="form-input" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.15rem; background: #fff;">
+							<option value="wedding" selected>Fatia de Casamento (2,5 x 5 x 10 cm de altura — Padrão Banquete)</option>
+							<option value="party">Fatia de Festa / Aniversário (5 x 5 x 10 cm — Generosa)</option>
+							<option value="dessert">Fatia de Sobremesa (3,8 x 5 x 10 cm — Média)</option>
+						</select>
+						<small class="font-body" style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">
+							*A fatia de casamento é a medida padrão internacional após refeições completas.
+						</small>
+					</div>
+
+					<!-- Tier Preference (Tiered Mode) -->
+					<div id="tier-pref-group" style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Configuração de Andares:
+						</label>
+						<select id="tier-count-pref" class="form-input" style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.15rem; background: #fff;">
+							<option value="auto" selected>Recomendação Automática de Proporção</option>
+							<option value="1">1 Andar Único</option>
+							<option value="2">2 Andares (Casamentos Íntimos 30-65 Convidados)</option>
+							<option value="3">3 Andares (Clássico 75-130 Convidados)</option>
+							<option value="4">4 Andares (Grande Porte 130-220 Convidados)</option>
+							<option value="5">5 Andares (Monumental 220+ Convidados)</option>
+						</select>
+					</div>
+
+					<!-- Anniversary Top Tier Checkbox -->
+					<div style="margin-bottom: 1.5rem; padding: 0.75rem; background: var(--bg-paper); border: 2px dashed var(--fg-pencil); border-radius: 4px;">
+						<label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="save-top-tier" style="margin-top: 0.3rem; transform: scale(1.2);">
+							<span class="font-body" style="font-size: 1.05rem; color: var(--fg-pencil); line-height: 1.4;">
+								<strong>Guardar o Topo para o 1.º Aniversário de Casamento?</strong><br>
+								<span style="color: var(--text-secondary); font-size: 0.9rem;">Subtrai ~12 fatias do topo para congelar, garantindo que não falta bolo aos convidados.</span>
+							</span>
+						</label>
+					</div>
+
+					<!-- Cake Height Preference -->
+					<div style="margin-bottom: 1.5rem;">
+						<label class="font-heading" style="display: block; margin-bottom: 0.5rem; font-size: 1.15rem; color: var(--fg-pencil);">
+							Altura de Cada Andar:
+						</label>
+						<div class="height-select-grid">
+							<label class="height-opt active">
+								<input type="radio" name="cakeHeight" value="4" checked style="display: none;"> 10 cm Padrão (3 camadas)
+							</label>
+							<label class="height-opt">
+								<input type="radio" name="cakeHeight" value="5" style="display: none;"> 12,5 cm Alto
+							</label>
+							<label class="height-opt">
+								<input type="radio" name="cakeHeight" value="6" style="display: none;"> 15 cm Double Barrel
+							</label>
+						</div>
+					</div>
+
+					<button type="button" id="recalc-btn" class="hand-btn" style="width: 100%; padding: 1rem; font-size: 1.25rem;">
+						✨ Atualizar Cálculo do Bolo
+					</button>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Interactive Visuals & Results -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Results Summary Card -->
+				<div class="hand-card" style="background: #fff;">
+					<div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+						<h2 class="font-heading" style="font-size: 1.8rem; color: var(--accent-red); margin: 0;">
+							Projeto do Bolo
+						</h2>
+						<span id="match-status" class="font-heading" style="background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem;">
+							Ajuste Perfeito
+						</span>
+					</div>
+
+					<!-- Big Stats -->
+					<div class="cake-stats-grid">
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Total de Fatias</span>
+							<strong id="res-total-servings" class="font-heading" style="font-size: 1.6rem; color: var(--accent-blue); display: block;">100</strong>
+							<span id="res-servings-diff" style="font-size: 0.75rem; color: var(--text-secondary);">Exato para 100</span>
+						</div>
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Andares</span>
+							<strong id="res-tier-count" class="font-heading" style="font-size: 1.6rem; color: var(--fg-pencil); display: block;">3 Andares</strong>
+							<span id="res-tier-detail" style="font-size: 0.75rem; color: var(--text-secondary);">15cm, 23cm, 30cm</span>
+						</div>
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem 0.4rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Área de Cobertura</span>
+							<strong id="res-cake-area" class="font-heading" style="font-size: 1.6rem; color: var(--fg-pencil); display: block;">1.320 cm²</strong>
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Decoração e Creme</span>
+						</div>
+					</div>
+
+					<!-- Visual Cake Tier Render Container -->
+					<div id="visual-cake-studio" style="border: 2px dashed var(--fg-pencil); border-radius: 4px; padding: 1.5rem 0.5rem 0.5rem; background: var(--bg-paper); min-height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; position: relative; overflow: hidden; max-width: 100%;">
+						<div style="position: absolute; top: 8px; left: 10px; font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-heading);">
+							📐 Esquema em Escala do Bolo
+						</div>
+						<!-- Tiers dynamically rendered here -->
+						<div id="tiers-render-box" style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 100%;"></div>
+						<!-- Cake Stand -->
+						<div id="cake-stand-plate" style="width: min(240px, 90%); height: 10px; background: #e5e0d8; border: 2px solid var(--fg-pencil); border-radius: 10px; margin-top: -2px;"></div>
+						<div id="cake-stand-stem" style="width: 50px; height: 20px; background: #dcd6cc; border: 2px solid var(--fg-pencil); border-top: none; margin-bottom: 4px;"></div>
+						<div id="cake-stand-foot" style="width: 100px; height: 8px; background: #dcd6cc; border: 2px solid var(--fg-pencil); border-radius: 4px;"></div>
+					</div>
+
+					<!-- Breakdown List per Tier -->
+					<div id="tier-breakdown-list" style="margin-top: 1.5rem; font-family: var(--font-body); font-size: 1rem;">
+						<!-- Populated via JS -->
+					</div>
+
+					<!-- Pro-Tip Callout Box -->
+					<div id="pro-tip-box" style="margin-top: 1.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+						<div class="font-heading" style="font-size: 1.1rem; margin-bottom: 0.25rem; color: var(--fg-pencil);">
+							💡 Estratégia de Poupança Inteligente:
+						</div>
+						<p id="pro-tip-text" class="font-body" style="font-size: 0.95rem; margin: 0; line-height: 1.4;">
+							Encomende um bolo de 2 andares para o corte e fotografias, complementado por um bolo de tabuleiro retangular na cozinha para os restantes convidados poupando até 50%!
+						</p>
+					</div>
+
+				</div>
+
+				<!-- Visual Slice Scale Comparison Card -->
+				<div class="hand-card" style="padding: 1.5rem;">
+					<h3 class="font-heading" style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--fg-pencil);">
+						📏 Comparação Visual das Fatias
+					</h3>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+							<div class="font-heading" style="font-size: 1.1rem; color: var(--accent-blue); margin-bottom: 0.5rem;">Fatia de Casamento</div>
+							<div style="width: 40px; height: 80px; background: #ffeaa7; border: 2px solid var(--fg-pencil); margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold;">
+								2,5 × 5 cm
+							</div>
+							<div class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">
+								125 cm³<br>Padrão após jantar completo
+							</div>
+						</div>
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+							<div class="font-heading" style="font-size: 1.1rem; color: var(--accent-red); margin-bottom: 0.5rem;">Fatia de Festa</div>
+							<div style="width: 80px; height: 80px; background: #fab1a0; border: 2px solid var(--fg-pencil); margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: bold;">
+								5 × 5 cm
+							</div>
+							<div class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">
+								250 cm³<br>Generosa / Aniversário
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="hand-card" style="margin: 3.5rem auto 2.5rem; max-width: 900px; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+			<div class="tape"></div>
+			
+			<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+				<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+					<span>⚡</span> Resumo Direto ao Assunto (BLUF)
+				</h3>
+				<span style="background: #fff; border: 1.5px solid var(--fg-pencil); padding: 0.2rem 0.6rem; border-radius: 4px; font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--accent-red);">
+					Regra Prática em 1 Minuto
+				</span>
+			</div>
+
+			<!-- Formula Highlight Box -->
+			<div style="background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<div style="font-family: var(--font-heading); font-size: 1.05rem; color: var(--accent-red); margin-bottom: 0.35rem; font-weight: 700;">
+					📐 A Fórmula Central de Fatias de Bolo:
+				</div>
+				<p class="font-body" style="font-size: 0.98rem; color: var(--fg-pencil); margin: 0; line-height: 1.5;">
+					<strong>Fatia Formal de Casamento = 2,5 cm × 5 cm × 10 cm de altura (125 cm³)</strong><br />
+					<strong>Fatia de Festa / Aniversário = 5 cm × 5 cm × 10 cm de altura (250 cm³ — o dobro do volume)</strong><br />
+					<em>Regra:</em> Como o bolo de noiva é servido após o banquete e mesa de doces, o rendimento de fatias de casamento é exatamente <strong>o dobro</strong> face a fatias de aniversário.
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; margin-bottom: 1rem; background: #ffffff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.06);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.90rem; min-width: 600px;">
+					<thead>
+						<tr style="background: #f1f5f9; border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil);">Estrutura de Andares</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--fg-pencil); text-align: center;">Diâmetros Redondos</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red); text-align: center;">Fatias Casamento (2,5x5cm)</th>
+							<th style="padding: 0.6rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue); text-align: center;">Fatias Festa (5x5cm)</th>
+							<th style="padding: 0.6rem 0.75rem; font-weight: 700; color: var(--fg-pencil); text-align: right;">N.º Convidados Ideal</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">2 Andares Petite</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">15 cm + 20 cm (6"+8")</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">36 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">18 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">25–35 Convidados</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">2 Andares Clássico</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">15 cm + 25 cm (6"+10")</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">50 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">25 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">40–50 Convidados</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">3 Andares Íntimo</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">15 cm + 20 cm + 25 cm</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">74 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">37 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">65–75 Convidados</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fffbeb;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-red);">⭐ 3 Andares Padrão</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700;">15 cm + 23 cm + 30 cm</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">100 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-blue);">50 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right; font-weight: 700;">90–100 Convidados</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">3 Andares Grand</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">20 cm + 25 cm + 30 cm</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">118 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">59 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">110–120 Convidados</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">4 Andares Luxo</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">15 cm + 20 cm + 25 cm + 30 cm</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">130 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">65 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">125–135 Convidados</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; font-weight: 600;">4 Andares Gala</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">15 cm + 23 cm + 30 cm + 35 cm</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center; font-weight: 700; color: var(--accent-red);">178 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; border-right: 1px solid #cbd5e1; text-align: center;">89 fatias</td>
+							<td style="padding: 0.55rem 0.75rem; text-align: right;">160–180 Convidados</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p class="font-body" style="font-size: 0.85rem; color: var(--fg-pencil); margin: 0; line-height: 1.4;">
+				💡 <strong>Topo para o 1.º Aniversário:</strong> Se congelar o andar superior de 15 cm para o aniversário, deduza <strong>12 fatias de casamento</strong> ao total do bolo.
+			</p>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Manual do Bolo de Casamento</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem;">
+					Guia Completo de Tamanhos, Andares e Fatias de Bolo
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 700px; margin: 0.5rem auto 0;">
+					Como calcular proporções de pastelaria, o segredo do bolo de apoio na cozinha e o método correto de corte.
+				</p>
+			</div>
+
+			<div style="margin-bottom: 2.5rem; text-align: center;">
+				<img 
+					src="/images/cake_cutting_sketch.webp" 
+					alt="Calculadora de Fatias de Bolo de Casamento — Guia de Andares e Dimensões" 
+					loading="lazy"
+					decoding="async"
+					style="width: 100%; max-height: 420px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); margin: 0 auto; display: block;"
+				/>
+				<p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem; font-style: italic;">
+					A harmonia visual de um bolo exige um degrau de 5 cm a 7,5 cm de diâmetro entre cada andar consecutivo.
+				</p>
+			</div>
+
+			<!-- Section 1: Cutting Method -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Como Cortar um Bolo com Andares (Método dos Círculos Concêntricos)
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1rem;">
+					Nunca corte um bolo de casamento com mais de 20 cm em fatias triangulares de tarte! Fatias triangulares em andares altos quebram-se ao meio. O método profissional de pastelaria consiste em:
+				</p>
+				<ol class="font-body" style="padding-left: 1.5rem; line-height: 1.8; font-size: 1.05rem;">
+					<li><strong>Retirar o Topo e as Estacas Interiores:</strong> Retire o andar superior de 15 cm e remova os pilares ou varetas de suporte em madeira/plástico que sustentam o peso do bolo.</li>
+					<li><strong>Fazer um Corte Circular Interior:</strong> Em andares com 25 cm ou mais, insira a faca a 5 cm da borda exterior e corte um círculo concêntrico completo.</li>
+					<li><strong>Fatiar o Anel Exterior:</strong> Corte o anel exterior em fatias regulares de 2,5 cm de largura (obtendo porções de 2,5 x 5 cm).</li>
+					<li><strong>Repetir e Fatiar o Centro:</strong> No cilindro central de 15 cm que sobra, corte ao meio e fatie horizontalmente.</li>
+				</ol>
+			</section>
+
+			<!-- Section 2: Related Tools -->
+			<section style="margin-bottom: 3rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 1rem; text-align: center;">
+					🔗 Ferramentas de Pastelaria e Copo-d'Água Integradas
+				</h3>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+					<a href="/pt/cake-pricing-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-red); display: block;">Calculadora de Preço de Bolo</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Estime orçamentos de pastelaria, pasta de açúcar e taxa de entrega.</span>
+					</a>
+					<a href="/pt/catering-cost-estimator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--accent-blue); display: block;">Estimador de Catering</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calcule ementas, bar aberto, serviço e IVA por pessoa.</span>
+					</a>
+					<a href="/pt/wedding-drink-calculator" style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--fg-pencil); padding: 0.75rem; border-radius: 4px; background: #fff;">
+						<strong class="font-heading" style="color: var(--fg-pencil); display: block;">Calculadora de Bebidas</strong>
+						<span class="font-body" style="font-size: 0.9rem; color: var(--text-secondary);">Calcule o espumante para o brinde e vinhos para o jantar.</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Perguntas Frequentes
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						O que é o truque do bolo de apoio na cozinha (Kitchen Cake)?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Bolos decorados com 4 ou 5 andares custam entre <strong>6 € e 12 € por fatia</strong> devido à mão de obra artística. Os noivos compram um bolo decorado de 2 andares para a mesa principal e corte simbólico (~40 fatias) e encomendam à mesma pastelaria um bolo retangular sem decoração exterior para a cozinha (a cerca de <strong>2 € a 3 € por fatia</strong>). Os convidados recebem fatias idênticas e os noivos poupam centenas de euros.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						Como conservar o bolo dos noivos em dias quentes de verão?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Mantenha o bolo numa sala com ar condicionado e longe da luz solar direta até ao momento de ser transportado para a mesa do corte. Coberturas de natas frescas ou manteiga começam a amolecer acima dos 22°C a 24°C.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+	</main>
+</Layout>
+
+<style>
+	.calc-container-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		width: 100%;
+		max-width: 100%;
+	}
+	@media (min-width: 900px) {
+		.calc-container-grid {
+			grid-template-columns: 1.15fr 0.85fr;
+		}
+	}
+
+	.mode-select-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.mode-tab {
+		cursor: pointer;
+		text-align: center;
+		padding: 0.6rem 0.3rem;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: var(--bg-paper);
+		font-family: var(--font-heading);
+		font-size: clamp(0.75rem, 2.5vw, 1rem);
+		white-space: normal;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.mode-tab.active {
+		background-color: var(--post-it) !important;
+		font-weight: bold;
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+
+	.height-select-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.height-opt {
+		cursor: pointer;
+		text-align: center;
+		padding: 0.5rem 0.25rem;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: var(--bg-paper);
+		font-size: clamp(0.75rem, 2.2vw, 0.95rem);
+		font-family: var(--font-body);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.height-opt.active {
+		background-color: var(--post-it) !important;
+		font-weight: bold;
+		border-color: var(--accent-blue) !important;
+	}
+
+	.cake-stats-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.tier-slice-item {
+		display: flex;
+		justify-content: space-between;
+		padding: 0.4rem 0.6rem;
+		border-bottom: 1px dashed var(--muted-paper);
+	}
+	.tier-slice-item:last-child {
+		border-bottom: none;
+	}
+
+	@media (max-width: 480px) {
+		.mode-select-grid {
+			grid-template-columns: 1fr;
+		}
+		.height-select-grid {
+			grid-template-columns: 1fr;
+		}
+		.cake-stats-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<script is:inline>
+	// Complete Round & Square Servings Map (Wedding 1x2 vs Party 2x2 vs Dessert 1.5x2)
+	const singleTierYields = {
+		round: {
+			4: { wedding: 6, party: 4, dessert: 5 },
+			6: { wedding: 12, party: 6, dessert: 8 },
+			8: { wedding: 24, party: 12, dessert: 16 },
+			9: { wedding: 32, party: 16, dessert: 21 },
+			10: { wedding: 38, party: 19, dessert: 25 },
+			11: { wedding: 46, party: 23, dessert: 30 },
+			12: { wedding: 56, party: 28, dessert: 37 },
+			13: { wedding: 66, party: 33, dessert: 44 },
+			14: { wedding: 78, party: 39, dessert: 52 },
+			15: { wedding: 88, party: 44, dessert: 58 },
+			16: { wedding: 100, party: 50, dessert: 66 },
+			18: { wedding: 128, party: 64, dessert: 85 }
+		},
+		square: {
+			4: { wedding: 8, party: 4, dessert: 5 },
+			6: { wedding: 18, party: 9, dessert: 12 },
+			8: { wedding: 32, party: 16, dessert: 21 },
+			9: { wedding: 40, party: 20, dessert: 26 },
+			10: { wedding: 50, party: 25, dessert: 33 },
+			11: { wedding: 60, party: 30, dessert: 40 },
+			12: { wedding: 72, party: 36, dessert: 48 },
+			13: { wedding: 84, party: 42, dessert: 56 },
+			14: { wedding: 98, party: 49, dessert: 65 },
+			15: { wedding: 112, party: 56, dessert: 74 },
+			16: { wedding: 128, party: 64, dessert: 85 },
+			18: { wedding: 162, party: 81, dessert: 108 }
+		},
+		heart: {
+			4: { wedding: 5, party: 3, dessert: 4 },
+			6: { wedding: 10, party: 5, dessert: 7 },
+			8: { wedding: 20, party: 10, dessert: 14 },
+			9: { wedding: 28, party: 14, dessert: 18 },
+			10: { wedding: 34, party: 17, dessert: 22 },
+			11: { wedding: 41, party: 20, dessert: 27 },
+			12: { wedding: 50, party: 25, dessert: 33 },
+			13: { wedding: 59, party: 29, dessert: 39 },
+			14: { wedding: 70, party: 35, dessert: 46 },
+			15: { wedding: 79, party: 39, dessert: 52 },
+			16: { wedding: 90, party: 45, dessert: 60 },
+			18: { wedding: 115, party: 57, dessert: 76 }
+		}
+	};
+
+	// Standard Proportional Multi-Tier Combos
+	const standardTierCombos = [
+		{ tiers: 1, sizes: [6] },
+		{ tiers: 1, sizes: [8] },
+		{ tiers: 1, sizes: [10] },
+		{ tiers: 1, sizes: [12] },
+		{ tiers: 2, sizes: [6, 8] },
+		{ tiers: 2, sizes: [6, 9] },
+		{ tiers: 2, sizes: [8, 10] },
+		{ tiers: 2, sizes: [8, 12] },
+		{ tiers: 2, sizes: [10, 12] },
+		{ tiers: 3, sizes: [6, 8, 10] },
+		{ tiers: 3, sizes: [6, 9, 12] },
+		{ tiers: 3, sizes: [8, 10, 12] },
+		{ tiers: 3, sizes: [8, 10, 14] },
+		{ tiers: 4, sizes: [6, 8, 10, 12] },
+		{ tiers: 4, sizes: [6, 8, 10, 14] },
+		{ tiers: 4, sizes: [6, 9, 12, 14] },
+		{ tiers: 4, sizes: [8, 10, 12, 14] },
+		{ tiers: 4, sizes: [8, 10, 12, 16] },
+		{ tiers: 5, sizes: [6, 8, 10, 12, 14] },
+		{ tiers: 5, sizes: [6, 8, 10, 12, 16] },
+		{ tiers: 5, sizes: [6, 9, 12, 14, 16] },
+		{ tiers: 5, sizes: [8, 10, 12, 14, 16] },
+		{ tiers: 5, sizes: [8, 10, 12, 14, 18] }
+	];
+
+	// DOM Elements
+	const guestInput = document.getElementById('guest-count');
+	const guestSlider = document.getElementById('guest-slider');
+	const guestBadge = document.getElementById('guest-badge');
+	const shapeSelect = document.getElementById('cake-shape');
+	const portionSelect = document.getElementById('portion-size');
+	const tierPrefSelect = document.getElementById('tier-count-pref');
+	const saveTopTierCheck = document.getElementById('save-top-tier');
+	const recalcBtn = document.getElementById('recalc-btn');
+
+	const resTotalServings = document.getElementById('res-total-servings');
+	const resServingsDiff = document.getElementById('res-servings-diff');
+	const resTierCount = document.getElementById('res-tier-count');
+	const resTierDetail = document.getElementById('res-tier-detail');
+	const resCakeArea = document.getElementById('res-cake-area');
+	const matchStatus = document.getElementById('match-status');
+	const tiersRenderBox = document.getElementById('tiers-render-box');
+	const tierBreakdownList = document.getElementById('tier-breakdown-list');
+	const proTipText = document.getElementById('pro-tip-text');
+
+	// Sync Slider & Input
+	guestSlider.addEventListener('input', (e) => {
+		guestInput.value = e.target.value;
+		guestBadge.textContent = `${e.target.value} Convidados`;
+		calculateAndRender();
+	});
+
+	guestInput.addEventListener('input', (e) => {
+		let val = parseInt(e.target.value) || 10;
+		if (val > 400) val = 400;
+		guestSlider.value = val;
+		guestBadge.textContent = `${val} Convidados`;
+		calculateAndRender();
+	});
+
+	// Mode Selector Tabs
+	document.querySelectorAll('.mode-tab').forEach(tab => {
+		tab.addEventListener('click', () => {
+			document.querySelectorAll('.mode-tab').forEach(t => {
+				t.classList.remove('active');
+				t.style.background = 'var(--bg-paper)';
+			});
+			tab.classList.add('active');
+			tab.style.background = 'var(--post-it)';
+			tab.querySelector('input').checked = true;
+			calculateAndRender();
+		});
+	});
+
+	// Height Radios
+	document.querySelectorAll('input[name="cakeHeight"]').forEach(radio => {
+		radio.parentElement.addEventListener('click', () => {
+			document.querySelectorAll('input[name="cakeHeight"]').forEach(r => {
+				r.parentElement.classList.remove('active');
+				r.parentElement.style.background = 'var(--bg-paper)';
+			});
+			radio.parentElement.classList.add('active');
+			radio.parentElement.style.background = 'var(--post-it)';
+			radio.checked = true;
+			calculateAndRender();
+		});
+	});
+
+	// Event Listeners for selects & buttons
+	shapeSelect.addEventListener('change', calculateAndRender);
+	portionSelect.addEventListener('change', calculateAndRender);
+	tierPrefSelect.addEventListener('change', calculateAndRender);
+	saveTopTierCheck.addEventListener('change', calculateAndRender);
+	recalcBtn.addEventListener('click', calculateAndRender);
+
+	function calculateAndRender() {
+		const guests = parseInt(guestInput.value) || 100;
+		const mode = document.querySelector('input[name="cakeMode"]:checked').value;
+		const shape = shapeSelect.value;
+		const portion = portionSelect.value;
+		const tierPref = tierPrefSelect.value;
+		const saveTopTier = saveTopTierCheck.checked;
+		const height = parseInt(document.querySelector('input[name="cakeHeight"]:checked').value) || 4;
+
+		if (mode === 'sheet') {
+			renderSheetCakeMode(guests, portion);
+			return;
+		}
+
+		if (mode === 'combo') {
+			renderComboMode(guests, shape, portion, saveTopTier);
+			return;
+		}
+
+		// Standard Tiered Cake Calculation
+		let bestCombo = null;
+		let bestServings = 0;
+		let minDiff = 9999;
+
+		// Filter combos by tier pref if specified
+		let candidateCombos = standardTierCombos;
+		if (tierPref !== 'auto') {
+			const targetTiers = parseInt(tierPref);
+			candidateCombos = standardTierCombos.filter(c => c.tiers === targetTiers);
+		}
+
+		candidateCombos.forEach(combo => {
+			let total = 0;
+			combo.sizes.forEach((size, idx) => {
+				const tierYield = singleTierYields[shape][size][portion] || 10;
+				if (saveTopTier && idx === 0 && combo.sizes.length > 1) {
+					// Top tier saved
+				} else {
+					total += tierYield;
+				}
+			});
+
+			const diff = total - guests;
+			if (diff >= 0 && diff < minDiff) {
+				minDiff = diff;
+				bestCombo = combo;
+				bestServings = total;
+			}
+		});
+
+		// Fallback to largest if guest count is very large
+		if (!bestCombo && candidateCombos.length > 0) {
+			bestCombo = candidateCombos[candidateCombos.length - 1];
+			bestServings = bestCombo.sizes.reduce((acc, s, idx) => {
+				if (saveTopTier && idx === 0 && bestCombo.sizes.length > 1) return acc;
+				return acc + (singleTierYields[shape][s][portion] || 10);
+			}, 0);
+		}
+
+		renderTieredResults(bestCombo, bestServings, guests, shape, portion, saveTopTier, height);
+	}
+
+	function renderTieredResults(combo, totalServings, guests, shape, portion, saveTopTier, height) {
+		resTotalServings.textContent = totalServings;
+		resTierCount.textContent = `${combo.tiers} Andar${combo.tiers > 1 ? 'es' : ''}`;
+		resTierDetail.textContent = combo.sizes.map(s => `${Math.round(s * 2.54)}cm (${s}")`).join(', ');
+
+		const diff = totalServings - guests;
+		if (diff === 0) {
+			matchStatus.textContent = '🎯 Ajuste Perfeito';
+			matchStatus.style.background = '#dcfce7';
+			resServingsDiff.textContent = `Exato para ${guests} convidados`;
+		} else if (diff > 0) {
+			matchStatus.textContent = `+${diff} Fatias de Margem`;
+			matchStatus.style.background = 'var(--post-it)';
+			resServingsDiff.textContent = `${diff} fatias de segurança`;
+		} else {
+			matchStatus.textContent = `${Math.abs(diff)} Fatias em Falta`;
+			matchStatus.style.background = '#fee2e2';
+			resServingsDiff.textContent = `Faltam ${Math.abs(diff)} fatias`;
+		}
+
+		// Calculate Area
+		let totalArea = 0;
+		combo.sizes.forEach(s => {
+			const cm = s * 2.54;
+			if (shape === 'round') {
+				totalArea += Math.PI * Math.pow(cm / 2, 2);
+			} else if (shape === 'square') {
+				totalArea += cm * cm;
+			} else {
+				totalArea += 0.9 * Math.PI * Math.pow(cm / 2, 2);
+			}
+		});
+		resCakeArea.textContent = `${Math.round(totalArea)} cm²`;
+
+		// Render Visual Tiers
+		tiersRenderBox.innerHTML = '';
+		const maxDiameter = 18;
+		const maxRenderWidth = 240;
+		const tierColors = ['#fef08a', '#e0f2fe', '#fed7aa', '#fbcfe8', '#dcfce7'];
+
+		combo.sizes.forEach((size, idx) => {
+			const tierDiv = document.createElement('div');
+			const renderWidth = Math.max(50, (size / maxDiameter) * maxRenderWidth);
+			const tierHeightPx = height === 4 ? 36 : height === 5 ? 44 : 52;
+			const isTopSaved = saveTopTier && idx === 0 && combo.sizes.length > 1;
+
+			tierDiv.style.width = `${renderWidth}px`;
+			tierDiv.style.height = `${tierHeightPx}px`;
+			tierDiv.style.background = isTopSaved ? '#e2e8f0' : tierColors[idx % tierColors.length];
+			tierDiv.style.border = '2px solid var(--fg-pencil)';
+			tierDiv.style.display = 'flex';
+			tierDiv.style.alignItems = 'center';
+			tierDiv.style.justifyContent = 'center';
+			tierDiv.style.position = 'relative';
+			tierDiv.style.fontFamily = 'var(--font-heading)';
+			tierDiv.style.fontSize = '0.95rem';
+			tierDiv.style.color = 'var(--fg-pencil)';
+			tierDiv.style.transition = 'all 0.3s ease';
+
+			if (shape === 'square') {
+				tierDiv.style.borderRadius = '2px';
+			} else if (shape === 'round') {
+				tierDiv.style.borderRadius = idx === 0 ? '6px 6px 0 0' : '0';
+			} else {
+				tierDiv.style.borderRadius = '8px 8px 0 0';
+			}
+
+			if (idx !== combo.sizes.length - 1) {
+				tierDiv.style.borderBottom = 'none';
+			}
+
+			const tierYield = singleTierYields[shape][size][portion] || 10;
+			tierDiv.innerHTML = `<span>${Math.round(size * 2.54)}cm (${size}") ${shape === 'round' ? '⭕' : shape === 'square' ? '⬛' : '❤️'} (${isTopSaved ? 'Guardado' : tierYield + ' fat.'})</span>`;
+
+			tiersRenderBox.appendChild(tierDiv);
+		});
+
+		// Render Detailed Breakdown List
+		tierBreakdownList.innerHTML = '<strong class="font-heading" style="display: block; margin-bottom: 0.5rem; color: var(--fg-pencil);">📋 Rendimento por Cada Andar:</strong>';
+		combo.sizes.forEach((size, idx) => {
+			const isTopSaved = saveTopTier && idx === 0 && combo.sizes.length > 1;
+			const tierYield = singleTierYields[shape][size][portion] || 10;
+			const item = document.createElement('div');
+			item.className = 'tier-slice-item';
+			item.innerHTML = `
+				<span><strong>Andar ${idx + 1} (${Math.round(size * 2.54)} cm / ${size}"):</strong> ${height === 4 ? '10' : height === 5 ? '12,5' : '15'} cm altura</span>
+				<span style="font-weight: bold; color: ${isTopSaved ? 'var(--accent-red)' : 'var(--accent-blue)'};">
+					${isTopSaved ? '0 fatias convidados (Guardado p/ 1.º Aniversário)' : tierYield + ' fatias de casamento'}
+				</span>
+			`;
+			tierBreakdownList.appendChild(item);
+		});
+
+		// Dynamic Pro Tip
+		if (guests > 120) {
+			proTipText.textContent = `Para ${guests} convidados, bolos com muitos andares tornam-se dispendiosos. Considere um bolo de 3 andares para corte (100 fatias) com bolo de apoio retangular na cozinha para poupar ~200 €!`;
+		} else if (saveTopTier) {
+			proTipText.textContent = `Como está a guardar o andar superior de 15 cm, reforçámos os andares inferiores para que todos os ${guests} convidados recebam a sua fatia!`;
+		} else {
+			proTipText.textContent = `A fatia tradicional de 2,5 x 5 cm é o padrão em copos-d'água. Se o bolo for a sobremesa única, considere selecionar a opção 'Fatia de Festa' para porções mais generosas!`;
+		}
+	}
+
+	function renderSheetCakeMode(guests, portion) {
+		let sheetType = '1/4 Tabuleiro (23 x 33 cm)';
+		let totalServings = 48;
+		let dimensions = '23 × 33 cm';
+
+		if (portion === 'wedding') {
+			if (guests <= 48) {
+				sheetType = '1 × 1/4 Tabuleiro (23 × 33 cm)';
+				totalServings = 48;
+				dimensions = '23 × 33 cm';
+			} else if (guests <= 96) {
+				sheetType = '1 × 1/2 Tabuleiro (30 × 45 cm)';
+				totalServings = 96;
+				dimensions = '30 × 45 cm';
+			} else if (guests <= 192) {
+				sheetType = '1 × Tabuleiro Completo (45 × 60 cm)';
+				totalServings = 192;
+				dimensions = '45 × 60 cm';
+			} else {
+				const numSheets = Math.ceil(guests / 192);
+				sheetType = `${numSheets} × Tabuleiros Completos (45 × 60 cm)`;
+				totalServings = numSheets * 192;
+				dimensions = `${numSheets} Tabuleiros`;
+			}
+		} else {
+			// Party Slices (5x5)
+			if (guests <= 24) {
+				sheetType = '1 × 1/4 Tabuleiro';
+				totalServings = 24;
+				dimensions = '23 × 33 cm';
+			} else if (guests <= 48) {
+				sheetType = '1 × 1/2 Tabuleiro';
+				totalServings = 48;
+				dimensions = '30 × 45 cm';
+			} else if (guests <= 96) {
+				sheetType = '1 × Tabuleiro Completo';
+				totalServings = 96;
+				dimensions = '45 × 60 cm';
+			} else {
+				const numSheets = Math.ceil(guests / 96);
+				sheetType = `${numSheets} × Tabuleiros Completos`;
+				totalServings = numSheets * 96;
+				dimensions = `${numSheets} Tabuleiros`;
+			}
+		}
+
+		resTotalServings.textContent = totalServings;
+		resTierCount.textContent = 'Tabuleiro';
+		resTierDetail.textContent = sheetType;
+		matchStatus.textContent = 'Modo Tabuleiro';
+		matchStatus.style.background = '#e0f2fe';
+		resServingsDiff.textContent = `${totalServings - guests >= 0 ? '+' + (totalServings - guests) : totalServings - guests} vs ${guests} convidados`;
+
+		// Visual Render of Sheet Cake
+		tiersRenderBox.innerHTML = `
+			<div style="width: 220px; height: 110px; background: #fed7aa; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-heading);">
+				<span style="font-size: 1.1rem; color: var(--fg-pencil);">${sheetType}</span>
+				<span style="font-size: 0.85rem; color: var(--text-secondary);">${dimensions} — ${totalServings} Fatias</span>
+				<div style="width: 85%; height: 2px; background: var(--fg-pencil); margin: 6px 0; border-style: dashed;"></div>
+				<span style="font-size: 0.75rem; color: var(--accent-blue);">Corte rápido e empratamento na cozinha</span>
+			</div>
+		`;
+
+		tierBreakdownList.innerHTML = `
+			<div class="tier-slice-item">
+				<span><strong>Formato do Tabuleiro:</strong> ${sheetType}</span>
+				<span style="font-weight: bold; color: var(--accent-blue);">${totalServings} Fatias Totais</span>
+			</div>
+			<div class="tier-slice-item">
+				<span><strong>Estilo de Corte:</strong> Grelha Retangular Uniforme</span>
+				<span>Zero desperdício / Rápido serviço</span>
+			</div>
+		`;
+
+		proTipText.textContent = `Os bolos de tabuleiro são a forma mais económica de servir sobremesa. Cozem uniformemente e são pré-fatiados pela equipa de catering minutos antes do serviço!`;
+	}
+
+	function renderComboMode(guests, shape, portion, saveTopTier) {
+		const displayTierSizes = [6, 8];
+		const displayYield = (saveTopTier ? 0 : (singleTierYields[shape][6][portion] || 12)) + (singleTierYields[shape][8][portion] || 24);
+		const neededFromSheet = Math.max(0, guests - displayYield);
+		
+		let sheetName = '1 × 1/4 Tabuleiro (23x33 cm)';
+		let sheetServings = portion === 'wedding' ? 48 : 24;
+
+		if (neededFromSheet > 48) {
+			sheetName = '1 × 1/2 Tabuleiro (30x45 cm)';
+			sheetServings = portion === 'wedding' ? 96 : 48;
+		}
+		if (neededFromSheet > 96) {
+			sheetName = '1 × Tabuleiro Completo (45x60 cm)';
+			sheetServings = portion === 'wedding' ? 192 : 96;
+		}
+
+		const totalComboServings = displayYield + sheetServings;
+
+		resTotalServings.textContent = totalComboServings;
+		resTierCount.textContent = 'Andares + Tabuleiro';
+		resTierDetail.textContent = `2 Andares (15/20 cm) + ${sheetName.split(' ')[2] || 'Apoio'}`;
+		matchStatus.textContent = '💡 Combo Económico';
+		matchStatus.style.background = '#fef08a';
+		resServingsDiff.textContent = `+${totalComboServings - guests} fatias de margem`;
+
+		// Render Display Tiers + Kitchen Cake Icon
+		tiersRenderBox.innerHTML = `
+			<div style="display: flex; gap: 1rem; align-items: flex-end; justify-content: center; width: 100%;">
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<div style="width: 70px; height: 30px; background: #fef08a; border: 2px solid var(--fg-pencil); border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-family: var(--font-heading);">15cm Topo</div>
+					<div style="width: 110px; height: 35px; background: #e0f2fe; border: 2px solid var(--fg-pencil); border-top: none; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-family: var(--font-heading);">20cm Base</div>
+					<span style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Bolo Exposição (${displayYield} fat.)</span>
+				</div>
+				<div style="width: 100px; height: 55px; background: #fed7aa; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-heading); text-align: center;">
+					<span style="font-size: 0.8rem; font-weight: bold;">Bolo Apoio</span>
+					<span style="font-size: 0.7rem; color: var(--accent-blue);">+${sheetServings} fatias</span>
+				</div>
+			</div>
+		`;
+
+		tierBreakdownList.innerHTML = `
+			<div class="tier-slice-item">
+				<span><strong>Bolo de Exposição (15 cm + 20 cm):</strong></span>
+				<span style="color: var(--accent-blue); font-weight: bold;">${displayYield} Fatias (Fotos & Corte)</span>
+			</div>
+			<div class="tier-slice-item">
+				<span><strong>Bolo de Apoio na Cozinha (${sheetName}):</strong></span>
+				<span style="color: var(--accent-red); font-weight: bold;">${sheetServings} Fatias (Tabuleiro)</span>
+			</div>
+		`;
+
+		proTipText.textContent = `Esta combinação híbrida garante a elegância de um bolo de 2 andares na mesa dos noivos enquanto poupa até 300 € na mão de obra de pastelaria!`;
+	}
+
+	// Initial Calculation
+	calculateAndRender();
+</script>

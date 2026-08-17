@@ -1,0 +1,403 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/pt/guest-count-estimator/#webapp",
+      "name": "Estimador de Número de Convidados de Casamento",
+      "url": "https://manage.wedding/pt/guest-count-estimator",
+      "inLanguage": "pt",
+      "description": "Calcule quantos convidados pode convidar com base no seu orçamento total, custos fixos da quinta e valores por pessoa de catering e bar aberto.",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Como Estimar o Número Ideal de Convidados de Casamento",
+      "description": "Descubra a lotação máxima financeiramente sustentável e a margem de segurança do espaço.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Passo 1: Defina o Orçamento Total e Subtraia os Custos Fixos",
+          "text": "Subtraia ao orçamento global as despesas fixas que não variam com o número de pessoas (aluguer da quinta, fotógrafo, música, vestidos)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 2: Calcule o Custo Real por Pessoa (Catering + Bar)",
+          "text": "Some o valor da ementa de catering por pessoa ao pacote de bar aberto e IVA aplicável."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 3: Divida a Verba Restante pelo Custo por Convidado",
+          "text": "Divida o orçamento variável pelo custo por pessoa para obter o número máximo de convidados."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 4: Aplique a Regra dos 90% da Capacidade da Quinta",
+          "text": "Multiplique a capacidade máxima da sala por 0,90 para garantir espaço para a pista de dança, mesa dos noivos e buffet."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Como funciona o estimador de convidados de casamento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A ferramenta subtrai os custos fixos (quinta, fotografia, animação) ao orçamento total. O valor remanescente é dividido pelo custo por pessoa de catering e bar, indicando o número máximo sustentável de convidados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O que devo incluir nos custos fixos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Os custos fixos incluem o aluguer do espaço, fotógrafo, videógrafo, DJ/música, taxa do celebrante, decoração base e os trajes dos noivos — gastos que não mudam quer tenha 60 ou 140 convidados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto custa o catering por pessoa em média?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Em Portugal e Espanha, o catering para casamentos varia tipicamente entre 80 € e 150 € por pessoa (incluindo canapés, entradas, prato de peixe, prato de carne, sobremesas e bar aberto)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Os noivos e padrinhos devem ser incluídos na contagem?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sim! Os noivos, damas de honor e padrinhos comem e bebem no copo-d'água, pelo que devem sempre fazer parte da contagem final para a empresa de catering."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Estimador de Número de Convidados de Casamento | Manage.Wedding"
+	description="Calcule quantos convidados pode convidar com base no seu orçamento total, custos fixos da quinta e valores por pessoa de catering e bar."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<section class="section-paper" style="padding: 4rem 2rem; min-height: 100vh;">
+			<div style="max-width: 1000px; margin: 0 auto;">
+				
+				<div style="text-align: center; margin-bottom: 3rem;">
+					<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 60px); color: var(--fg-pencil); transform: rotate(-1deg);">
+						Estimador de Convidados
+					</h1>
+					<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 600px; margin: 0 auto; margin-top: 1rem;">
+						Quer saber quantos amigos e familiares pode convidar sem ultrapassar o teto orçamental? Introduza os valores e a calculadora faz as contas.
+					</p>
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; align-items: start;">
+					
+					<!-- Form Column -->
+					<div class="hand-card">
+						<h2 class="font-heading" style="font-size: 1.5rem; margin-bottom: 1.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">Dados do Orçamento</h2>
+						<form id="guest-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
+							
+							<div class="input-group">
+								<label for="total-budget" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Orçamento Total (€)</label>
+								<input type="number" id="total-budget" value="25000" min="0" step="100" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Montante total disponível para o casamento.</small>
+							</div>
+
+							<div class="input-group">
+								<label for="fixed-costs" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Quinta & Custos Fixos (€)</label>
+								<input type="number" id="fixed-costs" value="10000" min="0" step="100" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Aluguer do espaço, fotógrafo, DJ, vestidos, etc.</small>
+							</div>
+
+							<div class="input-group">
+								<label for="catering-ph" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Catering por Pessoa (€)</label>
+								<input type="number" id="catering-ph" value="95" min="0" step="1" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Custo da refeição e sobremesas por convidado.</small>
+							</div>
+
+							<div class="input-group">
+								<label for="bar-ph" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Bar Aberto por Pessoa (€)</label>
+								<input type="number" id="bar-ph" value="25" min="0" step="1" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Bebidas e cocktail bar por pessoa.</small>
+							</div>
+
+							<button type="submit" class="hand-btn" style="width: 100%; font-size: 1.25rem; margin-top: 1rem;">Calcular Convidados</button>
+						</form>
+					</div>
+
+					<!-- Results Column -->
+					<div class="hand-card" id="results-container">
+						<h2 class="font-heading" style="font-size: 1.5rem; margin-bottom: 1.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">A Sua Estimativa</h2>
+						
+						<div style="text-align: center; margin-bottom: 2rem;">
+							<div style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Máximo de Convidados Sustentável</div>
+							<div id="max-guests" class="font-heading" style="font-size: 4rem; color: var(--accent-red); line-height: 1;">125</div>
+							<div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">pessoas</div>
+						</div>
+
+						<div style="margin-bottom: 1.5rem;">
+							<h3 class="font-heading" style="font-size: 1.2rem; margin-bottom: 1rem;">Divisão do Orçamento</h3>
+							
+							<!-- Dynamic CSS Chart -->
+							<div style="width: 100%; height: 40px; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; overflow: hidden; margin-bottom: 0.5rem;">
+								<div id="chart-fixed" style="width: 40%; background-color: var(--fg-pencil); display: flex; align-items: center; justify-content: center; color: var(--bg-paper); font-weight: bold; font-size: 0.8rem; transition: width 0.3s ease;">40%</div>
+								<div id="chart-variable" style="width: 60%; background-color: var(--accent-blue); display: flex; align-items: center; justify-content: center; color: var(--bg-paper); font-weight: bold; font-size: 0.8rem; transition: width 0.3s ease;">60%</div>
+							</div>
+							
+							<div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+								<div style="display: flex; align-items: center; gap: 0.5rem;">
+									<div style="width: 12px; height: 12px; background-color: var(--fg-pencil);"></div>
+									<span>Custos Fixos</span>
+								</div>
+								<div style="display: flex; align-items: center; gap: 0.5rem;">
+									<div style="width: 12px; height: 12px; background-color: var(--accent-blue);"></div>
+									<span>Custos com Convidados</span>
+								</div>
+							</div>
+						</div>
+
+						<div style="background-color: rgba(0,0,0,0.03); padding: 1rem; border: 1px dashed var(--fg-pencil);">
+							<div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+								<span>Orçamento Total:</span>
+								<strong id="display-total">25.000 €</strong>
+							</div>
+							<div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+								<span>Custos Fixos:</span>
+								<strong id="display-fixed">-10.000 €</strong>
+							</div>
+							<div style="display: flex; justify-content: space-between; border-top: 1px solid var(--fg-pencil); padding-top: 0.5rem;">
+								<span>Restante para Convidados:</span>
+								<strong id="display-remaining">15.000 €</strong>
+							</div>
+							<div style="display: flex; justify-content: space-between; margin-top: 0.5rem; color: var(--accent-red);">
+								<span>Custo Total por Pessoa:</span>
+								<strong id="display-perhead">120 €</strong>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+		<!-- SEO Article Section -->
+		<section class="section-muted" style="padding: 4rem 2rem;">
+			<div style="max-width: 900px; margin: 0 auto;">
+				<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+				<div class="hand-card" style="margin: 0 auto 3rem auto; max-width: 900px; background: var(--post-it); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+					<div class="tape" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);"></div>
+					<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<h2 class="font-heading" style="font-size: clamp(1.3rem, 2.5vw, 1.7rem); color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+							<span>⚡</span> Resumo Direto ao Assunto (BLUF)
+						</h2>
+						<span style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(0,0,0,0.06); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid var(--fg-pencil);">
+							Fórmula de Capacidade & Orçamento
+						</span>
+					</div>
+					
+					<!-- Core Formula Banner -->
+					<div style="background: rgba(255, 255, 255, 0.9); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+						<p class="font-body" style="font-size: 1.05rem; line-height: 1.6; margin: 0 0 0.5rem 0; color: var(--fg-pencil);">
+							<strong>Regra de Segurança do Espaço:</strong> 
+							<span style="display: inline-block; background: #fef3c7; border: 1px solid #d97706; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #92400e; margin: 2px 4px;">Capacidade Confortável = Lotação Máxima da Quinta × 0,90 (Margem de 90%)</span>
+						</p>
+						<p class="font-body" style="font-size: 0.9rem; margin: 0; color: var(--text-secondary); line-height: 1.5;">
+							<strong>Fórmula de Sustentabilidade:</strong> Máximo de Convidados = <code>(Orçamento Total − Custos Fixos) ÷ (Catering + Bar por Pessoa)</code>. A margem de 10% no espaço assegura circulação para a equipa de serviço, pista de dança e mesa de sobremesas.
+						</p>
+					</div>
+
+					<!-- Semantic Benchmark Table -->
+					<div style="overflow-x: auto;">
+						<table style="width: 100%; border-collapse: collapse; background: #fff; border: 2px solid var(--fg-pencil); font-family: var(--font-body); font-size: 0.92rem; text-align: left;">
+							<thead>
+								<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Orçamento Global</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Custos Fixos (40%)</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Verba para Convidados</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-blue);">Convidados @ 100 €/pax</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: #d97706;">Convidados @ 130 €/pax</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-red);">Convidados @ 160 €/pax</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">15.000 € (Íntimo / DIY)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">6.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">9.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">90 Pessoas</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">69 Pessoas</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">56 Pessoas</td>
+								</tr>
+								<tr style="background: #faf8f3;">
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">25.000 € (Médio Porte)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">10.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">15.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">150 Pessoas</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">115 Pessoas</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">93 Pessoas</td>
+								</tr>
+								<tr>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">35.000 € (Média Ibérica)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">14.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">21.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">210 Pessoas</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">161 Pessoas</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">131 Pessoas</td>
+								</tr>
+								<tr style="background: #faf8f3;">
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">50.000 € (Serviço Completo)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">20.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">30.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">300 Pessoas</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">230 Pessoas</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">187 Pessoas</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<article class="hand-card" style="padding: 3rem;">
+					<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem;">Como Estimar o Número Sustentável de Convidados</h2>
+					
+					<p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+						Planear um casamento envolve conciliar emoção e matemática financeira. Cada convidado adicional tem um impacto direto nos custos de alimentação, bar, papelaria, lembranças e dimensão das mesas. O nosso <strong>Estimador de Convidados</strong> permite obter números concretos para definir o teto da lista sem surpresas.
+					</p>
+
+					<figure style="margin: 2rem 0; text-align: center;">
+						<img src="/images/wedding_budget_book.webp" alt="Estimador de Convidados de Casamento — Previsão de Lotação" loading="lazy" decoding="async" style="max-width: 100%; border: 3px solid var(--fg-pencil); border-radius: 8px; transform: rotate(1deg);" />
+						<figcaption style="font-style: italic; margin-top: 0.5rem; color: var(--text-secondary);">Colocar os números no papel traz clareza imediata às decisões do casal.</figcaption>
+					</figure>
+
+					<h3 class="font-heading" style="font-size: 1.8rem; margin-bottom: 1rem; margin-top: 2rem;">A Lógica Financeira por Trás do Cálculo</h3>
+					<p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+						O cálculo é transparente. Primeiro, identificam-se as despesas fixas (espaço, fotografia, música e trajes). O saldo que resta é o "orçamento variável", inteiramente dedicado ao bem-estar dos convidados. Dividindo essa quantia pelo custo por pessoa de catering e bar, obtém-se o número máximo de presenças financeiramente equilibrado.
+					</p>
+
+					<hr style="border: none; border-top: 2px dashed var(--fg-pencil); margin: 3rem 0;" />
+
+					<h2 class="font-heading" style="font-size: 2rem; margin-bottom: 2rem;">Perguntas Frequentes</h2>
+					
+					<div class="faq-container" style="display: flex; flex-direction: column; gap: 1rem;">
+						<details class="faq-item" style="border: 2px solid var(--fg-pencil); padding: 1rem; background: var(--bg-paper);">
+							<summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; list-style-position: inside;">Como funciona o estimador de convidados de casamento?</summary>
+							<p style="margin-top: 1rem; line-height: 1.5;">A ferramenta subtrai os custos fixos (quinta, fotografia, animação) ao orçamento total. O valor remanescente é dividido pelo custo por pessoa de catering e bar, indicando o número máximo sustentável de convidados.</p>
+						</details>
+
+						<details class="faq-item" style="border: 2px solid var(--fg-pencil); padding: 1rem; background: var(--bg-paper);">
+							<summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; list-style-position: inside;">O que devo incluir nos custos fixos?</summary>
+							<p style="margin-top: 1rem; line-height: 1.5;">Os custos fixos incluem o aluguer do espaço, fotógrafo, videógrafo, DJ/música, taxa do celebrante, decoração base e os trajes dos noivos — gastos que não mudam quer tenha 60 ou 140 convidados.</p>
+						</details>
+
+						<details class="faq-item" style="border: 2px solid var(--fg-pencil); padding: 1rem; background: var(--bg-paper);">
+							<summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; list-style-position: inside;">Quanto custa o catering por pessoa em média?</summary>
+							<p style="margin-top: 1rem; line-height: 1.5;">Em Portugal e Espanha, o catering para casamentos varia tipicamente entre 80 € e 150 € por pessoa (incluindo canapés, entradas, prato de peixe, prato de carne, sobremesas e bar aberto).</p>
+						</details>
+
+						<details class="faq-item" style="border: 2px solid var(--fg-pencil); padding: 1rem; background: var(--bg-paper);">
+							<summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; list-style-position: inside;">Os noivos e padrinhos devem ser incluídos na contagem?</summary>
+							<p style="margin-top: 1rem; line-height: 1.5;">Sim! Os noivos, damas de honor e padrinhos comem e bebem no copo-d'água, pelo que devem sempre fazer parte da contagem final para a empresa de catering.</p>
+						</details>
+					</div>
+
+				</article>
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<script>
+	function calculateGuests() {
+		const budget = parseFloat((document.getElementById('total-budget') as HTMLInputElement).value) || 0;
+		const fixed = parseFloat((document.getElementById('fixed-costs') as HTMLInputElement).value) || 0;
+		const catering = parseFloat((document.getElementById('catering-ph') as HTMLInputElement).value) || 0;
+		const bar = parseFloat((document.getElementById('bar-ph') as HTMLInputElement).value) || 0;
+		
+		const perHead = catering + bar;
+		const remaining = budget - fixed;
+		
+		let maxGuests = 0;
+		if (perHead > 0 && remaining > 0) {
+			maxGuests = Math.floor(remaining / perHead);
+		} else if (remaining < 0) {
+			maxGuests = 0;
+		} else if (perHead === 0 && remaining >= 0) {
+			maxGuests = 999;
+		}
+
+		// Update UI
+		document.getElementById('max-guests')!.innerText = maxGuests.toString();
+		document.getElementById('display-total')!.innerText = `${budget.toLocaleString('pt-PT')} €`;
+		document.getElementById('display-fixed')!.innerText = `-${fixed.toLocaleString('pt-PT')} €`;
+		document.getElementById('display-remaining')!.innerText = `${remaining.toLocaleString('pt-PT')} €`;
+		document.getElementById('display-perhead')!.innerText = `${perHead.toLocaleString('pt-PT')} €`;
+
+		// Update Chart
+		let fixedPct = 0;
+		let varPct = 0;
+		
+		if (budget > 0) {
+			if (fixed >= budget) {
+				fixedPct = 100;
+				varPct = 0;
+			} else {
+				fixedPct = (fixed / budget) * 100;
+				varPct = 100 - fixedPct;
+			}
+		}
+
+		document.getElementById('chart-fixed')!.style.width = `${fixedPct}%`;
+		document.getElementById('chart-fixed')!.innerText = `${Math.round(fixedPct)}%`;
+		document.getElementById('chart-variable')!.style.width = `${varPct}%`;
+		document.getElementById('chart-variable')!.innerText = `${Math.round(varPct)}%`;
+	}
+
+	// Listen for form submission
+	document.getElementById('guest-form')?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		calculateGuests();
+	});
+
+	// Also calculate on input change for instant feedback
+	document.getElementById('guest-form')?.addEventListener('input', calculateGuests);
+
+	// Initial calculation
+	calculateGuests();
+</script>
+
+<style>
+	details > summary::-webkit-details-marker {
+		display: none;
+	}
+	details > summary {
+		list-style: none;
+		position: relative;
+		padding-left: 1.5rem;
+	}
+	details > summary::before {
+		content: '▶';
+		position: absolute;
+		left: 0;
+		top: 2px;
+		font-size: 0.8rem;
+		transition: transform 0.2s;
+	}
+	details[open] > summary::before {
+		transform: rotate(90deg);
+	}
+</style>

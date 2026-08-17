@@ -1,0 +1,673 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/dress-size-converter/#webapp",
+      "name": "Convertitore Taglie Abiti da Sposa & Misure Corporee",
+      "url": "https://manage.wedding/it/dress-size-converter",
+      "inLanguage": "it",
+      "description": "Converti le tue misure corporee (seno, vita, fianchi) in taglie da sposa italiane (IT), europee (EU), UK e US. Scopri la silhouette più valorizzante ed esporta la scheda misure per l'atelier.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come prendere le misure e convertire la taglia dell'abito da sposa",
+      "description": "Istruzioni sartoriali per misurare seno, punto vita e fianchi in centimetri e individuare la taglia perfetta.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Misurare la circonferenza seno",
+          "text": "Con il metro da sarta, misura il punto di massima sporgenza del seno indossando l'intimo previsto per l'abito."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Misurare il punto vita naturale",
+          "text": "Misura il punto più stretto del busto (circa 2-3 cm sopra l'ombelico) respirando normalmente."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Misurare i fianchi",
+          "text": "A piedi uniti, misura il punto di massima larghezza del bacino e dei glutei."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Ordinare in base alla misura maggiore",
+          "text": "Scegli sempre la taglia corrispondente alla tua misura più abbondante: la sarta potrà stringere comodamente le altre parti durante le prove."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Perché le taglie degli abiti da sposa risultano più piccole dei vestiti di tutti i giorni?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'alta moda sposa utilizza tabelle sartoriali storiche senza tessuti elasticizzati né vanity sizing. Di conseguenza, la taglia da sposa corrisponde spesso a una o due taglie in più rispetto all'abbigliamento casual quotidiano."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cosa fare se le mie misure si trovano a cavallo tra due taglie?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "È fondamentale scegliere sempre la taglia più grande. Gli abiti hanno margini interni minimi (1-2 cm): stringere un abito è un'operazione ordinaria, mentre allargarlo rischia di essere impossibile senza aggiungere inserti di tessuto."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Convertitore Taglie Abiti da Sposa & Misure Corporee | Manage.Wedding"
+	description="Converti le tue misure (seno, vita, fianchi) in taglie da sposa italiane (IT), US, UK ed europee (EU). Scopri la silhouette ideale ed esporta la scheda misure."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Conversione Taglie Abiti da Sposa" category="budget-finance" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Convertitore Taglie <span class="accent-italic">Abiti da Sposa</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Trova la tua taglia sposa esatta (IT, EU, UK, US) partendo dalle tue misure in centimetri. Confronta i brand di atelier e scarica la <strong>Scheda Misure per le Prove</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Main Interactive Sizing Studio Workspace Grid -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 380px 1fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="dress-calc-grid">
+			
+			<!-- Left Column: Input Form Card -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+						📏 Misure Corporee
+					</h2>
+					
+					<!-- Unit Switcher -->
+					<div style="display: flex; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden;">
+						<button type="button" id="unit-cm" class="unit-toggle-btn active-unit">cm</button>
+						<button type="button" id="unit-in" class="unit-toggle-btn">Pollici (in)</button>
+					</div>
+				</div>
+
+				<form id="dress-form" style="display: flex; flex-direction: column; gap: 1.1rem;">
+					
+					<!-- Bust -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-bust" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								1. Circonferenza Seno (<span class="unit-label">cm</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Punto di massima sporgenza</span>
+						</div>
+						<input type="number" step="0.5" id="input-bust" value="91" min="50" max="180" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Waist -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-waist" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								2. Punto Vita Naturale (<span class="unit-label">cm</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Punto più stretto del busto</span>
+						</div>
+						<input type="number" step="0.5" id="input-waist" value="71" min="40" max="160" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Hips -->
+					<div>
+						<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+							<label for="input-hips" class="font-heading" style="font-size: 1rem; color: var(--fg-pencil);">
+								3. Circonferenza Fianchi (<span class="unit-label">cm</span>) *
+							</label>
+							<span style="font-size: 0.8rem; color: var(--text-secondary);">Punto più ampio del bacino</span>
+						</div>
+						<input type="number" step="0.5" id="input-hips" value="99" min="50" max="200" required style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; background: var(--bg-paper);">
+					</div>
+
+					<!-- Designer Preference -->
+					<div>
+						<label for="input-designer" class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							Brand Atelier & Vestibilità
+						</label>
+						<select id="input-designer" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff;">
+							<option value="standard" selected>Atelier Italiano Standard (Media)</option>
+							<option value="couture">Haute Couture Europea (Pronovias / Rosa Clará - Veste Stretto)</option>
+							<option value="davids">Brand Internazionali / Prêt-à-Porter (David's Bridal / BHLDN)</option>
+							<option value="maggie">Maggie Sottero / Nicole Milano</option>
+						</select>
+					</div>
+
+					<!-- Sample Presets -->
+					<div style="margin-top: 0.5rem; background: var(--bg-paper); border: 1px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem;">
+						<span class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							⚡ Esempi Rapidi di Taglia:
+						</span>
+						<div style="display: flex; flex-wrap: wrap; gap: 0.3rem;">
+							<button type="button" class="preset-meas-btn" data-b="86" data-w="66" data-h="94">Taglia 40 IT (86-66-94)</button>
+							<button type="button" class="preset-meas-btn" data-b="95" data-w="75" data-h="103">Taglia 44 IT (95-75-103)</button>
+							<button type="button" class="preset-meas-btn" data-b="109" data-w="89" data-h="117">Taglia 48/50 IT (109-89-117)</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Interactive Results -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Sizing Results Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div>
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+								👗 Taglia Sposa Consigliata da Ordinare
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">
+								Calcolata sulla tua misura corporea maggiore
+							</span>
+						</div>
+
+						<!-- Exports -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Esporta Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Stampa PDF
+							</button>
+						</div>
+					</div>
+
+					<!-- Side by Side Sizing Comparison Boxes -->
+					<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+						
+						<!-- Street Size -->
+						<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Taglia Abiti Quotidiani</span>
+							<strong id="res-street-size" class="font-heading" style="font-size: 2.4rem; color: var(--accent-blue); display: block; line-height: 1.2;">IT 42</strong>
+							<span style="font-size: 0.75rem; color: var(--text-secondary);">Abbigliamento casual</span>
+						</div>
+
+						<!-- Primary Bridal Size -->
+						<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1rem; text-align: center; position: relative;">
+							<span style="position: absolute; top: -10px; right: 10px; background: var(--accent-red); color: #fff; font-size: 0.7rem; font-weight: bold; padding: 2px 6px; border-radius: 10px;">ORDINA QUESTA</span>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--accent-red); display: block; font-weight: bold;">Taglia Abito da Sposa</span>
+							<strong id="res-bridal-size" class="font-heading" style="font-size: 2.4rem; color: var(--accent-red); display: block; line-height: 1.2;">IT 44</strong>
+							<span style="font-size: 0.75rem; color: var(--accent-red); font-weight: bold;">Vestibilità Sartoriale</span>
+						</div>
+
+						<!-- Body Shape Archetype -->
+						<div style="background: #f0fdf4; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+							<span class="font-body" style="font-size: 0.85rem; color: #166534; display: block;">Tipologia Silhouette</span>
+							<strong id="res-body-shape" class="font-heading" style="font-size: 1.3rem; color: #15803d; display: block; line-height: 1.3; margin: 0.4rem 0;">A Clessidra</strong>
+							<span id="res-shape-desc" style="font-size: 0.75rem; color: #166534; display: block;">Seno e fianchi proporzionati con vita definita</span>
+						</div>
+
+					</div>
+
+					<!-- International Conversion Matrix Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+							🌐 Tabella di Conversione Internazionale
+						</h4>
+						<div style="overflow-x: auto;">
+							<table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.95rem; font-family: var(--font-body);">
+								<thead>
+									<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Taglia Italia (IT)</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Europa (EU / FR)</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">UK (Regno Unito)</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">US Bridal</th>
+										<th style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Australia (AU)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td id="matrix-it" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red); font-size: 1.1rem;">44</td>
+										<td id="matrix-eu" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">40</td>
+										<td id="matrix-uk" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">12</td>
+										<td id="matrix-us" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">10</td>
+										<td id="matrix-au" style="padding: 0.5rem; border: 1px solid var(--fg-pencil); font-weight: bold;">12</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<!-- Measurement Anchor Alert & Alteration Guidance -->
+					<div style="background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<strong class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.3rem;">
+							✂️ Regola d'Oro per l'Atelier:
+						</strong>
+						<p id="alteration-advice-text" class="font-body" style="font-size: 0.95rem; margin: 0; line-height: 1.5; color: var(--fg-pencil);">
+							La tua misura maggiore è quella dei <strong>fianchi</strong>. Ordina la <strong>Taglia IT 44</strong> per garantire che l'abito si chiuda perfettamente senza tirare. La sarta dell'atelier stringerà comodamente il punto vita e il seno durante la prima prova.
+						</p>
+					</div>
+
+				</div>
+
+				<!-- Flattering Gown Silhouette Recommendations Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+					<h3 class="font-heading" style="font-size: 1.3rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+						<span>✨</span> Modelli e Silhouette Consigliati per il Tuo Fisico
+					</h3>
+					<div id="silhouette-cards-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+						<!-- Injected via JS -->
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Scheda Misure & Taglia Abito da Sposa</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Data: <span id="print-date"></span> | Promemoria per Atelier e Sarta</p>
+			</div>
+			
+			<table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Punto di Misura</th>
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: center;">Misura Rilevata</th>
+						<th style="border: 1px solid #ccc; padding: 8px; text-align: center;">Note Sartoriali</th>
+					</tr>
+				</thead>
+				<tbody id="print-meas-body"></tbody>
+			</table>
+
+			<div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; background: #fafafa;">
+				<h3 style="margin: 0 0 8px 0; font-size: 15px;">Riepilogo Taglia Consigliata:</h3>
+				<p style="margin: 4px 0;">• <strong>Taglia Sposa da Ordinare:</strong> <span id="print-rec-size"></span></p>
+				<p style="margin: 4px 0;">• <strong>Taglia Abiti Quotidiani:</strong> <span id="print-street-size"></span></p>
+				<p style="margin: 4px 0;">• <strong>Silhouette Corporea:</strong> <span id="print-body-shape"></span></p>
+				<p style="margin: 4px 0;">• <strong>Consiglio Sartoria:</strong> <span id="print-alteration-note"></span></p>
+			</div>
+		</div>
+
+		<!-- SEO Article -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guida Completa alla Scelta della Taglia dell'Abito da Sposa
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Perché le taglie da sposa non corrispondono a quelle commerciali e come prendere le misure senza errori.
+				</p>
+			</div>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. La Regola della Misura Più Abbondante
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Se il tuo seno corrisponde a una taglia 42 e i fianchi a una taglia 44, ordina sempre la taglia 44. Adattare e stringere il bustino durante le prove sartoriali è un lavoro semplice, mentre allargare un abito stretto sui fianchi può risultare impossibile.
+				</p>
+			</section>
+
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Domande Frequenti (FAQ)
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Devo indossare i tacchi durante le misurazioni?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Per seno, vita e fianchi le scarpe non incidono. I tacchi saranno invece indispensabili durante la prima prova sartoriale per regolare con precisione la lunghezza dell'orlo a terra.
+					</p>
+				</details>
+			</section>
+		</article>
+
+		<RelatedTools currentPath="/it/dress-size-converter" category="budget" />
+
+	</main>
+</Layout>
+
+<style>
+	.unit-toggle-btn {
+		background: #fff;
+		border: none;
+		padding: 0.3rem 0.6rem;
+		font-family: var(--font-heading);
+		font-size: 0.85rem;
+		cursor: pointer;
+		color: var(--fg-pencil);
+		transition: background 0.15s ease;
+	}
+	.unit-toggle-btn.active-unit {
+		background: var(--fg-pencil);
+		color: #fff;
+	}
+
+	.preset-meas-btn {
+		background: #fff;
+		border: 1px solid var(--fg-pencil);
+		border-radius: 3px;
+		padding: 0.2rem 0.45rem;
+		font-size: 0.75rem;
+		cursor: pointer;
+		font-family: var(--font-body);
+	}
+	.preset-meas-btn:hover {
+		background: var(--muted-paper);
+	}
+
+	.silhouette-card {
+		background: var(--bg-paper);
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.85rem;
+	}
+	.silhouette-card h5 {
+		margin: 0 0 0.25rem 0;
+		font-family: var(--font-heading);
+		font-size: 1rem;
+		color: var(--accent-blue);
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	// Standard Size Chart in Centimeters
+	const sizeChartCm = [
+		{ it: '38', eu: '34', uk: '6',  us: '2',  bust: 81,  waist: 61,  hip: 88 },
+		{ it: '40', eu: '36', uk: '8',  us: '4',  bust: 85,  waist: 65,  hip: 92 },
+		{ it: '42', eu: '38', uk: '10', us: '6',  bust: 89,  waist: 69,  hip: 96 },
+		{ it: '44', eu: '40', uk: '12', us: '8',  bust: 93,  waist: 73,  hip: 100 },
+		{ it: '46', eu: '42', uk: '14', us: '10', bust: 97,  waist: 77,  hip: 104 },
+		{ it: '48', eu: '44', uk: '16', us: '12', bust: 102, waist: 82,  hip: 109 },
+		{ it: '50', eu: '46', uk: '18', us: '14', bust: 107, waist: 87,  hip: 114 },
+		{ it: '52', eu: '48', uk: '20', us: '16', bust: 113, waist: 93,  hip: 120 },
+		{ it: '54', eu: '50', uk: '22', us: '18', bust: 119, waist: 99,  hip: 126 },
+		{ it: '56', eu: '52', uk: '24', us: '20', bust: 125, waist: 105, hip: 132 }
+	];
+
+	let currentUnit = 'cm';
+
+	const bustInput = document.getElementById('input-bust');
+	const waistInput = document.getElementById('input-waist');
+	const hipsInput = document.getElementById('input-hips');
+	const designerSelect = document.getElementById('input-designer');
+
+	const resStreet = document.getElementById('res-street-size');
+	const resBridal = document.getElementById('res-bridal-size');
+	const resBodyShape = document.getElementById('res-body-shape');
+	const resShapeDesc = document.getElementById('res-shape-desc');
+
+	const matrixIt = document.getElementById('matrix-it');
+	const matrixEu = document.getElementById('matrix-eu');
+	const matrixUk = document.getElementById('matrix-uk');
+	const matrixUs = document.getElementById('matrix-us');
+	const matrixAu = document.getElementById('matrix-au');
+
+	const alterationText = document.getElementById('alteration-advice-text');
+	const silhouetteContainer = document.getElementById('silhouette-cards-container');
+
+	function toCm(val) {
+		return currentUnit === 'in' ? val * 2.54 : val;
+	}
+
+	function calculateSizing() {
+		let rawB = parseFloat(bustInput.value) || 91;
+		let rawW = parseFloat(waistInput.value) || 71;
+		let rawH = parseFloat(hipsInput.value) || 99;
+
+		const bCm = toCm(rawB);
+		const wCm = toCm(rawW);
+		const hCm = toCm(rawH);
+
+		let bustIdx = sizeChartCm.findIndex(s => bCm <= s.bust);
+		if (bustIdx === -1) bustIdx = sizeChartCm.length - 1;
+
+		let waistIdx = sizeChartCm.findIndex(s => wCm <= s.waist);
+		if (waistIdx === -1) waistIdx = sizeChartCm.length - 1;
+
+		let hipIdx = sizeChartCm.findIndex(s => hCm <= s.hip);
+		if (hipIdx === -1) hipIdx = sizeChartCm.length - 1;
+
+		let maxIdx = Math.max(bustIdx, waistIdx, hipIdx);
+		const designer = designerSelect.value;
+		if (designer === 'couture') {
+			maxIdx = Math.min(sizeChartCm.length - 1, maxIdx + 1);
+		}
+
+		const matched = sizeChartCm[maxIdx];
+		const streetIt = Math.max(38, parseInt(matched.it, 10) - 2);
+
+		// Shape classification
+		let shape = 'A Clessidra';
+		let shapeDetail = 'Seno e fianchi proporzionati con punto vita ben definito';
+		let silhouettes = [
+			{ name: 'Sirena / Scivolato', desc: 'Esaltano le forme e la naturale armonia della figura.' },
+			{ name: 'Taglio ad A Classico', desc: "Valorizza il punto vita con un'eleganza senza tempo." }
+		];
+
+		if (hCm >= bCm + 5 && (hCm - wCm) >= 20) {
+			shape = 'A Pera / Triangolo';
+			shapeDetail = 'Fianchi più morbidi rispetto al busto e vita sottile';
+			silhouettes = [
+				{ name: 'Principessa / Ballgown', desc: 'Gonna ampia che scivola sui fianchi valorizzando il corpetto.' },
+				{ name: 'Stile Impero / Linea A fluida', desc: "Slancia la figura portando l'attenzione sul décolleté." }
+			];
+		} else if (bCm >= hCm + 5) {
+			shape = 'Triangolo Invertito';
+			shapeDetail = 'Décolleté generoso o spalle più ampie rispetto ai fianchi';
+			silhouettes = [
+				{ name: 'Scollo a V / Linea A', desc: 'Riequilibra la parte superiore e dona slancio al busto.' },
+				{ name: 'Gonna con pieghe morbide', desc: 'Aggiunge volume alla parte inferiore per una perfetta simmetria.' }
+			];
+		} else if (Math.abs(bCm - hCm) <= 5 && (bCm - wCm) <= 15) {
+			shape = 'Rettangolare / Atletica';
+			shapeDetail = 'Misure armoniose con punto vita poco accentuato';
+			silhouettes = [
+				{ name: 'Fit-and-Flare', desc: "Crea visivamente l'illusione di curve armoniose." },
+				{ name: 'Corsetto Steccato', desc: 'Definisce e scolpisce la vita con struttura interna.' }
+			];
+		}
+
+		resStreet.textContent = `IT ${streetIt}`;
+		resBridal.textContent = `IT ${matched.it}`;
+		resBodyShape.textContent = shape;
+		resShapeDesc.textContent = shapeDetail;
+
+		matrixIt.textContent = matched.it;
+		matrixEu.textContent = matched.eu;
+		matrixUk.textContent = matched.uk;
+		matrixUs.textContent = matched.us;
+		matrixAu.textContent = matched.uk;
+
+		let anchor = 'dei fianchi';
+		if (bustIdx >= waistIdx && bustIdx >= hipIdx) anchor = 'del seno';
+		else if (waistIdx >= bustIdx && waistIdx >= hipIdx) anchor = 'del punto vita';
+
+		alterationText.innerHTML = `
+			La tua misura più abbondante è quella <strong>${anchor} (Taglia IT ${matched.it})</strong>. Ordina la <strong>Taglia IT ${matched.it}</strong> per garantire che l'abito si chiuda comodamente. La sarta dell'atelier adatterà e stringerà con facilità le altre zone durante le prove.
+		`;
+
+		silhouetteContainer.innerHTML = '';
+		silhouettes.forEach(s => {
+			const div = document.createElement('div');
+			div.className = 'silhouette-card';
+			div.innerHTML = `
+				<h5>✨ ${s.name}</h5>
+				<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">${s.desc}</p>
+			`;
+			silhouetteContainer.appendChild(div);
+		});
+	}
+
+	document.getElementById('unit-cm').addEventListener('click', () => {
+		if (currentUnit === 'cm') return;
+		currentUnit = 'cm';
+		document.getElementById('unit-cm').classList.add('active-unit');
+		document.getElementById('unit-in').classList.remove('active-unit');
+		document.querySelectorAll('.unit-label').forEach(el => el.textContent = 'cm');
+
+		bustInput.value = (parseFloat(bustInput.value) * 2.54).toFixed(1);
+		waistInput.value = (parseFloat(waistInput.value) * 2.54).toFixed(1);
+		hipsInput.value = (parseFloat(hipsInput.value) * 2.54).toFixed(1);
+		calculateSizing();
+	});
+
+	document.getElementById('unit-in').addEventListener('click', () => {
+		if (currentUnit === 'in') return;
+		currentUnit = 'in';
+		document.getElementById('unit-in').classList.add('active-unit');
+		document.getElementById('unit-cm').classList.remove('active-unit');
+		document.querySelectorAll('.unit-label').forEach(el => el.textContent = 'pollici');
+
+		bustInput.value = (parseFloat(bustInput.value) / 2.54).toFixed(1);
+		waistInput.value = (parseFloat(waistInput.value) / 2.54).toFixed(1);
+		hipsInput.value = (parseFloat(hipsInput.value) / 2.54).toFixed(1);
+		calculateSizing();
+	});
+
+	document.querySelectorAll('.preset-meas-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			let b = parseFloat(btn.getAttribute('data-b'));
+			let w = parseFloat(btn.getAttribute('data-w'));
+			let h = parseFloat(btn.getAttribute('data-h'));
+
+			if (currentUnit === 'in') {
+				b = (b / 2.54).toFixed(1);
+				w = (w / 2.54).toFixed(1);
+				h = (h / 2.54).toFixed(1);
+			}
+
+			bustInput.value = b;
+			waistInput.value = w;
+			hipsInput.value = h;
+			calculateSizing();
+		});
+	});
+
+	[bustInput, waistInput, hipsInput].forEach(inp => {
+		inp.addEventListener('input', calculateSizing);
+	});
+	designerSelect.addEventListener('change', calculateSizing);
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		const rawB = bustInput.value;
+		const rawW = waistInput.value;
+		const rawH = hipsInput.value;
+		const unit = currentUnit === 'cm' ? 'cm' : 'pollici';
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Scheda Misure Abito da Sposa</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Scheda Misure & Taglia Abito da Sposa</h1>
+				<p>Data: ${new Date().toLocaleDateString('it-IT')} | Promemoria per Atelier e Sarta</p>
+				
+				<h3>Misure Rilevate:</h3>
+				<table>
+					<thead><tr><th>Punto di Misura</th><th>Valore</th><th>Note</th></tr></thead>
+					<tbody>
+						<tr><td><strong>Circonferenza Seno</strong></td><td>${rawB} ${unit}</td><td>Misurato con intimo sposa</td></tr>
+						<tr><td><strong>Punto Vita Naturale</strong></td><td>${rawW} ${unit}</td><td>Punto più stretto</td></tr>
+						<tr><td><strong>Circonferenza Fianchi</strong></td><td>${rawH} ${unit}</td><td>Punto di massima ampiezza</td></tr>
+					</tbody>
+				</table>
+
+				<h3 style="margin-top:20px;">Taglia Consigliata:</h3>
+				<p>• <strong>Taglia da Ordinare:</strong> ${resBridal.textContent} (EU ${matrixEu.textContent} / UK ${matrixUk.textContent})</p>
+				<p>• <strong>Silhouette Corporea:</strong> ${resBodyShape.textContent} (${resShapeDesc.textContent})</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Scheda_Misure_Sposa_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('it-IT');
+		const unit = currentUnit === 'cm' ? 'cm' : 'pollici';
+
+		document.getElementById('print-meas-body').innerHTML = `
+			<tr><td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">1. Seno</td><td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${bustInput.value} ${unit}</td><td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Con intimo sposa</td></tr>
+			<tr><td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">2. Punto Vita</td><td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${waistInput.value} ${unit}</td><td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Punto più stretto</td></tr>
+			<tr><td style="border: 1px solid #ccc; padding: 6px; font-weight:bold;">3. Fianchi</td><td style="border: 1px solid #ccc; padding: 6px; text-align:center;">${hipsInput.value} ${unit}</td><td style="border: 1px solid #ccc; padding: 6px; text-align:center;">Massima ampiezza</td></tr>
+		`;
+
+		document.getElementById('print-rec-size').textContent = `${resBridal.textContent} (EU ${matrixEu.textContent} / UK ${matrixUk.textContent})`;
+		document.getElementById('print-street-size').textContent = resStreet.textContent;
+		document.getElementById('print-body-shape').textContent = `${resBodyShape.textContent} (${resShapeDesc.textContent})`;
+		document.getElementById('print-alteration-note').textContent = alterationText.textContent;
+
+		window.print();
+	});
+
+	calculateSizing();
+</script>

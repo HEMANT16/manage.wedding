@@ -1,0 +1,780 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/pt/wedding-envelope-addressing/#webapp",
+      "name": "Formatador de Endereços de Envelopes de Casamento & Gerador de Etiqueta",
+      "url": "https://manage.wedding/pt/wedding-envelope-addressing",
+      "inLanguage": "pt",
+      "description": "Gerador gratuito de endereçamento de envelopes de casamento e formatador de etiqueta. Formate envelopes exteriores A7, envelopes de resposta A2 e sobrescritos com títulos formais (médicos, acompanhantes, famílias). Exporte para PDF, Word e CSV.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Como Endereçar Envelopes de Casamento com a Etiqueta Correta",
+      "description": "Guia de etiqueta passo a passo para subscrever envelopes exteriores, envelopes interiores e envelopes de resposta de RSVP.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Passo 1: Escolha a Dimensão do Envelope (A7 vs A2)",
+          "text": "Selecione A7 (133x184 mm / 5.25x7.25\") para convites padrão de 13x18 cm ou A2 (111x146 mm) para os cartões de resposta de RSVP."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 2: Aplique o Tratamento Formal Adequado",
+          "text": "Utilize os títulos sociais ou profissionais corretos (Sr. e Sra., Dra. e Sr., ou nomes em linhas separadas para casais que não partilham o mesmo apelido)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 3: Escreva a Morada Completa sem Abreviaturas Excessivas",
+          "text": "A etiqueta formal tradicional recomenda escrever Rua, Avenida, Praceta e o nome da localidade por extenso antes do código postal."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Passo 4: Formate o Remetente na Aba Posterior",
+          "text": "Coloque a morada de remetente dos noivos centrada na aba traseira do envelope ou no canto superior esquerdo para envio postal."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qual é a dimensão padrão para o envelope do convite de casamento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "O tamanho padrão mais utilizado é o envelope A7 (133mm × 184mm ou 5.25\" × 7.25\"), concebido para alojar cartões de convite de 13cm × 18cm (5\" × 7\") juntamente com os respetivos cartões informativos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como endereçar um convite a um casal que vive junto mas não é casado?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Escreva o nome de cada pessoa numa linha separada por ordem alfabética de apelido: 'Sra. Mariana Costa' na primeira linha e 'Sr. David Martins' na segunda linha, seguidos da morada comum."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Como endereçar quando um dos cônjuges é médico ou doutor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Como os títulos profissionais e académicos prevalecem sobre os sociais, o nome do médico surge em primeiro lugar: 'Dra. Sofia Ramos e Sr. Pedro Ramos'. Se ambos forem médicos, escreve-se 'Drs. Sofia e Pedro Ramos'."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Formatador de Endereços de Envelopes de Casamento | Manage.Wedding"
+	description="Gerador gratuito de subscrição de envelopes de casamento e guia de etiqueta. Formate envelopes exteriores A7, envelopes de resposta A2 e sobrescritos com títulos formais. Exporte para PDF, Word e CSV."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Endereçamento de Envelopes" category="stationery" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Guia de Etiqueta & Gerador Imprimível</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Formatador de Endereços de <span class="accent-italic">Envelopes</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 700px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Garanta a etiqueta correta para casais casados, médicos, acompanhantes (+1) e famílias. Pré-visualize estilos de caligrafia em tempo real e exporte folhas de envelopes prontas a imprimir em PDF e Word com 1 clique.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Controls & Formatter Input -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Configuração do Envelope
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						A7 / A2 / Quadrado
+					</span>
+				</div>
+
+				<!-- Envelope Size Selector -->
+				<div class="form-group">
+					<label class="form-label" for="env-size">Dimensão / Formato do Envelope</label>
+					<select id="env-size" class="form-input" style="cursor: pointer;">
+						<option value="a7" selected>Envelope Exterior A7 (133 × 184 mm — Convites 13x18 cm)</option>
+						<option value="a2">Envelope de Resposta A2 (111 × 146 mm — Cartões RSVP)</option>
+						<option value="inner">Envelope Interior A7 (130 × 178 mm — Apenas Nomes dos Convidados)</option>
+						<option value="square">Envelope Quadrado 15 × 15 cm</option>
+						<option value="dl">Envelope Slim DL (110 × 220 mm — Para Ementas Longas)</option>
+					</select>
+				</div>
+
+				<!-- Etiquette Preset Quick-Pick -->
+				<div class="form-group">
+					<label class="form-label" for="etiquette-preset">
+						Atalho de Etiqueta & Tratamento
+					</label>
+					<select id="etiquette-preset" class="form-input" style="background: #f8fafc; font-weight: 600; cursor: pointer;">
+						<option value="married-same" selected>👫 Casal Casado (Mesmo Apelido) — ex.: Sr. e Sra. Silva</option>
+						<option value="married-modern">👫 Casal Casado (Moderno) — ex.: Sara e Gonçalo Silva</option>
+						<option value="married-diff">👫 Casal Casado (Apelidos Diferentes) — ex.: Sra. Mariana Costa e Sr. Tiago Silva</option>
+						<option value="doctor-wife">🩺 Médica (Esposa é Médica) — ex.: Dra. Sofia Costa e Sr. Pedro Silva</option>
+						<option value="doctor-both">🩺 Médicos (Ambos são Médicos) — ex.: Drs. Sofia e Pedro Silva</option>
+						<option value="unmarried">💑 Casal Não Casado a Viver Junto — (Linhas Separadas)</option>
+						<option value="single-guest">👤 Convidado Individual com Acompanhante — ex.: Sr. David Martins e Acompanhante</option>
+						<option value="family">👨‍👩‍👧‍👦 Família com Filhos — ex.: Família Silva</option>
+						<option value="custom">✏️ Entrada Manual Personalizada</option>
+					</select>
+				</div>
+
+				<!-- Recipient Name Line 1 -->
+				<div class="form-group">
+					<label class="form-label" for="rec-name-1">Nome(s) do Destinatário — Linha 1</label>
+					<input type="text" id="rec-name-1" class="form-input" value="Sr. e Sra. Gonçalo Silva" placeholder="ex.: Sr. e Sra. Gonçalo Silva" />
+				</div>
+
+				<!-- Recipient Name Line 2 (Optional for unmarried/plus-ones) -->
+				<div class="form-group" id="rec-name-2-group" style="display: none;">
+					<label class="form-label" for="rec-name-2">Nome do Destinatário (Linha 2 — Opcional)</label>
+					<input type="text" id="rec-name-2" class="form-input" value="" placeholder="ex.: Sra. Inês Henriques" />
+				</div>
+
+				<!-- Street Address -->
+				<div class="form-group">
+					<label class="form-label" for="rec-street">Morada (Rua, Número, Andar)</label>
+					<input type="text" id="rec-street" class="form-input" value="Avenida da Liberdade, n.º 142, 3.º Dto." placeholder="ex.: Rua das Flores, n.º 10" />
+				</div>
+
+				<!-- City, State & Zip -->
+				<div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="rec-city">Localidade / Cidade</label>
+						<input type="text" id="rec-city" class="form-input" value="Lisboa" placeholder="Cidade" />
+					</div>
+					<div>
+						<label class="form-label" for="rec-state">Distrito / Região</label>
+						<input type="text" id="rec-state" class="form-input" value="Lisboa" placeholder="Distrito" />
+					</div>
+					<div>
+						<label class="form-label" for="rec-zip">Código Postal</label>
+						<input type="text" id="rec-zip" class="form-input" value="1250-146" placeholder="0000-000" />
+					</div>
+				</div>
+
+				<!-- Return Address Toggle & Inputs -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.75rem;">
+						<input type="checkbox" id="toggle-return-addr" checked style="width: 18px; height: 18px;" />
+						<span>Incluir Morada de Remetente (Noivos)</span>
+					</label>
+
+					<div id="return-addr-fields">
+						<div class="form-group">
+							<label class="form-label" for="ret-names" style="font-size: 0.95rem;">Nomes dos Noivos (Remetente)</label>
+							<input type="text" id="ret-names" class="form-input" value="Sara & Gonçalo" style="font-size: 0.95rem; padding: 0.6rem 0.75rem;" />
+						</div>
+						<div class="form-group">
+							<label class="form-label" for="ret-street" style="font-size: 0.95rem;">Morada de Remetente & Código Postal</label>
+							<input type="text" id="ret-street" class="form-input" value="Rua das Roseiras, 45, 2710-120 Sintra" style="font-size: 0.95rem; padding: 0.6rem 0.75rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Style Customization -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<label class="form-label">Estilo de Caligrafia / Tipografia</label>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+						<button type="button" class="font-style-btn hand-btn is-active" data-font="script" style="padding: 8px; font-size: 0.9rem; font-family: 'Kalam', cursive;">
+							✒️ Caligrafia Moderna
+						</button>
+						<button type="button" class="font-style-btn hand-btn" data-font="serif" style="padding: 8px; font-size: 0.9rem; font-family: Georgia, serif;">
+							🏛️ Serifa Romana Formal
+						</button>
+						<button type="button" class="font-style-btn hand-btn" data-font="sans" style="padding: 8px; font-size: 0.9rem; font-family: var(--font-body);">
+							✨ Sans Moderna Nítida
+						</button>
+						<button type="button" class="font-style-btn hand-btn" data-font="hand" style="padding: 8px; font-size: 0.9rem; font-family: 'Caveat', cursive;">
+							✏️ Manuscrito Escolar
+						</button>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Live Envelope Visual Canvas & Batch Export -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Live Canvas Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #ffffff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+						<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Pré-visualização do Envelope
+						</h3>
+						<span id="env-size-tag" style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); background: #f1f5f9; padding: 4px 8px; border-radius: 4px; border: 1px solid #cbd5e1;">
+							A7: 133 × 184 mm
+						</span>
+					</div>
+
+					<!-- The Realistic Envelope Box -->
+					<div id="envelope-canvas" style="width: 100%; aspect-ratio: 7.25 / 5.25; background: #fffcf5; border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 6px 6px 0px var(--fg-pencil); position: relative; padding: clamp(1rem, 3vw, 2rem); display: flex; flex-direction: column; justify-content: center; box-sizing: border-box; transition: all 0.2s ease;">
+						
+						<!-- Return Address on Front Top-Left -->
+						<div id="canvas-return-addr" style="position: absolute; top: clamp(0.75rem, 2vw, 1.25rem); left: clamp(0.75rem, 2vw, 1.25rem); font-size: clamp(0.68rem, 1.2vw, 0.82rem); line-height: 1.35; color: var(--fg-pencil); max-width: 45%;">
+							<strong id="canvas-ret-name" style="display: block;">Sara & Gonçalo</strong>
+							<span id="canvas-ret-full">Rua das Roseiras, 45<br/>2710-120 Sintra</span>
+						</div>
+
+						<!-- Postage Stamp Placeholder Stamp Outline -->
+						<div style="position: absolute; top: clamp(0.75rem, 2vw, 1.25rem); right: clamp(0.75rem, 2vw, 1.25rem); width: clamp(40px, 7vw, 55px); height: clamp(50px, 8.5vw, 68px); border: 1.5px dashed #94a3b8; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: #94a3b8; text-align: center; text-transform: uppercase; font-weight: 700; padding: 2px;">
+							Selo Postal
+						</div>
+
+						<!-- Main Recipient Address Block (Centered) -->
+						<div id="canvas-recipient-block" style="text-align: center; margin-top: clamp(1rem, 2.5vw, 2rem);">
+							<div id="canvas-rec-name-1" style="font-size: clamp(1.2rem, 2.5vw, 1.85rem); font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.35rem; line-height: 1.25;">
+								Sr. e Sra. Gonçalo Silva
+							</div>
+							<div id="canvas-rec-name-2" style="font-size: clamp(1.1rem, 2.2vw, 1.65rem); font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.35rem; display: none; line-height: 1.25;"></div>
+							<div id="canvas-rec-street" style="font-size: clamp(0.9rem, 1.6vw, 1.15rem); color: #334155; margin-bottom: 0.2rem; line-height: 1.4;">
+								Avenida da Liberdade, n.º 142, 3.º Dto.
+							</div>
+							<div id="canvas-rec-city-state-zip" style="font-size: clamp(0.9rem, 1.6vw, 1.15rem); color: #334155; line-height: 1.4;">
+								1250-146 Lisboa
+							</div>
+						</div>
+
+					</div>
+
+					<!-- Quick Formatting Audit Checklist -->
+					<div style="margin-top: 1.5rem; background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+						<strong style="font-size: 0.95rem; display: block; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+							✅ Verificação de Etiqueta e Normas Postais:
+						</strong>
+						<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+							<li>Envelope exterior com tratamento formal e morada completa.</li>
+							<li>Dimensões A7 acomodam convites de 13x18 cm com até 3 cartões suplementares.</li>
+							<li>Peso inferior a 20g qualifica para taxa de correio normal padrão.</li>
+						</ul>
+					</div>
+
+					<!-- Export Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap;">
+						<button id="btn-print-envelope" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Imprimir Envelope (PDF)
+						</button>
+						<button id="btn-export-word" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Exportar Word (.doc)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Batch Guest List Address Importer -->
+				<div class="hand-card" style="padding: 1.75rem; background: var(--bg-paper);">
+					<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+						Importador de Moradas em Lote (CSV / Colar)
+					</h3>
+					<p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+						Cole várias moradas (uma por linha: <em>Nome, Morada, Localidade, Distrito, Código Postal</em>) para formatar a lista inteira de uma só vez.
+					</p>
+
+					<textarea id="batch-paste-input" rows="4" class="hand-input" style="font-size: 0.88rem; line-height: 1.4; margin-bottom: 0.75rem;" placeholder="Sr. e Sra. Silva, Av. Liberdade 142, Lisboa, Lisboa, 1250-146&#10;Dra. Sofia Costa, Rua das Flores 10, Porto, Porto, 4000-069&#10;Sr. David Martins e Acompanhante, Praça Velha 5, Coimbra, Coimbra, 3000-100"></textarea>
+
+					<div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
+						<button id="btn-load-batch" class="hand-btn" style="padding: 8px 16px; font-size: 0.9rem;">
+							Carregar Moradas em Lote
+						</button>
+						<span id="batch-count-tag" style="font-size: 0.85rem; font-weight: 700; color: #64748b;">1 Morada Carregada</span>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Resumo Direto ao Assunto (BLUF)</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Guia Rápido: Etiqueta e Formatos de Envelopes
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Tabela prática de endereçamento de envelopes para casais, títulos profissionais e regras postais.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📐 Regras de Ouro para a Subscrição de Envelopes:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					1. Envelope Exterior: Tratamentos formais e morada completa • 2. Títulos Médicos/Académicos Precedem Títulos Sociais ("Dra." surge antes de "Sr.") • 3. Casais Não Casados = Nomes em Linhas Separadas por Ordem Alfabética • 4. Tamanho A7 (133 × 184 mm) é o Padrão Universal para Convites 13 × 18 cm.
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Cenário / Destinatário</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Envelope Exterior Formal</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Envelope Interior (Opcional)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Regra de Etiqueta</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Casal Casado (Mesmo Apelido)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">Sr. e Sra. Gonçalo Silva<br><span style="font-size: 0.8rem; color: #64748b;">(ou Gonçalo e Sara Silva)</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Sr. e Sra. Silva<br><span style="font-size: 0.8rem; color: #64748b;">(ou Gonçalo e Sara)</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Tratamento tradicional formal ou nomes próprios juntos</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Casal Casado (Apelidos Diferentes)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">Sra. Mariana Costa e Sr. Tiago Silva</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Mariana e Tiago</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Unir com "e" na mesma linha ou separar em duas</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Médica (Esposa é Médica)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">Dra. Sofia Ramos e Sr. Pedro Ramos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Dra. Sofia e Sr. Pedro Ramos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Título profissional precede o social; a médica surge primeiro</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Ambos são Médicos (Casados)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">Drs. Sofia e Pedro Ramos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Drs. Ramos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">"Drs." no plural com os respetivos nomes próprios</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #d97706);">Casal Não Casado a Viver Junto</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">Sra. Inês Henriques<br>Sr. David Martins</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Inês e David</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Em duas linhas separadas (ordem alfabética por apelido)</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #0284c7);">Convidado com Acompanhante (+1)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">Sr. David Martins e Acompanhante</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">David e Acompanhante</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Preferível o nome real; se desconhecido, "e Acompanhante"</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #475569);">Família com Filhos</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">Família Silva<br><span style="font-size: 0.8rem; color: #64748b;">(ou Sr. e Sra. Silva e Filhos)</span></td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Gonçalo, Sara,<br>Matilde e Lucas</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Nomes dos filhos indicados no envelope interior</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide & Etiquette Rules -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guia Completo de Etiqueta para Envelopes de Casamento
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					O envelope do convite é o primeiro contacto físico que os convidados têm com o seu grande dia. Domine dimensões, hierarquias de nomes e formatos de envio sem dúvidas.
+				</p>
+			</div>
+
+			<!-- Section 1: Standard Dimensions -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Dimensões de Envelopes: A7 vs A2 vs Envelopes Interiores
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Na papelaria de casamento, a escolha correta do envelope assegura que todos os cartões suplementares cabem confortavelmente:
+				</p>
+				<ul class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li><strong>Envelope Exterior A7 (133 × 184 mm):</strong> O formato universal para convites de 13 × 18 cm. Deixa uma folga perfeitamente calculada para acomodar lacres de cera e cartões suplementares.</li>
+					<li><strong>Envelope de Resposta A2 (111 × 146 mm):</strong> Ideal para cartões de confirmação de presença (RSVP). Deve incluir já a morada dos noivos impressa e selo de correio incluído.</li>
+					<li><strong>Envelope Interior A7 (130 × 178 mm):</strong> Entra dentro do envelope exterior sem ser colado, especificando expressamente quem está convidado (incluindo crianças e acompanhantes).</li>
+				</ul>
+			</section>
+
+			<!-- Section 2: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Perguntas Frequentes
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Qual é a dimensão padrão para o envelope do convite de casamento?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						O formato mais utilizado é o envelope A7 (133mm × 184mm), desenhado para conter um convite de 13cm × 18cm com os respetivos anexos.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Como endereçar com acompanhante (+1)?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Se conhecer o nome do acompanhante, escreva ambos os nomes. Se for desconhecido, subscreva <em>"Sr. David Martins e Acompanhante"</em>.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Onde deve ficar a morada de remetente dos noivos?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Tradicionalmente, a morada dos noivos é impressa centrada na aba traseira do envelope exterior. Nos envelopes de resposta de RSVP, surge na frente ao centro.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<!-- Related Planning Tools -->
+		<RelatedTools currentPath="/pt/wedding-envelope-addressing" category="stationery" />
+
+	</main>
+
+	<!-- Interactive Live Script -->
+	<script is:inline>
+		const envSizeSelect = document.getElementById('env-size');
+		const presetSelect = document.getElementById('etiquette-preset');
+		const recName1 = document.getElementById('rec-name-1');
+		const recName2 = document.getElementById('rec-name-2');
+		const recName2Group = document.getElementById('rec-name-2-group');
+		const recStreet = document.getElementById('rec-street');
+		const recCity = document.getElementById('rec-city');
+		const recState = document.getElementById('rec-state');
+		const recZip = document.getElementById('rec-zip');
+
+		const toggleReturnAddr = document.getElementById('toggle-return-addr');
+		const returnAddrFields = document.getElementById('return-addr-fields');
+		const retNames = document.getElementById('ret-names');
+		const retStreet = document.getElementById('ret-street');
+
+		const envelopeCanvas = document.getElementById('envelope-canvas');
+		const canvasSizeTag = document.getElementById('env-size-tag');
+		const canvasRetAddr = document.getElementById('canvas-return-addr');
+		const canvasRetName = document.getElementById('canvas-ret-name');
+		const canvasRetFull = document.getElementById('canvas-ret-full');
+		const canvasRecName1 = document.getElementById('canvas-rec-name-1');
+		const canvasRecName2 = document.getElementById('canvas-rec-name-2');
+		const canvasRecStreet = document.getElementById('canvas-rec-street');
+		const canvasRecCityStateZip = document.getElementById('canvas-rec-city-state-zip');
+
+		const fontButtons = document.querySelectorAll('.font-style-btn');
+		const batchInput = document.getElementById('batch-paste-input');
+		const btnLoadBatch = document.getElementById('btn-load-batch');
+		const batchCountTag = document.getElementById('batch-count-tag');
+		const btnPrint = document.getElementById('btn-print-envelope');
+		const btnWord = document.getElementById('btn-export-word');
+
+		let currentFont = 'script';
+		let batchAddresses = [];
+
+		function updateCanvas() {
+			canvasRecName1.textContent = recName1.value || 'Nome do Destinatário';
+			
+			if (recName2.value.trim().length > 0) {
+				canvasRecName2.style.display = 'block';
+				canvasRecName2.textContent = recName2.value.trim();
+			} else {
+				canvasRecName2.style.display = 'none';
+			}
+
+			canvasRecStreet.textContent = recStreet.value || 'Rua / Morada';
+			canvasRecCityStateZip.textContent = `${recZip.value || '0000-000'} ${recCity.value || 'Cidade'}`;
+
+			// Return Address
+			if (toggleReturnAddr.checked) {
+				canvasRetAddr.style.display = 'block';
+				canvasRetName.textContent = retNames.value || '';
+				canvasRetFull.textContent = retStreet.value || '';
+			} else {
+				canvasRetAddr.style.display = 'none';
+			}
+
+			// Size Aspect Ratio
+			const size = envSizeSelect.value;
+			if (size === 'a7') {
+				envelopeCanvas.style.aspectRatio = '7.25 / 5.25';
+				canvasSizeTag.textContent = 'A7: 133 × 184 mm';
+			} else if (size === 'a2') {
+				envelopeCanvas.style.aspectRatio = '5.75 / 4.375';
+				canvasSizeTag.textContent = 'A2: 111 × 146 mm';
+			} else if (size === 'inner') {
+				envelopeCanvas.style.aspectRatio = '7 / 5.125';
+				canvasSizeTag.textContent = 'Interior: 130 × 178 mm (Sem Remetente)';
+				canvasRetAddr.style.display = 'none';
+			} else if (size === 'square') {
+				envelopeCanvas.style.aspectRatio = '1 / 1';
+				canvasSizeTag.textContent = 'Quadrado: 15 × 15 cm';
+			} else if (size === 'dl') {
+				envelopeCanvas.style.aspectRatio = '9.5 / 4.125';
+				canvasSizeTag.textContent = 'Slim DL: 110 × 220 mm';
+			}
+
+			// Apply Font Styles
+			if (currentFont === 'script') {
+				canvasRecName1.style.fontFamily = "'Kalam', 'Caveat', cursive";
+				canvasRecName2.style.fontFamily = "'Kalam', 'Caveat', cursive";
+				canvasRecName1.style.letterSpacing = '0.02em';
+				canvasRecStreet.style.fontFamily = "var(--font-body)";
+				canvasRecCityStateZip.style.fontFamily = "var(--font-body)";
+			} else if (currentFont === 'serif') {
+				canvasRecName1.style.fontFamily = "Georgia, 'Times New Roman', serif";
+				canvasRecName2.style.fontFamily = "Georgia, 'Times New Roman', serif";
+				canvasRecName1.style.letterSpacing = '0.05em';
+				canvasRecStreet.style.fontFamily = "Georgia, serif";
+				canvasRecCityStateZip.style.fontFamily = "Georgia, serif";
+			} else if (currentFont === 'sans') {
+				canvasRecName1.style.fontFamily = "var(--font-body)";
+				canvasRecName2.style.fontFamily = "var(--font-body)";
+				canvasRecName1.style.letterSpacing = '0.04em';
+				canvasRecStreet.style.fontFamily = "var(--font-body)";
+				canvasRecCityStateZip.style.fontFamily = "var(--font-body)";
+			} else if (currentFont === 'hand') {
+				canvasRecName1.style.fontFamily = "'Caveat', cursive";
+				canvasRecName2.style.fontFamily = "'Caveat', cursive";
+				canvasRecName1.style.letterSpacing = '0.01em';
+				canvasRecStreet.style.fontFamily = "'Caveat', cursive";
+				canvasRecCityStateZip.style.fontFamily = "'Caveat', cursive";
+			}
+		}
+
+		// Preset Selection Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'married-same') {
+				recName1.value = 'Sr. e Sra. Gonçalo Silva';
+				recName2.value = '';
+				recName2Group.style.display = 'none';
+			} else if (p === 'married-modern') {
+				recName1.value = 'Sara e Gonçalo Silva';
+				recName2.value = '';
+				recName2Group.style.display = 'none';
+			} else if (p === 'married-diff') {
+				recName1.value = 'Sra. Mariana Costa e Sr. Tiago Silva';
+				recName2.value = '';
+				recName2Group.style.display = 'none';
+			} else if (p === 'doctor-wife') {
+				recName1.value = 'Dra. Sofia Ramos e Sr. Pedro Ramos';
+				recName2.value = '';
+				recName2Group.style.display = 'none';
+			} else if (p === 'doctor-both') {
+				recName1.value = 'Drs. Sofia e Pedro Ramos';
+				recName2.value = '';
+				recName2Group.style.display = 'none';
+			} else if (p === 'unmarried') {
+				recName1.value = 'Sra. Inês Henriques';
+				recName2.value = 'Sr. David Martins';
+				recName2Group.style.display = 'block';
+			} else if (p === 'single-guest') {
+				recName1.value = 'Sr. David Martins e Acompanhante';
+				recName2.value = '';
+				recName2Group.style.display = 'none';
+			} else if (p === 'family') {
+				recName1.value = 'Família Silva';
+				recName2.value = '';
+				recName2Group.style.display = 'none';
+			}
+			updateCanvas();
+		});
+
+		// Live Input Listeners
+		[recName1, recName2, recStreet, recCity, recState, recZip, retNames, retStreet, envSizeSelect].forEach(input => {
+			input.addEventListener('input', updateCanvas);
+		});
+
+		toggleReturnAddr.addEventListener('change', () => {
+			returnAddrFields.style.display = toggleReturnAddr.checked ? 'block' : 'none';
+			updateCanvas();
+		});
+
+		// Font Style Button Toggles
+		fontButtons.forEach(btn => {
+			btn.addEventListener('click', () => {
+				fontButtons.forEach(b => b.classList.remove('is-active'));
+				btn.classList.add('is-active');
+				currentFont = btn.getAttribute('data-font');
+				updateCanvas();
+			});
+		});
+
+		// Batch Parser
+		btnLoadBatch.addEventListener('click', () => {
+			const text = batchInput.value.trim();
+			if (!text) return;
+			const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+			if (lines.length === 0) return;
+
+			batchAddresses = lines.map(line => {
+				const parts = line.split(',').map(p => p.trim());
+				return {
+					name: parts[0] || 'Nome do Convidado',
+					street: parts[1] || 'Morada',
+					city: parts[2] || 'Localidade',
+					state: parts[3] || 'Distrito',
+					zip: parts[4] || 'Código Postal'
+				};
+			});
+
+			batchCountTag.textContent = `${batchAddresses.length} Moradas Carregadas`;
+
+			if (batchAddresses.length > 0) {
+				const first = batchAddresses[0];
+				recName1.value = first.name;
+				recName2.value = '';
+				recStreet.value = first.street;
+				recCity.value = first.city;
+				recState.value = first.state;
+				recZip.value = first.zip;
+				updateCanvas();
+			}
+		});
+
+		// Print PDF Handler
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			const printDoc = printWindow.document;
+
+			const addressesToPrint = batchAddresses.length > 0 ? batchAddresses : [{
+				name: recName1.value + (recName2.value ? '<br>' + recName2.value : ''),
+				street: recStreet.value,
+				city: recCity.value,
+				state: recState.value,
+				zip: recZip.value
+			}];
+
+			const returnHTML = toggleReturnAddr.checked ? `
+				<div style="position: absolute; top: 0.5in; left: 0.5in; font-size: 10pt; line-height: 1.3; font-family: sans-serif; color: #1e293b;">
+					<strong>${retNames.value}</strong><br/>
+					${retStreet.value}
+				</div>
+			` : '';
+
+			let pagesHTML = '';
+			addressesToPrint.forEach(addr => {
+				pagesHTML += `
+					<div class="envelope-page" style="width: 7.25in; height: 5.25in; position: relative; page-break-after: always; box-sizing: border-box; padding: 1.5in 0.8in 0.8in; text-align: center;">
+						${returnHTML}
+						<div style="margin-top: 1.2in;">
+							<div style="font-size: 18pt; font-weight: bold; margin-bottom: 6px; font-family: ${currentFont === 'serif' ? 'Georgia, serif' : currentFont === 'sans' ? 'sans-serif' : "'Caveat', cursive"}; color: #1e293b;">
+								${addr.name}
+							</div>
+							<div style="font-size: 12pt; color: #334155; font-family: sans-serif; line-height: 1.4;">
+								${addr.street}<br/>
+								${addr.zip} ${addr.city} (${addr.state})
+							</div>
+						</div>
+					</div>
+				`;
+			});
+
+			printDoc.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Imprimir Envelopes de Casamento — Manage.Wedding</title>
+					<style>
+						@page { size: 7.25in 5.25in; margin: 0; }
+						body { margin: 0; padding: 0; background: #fff; }
+						.envelope-page { width: 7.25in; height: 5.25in; page-break-after: always; position: relative; box-sizing: border-box; }
+					</style>
+				</head>
+				<body>
+					${pagesHTML}
+					<script>
+						window.onload = function() { window.print(); };
+					<\/script>
+				</body>
+				</html>
+			`);
+			printDoc.close();
+		});
+
+		// Export Word (.doc) Handler
+		btnWord.addEventListener('click', () => {
+			const addressesToExport = batchAddresses.length > 0 ? batchAddresses : [{
+				name: recName1.value + (recName2.value ? ' & ' + recName2.value : ''),
+				street: recStreet.value,
+				city: recCity.value,
+				state: recState.value,
+				zip: recZip.value
+			}];
+
+			let content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Lista de Endereços para Envelopes</title>
+				<style>
+					body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; }
+					table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+					th, td { border: 1px solid #999; padding: 8px 12px; text-align: left; }
+					th { background-color: #f2f2f2; font-weight: bold; }
+				</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Lista de Endereços de Envelopes de Casamento</h2>
+					<p>Gerado em: ${new Date().toLocaleDateString('pt-PT')} | Remetente: ${retNames.value}, ${retStreet.value}</p>
+					<table>
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Nome(s) do Destinatário</th>
+								<th>Morada</th>
+								<th>Localidade</th>
+								<th>Distrito</th>
+								<th>Código Postal</th>
+							</tr>
+						</thead>
+						<tbody>
+			`;
+
+			addressesToExport.forEach((addr, idx) => {
+				content += `
+					<tr>
+						<td>${idx + 1}</td>
+						<td><strong>${addr.name}</strong></td>
+						<td>${addr.street}</td>
+						<td>${addr.city}</td>
+						<td>${addr.state}</td>
+						<td>${addr.zip}</td>
+					</tr>
+				`;
+			});
+
+			content += `</tbody></table></body></html>`;
+
+			const blob = new Blob(['\ufeff' + content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = `Enderecos_Envelopes_Casamento_${new Date().toISOString().slice(0, 10)}.doc`;
+			link.click();
+		});
+
+		// Initial Canvas Render
+		updateCanvas();
+	</script>
+</Layout>

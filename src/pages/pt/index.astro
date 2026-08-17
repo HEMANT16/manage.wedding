@@ -1,0 +1,601 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://manage.wedding/pt/#website",
+      "name": "Manage.Wedding — Calculadoras de Casamento & Orçamento Gratuitas",
+      "url": "https://manage.wedding/pt/",
+      "inLanguage": "pt",
+      "description": "Suite privada de calculadoras interativas de casamento: cálculo de open bar e bebidas, mapa de mesas, orçamento e papelaria para imprimir.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://manage.wedding/pt/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Todas as calculadoras no Manage.Wedding são totalmente gratuitas?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sim, 100% gratuitas, sem necessidade de registo, sem cartão de crédito e sem custos ocultos. Todos os cálculos e downloads em PDF e Word são gerados instantaneamente no seu navegador."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "O Manage.Wedding guarda os meus dados de convidados ou orçamento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não. O Manage.Wedding funciona com uma arquitetura estritamente Local-First. As suas listas de convidados, orçamentos e moradas ficam guardados apenas na memória do seu próprio dispositivo e nunca são enviados para servidores externos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quais são as 4 fases principais no planeamento financeiro do casamento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "1. Orçamento & Finanças (Distribuição de custos e análise de contratos de quintas/espaços), 2. Banquete & Bebidas (Cálculo de open bar, vinho e andares do bolo), 3. Convidados & Logística (Mapa de mesas e cronograma ao minuto do dia), e 4. Papelaria & Detalhes (Endereçamento de envelopes, ementas coordenadas e tempo de discursos)."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const searchIndex = [
+  // Orçamento & Finanças (Budget)
+  { title: "Calculadora de Orçamento Geral", url: "/pt/master-budget-calculator", category: "Orçamento", desc: "Distribuição dos custos segundo a regra comprovada 50/15/10/10/10/5." },
+  { title: "Custos Ocultos da Quinta / Espaço", url: "/pt/wedding-venue-cost-calculator", category: "Orçamento", desc: "Calcule o custo real com consumo mínimo de catering e taxas de serviço." },
+  { title: "Quem Paga o Quê no Casamento?", url: "/pt/who-pays-for-what-wedding", category: "Orçamento", desc: "Compare a etiqueta tradicional com a divisão moderna entre famílias." },
+  { title: "Orçamento da Despedida de Solteira", url: "/pt/bachelorette-budget-calculator", category: "Orçamento", desc: "Divida os custos de alojamento e atividades cobrindo a parte da noiva." },
+  { title: "Guia de Gratificações / Gorjetas", url: "/pt/vendor-tipping-calculator", category: "Orçamento", desc: "Valores habituais e envelopes de agradecimento para os fornecedores." },
+  { title: "Orçamento da Lua de Mel", url: "/pt/honeymoon-budget-estimator", category: "Orçamento", desc: "Voos, hotéis, jantares românticos, passeios e lista de bagagem." },
+  { title: "Simulador de Empréstimo Casamento", url: "/pt/wedding-loan-calculator", category: "Orçamento", desc: "Mensalidades, juros totais e plano de amortização completo." },
+  { title: "Presente em Dinheiro (Convidados)", url: "/pt/gift-cash-calculator", category: "Orçamento", desc: "Quanto oferecer aos noivos consoante o grau de parentesco e deslocação." },
+
+  // Banquete & Restauração (Dining)
+  { title: "Calculadora de Bebidas & Open Bar", url: "/pt/wedding-drink-calculator", category: "Banquete", desc: "Calcule com rigor garrafas de vinho, espumante, cerveja, bebidas brancas e gelo." },
+  { title: "Bebidas Brancas & Garrafas de Bar", url: "/pt/liquor-wedding-calculator", category: "Banquete", desc: "Otimize garrafas de 70cl e garrafas grandes para a barra de cocktails." },
+  { title: "Preço do Bolo de Casamento", url: "/pt/cake-pricing-calculator", category: "Banquete", desc: "Custo por fatia, horas de confeção e orçamento de pastelaria." },
+  { title: "Andares e Fatias de Bolo de Noiva", url: "/pt/cake-serving-calculator", category: "Banquete", desc: "Dimensões dos andares redondos ou quadrados de 50 a 300+ fatias." },
+  { title: "Criador de Ementas (4x9 DL)", url: "/pt/reception-menu-maker", category: "Banquete", desc: "Crie ementas elegantes nos formatos DL 4x9 e 5x7 em PDF vetorial." },
+  { title: "Banquete Servido vs. Buffet", url: "/pt/catering-cost-estimator", category: "Banquete", desc: "Compare o custo por pessoa entre menu servido à mesa, buffet e estações." },
+  { title: "Teor Alcoólico & Diluição de Cocktails", url: "/pt/alcohol-dilution-calculator", category: "Banquete", desc: "Equilibre a percentagem alcoólica e o volume de água para cocktails de receção." },
+  { title: "Orçamento de Flores & Decoração", url: "/pt/floral-cost-estimator", category: "Banquete", desc: "Bouquet de noiva, centros de mesa, lapelas e arco da cerimónia." },
+
+  // Convidados & Logística (Guests)
+  { title: "Mapa e Disposição de Mesas Interativo", url: "/pt/seating-chart-maker", category: "Convidados", desc: "Organize mesas redondas e retangulares com drag & drop e imprima o mapa." },
+  { title: "Pista de Dança & Espaçamento de Mesas", url: "/pt/seating-clearance-calculator", category: "Convidados", desc: "Área da pista de dança e corredores de 1,5m para a circulação dos empregados." },
+  { title: "Cortejo Nupcial & Ordem de Entrada", url: "/pt/wedding-processional-order", category: "Convidados", desc: "Organização da entrada e saída para cerimónias religiosas, civis e simbólicas." },
+  { title: "Cronograma do Grande Dia (Minuto a Minuto)", url: "/pt/day-of-timeline-generator", category: "Convidados", desc: "Horários detalhados dos preparativos, maquilhagem, fotos e corte do bolo." },
+  { title: "Jantar de Ensaio / Véspera", url: "/pt/rehearsal-dinner-planner", category: "Convidados", desc: "Lista de presença, orçamento de refeição e horários para a véspera." },
+  { title: "Gestão da Lista de Convidados", url: "/pt/guest-list-manager", category: "Convidados", desc: "Acompanhantes, moradas para convites e restrições alimentares." },
+  { title: "Controlo de Confirmações (RSVP)", url: "/pt/rsvp-tracker", category: "Convidados", desc: "Monitorização em tempo real de presenças, faltas e escolhas de prato." },
+  { title: "Estimativa de Presenças Reais", url: "/pt/guest-count-estimator", category: "Convidados", desc: "Percentagem de adesão para convidados locais e familiares que viajam de longe." },
+  { title: "Calendário de Envio de Convites", url: "/pt/rsvp-date-calculator", category: "Convidados", desc: "Datas ideais para Save-the-Date, envio de convites e prazo limite de resposta." },
+  { title: "Checklist de Casamento de 12 Meses", url: "/pt/wedding-checklist", category: "Convidados", desc: "Lista de tarefas interativa mês a mês com gravação automática." },
+  { title: "Arranjos do Vestido de Noiva", url: "/pt/dress-alterations-estimator", category: "Convidados", desc: "Bainhas, ajuste do corpete e colocação do ponto para prender a cauda." },
+  { title: "Conversor de Tamanhos de Vestido de Noiva", url: "/pt/dress-size-converter", category: "Convidados", desc: "Converta as suas medidas em cm para tamanhos PT/EU, US, UK e IT." },
+  { title: "Medidor & Guia de Tamanhos de Alianças", url: "/pt/ring-size-converter", category: "Convidados", desc: "Diâmetro e perímetro em milímetros para alianças portuguesas e internacionais." },
+
+  // Papelaria & Lembranças (Stationery)
+  { title: "Endereçamento de Envelopes & Caligrafia", url: "/pt/wedding-envelope-addressing", category: "Papelaria", desc: "Formatação correta de tratamentos (Família, Exmo.) e impressão em PDF." },
+  { title: "Formatos de Convites & Envelopes (A7/A6)", url: "/pt/wedding-invitation-suite-sizer", category: "Papelaria", desc: "Dimensões padrão para convites, cartões RSVP e margens de corte a 300 DPI." },
+  { title: "Calculadora de Portes e Selos", url: "/pt/wedding-invitation-postage-calculator", category: "Papelaria", desc: "Peso do convite, selos de cera e taxas dos correios para envio de convites." },
+  { title: "Marcadores de Lugar e Mesa", url: "/pt/table-place-cards", category: "Papelaria", desc: "Marcadores dobráveis com ícones de menu para a equipa de serviço." },
+  { title: "Textos de Cartões de Agradecimento", url: "/pt/wedding-thank-you-cards", category: "Papelaria", desc: "Ideias de mensagens para ofertas em dinheiro, presentes e presenças." },
+  { title: "Convites de Casamento Digitais", url: "/pt/digital-invitations", category: "Papelaria", desc: "Convites online com botão de calendário (.ics) e confirmação digital." },
+  { title: "Temporizador de Discursos & Votos", url: "/pt/wedding-speech-calculator", category: "Papelaria", desc: "Contagem de palavras, ritmo de leitura (120 ppm) e cartões de apoio." },
+  { title: "Gerador de Hashtags de Casamento", url: "/pt/wedding-hashtag-generator", category: "Papelaria", desc: "Hashtags criativos e placas decorativas para as fotos dos convidados." },
+  { title: "Numerologia da Data de Casamento", url: "/pt/wedding-date-numerology", category: "Papelaria", desc: "Caminho de vida e significado espiritual da data da cerimónia." },
+  { title: "Bodas de Casamento & Ideias de Presente", url: "/pt/anniversary-gift-finder", category: "Papelaria", desc: "Bodas de Papel, Prata, Ouro e Diamante: presentes do 1º ao 60º aniversário." }
+];
+---
+
+<Layout 
+	title="Manage.Wedding — Calculadoras de Casamento & Orçamento Gratuitas"
+	description="Suite privada de calculadoras interativas de casamento: cálculo de open bar e bebidas, mapa de mesas, orçamento e papelaria para imprimir. 100% gratuito e sem cadastro."
+	schema={schema}
+>
+	<main>
+		<!-- 1. Hero: Digital Sketchbook & Live Instant Search -->
+		<section class="section-paper fade-in" style="padding: 4rem 1.5rem 3rem; position: relative; overflow: hidden; border-bottom: 3px solid var(--fg-pencil);">
+			
+			<div class="tape" style="top: -10px;"></div>
+			
+			<div style="max-width: 1050px; margin: 0 auto; text-align: center; position: relative; z-index: 10;">
+				
+				<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 20px; padding: 6px 16px; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil); transform: rotate(-1deg);">
+					<span style="font-size: 1rem;">✨</span>
+					<span style="font-size: 0.95rem; font-weight: 700; color: var(--fg-pencil);">100% Gratuito • Privacidade Total • Downloads Imediatos</span>
+				</div>
+
+				<h1 class="font-heading" style="font-size: clamp(36px, 6.5vw, 68px); line-height: 1.15; color: var(--fg-pencil); margin-bottom: 1.25rem;">
+					Planeie os números do seu casamento <br class="hidden sm:inline" />
+					<span style="color: var(--accent-blue); text-decoration: underline; text-decoration-style: wavy;">sem qualquer stress.</span>
+				</h1>
+
+				<p style="font-size: clamp(1.1rem, 2.5vw, 1.3rem); color: var(--text-secondary); max-width: 760px; margin: 0 auto 2rem; line-height: 1.6;">
+					O seu caderno digital privado para calcular o open bar, custos da quinta / espaço, criar o mapa de mesas e imprimir ementas.
+				</p>
+
+				<!-- Live Instant Search Bar with Dynamic Dropdown -->
+				<div style="position: relative; max-width: 650px; margin: 0 auto 2rem;">
+					<div class="search-hero-box" style="margin-bottom: 0;">
+						<span style="font-size: 1.3rem; color: #64748b;">🔍</span>
+						<input 
+							type="text" 
+							id="home-tool-search" 
+							class="search-hero-input" 
+							placeholder="Pesquisar ferramenta: open bar, quinta, bolo, mapa de mesas, discursos..."
+							aria-label="Pesquisar calculadoras de casamento"
+							autocomplete="off"
+						/>
+						<button id="clear-search-btn" style="display: none; background: none; border: none; font-size: 1.1rem; color: #94a3b8; cursor: pointer; padding: 0 0.5rem;">✕</button>
+					</div>
+
+					<!-- Search Results Live Dropdown Popup -->
+					<div id="search-dropdown-results" style="display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; box-shadow: 4px 4px 0px var(--fg-pencil); max-height: 380px; overflow-y: auto; z-index: 100; text-align: left; padding: 0.5rem;">
+						<!-- Injected by JavaScript -->
+					</div>
+				</div>
+
+				<!-- Fast Shortcut Chips -->
+				<div style="display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; max-width: 800px; margin: 0 auto 2rem;">
+					<span style="font-size: 0.88rem; font-weight: 600; color: #64748b; align-self: center;">Ferramentas Populares:</span>
+					<a href="/pt/wedding-drink-calculator" class="tool-tag" style="text-decoration: none; padding: 5px 12px; font-size: 0.85rem; background: #fff; border: 1.5px solid var(--fg-pencil);">🍾 Open Bar & Bebidas</a>
+					<a href="/pt/wedding-venue-cost-calculator" class="tool-tag" style="text-decoration: none; padding: 5px 12px; font-size: 0.85rem; background: #fff; border: 1.5px solid var(--fg-pencil);">🏰 Custos da Quinta</a>
+					<a href="/pt/seating-chart-maker" class="tool-tag" style="text-decoration: none; padding: 5px 12px; font-size: 0.85rem; background: #fff; border: 1.5px solid var(--fg-pencil);">🪑 Mapa de Mesas</a>
+					<a href="/pt/reception-menu-maker" class="tool-tag" style="text-decoration: none; padding: 5px 12px; font-size: 0.85rem; background: #fff; border: 1.5px solid var(--fg-pencil);">📜 Ementas Prontas</a>
+					<a href="/pt/wedding-envelope-addressing" class="tool-tag" style="text-decoration: none; padding: 5px 12px; font-size: 0.85rem; background: #fff; border: 1.5px solid var(--fg-pencil);">✉️ Envelopes & Convites</a>
+				</div>
+
+				<!-- Main Hero CTAs -->
+				<div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+					<a href="#featured-favorites" class="hand-btn" style="padding: 14px 30px; font-size: 1.15rem;">
+						Explorar Ferramentas Principais ↓
+					</a>
+					<a href="/pt/about" class="hand-btn secondary" style="padding: 14px 26px; font-size: 1.15rem;">
+						Porquê o Manage.Wedding?
+					</a>
+				</div>
+
+			</div>
+		</section>
+
+		<!-- 2. Spotlight "Crowd Favorites" (4 Illustrated Cards) -->
+		<section id="featured-favorites" style="padding: 4rem 1.5rem; max-width: 1200px; margin: 0 auto;">
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil);">
+					⭐ As Ferramentas Mais Usadas
+				</h2>
+				<p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0.25rem auto 0;">
+					Os simuladores preferidos por noivos e wedding planners em Portugal e no Brasil.
+				</p>
+			</div>
+
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 2rem;">
+				
+				<!-- Featured 1: Open Bar -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					<img 
+						src="/images/wedding_bar_sketch.webp" 
+						alt="Calculadora de Bebidas & Open Bar de Casamento" 
+						loading="lazy"
+						decoding="async"
+						style="width: 100%; height: 160px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 4px; margin-bottom: 1rem;"
+					/>
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span class="tool-tag" style="background: #fef08a; border-color: var(--fg-pencil); color: var(--fg-pencil);">Muito Popular</span>
+						<span class="tool-time">⏱️ 2 min</span>
+					</div>
+					<h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Calculadora de Bebidas & Bar</h3>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+						Calcule com exatidão vinho, espumante, cerveja, bebidas brancas e gelo para a festa.
+					</p>
+					<a href="/pt/wedding-drink-calculator" class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+						Calcular Bebidas →
+					</a>
+				</div>
+
+				<!-- Featured 2: Master Budget -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					<img 
+						src="/images/calculator_sketch.webp" 
+						alt="Calculadora de Orçamento Geral de Casamento" 
+						loading="lazy"
+						decoding="async"
+						style="width: 100%; height: 160px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 4px; margin-bottom: 1rem;"
+					/>
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span class="tool-tag" style="background: #dbeafe; border-color: #93c5fd; color: #1e40af;">Finanças</span>
+						<span class="tool-time">⏱️ 3 min</span>
+					</div>
+					<h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Calculadora de Orçamento</h3>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+						Distribua qualquer valor total de acordo com as percentagens reais da indústria de casamentos.
+					</p>
+					<a href="/pt/master-budget-calculator" class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+						Distribuir Orçamento →
+					</a>
+				</div>
+
+				<!-- Featured 3: Day-Of Timeline -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					<img 
+						src="/images/pocket-watch-sketch.webp" 
+						alt="Cronograma do Grande Dia de Casamento" 
+						loading="lazy"
+						decoding="async"
+						style="width: 100%; height: 160px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 4px; margin-bottom: 1rem;"
+					/>
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span class="tool-tag" style="background: #dcfce7; border-color: #86efac; color: #166534;">Logística</span>
+						<span class="tool-time">⏱️ 3 min</span>
+					</div>
+					<h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Cronograma do Grande Dia</h3>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+						Gere um guião minuto a minuto para fotógrafos, maquilhagem, padrinhos e fornecedores.
+					</p>
+					<a href="/pt/day-of-timeline-generator" class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+						Criar Cronograma →
+					</a>
+				</div>
+
+				<!-- Featured 4: Seating Chart -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					<img 
+						src="/images/seating_chart_sketch.webp" 
+						alt="Mapa e Disposição de Mesas Interativo" 
+						loading="lazy"
+						decoding="async"
+						style="width: 100%; height: 160px; object-fit: cover; border: 2px solid var(--fg-pencil); border-radius: 4px; margin-bottom: 1rem;"
+					/>
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span class="tool-tag" style="background: #f3e8ff; border-color: #d8b4fe; color: #6b21a8;">Interativo</span>
+						<span class="tool-time">⏱️ 5 min</span>
+					</div>
+					<h3 style="font-size: 1.35rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--fg-pencil);">Mapa de Mesas</h3>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1;">
+						Disponha mesas redondas e compridas, posicione convidados e descarregue a planta.
+					</p>
+					<a href="/pt/seating-chart-maker" class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+						Criar Mapa de Mesas →
+					</a>
+				</div>
+
+			</div>
+		</section>
+
+		<!-- 3. The 4-Phase Wedding Planning Master Roadmap -->
+		<section style="background: var(--muted-paper); padding: 4.5rem 1.5rem; border-top: 3px dashed var(--fg-pencil); border-bottom: 3px dashed var(--fg-pencil);">
+			<div style="max-width: 1100px; margin: 0 auto;">
+				
+				<div style="text-align: center; margin-bottom: 3rem;">
+					<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">Passo a Passo</span>
+					<h2 class="font-heading" style="font-size: clamp(28px, 4.5vw, 44px); color: var(--fg-pencil);">
+						O Guia Mestre de Planeamento de Casamento
+					</h2>
+					<p style="font-size: 1.15rem; color: var(--text-secondary); max-width: 650px; margin: 0.25rem auto 0;">
+						O que calcular, definir e validar em cada fase dos preparativos.
+					</p>
+				</div>
+
+				<div style="display: flex; flex-direction: column; gap: 1.75rem;">
+					
+					<!-- Roadmap Step 1 -->
+					<div class="hand-card" style="padding: 1.75rem; background: #fff; border-left: 6px solid var(--accent-red);">
+						<div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+								Fase 1: Orçamento Real e Escolha da Quinta (12 a 9 Meses Antes)
+							</h3>
+							<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 2px 8px; border-radius: 4px;">
+								Fase 01
+							</span>
+						</div>
+						<p class="font-body" style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6; margin: 0 0 1rem 0;">
+							Defina o limite máximo de despesa antes das visitas a quintas e palacetes. Analise os orçamentos para identificar consumos mínimos de catering e taxas de serviço. Esclareça a divisão entre famílias com tranquilidade.
+						</p>
+						<div style="display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.88rem;">
+							<a href="/pt/master-budget-calculator" class="tool-tag" style="text-decoration: none; font-weight: 700;">💰 Calculadora de Orçamento</a>
+							<a href="/pt/wedding-venue-cost-calculator" class="tool-tag" style="text-decoration: none; font-weight: 700;">🏰 Custos da Quinta</a>
+							<a href="/pt/who-pays-for-what-wedding" class="tool-tag" style="text-decoration: none; font-weight: 700;">👥 Divisão de Custos</a>
+						</div>
+					</div>
+
+					<!-- Roadmap Step 2 -->
+					<div class="hand-card" style="padding: 1.75rem; background: #fff; border-left: 6px solid var(--accent-blue);">
+						<div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+								Fase 2: Banquete, Open Bar e Bolo de Casamento (8 a 5 Meses Antes)
+							</h3>
+							<span style="font-size: 0.85rem; font-weight: 700; background: #dbeafe; border: 1px solid var(--fg-pencil); padding: 2px 8px; border-radius: 4px;">
+								Fase 02
+							</span>
+						</div>
+						<p class="font-body" style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6; margin: 0 0 1rem 0;">
+							Preveja a taxa real de presença para convidados locais e familiares que viajam. Calcule as caixas de vinho, espumante e bebidas brancas para o bar e acerte o valor por fatia para o bolo dos noivos.
+						</p>
+						<div style="display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.88rem;">
+							<a href="/pt/wedding-drink-calculator" class="tool-tag" style="text-decoration: none; font-weight: 700;">🍾 Cálculo de Open Bar</a>
+							<a href="/pt/liquor-wedding-calculator" class="tool-tag" style="text-decoration: none; font-weight: 700;">🍸 Garrafas de Bebidas</a>
+							<a href="/pt/cake-pricing-calculator" class="tool-tag" style="text-decoration: none; font-weight: 700;">🍰 Preço do Bolo de Noiva</a>
+						</div>
+					</div>
+
+					<!-- Roadmap Step 3 -->
+					<div class="hand-card" style="padding: 1.75rem; background: #fff; border-left: 6px solid #7c3aed;">
+						<div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+								Fase 3: Convites, Confirmações (RSVP) e Papelaria (4 a 2 Meses Antes)
+							</h3>
+							<span style="font-size: 0.85rem; font-weight: 700; background: #f3e8ff; border: 1px solid var(--fg-pencil); padding: 2px 8px; border-radius: 4px;">
+								Fase 03
+							</span>
+						</div>
+						<p class="font-body" style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6; margin: 0 0 1rem 0;">
+							Formate os envelopes com as saudações corretas (Família, Exmo.). Calcule o peso postal incluindo selos de cera e registe as confirmações e escolhas de prato em tempo real.
+						</p>
+						<div style="display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.88rem;">
+							<a href="/pt/wedding-envelope-addressing" class="tool-tag" style="text-decoration: none; font-weight: 700;">✉️ Endereçamento de Envelopes</a>
+							<a href="/pt/wedding-invitation-postage-calculator" class="tool-tag" style="text-decoration: none; font-weight: 700;">📮 Portes de Correio</a>
+							<a href="/pt/rsvp-tracker" class="tool-tag" style="text-decoration: none; font-weight: 700;">📋 Controlo de RSVP</a>
+						</div>
+					</div>
+
+					<!-- Roadmap Step 4 -->
+					<div class="hand-card" style="padding: 1.75rem; background: #fff; border-left: 6px solid #16a34a;">
+						<div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+								Fase 4: Mapa de Mesas, Cortejo e Cronograma Final (4 a 1 Semanas Antes)
+							</h3>
+							<span style="font-size: 0.85rem; font-weight: 700; background: #dcfce7; border: 1px solid var(--fg-pencil); padding: 2px 8px; border-radius: 4px;">
+								Fase 04
+							</span>
+						</div>
+						<p class="font-body" style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6; margin: 0 0 1rem 0;">
+							Verifique as dimensões da pista de dança e os corredores de 1,5m para a circulação dos empregados de mesa. Organize a ordem de entrada, imprima os marcadores e gere o cronograma final para cada fornecedor.
+						</p>
+						<div style="display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.88rem;">
+							<a href="/pt/seating-chart-maker" class="tool-tag" style="text-decoration: none; font-weight: 700;">🪑 Mapa de Mesas</a>
+							<a href="/pt/seating-clearance-calculator" class="tool-tag" style="text-decoration: none; font-weight: 700;">📐 Pista de Dança & Espaços</a>
+							<a href="/pt/day-of-timeline-generator" class="tool-tag" style="text-decoration: none; font-weight: 700;">⏱️ Cronograma do Dia</a>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</section>
+
+		<!-- 4. Zero-Tracking Privacy & Local-First Philosophy -->
+		<section style="padding: 4.5rem 1.5rem; max-width: 1050px; margin: 0 auto;">
+			<div class="hand-card" style="padding: clamp(2rem, 4vw, 3.5rem); background: #fff; border: 2.5px solid var(--fg-pencil); position: relative;">
+				<div class="tape" style="top: -12px;"></div>
+				
+				<div style="text-align: center; margin-bottom: 2.5rem;">
+					<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(1deg); margin-bottom: 0.5rem;">O Nosso Compromisso</span>
+					<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin: 0 0 0.5rem 0;">
+						Porque os Noivos Escolhem o Manage.Wedding
+					</h2>
+					<p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
+						Desenvolvido para casamentos reais, sem diretórios de publicidade intrusivos.
+					</p>
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+					
+					<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<div style="font-size: 1.8rem; margin-bottom: 0.4rem;">🚫</div>
+						<h3 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin: 0 0 0.25rem 0;">Zero Spam</h3>
+						<p style="font-size: 0.90rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+							Os seus contactos nunca são vendidos ou partilhados com dezenas de empresas comerciais.
+						</p>
+					</div>
+
+					<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<div style="font-size: 1.8rem; margin-bottom: 0.4rem;">⚡</div>
+						<h3 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin: 0 0 0.25rem 0;">Máxima Rapidez</h3>
+						<p style="font-size: 0.90rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+							Sem registos, sem passwords. Acesso instantâneo no telemóvel, tablet ou computador.
+						</p>
+					</div>
+
+					<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<div style="font-size: 1.8rem; margin-bottom: 0.4rem;">🔒</div>
+						<h3 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin: 0 0 0.25rem 0;">Privacidade Local</h3>
+						<p style="font-size: 0.90rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+							As suas listas de convidados e valores de orçamento ficam guardados apenas no seu dispositivo.
+						</p>
+					</div>
+
+					<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<div style="font-size: 1.8rem; margin-bottom: 0.4rem;">📄</div>
+						<h3 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin: 0 0 0.25rem 0;">Exportação em 1 Clique</h3>
+						<p style="font-size: 0.90rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+							Descarregue ficheiros Word formatados, tabelas CSV e PDFs vetoriais em alta resolução prontos a imprimir.
+						</p>
+					</div>
+
+				</div>
+
+			</div>
+		</section>
+
+		<!-- 5. Couple Love Notes -->
+		<section style="background: var(--muted-paper); padding: 4rem 1.5rem; border-top: 3px dashed var(--fg-pencil); border-bottom: 3px dashed var(--fg-pencil);">
+			<div style="max-width: 1100px; margin: 0 auto;">
+				
+				<div style="text-align: center; margin-bottom: 2.5rem;">
+					<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">Testemunhos</span>
+					<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil);">
+						Recomendado por Noivos e Wedding Planners
+					</h2>
+					<p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin: 0.25rem auto 0;">
+						Testemunhos reais de casais que planearam o seu casamento no Manage.Wedding.
+					</p>
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+					
+					<div class="hand-card" style="padding: 2rem; background: #fff; position: relative;">
+						<div class="tape" style="top: -12px;"></div>
+						<div style="color: #f59e0b; font-size: 1.2rem; margin-bottom: 0.75rem;">★★★★★</div>
+						<p class="font-body" style="font-size: 1.05rem; line-height: 1.6; color: var(--fg-pencil); margin-bottom: 1.25rem; font-style: italic;">
+							"A calculadora de bebidas poupou-nos de encomendar 25 garrafas de espumante a mais. Quantidade exata para o brinde e zero desperdício. Excelente ferramenta!"
+						</p>
+						<div style="display: flex; align-items: center; gap: 0.75rem;">
+							<div style="width: 40px; height: 40px; border-radius: 50%; background: #fee2e2; border: 1.5px solid var(--fg-pencil); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem;">
+								M&P
+							</div>
+							<div>
+								<div style="font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil);">Mariana & Pedro C.</div>
+								<div style="font-size: 0.82rem; color: var(--text-secondary);">Casamento em Lisboa • 150 Convidados</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="hand-card" style="padding: 2rem; background: #fff; position: relative;">
+						<div class="tape" style="top: -12px;"></div>
+						<div style="color: #f59e0b; font-size: 1.2rem; margin-bottom: 0.75rem;">★★★★★</div>
+						<p class="font-body" style="font-size: 1.05rem; line-height: 1.6; color: var(--fg-pencil); margin-bottom: 1.25rem; font-style: italic;">
+							"Como organizadora de casamentos, recomendo este site a todos os meus noivos. Sem anúncios chatos, fórmulas matemáticas rigorosas e exportações em PDF impecáveis."
+						</p>
+						<div style="display: flex; align-items: center; gap: 0.75rem;">
+							<div style="width: 40px; height: 40px; border-radius: 50%; background: #e0e7ff; border: 1.5px solid var(--fg-pencil); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem;">
+								BO
+							</div>
+							<div>
+								<div style="font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil);">Beatriz Oliveira Eventos</div>
+								<div style="font-size: 0.82rem; color: var(--text-secondary);">Wedding Planner • Porto</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="hand-card" style="padding: 2rem; background: #fff; position: relative;">
+						<div class="tape" style="top: -12px;"></div>
+						<div style="color: #f59e0b; font-size: 1.2rem; margin-bottom: 0.75rem;">★★★★★</div>
+						<p class="font-body" style="font-size: 1.05rem; line-height: 1.6; color: var(--fg-pencil); margin-bottom: 1.25rem; font-style: italic;">
+							"O cronograma do dia e o mapa de mesas facilitaram imenso a nossa vida. Conseguimos coordenar maquilhagem, fotografia e corte do bolo sem atrasos."
+						</p>
+						<div style="display: flex; align-items: center; gap: 0.75rem;">
+							<div style="width: 40px; height: 40px; border-radius: 50%; background: #dcfce7; border: 1.5px solid var(--fg-pencil); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem;">
+								C&R
+							</div>
+							<div>
+								<div style="font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil);">Carolina & Rodrigo S.</div>
+								<div style="font-size: 0.82rem; color: var(--text-secondary);">Casamento em São Paulo • 140 Convidados</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</section>
+
+		<!-- 6. Bottom CTA -->
+		<section style="padding: 4rem 1.5rem; text-align: center; max-width: 800px; margin: 0 auto;">
+			<div class="tape" style="margin: 0 auto 1.5rem;"></div>
+			<h2 class="font-heading" style="font-size: clamp(32px, 5vw, 46px); color: var(--fg-pencil); margin-bottom: 1rem;">
+				O seu casamento. Os seus números. <br/>
+				<span style="color: var(--accent-red); font-style: italic;">100% gratuito para sempre.</span>
+			</h2>
+			<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 2rem;">
+				Sem conta obrigatória. Sem cartão de crédito. Calculadoras criadas para casamentos inesquecíveis.
+			</p>
+			<div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+				<a href="/pt/budget" class="hand-btn" style="padding: 14px 24px; font-size: 1.05rem;">💰 Orçamento</a>
+				<a href="/pt/dining" class="hand-btn" style="padding: 14px 24px; font-size: 1.05rem;">🍾 Banquete</a>
+				<a href="/pt/guests" class="hand-btn" style="padding: 14px 24px; font-size: 1.05rem;">👥 Convidados</a>
+				<a href="/pt/stationery" class="hand-btn" style="padding: 14px 24px; font-size: 1.05rem;">💌 Papelaria</a>
+			</div>
+		</section>
+	</main>
+
+	<!-- Live Instant Search Dropdown Script (Portuguese) -->
+	<script is:inline define:vars={{ searchIndex }}>
+		const searchInput = document.getElementById('home-tool-search');
+		const clearBtn = document.getElementById('clear-search-btn');
+		const dropdown = document.getElementById('search-dropdown-results');
+
+		function handleSearch() {
+			const query = (searchInput?.value || '').trim().toLowerCase();
+
+			if (clearBtn) {
+				clearBtn.style.display = query.length > 0 ? 'inline-block' : 'none';
+			}
+
+			if (!query || query.length === 0) {
+				if (dropdown) dropdown.style.display = 'none';
+				return;
+			}
+
+			const results = searchIndex.filter(item => 
+				item.title.toLowerCase().includes(query) || 
+				item.desc.toLowerCase().includes(query) ||
+				item.category.toLowerCase().includes(query)
+			);
+
+			if (!dropdown) return;
+
+			if (results.length === 0) {
+				dropdown.innerHTML = `
+					<div style="padding: 1rem; text-align: center; color: #64748b; font-size: 0.95rem;">
+						Nenhuma calculadora encontrada para "<strong>${query}</strong>".<br/>
+						<span style="font-size: 0.82rem;">Experimente pesquisar: open bar, quinta, bolo ou mapa de mesas.</span>
+					</div>
+				`;
+				dropdown.style.display = 'block';
+				return;
+			}
+
+			let html = '';
+			results.slice(0, 7).forEach(r => {
+				html += `
+					<a href="${r.url}" style="display: block; padding: 0.65rem 0.85rem; border-radius: 4px; text-decoration: none; color: inherit; border-bottom: 1px solid #f1f5f9; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+						<div style="display: flex; justify-content: space-between; align-items: center;">
+							<strong style="font-size: 0.95rem; color: #1e293b;">${r.title}</strong>
+							<span style="font-size: 0.72rem; font-weight: 700; background: #fef08a; border: 1px solid #1e293b; padding: 1px 6px; border-radius: 3px;">${r.category}</span>
+						</div>
+						<p style="margin: 2px 0 0 0; font-size: 0.82rem; color: #64748b; line-height: 1.4;">${r.desc}</p>
+					</a>
+				`;
+			});
+
+			dropdown.innerHTML = html;
+			dropdown.style.display = 'block';
+		}
+
+		if (searchInput) {
+			searchInput.addEventListener('input', handleSearch);
+			searchInput.addEventListener('focus', () => {
+				if (searchInput.value.trim().length > 0) handleSearch();
+			});
+		}
+
+		if (clearBtn) {
+			clearBtn.addEventListener('click', () => {
+				if (searchInput) {
+					searchInput.value = '';
+					handleSearch();
+					searchInput.focus();
+				}
+			});
+		}
+
+		// Close dropdown on click outside
+		document.addEventListener('click', (e) => {
+			if (dropdown && !dropdown.contains(e.target) && e.target !== searchInput) {
+				dropdown.style.display = 'none';
+			}
+		});
+	</script>
+</Layout>

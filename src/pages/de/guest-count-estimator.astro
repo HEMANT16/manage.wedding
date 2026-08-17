@@ -1,0 +1,404 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/guest-count-estimator/#webapp",
+      "name": "Gästezahl-Rechner Hochzeit | Maximale Gäste nach Budget",
+      "url": "https://manage.wedding/de/guest-count-estimator",
+      "inLanguage": "de",
+      "description": "Berechnen Sie genau, wie viele Hochzeitsgäste Sie sich leisten können: Gesamtes Budget, Fixkosten (Location, Foto, DJ) und Catering/Getränke pro Kopf in Euro.",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie berechnet man die maximale Gästeanzahl anhand des Hochzeitsbudgets?",
+      "description": "Schritt-für-Schritt-Anleitung zur Ermittlung der maximal leistbaren Gästezahl und der sicheren Raumkapazität.",
+      "inLanguage": "de",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 1: Gesamtbudget & fixe Kosten erfassen",
+          "text": "Bestimmen Sie Ihr Gesamtbudget und ziehen Sie alle Fixkosten (Locationmiete, Fotograf, DJ, Brautkleid, Floristik) ab."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 2: Kosten pro Kopf für Essen & Getränke kalkulieren",
+          "text": "Addieren Sie das Menü/Buffet pro Person mit der Getränkepauschale und Trinkgeld/Serviceaufschlägen."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 3: Variables Budget durch Pro-Kopf-Kosten teilen",
+          "text": "Teilen Sie das verbleibende Budget durch die Gesamtkosten pro Gast, um die exakt bezahlbare Gästezahl zu erhalten."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Schritt 4: 90%-Sicherheitsgrenze der Location beachten",
+          "text": "Multiplizieren Sie die maximale Raumkapazität der Location mit 0,90, um ausreichend Platz für Tanzfläche, Buffet und Band zu sichern."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "de",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wie funktioniert der Gästezahl-Rechner?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Der Rechner zieht alle fixen Ausgaben (Location, Musik, Foto) vom Gesamtbudget ab. Das verbleibende variable Budget wird durch die Verpflegungskosten pro Gast (Essen + Getränke) geteilt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was zählt zu den Fixkosten einer Hochzeit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fixkosten sind alle Positionen, deren Preis unabhängig von der Gästezahl gleich bleibt: Raummiete, Fotograf/Videograf, DJ oder Live-Band, Trauredner, Brautkleid, Anzug und Dekoration."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie viel kostet ein Hochzeitsgast im Schnitt für Catering & Getränke?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In Deutschland und Österreich liegt ein Hochzeitsmenü oder Buffet meist bei 55 € bis 95 € pro Person. Zusammen mit einer Getränkepauschale (40 € bis 65 €) und Service/Mitternachtssnack ergeben sich typischerweise 100 € bis 160 € pro Kopf."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Gästezahl-Rechner Hochzeit | Maximale Gäste nach Budget ermitteln"
+	description="Berechnen Sie genau, wie viele Hochzeitsgäste Sie sich leisten können: Gesamtes Budget, Fixkosten (Location, Foto, DJ) und Catering/Getränke pro Kopf in Euro."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<Breadcrumb title="Gästezahl-Rechner" category="guests" />
+
+		<section class="section-paper" style="padding: 4rem 2rem; min-height: 100vh;">
+			<div style="max-width: 1000px; margin: 0 auto;">
+				
+				<div style="text-align: center; margin-bottom: 3rem;">
+					<div class="tape" style="margin: 0 auto 1rem;"></div>
+					<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 60px); color: var(--fg-pencil); line-height: 1.15;">
+						Hochzeits- <span class="accent-italic">Gästezahl-Rechner</span>
+					</h1>
+					<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 600px; margin: 1rem auto 0;">
+						Wie viele Gäste passen in Ihr Budget? Geben Sie Ihre Zahlen ein und berechnen Sie Ihre maximale Gästezahl.
+					</p>
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; align-items: start;">
+					
+					<!-- Form Column -->
+					<div class="hand-card" style="padding: 2rem; background: #fff;">
+						<h2 class="font-heading" style="font-size: 1.5rem; margin-bottom: 1.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+							Ihre Budgetdaten
+						</h2>
+						<form id="guest-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
+							
+							<div class="input-group">
+								<label for="total-budget" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Gesamtbudget (€)</label>
+								<input type="number" id="total-budget" value="25000" min="0" step="500" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Ihr maximal verfügbares Gesamtbudget.</small>
+							</div>
+
+							<div class="input-group">
+								<label for="fixed-costs" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Location-Miete & Fixkosten (€)</label>
+								<input type="number" id="fixed-costs" value="10000" min="0" step="500" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Raummiete, Fotograf, DJ, Brautkleid, Deko etc.</small>
+							</div>
+
+							<div class="input-group">
+								<label for="catering-ph" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Catering & Menü pro Gast (€)</label>
+								<input type="number" id="catering-ph" value="85" min="0" step="5" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Speisen, Buffet oder Menü pro Person.</small>
+							</div>
+
+							<div class="input-group">
+								<label for="bar-ph" style="display: block; font-weight: bold; margin-bottom: 0.5rem; color: var(--fg-pencil);">Getränkepauschale pro Gast (€)</label>
+								<input type="number" id="bar-ph" value="45" min="0" step="5" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: transparent; font-family: inherit; font-size: 1.1rem; color: var(--fg-pencil);" />
+								<small style="color: var(--text-secondary); display: block; margin-top: 0.25rem;">Wein, Bier, Sektempfang, Softdrinks, Cocktails.</small>
+							</div>
+
+							<button type="submit" class="hand-btn" style="width: 100%; font-size: 1.25rem; margin-top: 1rem; padding: 0.9rem;">
+								✨ Gästezahl berechnen
+							</button>
+						</form>
+					</div>
+
+					<!-- Results Column -->
+					<div class="hand-card" id="results-container" style="padding: 2rem; background: #fff;">
+						<h2 class="font-heading" style="font-size: 1.5rem; margin-bottom: 1.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+							Ihr Kalkulations-Ergebnis
+						</h2>
+						
+						<div style="text-align: center; margin-bottom: 2rem;">
+							<div style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Maximal bezahlbare Gäste</div>
+							<div id="max-guests" class="font-heading" style="font-size: 4rem; color: var(--accent-red); line-height: 1;">115</div>
+							<div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">Personen (inkl. Brautpaar)</div>
+						</div>
+
+						<div style="margin-bottom: 1.5rem;">
+							<h3 class="font-heading" style="font-size: 1.2rem; margin-bottom: 1rem;">Budget-Aufteilung</h3>
+							
+							<!-- Dynamic CSS Chart -->
+							<div style="width: 100%; height: 40px; border: 2px solid var(--fg-pencil); border-radius: 4px; display: flex; overflow: hidden; margin-bottom: 0.5rem;">
+								<div id="chart-fixed" style="width: 40%; background-color: var(--fg-pencil); display: flex; align-items: center; justify-content: center; color: var(--bg-paper); font-weight: bold; font-size: 0.8rem; transition: width 0.3s ease;">40%</div>
+								<div id="chart-variable" style="width: 60%; background-color: var(--accent-blue); display: flex; align-items: center; justify-content: center; color: var(--bg-paper); font-weight: bold; font-size: 0.8rem; transition: width 0.3s ease;">60%</div>
+							</div>
+							
+							<div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+								<div style="display: flex; align-items: center; gap: 0.5rem;">
+									<div style="width: 12px; height: 12px; background-color: var(--fg-pencil);"></div>
+									<span>Fixkosten</span>
+								</div>
+								<div style="display: flex; align-items: center; gap: 0.5rem;">
+									<div style="width: 12px; height: 12px; background-color: var(--accent-blue);"></div>
+									<span>Gäste-Verpflegung</span>
+								</div>
+							</div>
+						</div>
+
+						<div style="background-color: rgba(0,0,0,0.03); padding: 1rem; border: 1px dashed var(--fg-pencil); border-radius: 4px;">
+							<div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+								<span>Gesamtbudget:</span>
+								<strong id="display-total">25.000 €</strong>
+							</div>
+							<div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+								<span>Fixkosten (Location, Foto etc.):</span>
+								<strong id="display-fixed">-10.000 €</strong>
+							</div>
+							<div style="display: flex; justify-content: space-between; border-top: 1px solid var(--fg-pencil); padding-top: 0.5rem;">
+								<span>Verbleibend für Gäste:</span>
+								<strong id="display-remaining">15.000 €</strong>
+							</div>
+							<div style="display: flex; justify-content: space-between; margin-top: 0.5rem; color: var(--accent-red);">
+								<span>Kosten pro Kopf (Essen + Trinken):</span>
+								<strong id="display-perhead">130 €</strong>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+		<!-- SEO Article Section -->
+		<section class="section-muted" style="padding: 4rem 2rem;">
+			<div style="max-width: 900px; margin: 0 auto;">
+				<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+				<div class="hand-card" style="margin: 0 auto 3rem auto; max-width: 900px; background: var(--post-it); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
+					<div class="tape" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);"></div>
+					<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<h2 class="font-heading" style="font-size: clamp(1.3rem, 2.5vw, 1.7rem); color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+							<span>⚡</span> Auf einen Blick (BLUF): Budget & Gäste-Matrix
+						</h2>
+						<span style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(0,0,0,0.06); padding: 0.2rem 0.6rem; border-radius: 4px; border: 1px solid var(--fg-pencil);">
+							1-Minuten Matrix
+						</span>
+					</div>
+					
+					<!-- Core Formula Banner -->
+					<div style="background: rgba(255, 255, 255, 0.9); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.25rem;">
+						<p class="font-body" style="font-size: 1.05rem; line-height: 1.6; margin: 0 0 0.5rem 0; color: var(--fg-pencil);">
+							<strong>Die Gäste-Budget-Formel:</strong> 
+							<span style="display: inline-block; background: #fef3c7; border: 1px solid #d97706; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: #92400e; margin: 2px 4px;">Max. Gäste = (Gesamtbudget − Fixkosten) ÷ Pro-Kopf-Kosten</span>
+						</p>
+						<p class="font-body" style="font-size: 0.9rem; margin: 0; color: var(--text-secondary); line-height: 1.5;">
+							<strong>Raum-Sicherheitsgrenze:</strong> Bestuhlen Sie eine Location maximal bis <strong>90% der offiziellen Maximalkapazität</strong>, damit ausreichend Platz für Tanzfläche, DJ, Fotobox und Buffet bleibt.
+						</p>
+					</div>
+
+					<!-- Semantic Benchmark Table -->
+					<div style="overflow-x: auto;">
+						<table style="width: 100%; border-collapse: collapse; background: #fff; border: 2px solid var(--fg-pencil); font-family: var(--font-body); font-size: 0.92rem; text-align: left;">
+							<thead>
+								<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Gesamtbudget</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Fixkosten (~40%)</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Gäste-Budget</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-blue);">Gäste @ 100 €/Kopf</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: #d97706;">Gäste @ 130 €/Kopf</th>
+									<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem; color: var(--accent-red);">Gäste @ 160 €/Kopf</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">15.000 € (Micro / DIY)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">6.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">9.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">90 Gäste</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">69 Gäste</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">56 Gäste</td>
+								</tr>
+								<tr style="background: #faf8f3;">
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">25.000 € (Klassisch)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">10.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">15.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">150 Gäste</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">115 Gäste</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">93 Gäste</td>
+								</tr>
+								<tr>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">35.000 € (Gehoben)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">14.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">21.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">210 Gäste</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">161 Gäste</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">131 Gäste</td>
+								</tr>
+								<tr style="background: #faf8f3;">
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">50.000 € (Großes Fest)</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">20.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">30.000 €</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700; color: var(--accent-blue);">300 Gäste</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: #d97706; font-weight: 600;">230 Gäste</td>
+									<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 600;">187 Gäste</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<article class="hand-card" style="padding: 3rem; background: #fff;">
+					<h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem;">
+						Leitfaden: Die Gästeliste nach Budget festlegen
+					</h2>
+					
+					<p class="font-body" style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+						Die Hochzeitsplanung fühlt sich oft wie eine mathematische Gleichung an, bei der sich die Variablen ständig verschieben. Sie haben ein Budget im Kopf, aber sobald Sie Menükarten und Pauschalen studieren, fragen Sie sich: <em>"Wie viele Personen können wir wirklich einladen?"</em>
+					</p>
+
+					<figure style="margin: 2rem 0; text-align: center;">
+						<img src="/images/wedding_budget_book.webp" alt="Gästezahl-Rechner — Hochzeitsbudget und Gästeanzahl" loading="lazy" decoding="async" style="max-width: 100%; border: 2px solid var(--fg-pencil); border-radius: 8px;" />
+						<figcaption style="font-style: italic; margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">Klare Zahlen nehmen den emotionalen Druck aus der Gästeliste.</figcaption>
+					</figure>
+
+					<h3 class="font-heading" style="font-size: 1.8rem; margin-bottom: 1rem; margin-top: 2rem;">
+						Warum dieser Rechner Konflikte spart
+					</h3>
+					<p class="font-body" style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem;">
+						Die Erstellung der Gästeliste führt bei vielen Paaren zu Diskussionen. Man möchte niemanden vor den Kopf stoßen, doch das Budget setzt Grenzen. Mit unserem Rechner haben Sie objektive Zahlen: Sie streichen Personen nicht aus Mangel an Zuneigung, sondern weil das Budget es mathematisch vorgibt.
+					</p>
+
+					<hr style="border: none; border-top: 2px dashed var(--fg-pencil); margin: 3rem 0;" />
+
+					<h2 class="font-heading" style="font-size: 2rem; margin-bottom: 2rem;">Häufig gestellte Fragen (FAQ)</h2>
+					
+					<div class="faq-container" style="display: flex; flex-direction: column; gap: 1rem;">
+						<details class="faq-item" style="border: 2px solid var(--fg-pencil); padding: 1rem; background: var(--bg-paper);">
+							<summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; list-style-position: inside;">Muss das Brautpaar in die Gästezahl eingerechnet werden?</summary>
+							<p style="margin-top: 1rem; line-height: 1.5;">Ja, Braut und Bräutigam sowie Trauzeugen essen und trinken mit und müssen bei Catering- und Getränkepauschalen stets als Personen mitgezählt werden.</p>
+						</details>
+
+						<details class="faq-item" style="border: 2px solid var(--fg-pencil); padding: 1rem; background: var(--bg-paper);">
+							<summary style="font-weight: bold; font-size: 1.2rem; cursor: pointer; list-style-position: inside;">Wie geht man mit Kindern auf der Hochzeit um?</summary>
+							<p style="margin-top: 1rem; line-height: 1.5;">Kinder unter 3–6 Jahren essen meist kostenlos mit; Kinder zwischen 6 und 12 Jahren zahlen beim Caterer üblicherweise 50% des Menüpreises. Zählen Sie 2 Kinder als 1 erwachsenen Gast für die Budgetkalkulation.</p>
+						</details>
+					</div>
+
+				</article>
+			</div>
+		</section>
+
+		<RelatedTools currentPath="/de/guest-count-estimator" category="guests" />
+	</main>
+</Layout>
+
+<script>
+	function calculateGuests() {
+		const budget = parseFloat((document.getElementById('total-budget') as HTMLInputElement).value) || 0;
+		const fixed = parseFloat((document.getElementById('fixed-costs') as HTMLInputElement).value) || 0;
+		const catering = parseFloat((document.getElementById('catering-ph') as HTMLInputElement).value) || 0;
+		const bar = parseFloat((document.getElementById('bar-ph') as HTMLInputElement).value) || 0;
+		
+		const perHead = catering + bar;
+		const remaining = budget - fixed;
+		
+		let maxGuests = 0;
+		if (perHead > 0 && remaining > 0) {
+			maxGuests = Math.floor(remaining / perHead);
+		} else if (remaining < 0) {
+			maxGuests = 0;
+		} else if (perHead === 0 && remaining >= 0) {
+			maxGuests = 999;
+		}
+
+		// Update UI
+		document.getElementById('max-guests')!.innerText = maxGuests.toString();
+		document.getElementById('display-total')!.innerText = `${budget.toLocaleString('de-DE')} €`;
+		document.getElementById('display-fixed')!.innerText = `-${fixed.toLocaleString('de-DE')} €`;
+		document.getElementById('display-remaining')!.innerText = `${remaining.toLocaleString('de-DE')} €`;
+		document.getElementById('display-perhead')!.innerText = `${perHead.toLocaleString('de-DE')} €`;
+
+		// Update Chart
+		let fixedPct = 0;
+		let varPct = 0;
+		
+		if (budget > 0) {
+			if (fixed >= budget) {
+				fixedPct = 100;
+				varPct = 0;
+			} else {
+				fixedPct = (fixed / budget) * 100;
+				varPct = 100 - fixedPct;
+			}
+		}
+
+		document.getElementById('chart-fixed')!.style.width = `${fixedPct}%`;
+		document.getElementById('chart-fixed')!.innerText = `${Math.round(fixedPct)}%`;
+		document.getElementById('chart-variable')!.style.width = `${varPct}%`;
+		document.getElementById('chart-variable')!.innerText = `${Math.round(varPct)}%`;
+	}
+
+	// Listen for form submission
+	document.getElementById('guest-form')?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		calculateGuests();
+	});
+
+	// Also calculate on input change for instant feedback
+	document.getElementById('guest-form')?.addEventListener('input', calculateGuests);
+
+	// Initial calculation
+	calculateGuests();
+</script>
+
+<style>
+	details > summary::-webkit-details-marker {
+		display: none;
+	}
+	details > summary {
+		list-style: none;
+		position: relative;
+		padding-left: 1.5rem;
+	}
+	details > summary::before {
+		content: '▶';
+		position: absolute;
+		left: 0;
+		top: 2px;
+		font-size: 0.8rem;
+		transition: transform 0.2s;
+	}
+	details[open] > summary::before {
+		transform: rotate(90deg);
+	}
+</style>

@@ -1,0 +1,957 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/vendor-tipping-calculator/#webapp",
+      "name": "Calculadora de Propinas a Proveedores de Boda y Generador de Sobres",
+      "url": "https://manage.wedding/es/vendor-tipping-calculator",
+      "inLanguage": "es",
+      "description": "Calculadora gratuita de propinas para proveedores de boda. Calcula gratificaciones exactas para camareros, DJs, fotógrafos, wedding planners, peluquería, chóferes y montadores. Exporta sobres de efectivo a Word, PDF y Excel.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Calcular las Propinas para los Proveedores de tu Boda",
+      "description": "Guía completa para calcular gratificaciones según la costumbre actual, identificar suplementos de servicio en contrato y preparar los sobres de dinero.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Revisa los Contratos para Detectar Propinas Incluidas",
+          "text": "Comprueba si el contrato de catering o de transporte ya incluye una tasa de servicio o gratificación obligatoria."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Calcula Propinas Porcentuales",
+          "text": "Aplica entre un 10% y un 15% sobre servicios de belleza (peluquería y maquillaje) y banquetes si el servicio ha sido sobresaliente."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Asigna Gratificaciones Fijas por Profesional",
+          "text": "Asigna importes fijos habituales: 50€-100€ para fotógrafo/videógrafo, 50€-100€ para DJ/músicos y 20€-40€ por camarero o chófer."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Prepara y Delega los Sobres de Efectivo",
+          "text": "Rotula los sobres con antelación y entrégaselos al padrino, dama de honor o wedding planner para repartirlos durante el evento."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Es obligatorio dar propina a los proveedores que son dueños de su propio negocio?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No es obligatorio. Tradicionalmente los profesionales autónomos fijan sus tarifas comerciales y no esperan propina. No obstante, si el fotógrafo o la wedding planner han realizado un trabajo excepcional, una gratificación de 50€ a 150€ o una reseña excelente de 5 estrellas es un gesto de gran agradecimiento."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuál es la diferencia entre canon de servicio y propina directa?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El canon o tasa de servicio suele ser un recargo operativo que retiene la empresa para gastos de gestión y personal. Pregunta siempre al catering si ese suplemento llega íntegramente a los camareros; si no es así, es habitual entregar un sobre con 20€ a 40€ por camarero."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Quién debe encargarse de repartir los sobres de propina el día de la boda?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Los novios nunca deben llevar dinero encima durante la boda. Prepara sobres rotulados y delega la entrega en el padrino, la dama de honor o el coordinador de la boda al finalizar el servicio de cada proveedor."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto se suele dar de propina a peluqueros y maquilladores de boda?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Se suele dar entre un 10% y un 15% del coste total del servicio. Si el equipo se desplazó a primera hora de la mañana al hotel o domicilio de la novia, un 15% a 20% es el estándar habitual."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculadora de Propinas a Proveedores de Boda (Guía y Sobres en PDF) | Manage.Wedding"
+	description="Calcula las propinas para los profesionales de tu boda. Guía de gratificaciones para camareros, DJs, fotógrafos y peluquería con exportación a Word y PDF."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Propinas a Proveedores" category="budget-finance" />
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Calculadora de <span class="accent-italic">Propinas a Proveedores</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Calcula las gratificaciones exactas según la costumbre actual. Desglosa partidas para más de 10 proveedores y genera tus <strong>Sobres de Efectivo</strong> en <strong>Word (.doc)</strong> o <strong>PDF</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Cómo Organizar las Propinas en 3 Sencillos Pasos
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Introduce los Costes de Contrato
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Indica los importes de tus proveedores contratados. Desmarca aquellos que no hayas contratado o cuyo contrato ya incluya servicio.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Revisa los Importes Sugeridos
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						La calculadora aplica porcentajes recomendados (10-15%) o importes fijos habituales (50€–100€) para fotógrafos, DJs y oficiantes.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Exporta tus Sobres Imprimibles
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Haz clic en <strong>"📝 Exportar a Word"</strong> o <strong>"🖨️ Imprimir PDF"</strong> para obtener las etiquetas de sobres y el calendario de entrega para el padrino.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="tipping-calc-grid">
+			
+			<!-- Left Column: 10+ Vendor Categories Form -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							💵 Proveedores y Personal
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">
+							Configura los importes y servicios contratados
+						</span>
+					</div>
+
+					<!-- Currency Selector -->
+					<div style="display: flex; align-items: center; gap: 0.3rem;">
+						<span style="font-size: 0.85rem; font-weight: bold;">Moneda:</span>
+						<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="€" selected>€ (EUR)</option>
+							<option value="$">$ (USD/CAD/AUD)</option>
+							<option value="£">£ (GBP)</option>
+							<option value="₹">₹ (INR)</option>
+						</select>
+					</div>
+				</div>
+
+				<form id="tipping-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+					
+					<!-- 1. Catering & Bartenders -->
+					<div class="vendor-input-group">
+						<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
+							<label class="font-heading" style="font-size: 1rem; color: var(--accent-red);">
+								🍽️ Catering, Camareros y Barra Libre
+							</label>
+							<label style="font-size: 0.78rem; display: flex; align-items: center; gap: 0.3rem; cursor: pointer; color: var(--text-secondary);">
+								<input type="checkbox" id="chk-caterer-included"> Servicio incluido en contrato
+							</label>
+						</div>
+						<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Gasto Total en Banquete (€)</span>
+								<input type="number" id="input-caterer-bill" value="6500" min="0" step="100" class="tip-input">
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Tipo de Propina</span>
+								<select id="select-caterer-rate" class="tip-select">
+									<option value="0.05" selected>5% del Banquete (325 €)</option>
+									<option value="0.08">8% del Banquete (520 €)</option>
+									<option value="0.10">10% del Banquete (650 €)</option>
+									<option value="flat">Fijo 30 € por Camarero</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2. Hair & Makeup (HMUA) -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: var(--accent-blue); display: block; margin-bottom: 0.3rem;">
+							💄 Maquillaje y Peluquería (Novia e Invitadas)
+						</label>
+						<div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Total Factura Belleza (€)</span>
+								<input type="number" id="input-beauty-bill" value="550" min="0" step="50" class="tip-input">
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Porcentaje de Propina</span>
+								<select id="select-beauty-rate" class="tip-select">
+									<option value="0.10" selected>10% (Estándar)</option>
+									<option value="0.15">15% (Servicio a Domicilio Excelente)</option>
+									<option value="0.20">20% (Servicio Excepcional)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 3. Photography & Videography -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: #16a34a; display: block; margin-bottom: 0.3rem;">
+							📸 Fotógrafo y Videógrafo Principal / Asistente
+						</label>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Fotógrafo Principal</span>
+								<select id="select-photo-lead" class="tip-select">
+									<option value="75" selected>Fotógrafo Principal (75 €)</option>
+									<option value="100">Fotógrafo Principal (100 €)</option>
+									<option value="50">Fotógrafo Principal (50 €)</option>
+									<option value="0">Sin Propina / Dueño Empresa (0 €)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Segundo Fotógrafo / Asistente</span>
+								<select id="select-photo-second" class="tip-select">
+									<option value="50" selected>Segundo Operador (50 €)</option>
+									<option value="35">Segundo Operador (35 €)</option>
+									<option value="75">Segundo Operador (75 €)</option>
+									<option value="0">Sin Segundo Operador (0 €)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 4. DJ & Entertainment -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: #7c3aed; display: block; margin-bottom: 0.3rem;">
+							🎵 DJ de la Fiesta y Músicos en Directo
+						</label>
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">DJ Principal / Animador</span>
+								<select id="select-dj-tip" class="tip-select">
+									<option value="60" selected>DJ Principal (60 €)</option>
+									<option value="100">DJ Principal (100 €)</option>
+									<option value="40">DJ Principal (40 €)</option>
+									<option value="0">Sin Propina (0 €)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Músicos de Ceremonia / Cóctel</span>
+								<select id="select-band-tip" class="tip-select">
+									<option value="30" selected>Músicos (30 € / miembro)</option>
+									<option value="50">Músicos (50 € / miembro)</option>
+									<option value="0">Sin Músicos en Directo (0 €)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- 5. Wedding Planner & Coordinator -->
+					<div class="vendor-input-group">
+						<label class="font-heading" style="font-size: 1rem; color: #d97706; display: block; margin-bottom: 0.3rem;">
+							📋 Wedding Planner / Coordinación Día B
+						</label>
+						<div>
+							<select id="select-planner-tip" class="tip-select">
+								<option value="100" selected>Coordinadora Día B (100 €)</option>
+								<option value="180">Wedding Planner Integral (180 €)</option>
+								<option value="60">Coordinadora Día B (60 €)</option>
+								<option value="0">Sin Propina / Dueño Empresa (0 €)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- 6. Drivers, Officiant & Delivery Setup Crew -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.6rem;">
+						<span class="font-heading" style="font-size: 0.9rem; color: var(--fg-pencil); display: block; text-align: center;">
+							🚐 Logística, Oficiante y Personal de Montaje
+						</span>
+						
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Chófer de Autobús / Coche</span>
+								<select id="select-driver-tip" class="tip-select">
+									<option value="40" selected>Chófer (40 €)</option>
+									<option value="70">Varios Chóferes (70 € total)</option>
+									<option value="0">Incluido en Factura (0 €)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Oficiante de Ceremonia</span>
+								<select id="select-officiant-tip" class="tip-select">
+									<option value="50" selected>Gratificación / Donativo (50 €)</option>
+									<option value="80">Donativo Parroquia (80 €)</option>
+									<option value="0">Tarifa Oficial Cubierta (0 €)</option>
+								</select>
+							</div>
+						</div>
+
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Montaje Floral y Decoración</span>
+								<select id="select-delivery-tip" class="tip-select">
+									<option value="30" selected>Equipo de Montaje (30 €)</option>
+									<option value="50">Gran Montaje Floral (50 €)</option>
+									<option value="0">Sin Propina (0 €)</option>
+								</select>
+							</div>
+							<div>
+								<span style="font-size: 0.75rem; color: var(--text-secondary);">Reparto de Tarta Nupcial</span>
+								<select id="select-cake-tip" class="tip-select">
+									<option value="15" selected>Repartidor de Tarta (15 €)</option>
+									<option value="25">Montaje Complejo Tarta (25 €)</option>
+									<option value="0">Sin Propina (0 €)</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Gratuity Breakdown & Cash Envelope Planner -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Total Gratuity Quote Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								✉️ Presupuesto de Propinas
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Efectivo necesario para los sobres de boda
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Exportar a Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Imprimir PDF
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Gratuity Total Highlight -->
+					<div style="background: #fdf2f8; border: 2.5px solid var(--accent-red); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: var(--accent-red); display: block; font-weight: bold;">Total Propinas a Preparar</span>
+						<strong id="res-total-gratuity" class="font-heading" style="font-size: 2.6rem; color: var(--accent-red); display: block; line-height: 1.2;">745 €</strong>
+						<span id="res-envelope-count" style="font-size: 0.8rem; color: var(--accent-red);">Repartido en 8 Sobres de Efectivo</span>
+					</div>
+
+					<!-- Line-Item Category Breakdown Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Desglose de Sobres Individuales
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.92rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🍽️ Catering y Camareros:</td>
+									<td id="res-caterer-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">325,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">💄 Peluquería y Maquillaje:</td>
+									<td id="res-beauty-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">55,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">📸 Equipo de Fotografía y Vídeo:</td>
+									<td id="res-photo-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">125,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🎵 DJ y Músicos:</td>
+									<td id="res-dj-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">90,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">📋 Wedding Planner / Coordinadora:</td>
+									<td id="res-planner-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">100,00 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">🚐 Chóferes y Oficiante:</td>
+									<td id="res-logistics-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">90,00 €</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #fafafa;">
+									<td style="padding: 0.35rem 0;">🌸 Montaje y Entrega de Tarta:</td>
+									<td id="res-delivery-tip" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">45,00 €</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Gratuity Distribution Bar Chart -->
+					<div>
+						<span class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.3rem; text-align: center;">
+							Distribución Porcentual por Categoría
+						</span>
+						<div style="width: 100%; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; display: flex; background: #eee;">
+							<div id="bar-caterer" style="width: 44%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+							<div id="bar-beauty" style="width: 8%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+							<div id="bar-photo" style="width: 17%; background: #16a34a; transition: width 0.3s ease;"></div>
+							<div id="bar-dj" style="width: 12%; background: #7c3aed; transition: width 0.3s ease;"></div>
+							<div id="bar-planner" style="width: 13%; background: #d97706; transition: width 0.3s ease;"></div>
+							<div id="bar-other" style="width: 6%; background: #64748b; transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Envelope Delegation Card -->
+				<div class="hand-card" style="padding: 1.25rem; background: var(--post-it); border: 2px solid var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); display: block; margin-bottom: 0.4rem; text-align: center;">
+						📌 Regla de Delegación el Día de la Boda:
+					</strong>
+					<ul class="font-body" style="font-size: 0.85rem; line-height: 1.5; padding-left: 1.1rem; margin: 0; color: var(--fg-pencil);">
+						<li><strong>No lleves dinero en efectivo:</strong> Entrega los sobres cerrados y etiquetados al padrino o wedding planner el día previo.</li>
+						<li><strong>Momentos de entrega:</strong> Peluquería y maquillaje al terminar en la habitación; fotógrafo y DJ en los últimos 30 minutos del baile.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Cuadrante de Sobres de Propinas de Boda</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportado el: <span id="print-date"></span> | Total Propinas: <span id="print-total"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Proveedor y Puesto</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Momento de Entrega</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Persona Responsable</th>
+						<th style="border: 1px solid #ccc; padding: 6px; width: 90px; text-align: right;">Importe en Efectivo</th>
+					</tr>
+				</thead>
+				<tbody id="print-tipping-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 2.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Resumen Rápido</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Guía Rápida de Propinas y Gratificaciones en Bodas
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 750px; margin: 0 auto; font-weight: 500;">
+					¿Poco tiempo? Aquí tienes la tabla de referencia con los importes y costumbres para cada profesional nupcial.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📐 Guía Rápida de Importes Habituales:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Coordinadora / WP: 80€–150€ • Fotógrafo / Videógrafo: 50€–100€ • DJ: 40€–80€ • Oficiante: 30€–60€ • Camareros: 20€–35€/camarero • Maquillaje y Peluquería: 10–15% del total
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 620px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Profesional / Puesto</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Rango de Propina Habitual</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Tipo de Gratificación</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Cuándo y Cómo Entregar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Wedding Planner / Coordinadora</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">80 € – 180 € (o regalo personalizado)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Sobre Fijo / Detalle</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Al finalizar el baile o al día siguiente</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Fotógrafo y Videógrafo</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">50 € – 100 € (30€–50€ por ayudante)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Efectivo Fijo</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Al finalizar la cobertura fotográfica</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">DJ de la Boda / Animador</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">40 € – 80 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Efectivo Fijo</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Al cierre de la barra libre</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Oficiante de Ceremonia</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">30 € – 60 € (o donativo)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Donativo / Efectivo</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Antes o después de la ceremonia</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #d97706;">Peluquería y Maquillaje</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">10% – 15% de la factura total</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Porcentaje</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Al finalizar los preparativos en la habitación</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #0284c7;">Camareros y Personal de Barra</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">20 € – 35 € por camarero</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Fijo por Empleado</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Al maître o capitán al final de la fiesta</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #475569;">Chóferes de Autobús y Traslados</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">25 € – 50 € por conductor</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Efectivo Fijo</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Al terminar el último viaje de regreso</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide (Centered Headings) -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<span class="badge-postit">Protocolo y Costumbres Nupciales</span>
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Guía Completa de Propinas para Bodas
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Costumbres actuales, distinción entre canon y propina, y cómo organizar los sobres de efectivo sin estrés.
+				</p>
+			</div>
+
+			<!-- Section 1: Detailed Step-by-Step Guide on How to Use This Tool Flawlessly -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Pasos Clave para una Gestión Impecable
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Planificar las propinas con tiempo evita apuros durante la fiesta. Sigue estas recomendaciones:
+				</p>
+
+				<div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-red); margin-bottom: 0.4rem;">
+							Paso 1: Revisa el Contrato de Restauración
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Comprueba si el presupuesto de la finca o catering ya incluye servicio de camareros y canon de gestión. Si es así, marca la casilla correspondiente para no duplicar gratificaciones.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: var(--accent-blue); margin-bottom: 0.4rem;">
+							Paso 2: Asigna las Propinas del Equipo de Maquillaje y Música
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Calcula el 10%–15% para las estilistas y fija un sobre para el DJ o los músicos de ceremonia.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #16a34a; margin-bottom: 0.4rem;">
+							Paso 3: Recuerda a Chóferes y Personal de Montaje
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Ten un detalle con los chóferes de autobús que trasladan a los invitados a altas horas y con los floristas que realizan el montaje matinal.
+						</p>
+					</div>
+
+					<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+						<h4 class="font-heading" style="font-size: 1.2rem; color: #d97706; margin-bottom: 0.4rem;">
+							Paso 4: Exporta tus Sobres en Word o PDF
+						</h4>
+						<p class="font-body" style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+							Genera un documento ordenado con cada sobre rotulado, el nombre del destinatario y la hora exacta en la que el padrino o coordinadora debe entregarlo.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 3: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Preguntas Frecuentes sobre Propinas de Boda
+				</h3>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						¿Qué ocurre si un proveedor no cumplió con lo acordado? ¿Debo darle propina?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						Rotundamente no. La propina en España y Europa es un reconocimiento voluntario por un servicio sobresaliente. Si un proveedor llegó tarde o no cumplió con las expectativas, no existe obligación alguna de entregar gratificación.
+					</p>
+				</details>
+
+				<details class="faq-accordion" style="margin-bottom: 1rem; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; background: var(--bg-paper);">
+					<summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; color: var(--accent-blue);">
+						¿Es preferible entregar las propinas en efectivo o por Bizum / transferencia?
+					</summary>
+					<p class="font-body" style="margin-top: 0.75rem; line-height: 1.6; padding-left: 1rem; border-left: 3px solid var(--accent-blue); font-size: 1.05rem;">
+						<strong>El efectivo en sobres cerrados y rotulados es la opción ideal</strong>, ya que permite al personal de camareros y chóferes repartirlo inmediatamente al acabar su turno.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/es/vendor-tipping-calculator" category="budget" />
+
+	</main>
+</Layout>
+
+<style>
+	.vendor-input-group {
+		background: var(--bg-paper);
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.75rem;
+	}
+	.tip-input {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.45rem;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: #fff;
+		font-family: var(--font-body);
+		font-size: 0.95rem;
+		font-weight: bold;
+	}
+	.tip-select {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.45rem;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		background: #fff;
+		font-family: var(--font-body);
+		font-size: 0.85rem;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '€';
+
+	const currencySelect = document.getElementById('currency-select');
+	const chkCatererIncluded = document.getElementById('chk-caterer-included');
+	const inputCatererBill = document.getElementById('input-caterer-bill');
+	const selectCatererRate = document.getElementById('select-caterer-rate');
+
+	const inputBeautyBill = document.getElementById('input-beauty-bill');
+	const selectBeautyRate = document.getElementById('select-beauty-rate');
+
+	const selectPhotoLead = document.getElementById('select-photo-lead');
+	const selectPhotoSecond = document.getElementById('select-photo-second');
+
+	const selectDjTip = document.getElementById('select-dj-tip');
+	const selectBandTip = document.getElementById('select-band-tip');
+
+	const selectPlannerTip = document.getElementById('select-planner-tip');
+	const selectDriverTip = document.getElementById('select-driver-tip');
+	const selectOfficiantTip = document.getElementById('select-officiant-tip');
+	const selectDeliveryTip = document.getElementById('select-delivery-tip');
+	const selectCakeTip = document.getElementById('select-cake-tip');
+
+	// Result Elements
+	const resTotalGratuity = document.getElementById('res-total-gratuity');
+	const resEnvelopeCount = document.getElementById('res-envelope-count');
+	const resCatererTip = document.getElementById('res-caterer-tip');
+	const resBeautyTip = document.getElementById('res-beauty-tip');
+	const resPhotoTip = document.getElementById('res-photo-tip');
+	const resDjTip = document.getElementById('res-dj-tip');
+	const resPlannerTip = document.getElementById('res-planner-tip');
+	const resLogisticsTip = document.getElementById('res-logistics-tip');
+	const resDeliveryTip = document.getElementById('res-delivery-tip');
+
+	const barCaterer = document.getElementById('bar-caterer');
+	const barBeauty = document.getElementById('bar-beauty');
+	const barPhoto = document.getElementById('bar-photo');
+	const barDj = document.getElementById('bar-dj');
+	const barPlanner = document.getElementById('bar-planner');
+	const barOther = document.getElementById('bar-other');
+
+	function formatMoney(amount) {
+		return `${Math.round(amount).toLocaleString('es-ES')} ${currencySymbol}`;
+	}
+
+	function calculateTips() {
+		currencySymbol = currencySelect.value;
+
+		// 1. Caterer
+		let catererTip = 0;
+		if (!chkCatererIncluded.checked) {
+			const bill = parseFloat(inputCatererBill.value) || 0;
+			const rate = selectCatererRate.value;
+			if (rate === 'flat') {
+				catererTip = 30 * 10;
+			} else {
+				catererTip = bill * parseFloat(rate);
+			}
+		}
+
+		// 2. Beauty
+		const beautyBill = parseFloat(inputBeautyBill.value) || 0;
+		const beautyRate = parseFloat(selectBeautyRate.value) || 0.10;
+		const beautyTip = beautyBill * beautyRate;
+
+		// 3. Photo / Video
+		const photoLead = parseFloat(selectPhotoLead.value) || 0;
+		const photoSecond = parseFloat(selectPhotoSecond.value) || 0;
+		const photoTotal = photoLead + photoSecond;
+
+		// 4. DJ & Band
+		const djTip = parseFloat(selectDjTip.value) || 0;
+		const bandTip = parseFloat(selectBandTip.value) || 0;
+		const musicTotal = djTip + bandTip;
+
+		// 5. Planner
+		const plannerTip = parseFloat(selectPlannerTip.value) || 0;
+
+		// 6. Drivers & Officiant
+		const driverTip = parseFloat(selectDriverTip.value) || 0;
+		const officiantTip = parseFloat(selectOfficiantTip.value) || 0;
+		const logisticsTotal = driverTip + officiantTip;
+
+		// 7. Delivery Crews
+		const deliveryTip = parseFloat(selectDeliveryTip.value) || 0;
+		const cakeTip = parseFloat(selectCakeTip.value) || 0;
+		const deliveryTotal = deliveryTip + cakeTip;
+
+		const grandTotal = catererTip + beautyTip + photoTotal + musicTotal + plannerTip + logisticsTotal + deliveryTotal;
+
+		let count = 0;
+		if (catererTip > 0) count++;
+		if (beautyTip > 0) count++;
+		if (photoLead > 0) count++;
+		if (photoSecond > 0) count++;
+		if (djTip > 0) count++;
+		if (bandTip > 0) count++;
+		if (plannerTip > 0) count++;
+		if (driverTip > 0) count++;
+		if (officiantTip > 0) count++;
+		if (deliveryTotal > 0) count++;
+
+		resTotalGratuity.textContent = formatMoney(grandTotal);
+		resEnvelopeCount.textContent = `Repartido en ${count} Sobres de Efectivo`;
+		resCatererTip.textContent = formatMoney(catererTip);
+		resBeautyTip.textContent = formatMoney(beautyTip);
+		resPhotoTip.textContent = formatMoney(photoTotal);
+		resDjTip.textContent = formatMoney(musicTotal);
+		resPlannerTip.textContent = formatMoney(plannerTip);
+		resLogisticsTip.textContent = formatMoney(logisticsTotal);
+		resDeliveryTip.textContent = formatMoney(deliveryTotal);
+
+		if (grandTotal > 0) {
+			barCaterer.style.width = `${Math.round((catererTip / grandTotal) * 100)}%`;
+			barBeauty.style.width = `${Math.round((beautyTip / grandTotal) * 100)}%`;
+			barPhoto.style.width = `${Math.round((photoTotal / grandTotal) * 100)}%`;
+			barDj.style.width = `${Math.round((musicTotal / grandTotal) * 100)}%`;
+			barPlanner.style.width = `${Math.round((plannerTip / grandTotal) * 100)}%`;
+			barOther.style.width = `${Math.round(((logisticsTotal + deliveryTotal) / grandTotal) * 100)}%`;
+		}
+	}
+
+	document.querySelectorAll('.tip-input, #chk-caterer-included').forEach(el => {
+		el.addEventListener('input', calculateTips);
+		el.addEventListener('change', calculateTips);
+	});
+	document.querySelectorAll('.tip-select, #currency-select').forEach(el => {
+		el.addEventListener('change', calculateTips);
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		let rows = '';
+		if (parseFloat(resCatererTip.textContent.replace(/[^0-9.]/g, '')) > 0) {
+			rows += `<tr><td><strong>Catering y Camareros</strong></td><td>Al finalizar el baile</td><td>Padrino / Coordinadora</td><td style="text-align:right; font-weight:bold;">${resCatererTip.textContent}</td></tr>`;
+		}
+		if (parseFloat(resBeautyTip.textContent.replace(/[^0-9.]/g, '')) > 0) {
+			rows += `<tr><td><strong>Peluquería y Maquillaje</strong></td><td>Tras finalizar en habitación</td><td>Dama de Honor / Novia</td><td style="text-align:right; font-weight:bold;">${resBeautyTip.textContent}</td></tr>`;
+		}
+		if (parseFloat(selectPhotoLead.value) > 0) {
+			rows += `<tr><td><strong>Fotógrafo Principal</strong></td><td>Al terminar cobertura</td><td>Padrino</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectPhotoLead.value)}</td></tr>`;
+		}
+		if (parseFloat(selectPhotoSecond.value) > 0) {
+			rows += `<tr><td><strong>Segundo Fotógrafo / Asistente</strong></td><td>Al terminar cobertura</td><td>Padrino</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectPhotoSecond.value)}</td></tr>`;
+		}
+		if (parseFloat(selectDjTip.value) > 0) {
+			rows += `<tr><td><strong>DJ de la Boda</strong></td><td>Al cierre de la fiesta</td><td>Padrino</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectDjTip.value)}</td></tr>`;
+		}
+		if (parseFloat(selectPlannerTip.value) > 0) {
+			rows += `<tr><td><strong>Wedding Planner / Coordinadora</strong></td><td>Al cierre de la fiesta</td><td>Madre de la Novia / Padrino</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectPlannerTip.value)}</td></tr>`;
+		}
+		if (parseFloat(selectDriverTip.value) > 0) {
+			rows += `<tr><td><strong>Chóferes</strong></td><td>Tras el último viaje</td><td>Padrino</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectDriverTip.value)}</td></tr>`;
+		}
+		if (parseFloat(selectOfficiantTip.value) > 0) {
+			rows += `<tr><td><strong>Oficiante de Ceremonia</strong></td><td>Antes / Tras la ceremonia</td><td>Padrino</td><td style="text-align:right; font-weight:bold;">${formatMoney(selectOfficiantTip.value)}</td></tr>`;
+		}
+		if (parseFloat(resDeliveryTip.textContent.replace(/[^0-9.]/g, '')) > 0) {
+			rows += `<tr><td><strong>Montaje Floral y Tarta</strong></td><td>En la entrega matinal</td><td>Coordinadora de Finca</td><td style="text-align:right; font-weight:bold;">${resDeliveryTip.textContent}</td></tr>`;
+		}
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Cuadrante de Propinas de Boda</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 8px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Cuadrante Oficial de Sobres de Propina</h1>
+				<p>Generado el ${new Date().toLocaleDateString('es-ES')} | Total Propinas en Efectivo: <strong>${resTotalGratuity.textContent}</strong> (${resEnvelopeCount.textContent})</p>
+				
+				<h3>Cuadrante de Entrega de Sobres:</h3>
+				<table>
+					<thead>
+						<tr>
+							<th>Proveedor / Profesional</th>
+							<th>Momento de Entrega</th>
+							<th>Persona Asignada</th>
+							<th style="text-align:right;">Importe (€)</th>
+						</tr>
+					</thead>
+					<tbody>
+						${rows}
+						<tr style="background:#f2f2f2; font-weight:bold; font-size:15px;">
+							<td colspan="3">Total Propinas Preparadas</td>
+							<td style="text-align:right; color:#b91c1c;">${resTotalGratuity.textContent}</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 style="margin-top:25px;">Consejos para el Día B:</h3>
+				<p>• Cierra y rotula los sobres en efectivo 3 días antes de la boda.</p>
+				<p>• Entrega todos los sobres al padrino o coordinadora el día previo.</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Sobres_Propinas_Boda_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('es-ES');
+		document.getElementById('print-total').textContent = resTotalGratuity.textContent;
+
+		const tbody = document.getElementById('print-tipping-body');
+		tbody.innerHTML = `
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Catering y Camareros</td><td style="border:1px solid #ccc; padding:6px;">Al finalizar el banquete</td><td style="border:1px solid #ccc; padding:6px;">Padrino / Coordinadora</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resCatererTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Peluquería y Maquillaje</td><td style="border:1px solid #ccc; padding:6px;">Tras peinado en suite</td><td style="border:1px solid #ccc; padding:6px;">Dama de Honor</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resBeautyTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Equipo Foto y Vídeo</td><td style="border:1px solid #ccc; padding:6px;">Al finalizar cobertura</td><td style="border:1px solid #ccc; padding:6px;">Padrino</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resPhotoTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">DJ y Músicos</td><td style="border:1px solid #ccc; padding:6px;">Al cierre de barra libre</td><td style="border:1px solid #ccc; padding:6px;">Padrino</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resDjTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Wedding Planner</td><td style="border:1px solid #ccc; padding:6px;">Al cierre de la fiesta</td><td style="border:1px solid #ccc; padding:6px;">Madre de la Novia</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resPlannerTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Chóferes y Oficiante</td><td style="border:1px solid #ccc; padding:6px;">Al terminar el servicio</td><td style="border:1px solid #ccc; padding:6px;">Padrino</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resLogisticsTip.textContent}</td></tr>
+			<tr><td style="border:1px solid #ccc; padding:6px; font-weight:bold;">Montaje y Reparto Tarta</td><td style="border:1px solid #ccc; padding:6px;">Al terminar la entrega</td><td style="border:1px solid #ccc; padding:6px;">Coordinadora Finca</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${resDeliveryTip.textContent}</td></tr>
+			<tr style="background:#f2f2f2;"><td colspan="3" style="border:1px solid #ccc; padding:6px; font-weight:bold; font-size:13px;">Total Propinas Preparadas</td><td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold; font-size:13px; color:#b91c1c;">${resTotalGratuity.textContent}</td></tr>
+		`;
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Proveedor,Momento Entrega,Responsable,Importe\n";
+		csv += `"Catering y Camareros","Al finalizar el banquete","Padrino / Coordinadora","${resCatererTip.textContent}"\n`;
+		csv += `"Peluqueria y Maquillaje","Tras finalizar peinado","Dama de Honor","${resBeautyTip.textContent}"\n`;
+		csv += `"Foto y Video","Al finalizar cobertura","Padrino","${resPhotoTip.textContent}"\n`;
+		csv += `"DJ y Musicos","Al cierre de fiesta","Padrino","${resDjTip.textContent}"\n`;
+		csv += `"Wedding Planner","Al cierre de fiesta","Madre de la Novia","${resPlannerTip.textContent}"\n`;
+		csv += `"Choferes y Oficiante","Al terminar servicio","Padrino","${resLogisticsTip.textContent}"\n`;
+		csv += `"Montaje y Tarta","En la entrega matinal","Coordinadora Finca","${resDeliveryTip.textContent}"\n`;
+		csv += `"Total Propinas","--","--","${resTotalGratuity.textContent}"\n`;
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Propinas_Proveedores_Boda_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateTips();
+</script>

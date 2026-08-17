@@ -1,0 +1,752 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/de/wedding-loan-calculator/#webapp",
+      "name": "Hochzeitskredit- & Ratenrechner",
+      "url": "https://manage.wedding/de/wedding-loan-calculator",
+      "description": "Kostenloser Hochzeitskredit-Rechner: Berechnen Sie monatliche Raten, Gesamtzinsen und vollständige Tilgungspläne. Simulieren Sie Sondertilgungen und exportieren Sie nach Word, PDF oder Excel.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "inLanguage": "de",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Wie man einen Hochzeitskredit und monatliche Raten berechnet",
+      "description": "Schritt-für-Schritt-Anleitung zur Berechnung von Darlehensraten, Zinskosten und Tilgungszeiten für Hochzeitsfinanzierungen.",
+      "inLanguage": "de",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Finanzierungslücke ermitteln",
+          "text": "Berechnen Sie die Differenz zwischen den Gesamtkosten der Hochzeit und Ihren vorhandenen Ersparnissen, um nur den tatsächlich benötigten Betrag aufzunehmen."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Kreditsumme und effektiven Jahreszins eingeben",
+          "text": "Tragen Sie die gewünschte Darlehenssumme und den Zinssatz (typischerweise 5% bis 11% bei Ratenkrediten) ein."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Gewünschte Laufzeit wählen",
+          "text": "Wählen Sie eine Laufzeit zwischen 12 und 60 Monaten, um eine bezahlbare Monatsrate mit geringen Zinskosten zu kombinieren."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Sondertilgungen simulieren",
+          "text": "Simulieren Sie monatliche Zusatzzahlungen, um zu sehen, wie viel Zinsen Sie sparen und wie viele Monate früher Sie schuldenfrei sind."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Sollte man einen Kredit für die Hochzeit aufnehmen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Finanzexperten raten generell davon ab, hohe Konsumschulden für ein eintägiges Fest aufzunehmen. Ein kleiner, zinsgünstiger Ratenkredit mit überschaubarer Laufzeit (12–24 Monate) kann jedoch sinnvoll sein, um Anzahlungen für Location und Dienstleister vorzufinanzieren, die nach der Hochzeit durch Geldgeschenke abgelöst werden."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie hoch sind die Zinsen für einen Hochzeitskredit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ein Hochzeitskredit ist ein klassischer Ratenkredit zur freien Verwendung. Bei guter Bonität liegen die effektiven Jahreszinsen meist zwischen 5,5% und 8,5%. Bei mittlerer Bonität zwischen 9% und 13%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie wirken sich Sondertilgungen auf den Kredit aus?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bereits eine zusätzliche Tilgung von 50 € oder 100 € pro Monat senkt die Zinslast spürbar und verkürzt die Rückzahlungsdauer um mehrere Monate. Nahezu alle modernen Banken erlauben kostenlose Sondertilgungen."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Hochzeitskredit-Rechner (Monatsrate, Zinsen & Tilgungsplan) | Manage.Wedding"
+	description="Kostenloser Hochzeitskredit-Rechner: Berechnen Sie monatliche Raten, Gesamtzinsen und Tilgungspläne. Mit Sondertilgungs-Simulation und Word-, PDF- & CSV-Export."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Hochzeitskredit-Rechner" category="budget" />
+		
+		<!-- Hero & Header (Centered Headings) -->
+		<section class="section-paper" style="margin-bottom: 1.5rem; text-align: center;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15; text-align: center; margin-bottom: 0.75rem;">
+					Hochzeitskredit <span class="accent-italic">& Ratenrechner</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 680px; margin: 0 auto; text-align: center;">
+					Berechnen Sie Ihre Monatsrate, Gesamtzinskosten und den vollständigen Tilgungsplan. Simulieren Sie Sondertilgungen und exportieren Sie Ihren <strong>Tilgungsplan</strong> in <strong>Word (.doc)</strong>, <strong>PDF</strong> oder <strong>Excel (.csv)</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- 3-Step Visual Quick Guide Card -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.25rem; background: var(--bg-paper); border: 2px solid var(--fg-pencil);">
+			<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 0.75rem 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+				<span>📖</span> Kreditanalyse in 3 einfachen Schritten
+			</h2>
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-red); font-size: 1rem; margin-bottom: 0.25rem;">
+						1️⃣ Kreditsumme & Zins wählen
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Geben Sie den Darlehensbetrag und den effektiven Jahreszins (z. B. 6,5%) ein oder wählen Sie eine Schnell-Vorlage.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: var(--accent-blue); font-size: 1rem; margin-bottom: 0.25rem;">
+						2️⃣ Laufzeit & Sondertilgung anpassen
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Wählen Sie die Laufzeit (12–60 Monate) und testen Sie monatliche Zusatzzahlungen zur Zinsersparnis.
+					</p>
+				</div>
+
+				<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.85rem;">
+					<strong class="font-heading" style="display: block; color: #16a34a; font-size: 1rem; margin-bottom: 0.25rem;">
+						3️⃣ Tilgungsplan herunterladen
+					</strong>
+					<p class="font-body" style="font-size: 0.85rem; margin: 0; line-height: 1.4; color: var(--fg-pencil);">
+						Klicken Sie auf <strong>„📝 Export Word (.doc)“</strong> oder <strong>„📊 CSV“</strong> für Ihre persönliche Haushaltsplanung.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Workspace Grid: Inputs + Financial Summary -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="loan-calc-grid">
+			
+			<!-- Left Column: Loan Setup Form -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+							💳 Kreditparameter
+						</h2>
+						<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+							Monatliche Raten & Zinskosten berechnen
+						</span>
+					</div>
+
+					<!-- Currency Selector -->
+					<div style="display: flex; align-items: center; gap: 0.3rem;">
+						<span style="font-size: 0.85rem; font-weight: bold;">Währung:</span>
+						<select id="currency-select" style="padding: 0.25rem 0.5rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem;">
+							<option value="€" selected>€ (EUR)</option>
+							<option value="CHF">CHF (Schweiz)</option>
+							<option value="$">$ (USD)</option>
+							<option value="£">£ (GBP)</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Preset Loan Tiers -->
+				<div style="margin-bottom: 1.25rem; background: var(--bg-paper); border: 1.5px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-heading" style="display: block; font-size: 0.85rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						⚡ Typische Kreditsummen:
+					</span>
+					<div style="display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center;">
+						<button type="button" class="loan-preset-btn" data-amt="5000" data-apr="6.5" data-term="24">🪙 5.000 € (24 Mte • 6,5%)</button>
+						<button type="button" class="loan-preset-btn active-preset" data-amt="10000" data-apr="7.9" data-term="36">💎 10.000 € (36 Mte • 7,9%)</button>
+						<button type="button" class="loan-preset-btn" data-amt="20000" data-apr="8.5" data-term="48">👑 20.000 € (48 Mte • 8,5%)</button>
+						<button type="button" class="loan-preset-btn" data-amt="30000" data-apr="9.2" data-term="60">✨ 30.000 € (60 Mte • 9,2%)</button>
+					</div>
+				</div>
+
+				<form id="loan-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+					
+					<!-- 1. Principal Loan Amount -->
+					<div>
+						<label for="input-loan-amount" class="font-heading" style="display: block; font-size: 1rem; color: var(--accent-red); margin-bottom: 0.3rem;">
+							1. Gewünschter Kreditbetrag (€) *
+						</label>
+						<input type="number" id="input-loan-amount" value="10000" min="500" step="500" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1.1rem; font-weight: bold; background: #fff;">
+					</div>
+
+					<!-- 2. Interest Rate & Term -->
+					<div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.75rem;">
+						<div>
+							<label for="input-loan-apr" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Effektiver Jahreszins (%)
+							</label>
+							<input type="number" id="input-loan-apr" value="7.9" min="0.1" max="30" step="0.1" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.95rem; background: #fff; font-weight: bold;">
+						</div>
+
+						<div>
+							<label for="select-loan-term" class="font-heading" style="display: block; font-size: 0.9rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+								Laufzeit (Monate)
+							</label>
+							<select id="select-loan-term" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 0.9rem; background: #fff;">
+								<option value="12">12 Monate (1 Jahr)</option>
+								<option value="24">24 Monate (2 Jahre)</option>
+								<option value="36" selected>36 Monate (3 Jahre)</option>
+								<option value="48">48 Monate (4 Jahre)</option>
+								<option value="60">60 Monate (5 Jahre)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- 3. Extra Payments & Origination Fee -->
+					<div style="background: var(--bg-paper); border: 1.5px dashed var(--fg-pencil); border-radius: 4px; padding: 0.85rem; display: flex; flex-direction: column; gap: 0.75rem;">
+						<span class="font-heading" style="font-size: 0.95rem; color: #16a34a; display: block;">
+							2. Sondertilgung & Gebühren (Optional)
+						</span>
+						
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-extra-payment" style="font-size: 0.85rem; font-weight: bold; color: var(--fg-pencil);">
+									Monatliche Sondertilgung (€/Monat)
+								</label>
+								<span id="label-extra-payment" style="font-size: 0.9rem; font-weight: bold; color: #16a34a;">0 €</span>
+							</div>
+							<input type="range" id="input-extra-payment" min="0" max="500" value="0" step="25" style="width: 100%; accent-color: #16a34a;">
+						</div>
+
+						<div>
+							<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem;">
+								<label for="input-origination-pct" style="font-size: 0.85rem; font-weight: bold; color: var(--fg-pencil);">
+									Bearbeitungsgebühr (%)
+								</label>
+								<span id="label-origination-pct" style="font-size: 0.9rem; font-weight: bold; color: var(--text-secondary);">0%</span>
+							</div>
+							<input type="range" id="input-origination-pct" min="0" max="6" value="0" step="0.5" style="width: 100%; accent-color: var(--fg-pencil);">
+							<span style="font-size: 0.72rem; color: var(--text-secondary); display: block; margin-top: 2px;">In Deutschland & Österreich sind Kreditbearbeitungsgebühren gesetzlich unzulässig (0%).</span>
+						</div>
+					</div>
+
+				</form>
+			</div>
+
+			<!-- Right Column: Live Financial Results & Cost Breakdown -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Loan Total Card -->
+				<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+						<div style="width: 100%;">
+							<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0; text-align: center;">
+								💳 Kreditberechnung
+							</h3>
+							<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block; text-align: center;">
+								Monatsrate und Zinskosten im Detail
+							</span>
+						</div>
+
+						<!-- Exports Toolbar -->
+						<div style="display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; margin-top: 0.5rem;">
+							<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #eff6ff;">
+								📝 Export Word (.doc)
+							</button>
+							<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.35rem 0.75rem; font-size: 0.85rem; background: #fef2f2;">
+								🖨️ Export PDF / Drucken
+							</button>
+							<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+								📊 CSV
+							</button>
+						</div>
+					</div>
+
+					<!-- Key Monthly Payment Highlight -->
+					<div style="background: #eff6ff; border: 2.5px solid var(--accent-blue); border-radius: 6px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem;">
+						<span class="font-body" style="font-size: 0.9rem; color: var(--accent-blue); display: block; font-weight: bold;">Monatliche Kreditrate</span>
+						<strong id="res-monthly-payment" class="font-heading" style="font-size: 2.6rem; color: var(--accent-blue); display: block; line-height: 1.2;">312,91 €</strong>
+						<span id="res-term-note" style="font-size: 0.8rem; color: var(--accent-blue);">Über 36 Monate bei 7,9% eff. Jahreszins</span>
+					</div>
+
+					<!-- Line-Item Category Breakdown Table -->
+					<div style="margin-bottom: 1.5rem;">
+						<h4 class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); margin-bottom: 0.5rem; text-align: center;">
+							🧾 Kostenaufstellung
+						</h4>
+						<table style="width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 0.92rem;">
+							<tbody>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">Kreditbetrag (Nettodarlehen):</td>
+									<td id="res-principal-amount" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">10.000 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">Gesamte Zinskosten:</td>
+									<td id="res-interest-amount" style="padding: 0.35rem 0; text-align: right; font-weight: bold; color: var(--accent-red);">1.265 €</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e5e7eb;">
+									<td style="padding: 0.35rem 0;">Bearbeitungsgebühr:</td>
+									<td id="res-origination-fee" style="padding: 0.35rem 0; text-align: right; font-weight: bold;">0 €</td>
+								</tr>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #fafafa;">
+									<td style="padding: 0.35rem 0; font-weight: bold;">Gesamtrückzahlung (Bruttodarlehen):</td>
+									<td id="res-grand-total-paid" style="padding: 0.35rem 0; text-align: right; font-weight: bold; color: var(--fg-pencil);">11.265 €</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Visual Proportion Bar -->
+					<div>
+						<div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 0.3rem;">
+							<span style="color: var(--accent-blue);">Kreditsumme (<span id="bar-principal-pct">89%</span>)</span>
+							<span style="color: var(--accent-red);">Zinskosten (<span id="bar-interest-pct">11%</span>)</span>
+						</div>
+						<div style="display: flex; height: 18px; border: 1.5px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #eee;">
+							<div id="bar-principal" style="width: 89%; background: var(--accent-blue); transition: width 0.3s ease;"></div>
+							<div id="bar-interest" style="width: 11%; background: var(--accent-red); transition: width 0.3s ease;"></div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Extra Savings Callout Card -->
+				<div id="extra-savings-card" class="hand-card" style="display: none; padding: 1.25rem; background: #f0fdf4; border: 2px solid #16a34a;">
+					<strong class="font-heading" style="font-size: 1.1rem; color: #166534; display: block; margin-bottom: 0.4rem; text-align: center;">
+						🎉 Sondertilgungs-Effekt!
+					</strong>
+					<p id="extra-savings-text" class="font-body" style="font-size: 0.88rem; line-height: 1.5; margin: 0; color: #15803d; text-align: center;">
+						<!-- Dynamisch via JS -->
+					</p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; text-align: center;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Tilgungsplan Hochzeitskredit</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Exportiert am: <span id="print-date"></span> | Kreditsumme: <span id="print-principal"></span> | Monatsrate: <span id="print-monthly"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 15px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: center;">Monat</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Monatsrate</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Tilgung</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Zinsanteil</th>
+						<th style="border: 1px solid #ccc; padding: 5px; text-align: right;">Restschuld</th>
+					</tr>
+				</thead>
+				<tbody id="print-schedule-body"></tbody>
+			</table>
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 2.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Auf einen Blick</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Faustregeln zur Hochzeitsfinanzierung
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 750px; margin: 0 auto; font-weight: 500;">
+					Vergleich typischer Ratenkredite und Monatsbelastungen bei verschiedenen Laufzeiten.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					📐 Die 3-Goldenen-Regeln für Hochzeitskredite:
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					1. Maximale Monatsrate darf 15% des Nettoeinkommens nicht überschreiten • 2. Laufzeit idealerweise maximal 24 bis 36 Monate • 3. Auf kostenlose Sondertilgungsmöglichkeiten achten
+				</p>
+			</div>
+
+			<!-- Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 620px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Kreditsumme</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Laufzeit</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">Monatsrate (bei 7,5%)</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: right;">Gesamtzinsen</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Eignung</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">5.000 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">24 Monate</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">225 € / Monat</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">400 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Anzahlungen / Puffer</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">10.000 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">36 Monate</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">311 € / Monat</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">1.198 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Teilfinanzierung Feier</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">15.000 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">48 Monate</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right; font-weight: 600;">363 € / Monat</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: right;">2.408 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center;">Größere Budgetlücke</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- SEO Article & Comprehensive Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(28px, 4vw, 42px); color: var(--fg-pencil); margin-top: 0.5rem; text-align: center;">
+					Ratgeber: Kreditaufnahme für die Hochzeit sinnvoll planen
+				</h2>
+				<p class="font-body" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 750px; margin: 0.5rem auto 0; text-align: center;">
+					Wie Sie Zinskosten minimieren, Anzahlungen überbrücken und Schulden nach der Hochzeit schnell tilgen.
+				</p>
+			</div>
+
+			<!-- Section 1: Vorfinanzierung & Geldgeschenke -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 2rem; color: var(--fg-pencil); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem; text-align: center;">
+					1. Anzahlungen vorfinanzieren und mit Geldgeschenken ablösen
+				</h3>
+				<p class="font-body" style="line-height: 1.7; margin-bottom: 1.25rem;">
+					Locations verlangen oft 30% bis 50% Anzahlung bereits 6 bis 12 Monate vor dem Fest. Wenn Sie ein Darlehen als <strong>Liquiditätsbrücke</strong> nutzen, vereinbaren Sie mit Ihrer Bank die Option zur <strong>kostenfreien Gesamttilgung</strong>. So können Sie die Geldgeschenke nach der Feier direkt zur vollständigen Kredittilgung einsetzen.
+				</p>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/de/wedding-loan-calculator" category="budget" />
+
+	</main>
+</Layout>
+
+<style>
+	.loan-preset-btn {
+		background: #fff;
+		border: 1.5px solid var(--fg-pencil);
+		border-radius: 4px;
+		padding: 0.35rem 0.65rem;
+		font-family: var(--font-heading);
+		font-size: 0.85rem;
+		cursor: pointer;
+		transition: all 0.15s ease;
+	}
+	.loan-preset-btn:hover {
+		background: var(--muted-paper);
+	}
+	.loan-preset-btn.active-preset {
+		background: var(--accent-blue) !important;
+		color: #fff !important;
+		border-color: #1e40af !important;
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	let currencySymbol = '€';
+	let amortizationSchedule = [];
+
+	const loanAmountInput = document.getElementById('input-loan-amount');
+	const aprInput = document.getElementById('input-loan-apr');
+	const loanTermSelect = document.getElementById('select-loan-term');
+	const originationPctInput = document.getElementById('input-origination-pct');
+	const originationPctLabel = document.getElementById('label-origination-pct');
+	const extraPaymentInput = document.getElementById('input-extra-payment');
+	const extraPaymentLabel = document.getElementById('label-extra-payment');
+	const currencySelect = document.getElementById('currency-select');
+
+	// Result Elements
+	const resMonthlyPayment = document.getElementById('res-monthly-payment');
+	const resTermNote = document.getElementById('res-term-note');
+	const resPrincipalAmount = document.getElementById('res-principal-amount');
+	const resInterestAmount = document.getElementById('res-interest-amount');
+	const resOriginationFee = document.getElementById('res-origination-fee');
+	const resGrandTotalPaid = document.getElementById('res-grand-total-paid');
+
+	const barPrincipal = document.getElementById('bar-principal');
+	const barInterest = document.getElementById('bar-interest');
+	const barPrincipalPct = document.getElementById('bar-principal-pct');
+	const barInterestPct = document.getElementById('bar-interest-pct');
+
+	const extraSavingsCard = document.getElementById('extra-savings-card');
+	const extraSavingsText = document.getElementById('extra-savings-text');
+
+	function formatMoney(amount) {
+		const val = Math.round(amount).toLocaleString('de-DE');
+		if (currencySymbol === '€' || currencySymbol === 'CHF') {
+			return `${val} ${currencySymbol}`;
+		}
+		return `${currencySymbol}${val}`;
+	}
+
+	function calculateLoan() {
+		currencySymbol = currencySelect.value;
+		const P = parseFloat(loanAmountInput.value) || 0;
+		const annualRate = parseFloat(aprInput.value) || 0;
+		const n = parseInt(loanTermSelect.value) || 36;
+		const origPct = parseFloat(originationPctInput.value) || 0;
+		const extraPay = parseFloat(extraPaymentInput.value) || 0;
+
+		originationPctLabel.textContent = `${origPct}%`;
+		const originationFee = P * (origPct / 100);
+
+		extraPaymentLabel.textContent = formatMoney(extraPay);
+
+		let monthlyBase = 0;
+		const i = annualRate / 100 / 12;
+
+		if (P > 0 && n > 0) {
+			if (i > 0) {
+				monthlyBase = P * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+			} else {
+				monthlyBase = P / n;
+			}
+		}
+
+		// Calculate Amortization Schedule
+		amortizationSchedule = [];
+		let balance = P;
+		let totalInterestPaid = 0;
+		let totalPaid = 0;
+		let monthsElapsed = 0;
+
+		const standardTotalInterest = (monthlyBase * n) - P;
+
+		while (balance > 0.01 && monthsElapsed < 360) {
+			monthsElapsed++;
+			const monthlyInterest = balance * i;
+			let actualMonthlyPayment = monthlyBase + extraPay;
+
+			if (balance + monthlyInterest < actualMonthlyPayment) {
+				actualMonthlyPayment = balance + monthlyInterest;
+			}
+
+			const principalPortion = actualMonthlyPayment - monthlyInterest;
+			balance -= principalPortion;
+			if (balance < 0) balance = 0;
+
+			totalInterestPaid += monthlyInterest;
+			totalPaid += actualMonthlyPayment;
+
+			amortizationSchedule.push({
+				month: monthsElapsed,
+				payment: actualMonthlyPayment,
+				principal: principalPortion,
+				interest: monthlyInterest,
+				balance: balance
+			});
+		}
+
+		const grandTotal = totalPaid + originationFee;
+
+		// Update UI
+		resMonthlyPayment.textContent = formatMoney(monthlyBase + extraPay);
+		resTermNote.textContent = `Über ${monthsElapsed} Monate bei ${annualRate}% eff. Jahreszins`;
+		resPrincipalAmount.textContent = formatMoney(P);
+		resInterestAmount.textContent = formatMoney(totalInterestPaid);
+		resOriginationFee.textContent = formatMoney(originationFee);
+		resGrandTotalPaid.textContent = formatMoney(grandTotal);
+
+		// Proportions
+		if (grandTotal > 0) {
+			const pPct = Math.round((P / grandTotal) * 100);
+			const iPct = 100 - pPct;
+			barPrincipal.style.width = `${pPct}%`;
+			barInterest.style.width = `${iPct}%`;
+			barPrincipalPct.textContent = `${pPct}%`;
+			barInterestPct.textContent = `${iPct}%`;
+		}
+
+		// Extra payment alert
+		if (extraPay > 0 && monthsElapsed < n) {
+			const interestSaved = standardTotalInterest - totalInterestPaid;
+			const monthsSaved = n - monthsElapsed;
+			extraSavingsCard.style.display = 'block';
+			extraSavingsText.innerHTML = `
+				Durch monatlich <strong>+${formatMoney(extraPay)}</strong> Sondertilgung sparen Sie <strong>${formatMoney(interestSaved)} Zinsen</strong> und sind <strong>${monthsSaved} Monate früher schuldenfrei</strong>!
+			`;
+		} else {
+			extraSavingsCard.style.display = 'none';
+		}
+	}
+
+	// Listeners
+	[loanAmountInput, aprInput, originationPctInput, extraPaymentInput].forEach(el => {
+		el.addEventListener('input', calculateLoan);
+	});
+	[loanTermSelect, currencySelect].forEach(el => {
+		el.addEventListener('change', calculateLoan);
+	});
+
+	// Presets
+	document.querySelectorAll('.loan-preset-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			document.querySelectorAll('.loan-preset-btn').forEach(b => b.classList.remove('active-preset'));
+			btn.classList.add('active-preset');
+
+			loanAmountInput.value = btn.getAttribute('data-amt');
+			aprInput.value = btn.getAttribute('data-apr');
+			loanTermSelect.value = btn.getAttribute('data-term');
+			extraPaymentInput.value = 0;
+			originationPctInput.value = 0;
+
+			calculateLoan();
+		});
+	});
+
+	// 📝 Export Word (.doc)
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		let rows = '';
+		amortizationSchedule.forEach(row => {
+			rows += `
+				<tr>
+					<td style="border:1px solid #ccc; padding:6px; text-align:center;">Monat ${row.month}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right;">${formatMoney(row.payment)}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right;">${formatMoney(row.principal)}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right; color:#b91c1c;">${formatMoney(row.interest)}</td>
+					<td style="border:1px solid #ccc; padding:6px; text-align:right; font-weight:bold;">${formatMoney(row.balance)}</td>
+				</tr>
+			`;
+		});
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Hochzeitskredit Tilgungsplan</title>
+				<style>
+					body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
+					h1 { color: #2d2d2d; margin-bottom: 4px; }
+					p { color: #555; font-size: 14px; margin-bottom: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+					td { border: 1px solid #ccc; padding: 6px; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Offizieller Tilgungsplan Hochzeitskredit</h1>
+				<p>Erstellt am ${new Date().toLocaleDateString('de-DE')} | Kreditsumme: <strong>${resPrincipalAmount.textContent}</strong> | Eff. Jahreszins: <strong>${aprInput.value}%</strong> | Gesamtzinsen: <strong>${resInterestAmount.textContent}</strong></p>
+				
+				<h3>Monatlicher Tilgungs- und Ratenverlauf:</h3>
+				<table>
+					<thead>
+						<tr>
+							<th style="text-align:center;">Monat</th>
+							<th style="text-align:right;">Monatsrate</th>
+							<th style="text-align:right;">Tilgungsanteil</th>
+							<th style="text-align:right;">Zinsanteil</th>
+							<th style="text-align:right;">Restschuld</th>
+						</tr>
+					</thead>
+					<tbody>
+						${rows}
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Hochzeitskredit_Tilgungsplan_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// 🖨️ Export PDF / Print
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('de-DE');
+		document.getElementById('print-principal').textContent = resPrincipalAmount.textContent;
+		document.getElementById('print-monthly').textContent = resMonthlyPayment.textContent;
+
+		const tbody = document.getElementById('print-schedule-body');
+		tbody.innerHTML = '';
+
+		amortizationSchedule.forEach(row => {
+			const tr = document.createElement('tr');
+			tr.innerHTML = `
+				<td style="border:1px solid #ccc; padding:5px; text-align:center;">Monat ${row.month}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right;">${formatMoney(row.payment)}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right;">${formatMoney(row.principal)}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right; color:#b91c1c;">${formatMoney(row.interest)}</td>
+				<td style="border:1px solid #ccc; padding:5px; text-align:right; font-weight:bold;">${formatMoney(row.balance)}</td>
+			`;
+			tbody.appendChild(tr);
+		});
+
+		window.print();
+	});
+
+	// 📊 Export Excel (.csv)
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		let csv = "Monat,Monatsrate,Tilgungsanteil,Zinsanteil,Restschuld\n";
+		amortizationSchedule.forEach(row => {
+			csv += `Monat ${row.month},${row.payment.toFixed(2)},${row.principal.toFixed(2)},${row.interest.toFixed(2)},${row.balance.toFixed(2)}\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Hochzeitskredit_Tilgungsplan_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	// Initialize
+	calculateLoan();
+</script>

@@ -1,0 +1,467 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Calculadora de Horários de Cabelo e Maquiagem da Noiva",
+      "url": "https://manage.wedding/pt/hair-makeup-timeline-calculator",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calcule o horário exato para acordar e iniciar o penteado e maquiagem no dia do casamento, escala das madrinhas, número de maquiadores e margem para o vestido.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<Layout
+	title="Calculadora de Horários de Cabelo & Maquiagem da Noiva — Cronograma Dia da Noiva"
+	description="Calcule a hora de início do dia da noiva, escala de cadeiras para madrinhas e mães, profissionais necessários, margem para vestir e cronograma para impressão."
+	lang="pt"
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/pt/" style="color: var(--text-secondary); text-decoration: none;">Início</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/pt/budget" style="color: var(--text-secondary); text-decoration: none;">Orçamento</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Horários Dia da Noiva</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>💄</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Planejador Minuto a Minuto do Dia da Noiva</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Calculadora de Horários de Cabelo e Maquiagem
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Calcule a hora exata de <strong>início da produção da beleza</strong>, quantos cabeleireiros e maquiadores você precisa, a escala de cada madrinha e garanta 45 minutos de folga para vestir o vestido.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Inputs -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.25rem; color: var(--fg-pencil); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<span>👰</span> 1. Horário Limite & Pessoas a Produzir
+				</h2>
+
+				<!-- Target Ready Time -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<label for="input-target-ready-time" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+						Horário Limite (Chegada do Fotógrafo / Saída):
+					</label>
+					<div style="display: flex; gap: 0.75rem; align-items: center;">
+						<input type="time" id="input-target-ready-time" value="13:30" style="padding: 0.45rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700; font-size: 1rem;" />
+						<span style="font-size: 0.8rem; color: #64748b;">(Momento em que todas devem estar prontas e vestidas)</span>
+					</div>
+				</div>
+
+				<!-- Party Roster Matrix -->
+				<div style="margin-bottom: 1.25rem;">
+					<strong style="color: var(--fg-pencil); display: block; font-size: 0.9rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+						Pessoas em Produção
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+						<div>
+							<label for="input-bridesmaids-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Madrinhas (Penteado + Make):</label>
+							<input type="number" id="input-bridesmaids-count" min="0" max="15" value="5" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+						<div>
+							<label for="input-mothers-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Mães / Sogras / Avós:</label>
+							<input type="number" id="input-mothers-count" min="0" max="8" value="2" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="input-flower-girls-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Daminhas (Apenas cabelo):</label>
+							<input type="number" id="input-flower-girls-count" min="0" max="6" value="1" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+						<div>
+							<label for="input-hair-only-count" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155;">Convidadas (Apenas 1 serviço):</label>
+							<input type="number" id="input-hair-only-count" min="0" max="10" value="0" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-weight: 700;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Artist Team Staffing -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong style="color: var(--fg-pencil); display: block; font-size: 0.9rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+						Equipe de Beleza Contratada
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="select-hair-stylists" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Cabeleireiros(as):</label>
+							<select id="select-hair-stylists" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="1" selected>1 Cabeleireiro(a)</option>
+								<option value="2">2 Cabeleireiros(as) (Principal + Assistente)</option>
+								<option value="3">3 Cabeleireiros(as) (Equipe grande)</option>
+							</select>
+						</div>
+						<div>
+							<label for="select-makeup-artists" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Maquiadores(as):</label>
+							<select id="select-makeup-artists" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="1" selected>1 Maquiador(a)</option>
+								<option value="2">2 Maquiadores(as) (Principal + Assistente)</option>
+								<option value="3">3 Maquiadores(as) (Equipe grande)</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<!-- Buffer Margin Selector -->
+				<div class="form-group">
+					<label for="select-buffer-dress" style="display: block; font-weight: 700; font-size: 0.95rem; color: var(--fg-pencil); margin-bottom: 0.4rem;">
+						Margem para Vestir, Véu e Fotos de Robe:
+					</label>
+					<select id="select-buffer-dress" class="hand-input" style="width: 100%; padding: 0.5rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-size: 0.9rem; background: #fff;">
+						<option value="45" selected>⭐ Recomendado 45 Min (Vestido, joias, véu e brinde com madrinhas)</option>
+						<option value="30">⚡ Rápido 30 Min (Vestido fluido sem botões complicados)</option>
+						<option value="60">🛡️ Relaxado 60 Min (Vestido com corselete e amarração)</option>
+					</select>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Cronograma da Manhã</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Escala do Dia da Noiva
+						</h2>
+					</div>
+					<span id="badge-total-services" style="background: var(--post-it); border: 1.5px solid var(--fg-pencil); font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">16 Serviços</span>
+				</div>
+
+				<!-- Big Number Highlights -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Início da Produção</span>
+						<strong id="stat-start-time" style="font-size: 2rem; font-weight: 900; color: #b91c1c; line-height: 1.1;">07:15</strong>
+						<span id="stat-wakeup-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(Despertar ~06:30 para café da manhã)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Cadeira da Noiva</span>
+						<strong id="stat-bride-slot" style="font-size: 1.25rem; font-weight: 900; color: #1e40af; line-height: 1.2; display: block; margin-top: 4px;">10:45 – 12:45</strong>
+						<span style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">Penúltima posição (ideal)</span>
+					</div>
+				</div>
+
+				<!-- Summary Breakdown -->
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">💇 Serviços de Cabelo:</span>
+						<strong id="stat-hair-services-count" style="color: var(--fg-pencil);">9 penteados (6,0 h totais)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">💄 Serviços de Maquiagem:</span>
+						<strong id="stat-makeup-services-count" style="color: var(--fg-pencil);">8 maquiagens (5,5 h totais)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">👗 Janela para Vestir:</span>
+						<strong id="stat-dress-window" style="color: #15803d;">12:45 – 13:30 (45 min)</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
+						<span style="color: #475569;">👩‍🎨 Equilíbrio da Equipe:</span>
+						<strong id="stat-staffing-status" style="color: #1e40af;">Equipe Equilibrada</strong>
+					</div>
+				</div>
+
+				<!-- Staffing Recommendation Box -->
+				<div style="background: #fef08a; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.85rem;" id="box-staffing-warning">
+					<strong style="color: var(--fg-pencil); display: block; margin-bottom: 0.25rem;">💡 Dica para o Dia da Noiva:</strong>
+					<span id="stat-staffing-tip" style="color: #334155;">
+						Peça às madrinhas que venham com o cabelo 100% seco e limpo da noite anterior e vistam robes ou camisas de botão para não estragar o penteado ao vestir o vestido.
+					</span>
+				</div>
+
+				<!-- Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Imprimir PDF
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Exportar Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/pt/hair-makeup-timeline-calculator" category="budget" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-glam-container" class="print-page" style="padding: 10mm;">
+			<div style="border-bottom: 2pt solid #000; padding-bottom: 4mm; margin-bottom: 6mm;">
+				<h1 style="font-size: 20pt; margin: 0 0 3mm 0; color: #000;">Cronograma de Cabelo e Maquiagem — Dia da Noiva</h1>
+				<p id="print-glam-meta" style="font-size: 10.5pt; color: #333; margin: 0;">Plano de Produção de Beleza | Gerado por Manage.Wedding</p>
+			</div>
+			<div id="print-glam-tables">
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	const inputTargetReadyTime = document.getElementById('input-target-ready-time');
+	const inputBridesmaidsCount = document.getElementById('input-bridesmaids-count');
+	const inputMothersCount = document.getElementById('input-mothers-count');
+	const inputFlowerGirlsCount = document.getElementById('input-flower-girls-count');
+	const inputHairOnlyCount = document.getElementById('input-hair-only-count');
+	const selectHairStylists = document.getElementById('select-hair-stylists');
+	const selectMakeupArtists = document.getElementById('select-makeup-artists');
+	const selectBufferDress = document.getElementById('select-buffer-dress');
+
+	const badgeTotalServices = document.getElementById('badge-total-services');
+	const statStartTime = document.getElementById('stat-start-time');
+	const statWakeupSub = document.getElementById('stat-wakeup-sub');
+	const statBrideSlot = document.getElementById('stat-bride-slot');
+	const statHairServicesCount = document.getElementById('stat-hair-services-count');
+	const statMakeupServicesCount = document.getElementById('stat-makeup-services-count');
+	const statDressWindow = document.getElementById('stat-dress-window');
+	const statStaffingStatus = document.getElementById('stat-staffing-status');
+	const statStaffingTip = document.getElementById('stat-staffing-tip');
+
+	function formatTime(minutesSinceMidnight) {
+		let totalMins = Math.round(minutesSinceMidnight);
+		while (totalMins < 0) totalMins += 24 * 60;
+		while (totalMins >= 24 * 60) totalMins -= 24 * 60;
+
+		const h = Math.floor(totalMins / 60);
+		const m = totalMins % 60;
+		const displayH = h < 10 ? `0${h}` : h;
+		const displayM = m < 10 ? `0${m}` : m;
+		return `${displayH}:${displayM}`;
+	}
+
+	function calculateTimeline() {
+		const targetStr = inputTargetReadyTime.value || "13:30";
+		const [targetH, targetM] = targetStr.split(':').map(Number);
+		const targetMinutes = targetH * 60 + targetM;
+
+		const dressBuffer = parseInt(selectBufferDress.value, 10) || 45;
+		const glamFinishMinutes = targetMinutes - dressBuffer;
+
+		const bridesmaids = parseInt(inputBridesmaidsCount.value, 10) || 0;
+		const mothers = parseInt(inputMothersCount.value, 10) || 0;
+		const flowerGirls = parseInt(inputFlowerGirlsCount.value, 10) || 0;
+		const extraSingle = parseInt(inputHairOnlyCount.value, 10) || 0;
+
+		const totalHairMinutes = (60) + (bridesmaids * 40) + (mothers * 35) + (flowerGirls * 20) + (extraSingle * 35);
+		const totalMakeupMinutes = (60) + (bridesmaids * 40) + (mothers * 35);
+
+		const numHairStylists = parseInt(selectHairStylists.value, 10) || 1;
+		const numMakeupArtists = parseInt(selectMakeupArtists.value, 10) || 1;
+
+		const effectiveHairDuration = Math.ceil(totalHairMinutes / numHairStylists);
+		const effectiveMakeupDuration = Math.ceil(totalMakeupMinutes / numMakeupArtists);
+
+		const totalWorkingDuration = Math.max(effectiveHairDuration, effectiveMakeupDuration);
+
+		const startMinutes = glamFinishMinutes - totalWorkingDuration;
+		const wakeupMinutes = startMinutes - 45;
+
+		statStartTime.textContent = formatTime(startMinutes);
+		statWakeupSub.textContent = `(Despertar ~${formatTime(wakeupMinutes)} para café da manhã)`;
+
+		const brideEnd = glamFinishMinutes;
+		const brideStart = brideEnd - 100;
+		statBrideSlot.textContent = `${formatTime(brideStart)} – ${formatTime(brideEnd)}`;
+
+		const totalHairCount = 1 + bridesmaids + mothers + flowerGirls + extraSingle;
+		const totalMakeupCount = 1 + bridesmaids + mothers;
+		const totalServices = totalHairCount + totalMakeupCount;
+		badgeTotalServices.textContent = `${totalServices} Serviços no Total`;
+
+		statHairServicesCount.textContent = `${totalHairCount} penteados (${(totalHairMinutes/60).toFixed(1)} h totais)`;
+		statMakeupServicesCount.textContent = `${totalMakeupCount} maquiagens (${(totalMakeupMinutes/60).toFixed(1)} h totais)`;
+		statDressWindow.textContent = `${formatTime(glamFinishMinutes)} – ${formatTime(targetMinutes)} (${dressBuffer} min)`;
+
+		if (totalWorkingDuration > 300) {
+			statStaffingStatus.textContent = '⚠️ Produção muito longa (+1 profissional)';
+			statStaffingStatus.style.color = '#dc2626';
+			statStaffingTip.innerHTML = `⚠️ Com <strong>${totalServices} serviços</strong> e 1 profissional por área, o início é às <strong>${formatTime(startMinutes)}</strong>. Contratar uma assistente reduz 2 horas da manhã.`;
+		} else {
+			statStaffingStatus.textContent = '✅ Equipe Equilibrada';
+			statStaffingStatus.style.color = '#15803d';
+			statStaffingTip.innerHTML = `O cronograma proporciona uma manhã sem estresse começando às <strong>${formatTime(startMinutes)}</strong> com ${dressBuffer} min de folga para vestir o vestido.`;
+		}
+
+		document.getElementById('print-glam-tables').innerHTML = `
+			<table style="width:100%; border-collapse:collapse; font-size:10pt; text-align:left; margin-top:10px;">
+				<thead>
+					<tr style="background:#e2e8f0; border-bottom:2pt solid #000;">
+						<th style="padding:6pt;">Horário</th>
+						<th style="padding:6pt;">Serviço & Pessoa</th>
+						<th style="padding:6pt;">Instruções Importantes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1pt solid #cbd5e1; background:#fdf2f8;">
+						<td style="padding:6pt; font-weight:bold;">${formatTime(startMinutes)}</td>
+						<td style="padding:6pt; font-weight:bold; color:#b91c1c;">Chegada & Montagem dos Profissionais</td>
+						<td style="padding:6pt;">Montar cadeiras próximas à luz natural, tomadas liberadas e bancadas limpas.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">${formatTime(startMinutes + 15)} – ${formatTime(startMinutes + 90)}</td>
+						<td style="padding:6pt;">Turno 1: Madrinhas / Mães</td>
+						<td style="padding:6pt;">Cabelo lavado e seco da noite anterior, pele hidratada, camisa de botão ou robe.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1;">
+						<td style="padding:6pt; font-weight:bold;">${formatTime(startMinutes + 90)} – ${formatTime(brideStart)}</td>
+						<td style="padding:6pt;">Turno 2: Demais Madrinhas</td>
+						<td style="padding:6pt;">Mães prontas para ajudar a noiva a se vestir mais tarde.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1; background:#eff6ff;">
+						<td style="padding:6pt; font-weight:bold; color:#1e40af;">${formatTime(brideStart)} – ${formatTime(brideEnd)}</td>
+						<td style="padding:6pt; font-weight:bold; color:#1e40af;">👰 NOIVA: Cabelo & Maquiagem</td>
+						<td style="padding:6pt;">Cadeira exclusiva da noiva. Penúltima posição para garantir máxima durabilidade.</td>
+					</tr>
+					<tr style="border-bottom:1pt solid #cbd5e1; background:#f0fdf4;">
+						<td style="padding:6pt; font-weight:bold; color:#15803d;">${formatTime(glamFinishMinutes)} – ${formatTime(targetMinutes)}</td>
+						<td style="padding:6pt; font-weight:bold; color:#15803d;">Vestir o Vestido, Véu & Retoques</td>
+						<td style="padding:6pt;">${dressBuffer} minutos de calma para fechar vestido, joias, perfume, véu e fotos de robe.</td>
+					</tr>
+					<tr style="background:#f8fafc; font-weight:bold;">
+						<td style="padding:8pt; font-size:11pt; color:#1e40af;">${formatTime(targetMinutes)}</td>
+						<td style="padding:8pt; font-size:11pt; color:#1e40af;">100% PRONTAS E VESTIDAS</td>
+						<td style="padding:8pt;">Chegada do fotógrafo / Saída para a cerimônia.</td>
+					</tr>
+				</tbody>
+			</table>
+		`;
+	}
+
+	[inputTargetReadyTime, inputBridesmaidsCount, inputMothersCount, inputFlowerGirlsCount, inputHairOnlyCount, selectHairStylists, selectMakeupArtists, selectBufferDress].forEach(el => {
+		el.addEventListener('input', calculateTimeline);
+		el.addEventListener('change', calculateTimeline);
+	});
+
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		calculateTimeline();
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateTimeline();
+		const startTime = statStartTime.textContent;
+		const brideSlot = statBrideSlot.textContent;
+		const dressWindow = statDressWindow.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Cronograma Dia da Noiva</title>
+			<style>body{font-family:Arial,sans-serif;line-height:1.4;} table{border-collapse:collapse;width:100%;} th,td{padding:6pt;border:1pt solid #ccc;text-align:left;}</style>
+			</head>
+			<body>
+				<h1>Cronograma de Cabelo e Maquiagem do Dia da Noiva</h1>
+				<p><strong>Início da Produção:</strong> ${startTime} | <strong>Cadeira da Noiva:</strong> ${brideSlot} | <strong>Janela para Vestir:</strong> ${dressWindow}</p>
+				<hr/>
+				<h2>Regras para as Madrinhas</h2>
+				<p>• Cabelo lavado e 100% seco da noite anterior.</p>
+				<p>• Rosto limpo e hidratado sem protetor solar oleoso.</p>
+				<p>• Usar camisa com botões ou robe.</p>
+				<hr/>
+				<p><em>Gerado por Manage.Wedding</em></p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Cronograma-Dia-da-Noiva-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	calculateTimeline();
+</script>

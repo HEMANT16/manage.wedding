@@ -1,0 +1,316 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Calculadoras de Orçamento de Casamento & Finanças (Gratuito e Privado) | Manage.Wedding";
+const description = "Calculadoras gratuitas de orçamento de casamento: distribuição de custos, taxas ocultas da quinta/espaço, divisão entre famílias, gorjetas e despedida de solteira.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://manage.wedding/pt/budget/#collection",
+      "name": "Calculadoras de Orçamento & Finanças de Casamento",
+      "url": "https://manage.wedding/pt/budget",
+      "inLanguage": "pt",
+      "description": "Conjunto completo de ferramentas de orçamento de casamento, custos reais de quintas e espaços, divisão de despesas entre famílias e estimativa de gratificações.",
+      "hasPart": [
+        { "@type": "WebApplication", "name": "Calculadora de Orçamento Geral", "url": "https://manage.wedding/pt/master-budget-calculator" },
+        { "@type": "WebApplication", "name": "Custos da Quinta e Taxas Ocultas", "url": "https://manage.wedding/pt/wedding-venue-cost-calculator" },
+        { "@type": "WebApplication", "name": "Quem Paga o Quê no Casamento?", "url": "https://manage.wedding/pt/who-pays-for-what-wedding" },
+        { "@type": "WebApplication", "name": "Orçamento da Despedida de Solteira", "url": "https://manage.wedding/pt/bachelorette-budget-calculator" },
+        { "@type": "WebApplication", "name": "Orçamento da Lua de Mel", "url": "https://manage.wedding/pt/honeymoon-budget-estimator" },
+        { "@type": "WebApplication", "name": "Simulador de Empréstimo Casamento", "url": "https://manage.wedding/pt/wedding-loan-calculator" },
+        { "@type": "WebApplication", "name": "Mudança de Apelido / Nome após Casamento e Custos", "url": "https://manage.wedding/pt/wedding-name-change-calculator" },
+        { "@type": "WebApplication", "name": "Presente em Dinheiro dos Convidados", "url": "https://manage.wedding/pt/gift-cash-calculator" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "pt",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qual é a fórmula padrão para a distribuição do orçamento de casamento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A distribuição média recomendada pela indústria é: 45-50% para a Receção e Banquete (Espaço, Comida, Bebidas e Open Bar), 12-15% para Fotografia e Vídeo, 8-10% para Vestuário e Beleza, 8-10% para Música e Animação, 8-10% para Flores e Decoração, 3-5% para Papelaria e Lembranças, e 5% para um Fundo de Reserva de Emergência."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quais são as despesas e taxas ocultas mais comuns nas quintas e espaços?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "As despesas imprevistas mais frequentes incluem taxas de exclusividade ou prolongamento de horário (após as 02h/04h), taxa de rolha (se levar vinhos próprios), taxa de corte de bolo externo, IVA não incluído nos valores iniciais e consumos mínimos de convidados."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quanto dinheiro deve um convidado oferecer de presente de casamento?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Como regra geral de etiqueta, o valor deve no mínimo cobrir o custo estimado do prato por pessoa (entre 80 € a 150 € ou R$ 250 a R$ 600 por convidado), aumentando consoante a proximidade familiar (padrinhos e familiares próximos costumam oferecer valores superiores)."
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const budgetTools = [
+  {
+    title: "Orçamento de Despedida de Solteiro",
+    url: "/pt/bachelor-party-budget-calculator",
+    icon: "🍻",
+    badge: "Cobrir o Noivo",
+    desc: "Calcule os custos de viagem, alojamento, festas e refeições entre amigos cobrindo a parte do noivo igualmente.",
+    tags: ["Divisão N-1", "Texto MBWay / Pix", "Fim de Semana"]
+  },
+
+  {
+    title: "Calculadora de Orçamento Geral",
+    url: "/pt/master-budget-calculator",
+    icon: "💰",
+    badge: "Regra 50/15/10",
+    desc: "Insira o valor total do seu orçamento para obter uma distribuição automática por quinta, catering, foto, flores e fundo de reserva.",
+    tags: ["Percentagens Reais", "Fundo de Reserva", "Controlo de Custos"]
+  },
+  {
+    title: "Custos da Quinta e Espaço",
+    url: "/pt/wedding-venue-cost-calculator",
+    icon: "🏰",
+    badge: "Análise de Contrato",
+    desc: "Calcule o custo real da quinta além do aluguer base: consumos mínimos de catering, horas extras na madrugada e taxas de serviço.",
+    tags: ["Consumo Mínimo", "Horas Extra", "Taxa de Rolha"]
+  },
+  {
+    title: "Quem Paga o Quê no Casamento?",
+    url: "/pt/who-pays-for-what-wedding",
+    icon: "👥",
+    badge: "Tradição vs. Moderno",
+    desc: "Compare a etiqueta tradicional com as divisões modernas entre os noivos e as famílias para mais de 20 categorias de despesas.",
+    tags: ["Divisão Justa", "Famílias", "Acordo PDF"]
+  },
+  {
+    title: "Orçamento da Despedida de Solteira",
+    url: "/pt/bachelorette-budget-calculator",
+    icon: "🍸",
+    badge: "Divisão por Amigas",
+    desc: "Divida alojamento, jantares e atividades entre as amigas cobrindo integralmente a parte da noiva sem mal-entendidos.",
+    tags: ["Divisão N-1", "Mensagens Prontas", "Atividades"]
+  },
+  {
+    title: "Guia de Gratificações aos Fornecedores",
+    url: "/pt/vendor-tipping-calculator",
+    icon: "💵",
+    badge: "Boas Práticas",
+    desc: "Elimine dúvidas no grande dia: valores habituais de gorjeta para a equipa de catering, fotógrafo, DJ e motorista com envelopes.",
+    tags: ["Envelopes", "Regras de Etiqueta", "Checklist do Dia"]
+  },
+  {
+    title: "Orçamento da Lua de Mel",
+    url: "/pt/honeymoon-budget-estimator",
+    icon: "✈️",
+    badge: "Plano de Viagem",
+    desc: "Estime os custos totais da viagem de sonho: voos, resorts, jantares românticos, passeios e margem para imprevistos.",
+    tags: ["Hotéis & Resorts", "Despesas Diárias", "Bagagem"]
+  },
+  {
+    title: "Simulador de Empréstimo Casamento",
+    url: "/pt/wedding-loan-calculator",
+    icon: "🏦",
+    badge: "Cálculo de Juros",
+    desc: "Calcule mensalidades exatas, juros totais e plano de amortização caso recorra a financiamento bancário para a cerimónia.",
+    tags: ["Taxa de Juro", "Prestação Mensal", "Custo Total"]
+  },
+  {
+    title: "Mudança de Apelidos & Trâmites",
+    url: "/pt/wedding-name-change-calculator",
+    icon: "✍️",
+    badge: "Taxas & Trâmites",
+    desc: "Calcule taxas de Cartão de Cidadão, Passaporte e IMT, e organize os seus documentos e licença de casamento no tempo certo.",
+    tags: ["Cartão Cidadão", "Passaporte PEP", "Licença 15 Dias"]
+  },
+  {
+    title: "Presente em Dinheiro dos Convidados",
+    url: "/pt/gift-cash-calculator",
+    icon: "🎁",
+    badge: "Para Convidados",
+    desc: "Dúvidas sobre quanto oferecer aos noivos? Calcule a quantia adequada consoante o grau de parentesco, deslocação e acompanhante.",
+    tags: ["Etiqueta", "Cobrir o Prato", "Presente em Envelope"]
+  }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+    
+    <!-- Hero Header -->
+    <header class="fade-in category-header" style="text-align: center; margin-bottom: 3rem; position: relative;">
+      <div class="tape" style="margin: 0 auto 1rem;"></div>
+      <span class="badge-postit">Centro Financeiro do Casamento</span>
+      <h1 class="font-heading" style="font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+        Calculadoras de <span class="accent-italic">Orçamento & Finanças</span>
+      </h1>
+      <p class="font-body" style="color: var(--text-secondary); max-width: 780px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+        Assuma o controlo total do orçamento do casamento. Calculadoras 100% gratuitas e privadas para distribuir custos, identificar taxas ocultas e dividir despesas com justiça.
+      </p>
+    </header>
+
+    <!-- Category Nav Bar -->
+    <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem;">
+      <span style="font-size: 0.9rem; font-weight: 700; color: #64748b; align-self: center;">Categorias:</span>
+      <a href="/pt/budget" class="tool-tag" style="background: var(--post-it); font-weight: 700; text-decoration: none; padding: 6px 14px; border: 2px solid var(--fg-pencil);">💰 Orçamento (Ativo)</a>
+      <a href="/pt/dining" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">🍾 Banquete & Bar</a>
+      <a href="/pt/guests" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">👥 Convidados & Logística</a>
+      <a href="/pt/stationery" class="tool-tag" style="text-decoration: none; padding: 6px 14px; background: #fff; border: 1.5px solid var(--fg-pencil);">💌 Papelaria & Lembranças</a>
+    </div>
+
+    <!-- Tools Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem; margin-bottom: 4rem;">
+      {budgetTools.map(tool => (
+        <div class="hand-card" style="padding: 1.75rem; background: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span style="font-size: 2.2rem;">{tool.icon}</span>
+              <span style="font-size: 0.78rem; font-weight: 700; background: var(--post-it); border: 1px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+                {tool.badge}
+              </span>
+            </div>
+            
+            <h2 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+              {tool.title}
+            </h2>
+            
+            <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 0.75rem;">
+              {tool.tags.map(t => (
+                <span class="tool-tag" style="font-size: 0.75rem; padding: 2px 6px;">{t}</span>
+              ))}
+            </div>
+
+            <p class="font-body" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.5rem;">
+              {tool.desc}
+            </p>
+          </div>
+
+          <a href={tool.url} class="hand-btn" style="width: 100%; text-align: center; padding: 10px; font-size: 1rem;">
+            Abrir Calculadora →
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- In-Depth Budgeting Guide -->
+    <article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+      <div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+        <span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">Guia Financeiro</span>
+        <h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+          Como Planear e Controlar o Orçamento de Casamento
+        </h2>
+        <p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+          Regras práticas para evitar despesas inesperadas, gerir o dinheiro sem dívidas e contratar os melhores fornecedores.
+        </p>
+      </div>
+
+      <section style="margin-bottom: 3rem;">
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+          1. A Regra 50/15/10/10/10/5 da Indústria de Casamentos
+        </h3>
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+          Em vez de tentar adivinhar quanto gastar em cada rubrica, utilize as percentagens de referência comprovadas em milhares de casamentos:
+        </p>
+        
+        <div style="overflow-x: auto; margin-top: 1rem; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+            <thead>
+              <tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Categoria</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Percentagem</th>
+                <th style="padding: 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">O que Inclui</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Quinta, Banquete & Bebidas</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-red); font-weight: 700;">45% – 50%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Aluguer do espaço, buffet/prato servido, open bar, ceia e serviço.</td>
+              </tr>
+              <tr style="background: #faf8f5;">
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Fotografia & Vídeo</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">12% – 15%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Fotógrafo principal, segundo fotógrafo, drone, vídeo e sessão de solteiros.</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Vestuário & Beleza</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">8% – 10%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Vestido de noiva, fato do noivo, véu, arranjos de costura e maquilhagem.</td>
+              </tr>
+              <tr style="background: #faf8f5;">
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Música & Animação</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">8% – 10%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Música da cerimónia, banda ao vivo no cocktail, DJ para a festa e luzes.</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Flores & Decoração</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">8% – 10%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Bouquet de noiva, centros de mesa, arco floral da cerimónia e lapelas.</td>
+              </tr>
+              <tr style="background: #faf8f5;">
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 700;">Fundo de Reserva de Emergência</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); color: var(--accent-blue); font-weight: 700;">5%</td>
+                <td style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil);">Imprevistos meteorológicos (tendas), refeições de fornecedores e extras.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section style="margin-bottom: 3rem;">
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+          2. Atenção aos Custos Ocultos dos Contratos
+        </h3>
+        <p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+          Ao comparar propostas de quintas ou hotéis, confirme se o valor inclui IVA e se existem consumos mínimos de convidados nos sábados de época alta (junho a setembro). Verifique também o custo por hora após o horário padrão de encerramento da música.
+        </p>
+      </section>
+
+      <!-- FAQ Section -->
+      <section>
+        <h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.25rem; text-align: center;">
+          Perguntas Frequentes sobre Orçamento
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              Qual é a fórmula padrão para a distribuição do orçamento de casamento?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              A distribuição média recomendada pela indústria é: 45-50% para a Receção e Banquete (Espaço, Comida, Bebidas e Open Bar), 12-15% para Fotografia e Vídeo, 8-10% para Vestuário e Beleza, 8-10% para Música e Animação, 8-10% para Flores e Decoração, 3-5% para Papelaria e Lembranças, e 5% para um Fundo de Reserva de Emergência.
+            </p>
+          </details>
+
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              Quais são as despesas e taxas ocultas mais comuns nas quintas e espaços?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              As despesas imprevistas mais frequentes incluem taxas de exclusividade ou prolongamento de horário (após as 02h/04h), taxa de rolha (se levar vinhos próprios), taxa de corte de bolo externo, IVA não incluído nos valores iniciais e consumos mínimos de convidados.
+            </p>
+          </details>
+
+          <details style="cursor: pointer; padding: 1rem 1.25rem; border: 1.5px solid var(--fg-pencil); border-radius: 6px; background: #fff;">
+            <summary class="font-heading" style="font-size: 1.1rem; color: var(--fg-pencil); outline: none;">
+              Quanto dinheiro deve um convidado oferecer de presente de casamento?
+            </summary>
+            <p class="font-body" style="margin-top: 0.5rem; margin-bottom: 0; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+              Como regra geral de etiqueta, o valor deve no mínimo cobrir o custo estimado do prato por pessoa (entre 80 € a 150 € ou R$ 250 a R$ 600 por convidado), aumentando consoante a proximidade familiar (padrinhos e familiares próximos costumam oferecer valores superiores).
+            </p>
+          </details>
+        </div>
+      </section>
+
+    </article>
+
+  </main>
+</Layout>

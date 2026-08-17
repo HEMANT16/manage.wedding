@@ -1,0 +1,643 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/wedding-venue-cost-calculator/#webapp",
+      "name": "Calculateur du Coût Réel du Lieu de Réception de Mariage",
+      "url": "https://manage.wedding/fr/wedding-venue-cost-calculator",
+      "description": "Calculez le coût réel d'un lieu de mariage. Intègre la location de base du domaine, le traiteur, les frais de service, la TVA, le ménage, la sécurité et le droit de bouchon.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Calculer le Coût Réel d'un Domaine ou Château de Mariage",
+      "description": "Formule étape par étape pour chiffrer l'ensemble des dépenses d'un lieu de réception au-delà du tarif d'affichage.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Partir du Tarif de Location Nu",
+          "text": "Indiquez le tarif de privatisation des espaces de réception et du parc pour le week-end ou la soirée."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Ajouter le Minimum Traiteur et Boissons",
+          "text": "Vérifiez si le lieu impose son propre traiteur ou un montant minimum de consommation par couvert."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Intégrer les Frais de Service et la TVA",
+          "text": "Appliquez les frais de personnel pour le service et la vaisselle ainsi que les taux de TVA applicables."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Chiffrer les Suppléments Obligatoires",
+          "text": "Ajoutez le forfait ménage, la sécurité nocturne, les heures supplémentaires au-delà de 4h du matin et le droit de bouchon."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Une grange ou domaine brut est-il moins cher qu'un forfait hôtel clé en main ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pas toujours. Si le tarif de location d'une grange brute paraît attractif (ex. 3 500 € à 5 000 €), il faut souvent ajouter la location de tables et chaises, l'office traiteur, un groupe électrogène d'appoint et des sanitaires mobiles haut de gamme, ce qui peut dépasser le coût d'une salle équipée."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quels sont les frais annexes fréquemment facturés par les domaines de mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Les suppléments courants comprennent : le forfait ménage de fin de séjour (300 € à 600 €), l'officiant ou l'espace cérémonie laïque (300 € à 1 000 €), le droit de bouchon (3 € à 8 € par bouteille), les heures supplémentaires de soirée (150 € à 350 €/h) et la caution de garantie."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "À quelle heure la musique doit-elle s'arrêter dans un domaine ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "En France, les arrêtés préfectoraux et règlements intérieurs fixent généralement la fin de la musique amplifiée en extérieur à 22h, et en salle insonorisée entre 3h et 5h du matin. Vérifiez toujours si un limiteur acoustique de décibels est installé."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculateur du Coût Réel du Lieu de Réception (Devis & Frais Cachés) | Manage.Wedding"
+	description="Calculez le coût réel d'un domaine ou château de mariage. Intègre la privatisation, le traiteur, le service, le forfait ménage, la sécurité et le droit de bouchon."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem);">
+		<Breadcrumb title="Coût Réel du Lieu de Réception" category="budget-finance" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Évitez 2 000 € à 8 000 € de Surcoûts</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Calculateur du Coût Réel du <span class="accent-italic">Lieu de Réception</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Un devis de salle affiché à 4 500 € atteint souvent 18 000 € à 25 000 € une fois intégrés le traiteur, le service, le ménage, la sécurité et le droit de bouchon. Calculez votre vrai coût global avant de signer le contrat !
+			</p>
+		</header>
+
+		<!-- Main Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Controls & Line-Item Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.5rem; margin: 0; color: var(--fg-pencil);">
+						Paramètres du Contrat de Location
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Moteur Tout Compris
+					</span>
+				</div>
+
+				<!-- Venue Archetype Presets -->
+				<div class="form-group">
+					<label class="form-label" for="venue-preset">Type de Lieu / Profil de Contrat</label>
+					<select id="venue-preset" class="form-input" style="cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="chateau" selected>🏰 Château / Domaine Historique (4 500 € Base + Cérémonie + Traiteur Libre)</option>
+						<option value="hotel">🏨 Forfait Clé en Main / Hôtel-Restaurant (1 500 € Salle + Forfait Couverts & Vins)</option>
+						<option value="barn">🌾 Grange Rénovée / Corps de Ferme (3 500 € Base + Mobilier + Sanitaires/Puissance)</option>
+						<option value="winery">🍇 Domaine Viticole / Mas Provençal (5 000 € Base + Vins Obligatoires + Navette)</option>
+						<option value="custom">✏️ Saisie Personnalisée</option>
+					</select>
+				</div>
+
+				<!-- Base Rental Fee & Ceremony Fee -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="base-rental">Location Nue de la Salle (€)</label>
+						<input type="number" id="base-rental" class="form-input" value="4500" min="0" step="250" />
+					</div>
+					<div>
+						<label class="form-label" for="ceremony-fee">Espace Cérémonie Laïque (€)</label>
+						<input type="number" id="ceremony-fee" class="form-input" value="600" min="0" step="100" />
+					</div>
+				</div>
+
+				<!-- Guest Count & F&B Minimum -->
+				<div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="guest-count">Nombre d'Invités</label>
+						<input type="number" id="guest-count" class="form-input" value="100" min="10" max="600" />
+					</div>
+					<div>
+						<label class="form-label" for="fb-spend">Dépense Traiteur & Boissons (€)</label>
+						<input type="number" id="fb-spend" class="form-input" value="9500" min="0" step="500" />
+					</div>
+				</div>
+
+				<!-- Service & Tax Rates -->
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+					<div>
+						<label class="form-label" for="service-charge-rate">Service & Maîtres d'Hôtel (%)</label>
+						<input type="number" id="service-charge-rate" class="form-input" value="12" min="0" max="30" step="1" />
+					</div>
+					<div>
+						<label class="form-label" for="tax-rate">TVA Moyenne Applicable (%)</label>
+						<input type="number" id="tax-rate" class="form-input" value="10" min="0" max="25" step="0.5" />
+					</div>
+				</div>
+
+				<!-- Hidden Facility Surcharges -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Frais Obligatoires du Domaine (€)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="cleaning-fee" style="font-size: 0.9rem;">Forfait Ménage / Remise en État</label>
+							<input type="number" id="cleaning-fee" class="form-input" value="450" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="security-fee" style="font-size: 0.9rem;">Agent de Sécurité / Gardiennage</label>
+							<input type="number" id="security-fee" class="form-input" value="350" min="0" step="50" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="insurance-fee" style="font-size: 0.9rem;">Assurance Responsabilité Civile</label>
+							<input type="number" id="insurance-fee" class="form-input" value="120" min="0" step="25" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="overtime-fee" style="font-size: 0.9rem;">Heures Supplémentaires Soirée</label>
+							<input type="number" id="overtime-fee" class="form-input" value="400" min="0" step="100" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Vendor Friction Add-ons -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Suppléments Logistiques & Droit de Bouchon (€)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="cake-cutting-rate" style="font-size: 0.9rem;">Découpe Gâteau / Bouchon (€/pers)</label>
+							<input type="number" id="cake-cutting-rate" class="form-input" value="2.50" min="0" step="0.50" style="font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="infrastructure-fee" style="font-size: 0.9rem;">Sanitaires Mobiles / Énergie</label>
+							<input type="number" id="infrastructure-fee" class="form-input" value="0" min="0" step="200" style="font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Real Total & Price Shock Breakdown -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- True Cost Summary Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Coût Réel Global Décaissé
+						</span>
+						<span id="markup-multiplier-tag" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							3.9× Tarif Affiché
+						</span>
+					</div>
+
+					<div id="display-real-total" class="font-heading" style="font-size: clamp(2.4rem, 5vw, 3.6rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.5rem;">
+						17 760 €
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						La location de base annoncée était de <strong id="display-quoted-base" style="color: var(--fg-pencil);">4 500 €</strong>. Coût réel par convive : <strong id="display-per-guest" style="color: var(--fg-pencil);">178 € / personne</strong>.
+					</p>
+
+					<!-- Itemized Cost Breakdown Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Location Salle + Espace Cérémonie :</span>
+							<strong id="item-base-total">5 100 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Poste Traiteur & Boissons :</span>
+							<strong id="item-fb-spend">9 500 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem; color: var(--accent-red);">
+							<span>Frais de Service & Personnel (12%) :</span>
+							<strong id="item-service-charge">1 140 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem; color: var(--accent-blue);">
+							<span>TVA Applicable (10%) :</span>
+							<strong id="item-sales-tax">1 064 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.95rem;">
+							<span>Frais de Domaine (Ménage, Sécurité, Assurance) :</span>
+							<strong id="item-facility-total">1 320 €</strong>
+						</div>
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; font-size: 0.95rem;">
+							<span>Droit de Bouchon / Suppléments :</span>
+							<strong id="item-addons-total">250 €</strong>
+						</div>
+					</div>
+
+					<!-- Export Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-audit" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Imprimer Audit (PDF)
+						</button>
+						<button id="btn-export-word" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Export Fiche Word
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Contract Warning Callout Box -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						🚨 3 Clauses Clés à Vérifier Avant de Signer le Contrat :
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Limiteur Sonore & Heure Limite :</strong> Vérifiez si la musique doit être coupée à 3h ou 4h du matin et le coût horaire de dépassement (150 € à 300 €/h).</li>
+						<li><strong>Exclusivité du Traiteur :</strong> Si vous choisissez un traiteur extérieur non référencé, certains domaines imposent un droit d'entrée de 800 € à 2 000 €.</li>
+						<li><strong>Conditions de Restitution de la Caution :</strong> Précisez les exigences exactes du nettoyage (évacuation des poubelles, décollement des confettis).</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Repères Rapides</span>
+				<h2 class="font-heading" style="font-size: clamp(1.5rem, 3.5vw, 2.2rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Grille Comparative : Tarif Affiché vs Coût Réel Décaissé
+				</h2>
+				<p class="font-body" style="font-size: 1.02rem; color: var(--fg-pencil); max-width: 780px; margin: 0 auto; font-weight: 500;">
+					Voici la formule de calcul et la comparaison des budgets réels selon les types de lieux en France.
+				</p>
+			</div>
+
+			<!-- Formula Callout -->
+			<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<strong class="font-heading" style="display: block; font-size: 1.15rem; color: var(--accent-red); margin-bottom: 0.35rem; text-align: center;">
+					💰 La Formule du Coût Réel de Réception :
+				</strong>
+				<p class="font-body" style="font-size: 0.98rem; line-height: 1.6; margin: 0; color: var(--fg-pencil); text-align: center; font-weight: 600;">
+					Total Réel = Location Salle + Espace Cérémonie + [Traiteur & Boissons × (1 + Frais de Service% + TVA%)] + Ménage + Sécurité + Assurance + Droit de Bouchon • Multiplicateur moyen : 3,2× à 4,8× le tarif de location affiché !
+				</p>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Type de Lieu</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Tarif Location Nu</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Postes Annexes Obligatoires</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Total Réel Décaissé</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">Château / Domaine Historique</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">4 000 € – 8 500 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Cérémonie (600 €), Traiteur libre (9 000 €+), Forfait ménage, Gardiennage</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">16 000 € – 28 000 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">Forfait Clé en Main / Restaurant</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">1 000 € – 3 000 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Forfait par tête (90 € à 150 €/convive), Service inclus, Mobilier fourni</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">12 000 € – 20 000 €</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">Grange Rénovée / Corps de Ferme</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">3 000 € – 5 500 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Sanitaires mobiles (1 200 €), Groupe électrogène, Mobilier d'appoint</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">14 000 € – 22 000 €</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">Domaine Viticole / Mas Provençal</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">4 500 € – 7 500 €</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">Achat imposé des vins de la propriété, Navettes nocturnes, Traiteur agréé</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">18 000 € – 30 000 €</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Comprehensive SEO Guide -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Comment Analyser un Devis de Salle de Mariage & Éviter les Surprises
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Le lieu de réception et le repas constituent près de la moitié de votre budget total. Voici les pièges contractuels à anticiper.
+				</p>
+			</div>
+
+			<!-- Section 1: Questions to Ask -->
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-blue); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. Les 10 Questions Cruciales Avant de Signer le Contrat
+				</h3>
+				<ol class="font-body" style="font-size: 1.02rem; line-height: 1.7; color: var(--fg-pencil); margin-left: 1.5rem; margin-bottom: 1.5rem;">
+					<li>Les tables, chaises, mange-debout et le mobilier d'extérieur sont-ils inclus dans le tarif ?</li>
+					<li>À partir de quelle heure pouvons-nous accéder aux lieux le vendredi ou le matin du mariage pour installer la décoration ?</li>
+					<li>Le domaine impose-t-il une liste fermée de traiteurs ou un droit de bouchon si nous apportons notre vin ?</li>
+					<li>À quelle heure la musique doit-elle s'arrêter et quel est le coût horaire des heures supplémentaires ?</li>
+					<li>Y a-t-il des hébergements sur place (chambres, dortoirs) et sont-ils compris dans le forfait de privatisation ?</li>
+					<li>Le ménage de fin de week-end est-il inclus ou fait-il l'objet d'une facturation séparée ?</li>
+					<li>Le site dispose-t-il d'un plan B couvert et chauffé en cas de pluie pour le vin d'honneur et la cérémonie ?</li>
+					<li>Quel est le montant de l'acompte à la réservation et quelles sont les conditions d'annulation ou de report ?</li>
+					<li>Un gardien ou agent de sécurité est-il obligatoire pour surveiller les parkings la nuit ?</li>
+					<li>Une attestation d'assurance responsabilité civile temporaire est-elle exigée ?</li>
+				</ol>
+			</section>
+
+			<!-- Section 2: FAQs -->
+			<section>
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--fg-pencil); margin-bottom: 1.5rem; text-align: center;">
+					Foire Aux Questions
+				</h3>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Une grange brute est-elle plus économique qu'un domaine équipé ?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Souvent non. L'ajout d'une tente nomade de secours, la location de mobilier, l'office traiteur et les sanitaires mobiles comblent rapidement la différence de prix initial.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Comment fonctionne le droit de bouchon ?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Si le traiteur ou le domaine fournit le repas mais que vous apportez votre propre champagne ou vin, certains facturent entre 3 € et 8 € par bouteille débouchée pour couvrir le service et le lavage des verres.
+					</p>
+				</details>
+
+				<details style="margin-bottom: 0.75rem; cursor: pointer;">
+					<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 1.05rem;">Quand faut-il réserver son lieu de mariage ?</summary>
+					<p style="font-size: 0.98rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+						Pour un samedi entre mai et septembre, il est fortement conseillé de réserver 12 à 18 mois à l'avance afin d'avoir le choix de votre date idéale.
+					</p>
+				</details>
+			</section>
+
+		</article>
+
+		<RelatedTools currentPath="/fr/wedding-venue-cost-calculator" category="budget" />
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('venue-preset');
+		const baseRentalInput = document.getElementById('base-rental');
+		const ceremonyFeeInput = document.getElementById('ceremony-fee');
+		const guestCountInput = document.getElementById('guest-count');
+		const fbSpendInput = document.getElementById('fb-spend');
+		const serviceRateInput = document.getElementById('service-charge-rate');
+		const taxRateInput = document.getElementById('tax-rate');
+		const cleaningFeeInput = document.getElementById('cleaning-fee');
+		const securityFeeInput = document.getElementById('security-fee');
+		const insuranceFeeInput = document.getElementById('insurance-fee');
+		const overtimeFeeInput = document.getElementById('overtime-fee');
+		const cakeRateInput = document.getElementById('cake-cutting-rate');
+		const infraFeeInput = document.getElementById('infrastructure-fee');
+
+		const displayRealTotal = document.getElementById('display-real-total');
+		const displayQuotedBase = document.getElementById('display-quoted-base');
+		const displayPerGuest = document.getElementById('display-per-guest');
+		const markupTag = document.getElementById('markup-multiplier-tag');
+
+		const itemBaseTotal = document.getElementById('item-base-total');
+		const itemFbSpend = document.getElementById('item-fb-spend');
+		const itemServiceCharge = document.getElementById('item-service-charge');
+		const itemSalesTax = document.getElementById('item-sales-tax');
+		const itemFacilityTotal = document.getElementById('item-facility-total');
+		const itemAddonsTotal = document.getElementById('item-addons-total');
+
+		const btnPrint = document.getElementById('btn-print-audit');
+		const btnWord = document.getElementById('btn-export-word');
+
+		function formatCurrency(val) {
+			return `${Math.round(val).toLocaleString('fr-FR')} €`;
+		}
+
+		function calculateVenueCost() {
+			const base = parseFloat(baseRentalInput.value) || 0;
+			const ceremony = parseFloat(ceremonyFeeInput.value) || 0;
+			const guests = parseInt(guestCountInput.value, 10) || 1;
+			const fb = parseFloat(fbSpendInput.value) || 0;
+			const serviceRate = (parseFloat(serviceRateInput.value) || 0) / 100;
+			const taxRate = (parseFloat(taxRateInput.value) || 0) / 100;
+			const cleaning = parseFloat(cleaningFeeInput.value) || 0;
+			const security = parseFloat(securityFeeInput.value) || 0;
+			const insurance = parseFloat(insuranceFeeInput.value) || 0;
+			const overtime = parseFloat(overtimeFeeInput.value) || 0;
+			const cakeRate = parseFloat(cakeRateInput.value) || 0;
+			const infra = parseFloat(infraFeeInput.value) || 0;
+
+			// Service & Tax Math
+			const serviceCharge = fb * serviceRate;
+			const subtotalBeforeTax = fb + serviceCharge;
+			const salesTax = subtotalBeforeTax * taxRate;
+
+			// Addons & Facilities
+			const facilityTotal = cleaning + security + insurance + overtime;
+			const cakeTotal = cakeRate * guests;
+			const addonsTotal = cakeTotal + infra;
+
+			const grandTotal = base + ceremony + fb + serviceCharge + salesTax + facilityTotal + addonsTotal;
+			const perGuest = grandTotal / guests;
+			const multiplier = base > 0 ? (grandTotal / base).toFixed(1) : 1;
+
+			// Update Displays
+			displayRealTotal.textContent = formatCurrency(grandTotal);
+			displayQuotedBase.textContent = formatCurrency(base);
+			displayPerGuest.textContent = `${Math.round(perGuest).toLocaleString('fr-FR')} € / personne`;
+			markupTag.textContent = `${multiplier}× Tarif Affiché`;
+
+			itemBaseTotal.textContent = formatCurrency(base + ceremony);
+			itemFbSpend.textContent = formatCurrency(fb);
+			itemServiceCharge.textContent = formatCurrency(serviceCharge);
+			itemSalesTax.textContent = formatCurrency(salesTax);
+			itemFacilityTotal.textContent = formatCurrency(facilityTotal);
+			itemAddonsTotal.textContent = formatCurrency(addonsTotal);
+		}
+
+		// Preset Selection Handler
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'chateau') {
+				baseRentalInput.value = 4500;
+				ceremonyFeeInput.value = 600;
+				guestCountInput.value = 100;
+				fbSpendInput.value = 9500;
+				serviceRateInput.value = 12;
+				taxRateInput.value = 10;
+				cleaningFeeInput.value = 450;
+				securityFeeInput.value = 350;
+				insuranceFeeInput.value = 120;
+				overtimeFeeInput.value = 400;
+				cakeRateInput.value = 2.50;
+				infraFeeInput.value = 0;
+			} else if (p === 'hotel') {
+				baseRentalInput.value = 1500;
+				ceremonyFeeInput.value = 400;
+				guestCountInput.value = 100;
+				fbSpendInput.value = 11000;
+				serviceRateInput.value = 15;
+				taxRateInput.value = 10;
+				cleaningFeeInput.value = 250;
+				securityFeeInput.value = 0;
+				insuranceFeeInput.value = 100;
+				overtimeFeeInput.value = 350;
+				cakeRateInput.value = 0;
+				infraFeeInput.value = 0;
+			} else if (p === 'barn') {
+				baseRentalInput.value = 3500;
+				ceremonyFeeInput.value = 500;
+				guestCountInput.value = 100;
+				fbSpendInput.value = 8500;
+				serviceRateInput.value = 10;
+				taxRateInput.value = 10;
+				cleaningFeeInput.value = 500;
+				securityFeeInput.value = 300;
+				insuranceFeeInput.value = 150;
+				overtimeFeeInput.value = 500;
+				cakeRateInput.value = 0;
+				infraFeeInput.value = 1800; // Sanitaires mobiles + puissance
+			} else if (p === 'winery') {
+				baseRentalInput.value = 5000;
+				ceremonyFeeInput.value = 700;
+				guestCountInput.value = 100;
+				fbSpendInput.value = 10500;
+				serviceRateInput.value = 12;
+				taxRateInput.value = 10;
+				cleaningFeeInput.value = 400;
+				securityFeeInput.value = 350;
+				insuranceFeeInput.value = 150;
+				overtimeFeeInput.value = 450;
+				cakeRateInput.value = 2.00;
+				infraFeeInput.value = 800; // Navette
+			}
+			calculateVenueCost();
+		});
+
+		// Live Listeners
+		[baseRentalInput, ceremonyFeeInput, guestCountInput, fbSpendInput, serviceRateInput, taxRateInput, cleaningFeeInput, securityFeeInput, insuranceFeeInput, overtimeFeeInput, cakeRateInput, infraFeeInput].forEach(inp => {
+			inp.addEventListener('input', calculateVenueCost);
+		});
+
+		// Print PDF Audit Sheet
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Audit Coût du Lieu de Mariage — Manage.Wedding</title>
+					<style>
+						@page { size: A4; margin: 15mm; }
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+						h1 { font-size: 18pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Audit et Estimation du Coût Réel du Lieu de Réception</h1>
+					<p>Calculé pour ${guestCountInput.value} invités | Date : ${new Date().toLocaleDateString('fr-FR')}</p>
+					
+					<table>
+						<thead>
+							<tr><th>Poste de Dépense</th><th>Détails</th><th>Montant (€)</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Location Salle & Cérémonie</td><td>Salle (${baseRentalInput.value} €) + Cérémonie (${ceremonyFeeInput.value} €)</td><td>${itemBaseTotal.textContent}</td></tr>
+							<tr><td>Traiteur & Boissons</td><td>Restauration et boissons prévues</td><td>${itemFbSpend.textContent}</td></tr>
+							<tr><td>Frais de Service</td><td>${serviceRateInput.value}% (Personnel et maîtres d'hôtel)</td><td>${itemServiceCharge.textContent}</td></tr>
+							<tr><td>TVA Applicable</td><td>${taxRateInput.value}%</td><td>${itemSalesTax.textContent}</td></tr>
+							<tr><td>Frais de Domaine</td><td>Ménage (${cleaningFeeInput.value} €) + Sécurité (${securityFeeInput.value} €) + Assurance (${insuranceFeeInput.value} €) + Heures sup (${overtimeFeeInput.value} €)</td><td>${itemFacilityTotal.textContent}</td></tr>
+							<tr><td>Suppléments Logistiques</td><td>Découpe gâteau / Bouchon + Équipements</td><td>${itemAddonsTotal.textContent}</td></tr>
+							<tr class="total-row"><td>TOTAL RÉEL GLOBAL</td><td>Coût complet tout compris (${markupTag.textContent})</td><td>${displayRealTotal.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		// Export Word Doc
+		btnWord.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Audit Coût Réel Lieu de Mariage</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Synthèse Budgétaire du Lieu de Réception</h2>
+					<p>Location brute affichée : ${baseRentalInput.value} € | <strong>Total Réel Global : ${displayRealTotal.textContent}</strong> (${displayPerGuest.textContent})</p>
+					<table>
+						<thead><tr><th>Poste</th><th>Montant (€)</th></tr></thead>
+						<tbody>
+							<tr><td>Location Salle & Cérémonie</td><td>${itemBaseTotal.textContent}</td></tr>
+							<tr><td>Traiteur & Boissons</td><td>${itemFbSpend.textContent}</td></tr>
+							<tr><td>Frais de Service (${serviceRateInput.value}%)</td><td>${itemServiceCharge.textContent}</td></tr>
+							<tr><td>TVA (${taxRateInput.value}%)</td><td>${itemSalesTax.textContent}</td></tr>
+							<tr><td>Frais de Domaine (Ménage, Sécurité, Assurance)</td><td>${itemFacilityTotal.textContent}</td></tr>
+							<tr><td>Suppléments Logistiques & Droit de Bouchon</td><td>${itemAddonsTotal.textContent}</td></tr>
+							<tr style="font-weight:bold; background-color:#eee;"><td>TOTAL GLOBAL</td><td>${displayRealTotal.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'audit-cout-lieu-reception.doc';
+			link.click();
+		});
+
+		// Initial Calculation
+		calculateVenueCost();
+	</script>
+</Layout>

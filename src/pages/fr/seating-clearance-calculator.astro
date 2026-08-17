@@ -1,0 +1,575 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/seating-clearance-calculator/#webapp",
+      "name": "Calculateur d'Espace Salle, Piste de Danse et Espacement des Tables",
+      "url": "https://manage.wedding/fr/seating-clearance-calculator",
+      "description": "Calculez la surface nécessaire en m², les dimensions de la piste de danse, le nombre de tables rondes de 150 ou 180 cm et les allées de service pour votre mariage.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Calculer la Surface d'une Salle de Mariage et la Taille de la Piste de Danse",
+      "description": "Méthode pas à pas pour dimensionner la salle de réception, la piste de danse et les allées de service traiteur.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Estimer le Nombre de Danseurs Simultanés (Règle des 45 %)",
+          "text": "Multipliez votre nombre total d'invités par 45 % pour obtenir le pic d'invités présents en même temps sur la piste."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Calculer la Surface de la Piste de Danse (0,45 m² par danseur)",
+          "text": "Allouez environ 0,45 m² par danseur (ex. 68 danseurs × 0,45 m² = env. 30 m², soit 5 m × 6 m)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Calculer l'Espace Repas Assis (1,2 à 1,5 m² par invité)",
+          "text": "Pour des tables rondes de 150 cm avec allées de service de 1,50 m, prévoyez 1,2 à 1,4 m² par convive assis."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Ajouter les Espaces Techniques et Buffets",
+          "text": "Ajoutez l'espace pour le DJ / Orchestre (10 à 20 m²), les bars (20 m²), les buffets (15 m²) et la table des cadeaux / livre d'or (5 m²)."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quelle taille de piste de danse pour 100 à 150 personnes ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pour 100 invités, prévoyez une piste de danse d'environ 20 à 25 m² (ex. 4,5 m × 5 m). Pour 150 invités, prévoyez environ 30 à 35 m² (ex. 5,5 m × 6 m)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelle distance laisser entre deux tables de mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Laissez au minimum 1,50 mètre entre les bords de deux tables rondes. Cela permet aux invités de reculer leur chaise de 45 cm tout en conservant une allée centrale de 60 cm pour le passage des serveurs traiteur."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien de m² faut-il par invité dans une salle de mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pour un dîner assis avec tables rondes, piste de danse, régie DJ et bar, comptez entre 1,5 et 2,0 m² par invité. Pour 150 personnes, visez une salle de 240 à 300 m² minimum."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Calculateur Surface Salle, Piste de Danse & Tables Mariage | Manage.Wedding"
+	description="Calculez la surface nécessaire en m², la dimension de la piste de danse, le nombre de tables rondes ou rectangulaires et les allées de service pour votre salle de mariage."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Surface Salle & Piste de Danse" category="guests" />
+		
+		<!-- Header -->
+		<header class="fade-in category-header" style="text-align: center; margin-bottom: 2.5rem; position: relative;">
+			<div class="tape" style="margin: 0 auto 1rem;"></div>
+			<span class="badge-postit">Capacité Salle & Piste de Danse</span>
+			<h1 class="font-heading" style="font-size: clamp(2rem, 5vw, 3.4rem); margin: 0.5rem 0; color: var(--fg-pencil); line-height: 1.2;">
+				Calculateur de Surface Salle <span class="accent-italic">& Piste de Danse</span>
+			</h1>
+			<p class="font-body" style="color: var(--text-secondary); max-width: 740px; margin: 0 auto; font-size: 1.15rem; line-height: 1.6;">
+				Déterminez la dimension idéale de votre piste de danse, le nombre de tables rondes (150 ou 180 cm), l'espacement des allées de service (règle des 1,50 m) et la surface totale en m² avant de signer votre contrat de salle.
+			</p>
+		</header>
+
+		<!-- Main Interactive Studio Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2.5rem; margin-bottom: 3.5rem; align-items: start;">
+			
+			<!-- Left Column: Guest Count, Table Style & Room Inputs -->
+			<div class="hand-card" style="padding: clamp(1.5rem, 3.5vw, 2.5rem); background: #fff;">
+				
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<h2 class="font-heading" style="font-size: 1.4rem; margin: 0; color: var(--fg-pencil);">
+						Configuration de l'Événement
+					</h2>
+					<span style="font-size: 0.85rem; font-weight: 700; background: var(--post-it); border: 1.5px solid var(--fg-pencil); padding: 3px 8px; border-radius: 4px;">
+						Normes de Circulation
+					</span>
+				</div>
+
+				<!-- Venue Layout Presets -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="layout-preset" style="display: block; font-family: var(--font-heading); margin-bottom: 0.3rem;">Type de Lieu de Réception</label>
+					<select id="layout-preset" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; cursor: pointer; background: #f8fafc; font-weight: 600;">
+						<option value="ballroom-150" selected>🏨 Salle de Réception / Domaine (150 Invités / Tables 150 cm / DJ)</option>
+						<option value="tent-200">🎪 Chapiteau / Tente Nomade (200 Invités / Tente 12×24m / Orchestre)</option>
+						<option value="barn-120">🌾 Corps de Ferme / Grange (120 Invités / Tables Rectangulaires)</option>
+						<option value="intimate-75">🏛️ Manoir / Château Intimiste (75 Invités)</option>
+						<option value="custom">✏️ Configuration Personnalisée</option>
+					</select>
+				</div>
+
+				<!-- Guest Count & Dancing Participation -->
+				<div style="display: grid; grid-template-columns: 1.1fr 1.3fr; gap: 0.75rem; margin-bottom: 1.25rem;" class="form-group">
+					<div>
+						<label class="form-label" for="input-guests" style="display: block; font-family: var(--font-heading); font-size: 0.95rem; margin-bottom: 0.3rem;">Nombre d'Invités</label>
+						<input type="number" id="input-guests" class="form-input" value="150" min="20" max="600" step="5" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-size: 1.1rem; font-weight: 700;" />
+					</div>
+					<div>
+						<label class="form-label" for="dance-participation" style="display: block; font-family: var(--font-heading); font-size: 0.95rem; margin-bottom: 0.3rem;">Ambiance / Danseurs</label>
+						<select id="dance-participation" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; cursor: pointer; font-size: 0.95rem;">
+							<option value="0.33">Calme / Familles (33 % danseurs)</option>
+							<option value="0.45" selected>Standard Festif (45 % danseurs)</option>
+							<option value="0.60">Très Festif / Nuit Blanche (60 %)</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Table Shape & Seating Density -->
+				<div class="form-group" style="margin-bottom: 1.25rem;">
+					<label class="form-label" for="table-style" style="display: block; font-family: var(--font-heading); margin-bottom: 0.3rem;">Format des Tables de Dîner</label>
+					<select id="table-style" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; cursor: pointer;">
+						<option value="round-60" selected>Tables Rondes 150 cm (8 pers. confort / 10 max)</option>
+						<option value="round-72">Tables Rondes 180 cm (10 pers. confort / 12 max)</option>
+						<option value="rect-8ft">Tables Rectangulaires 240 × 80 cm (8 pers.)</option>
+					</select>
+				</div>
+
+				<!-- Venue Dimensions (Optional Check) -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Dimensions de Votre Salle (Facultatif — Vérification)
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;" class="form-group">
+						<div>
+							<label class="form-label" for="room-length" style="display: block; font-size: 0.9rem; margin-bottom: 0.2rem;">Longueur Salle (m)</label>
+							<input type="number" id="room-length" class="form-input" value="18" min="5" step="0.5" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-size: 0.95rem;" />
+						</div>
+						<div>
+							<label class="form-label" for="room-width" style="display: block; font-size: 0.9rem; margin-bottom: 0.2rem;">Largeur Salle (m)</label>
+							<input type="number" id="room-width" class="form-input" value="15" min="5" step="0.5" style="width: 100%; box-sizing: border-box; padding: 0.55rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-size: 0.95rem;" />
+						</div>
+					</div>
+				</div>
+
+				<!-- Entertainment & Service Buffers -->
+				<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px dashed var(--fg-pencil);">
+					<strong class="font-heading" style="font-size: 1.05rem; display: block; margin-bottom: 0.75rem; color: var(--fg-pencil);">
+						Postes Techniques & Buffets
+					</strong>
+
+					<div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.92rem;">
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-band" style="width: 18px; height: 18px;" />
+							<span>Scène Groupe / Orchestre (20 m²) au lieu de Régie DJ (10 m²)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-buffet" checked style="width: 18px; height: 18px;" />
+							<span>Espace Buffets & Desserte Traiteur (15 m²)</span>
+						</label>
+
+						<label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+							<input type="checkbox" id="check-bar-stations" checked style="width: 18px; height: 18px;" />
+							<span>Deux Bars de Service (20 m²)</span>
+						</label>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results, Dance Floor Sizing & Capacity Check -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+				
+				<!-- Main Clearance & Dance Floor Card -->
+				<div class="hand-card" style="padding: clamp(1.5rem, 3vw, 2.5rem); background: #fffcf5; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil);">
+					
+					<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+						<span style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--accent-red); letter-spacing: 0.05em;">
+							Taille de Piste de Danse Conseillée
+						</span>
+						<span id="dance-tile-count-badge" style="font-size: 0.85rem; font-weight: 800; background: var(--accent-red); color: #fff; padding: 3px 8px; border-radius: 4px;">
+							30 Dalles Modulaires (1×1 m)
+						</span>
+					</div>
+
+					<div id="display-dance-dimensions" class="font-heading" style="font-size: clamp(2.2rem, 5vw, 3.4rem); color: var(--fg-pencil); line-height: 1.1; margin-bottom: 0.25rem;">
+						5,5 m × 5,5 m (30 m²)
+					</div>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin: 0 0 1.5rem 0;">
+						Dimensionnée pour <strong id="display-peak-dancers" style="color: var(--fg-pencil);">68 danseurs en simultané</strong> (45 % de 150 convives @ 0,45 m²/personne).
+					</p>
+
+					<!-- Itemized Space Breakdown Table -->
+					<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+						<strong style="display: block; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+							📐 Répartition Détaillée de la Surface :
+						</strong>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span>Tables & Dîner (<strong id="display-tables-needed">19 Tables</strong>) :</span>
+							<strong id="display-dining-sqft">180 m²</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span>Surface Piste de Danse :</span>
+							<strong id="display-dance-sqft">30 m²</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.92rem;">
+							<span>Bars, Buffets & Régie / Scène :</span>
+							<strong id="display-production-sqft">45 m²</strong>
+						</div>
+
+						<div style="display: flex; justify-content: space-between; padding: 0.5rem 0 0 0; font-size: 1.05rem; font-weight: 700; color: var(--accent-red);">
+							<span>SURFACE MINIMALE SALLE :</span>
+							<strong id="display-total-room-needed">255 m²</strong>
+						</div>
+					</div>
+
+					<!-- Venue Room Fit Evaluation Alert -->
+					<div id="room-capacity-alert" style="background: #f0fdf4; border: 1.5px solid #16a34a; border-radius: 6px; padding: 0.85rem; margin-bottom: 1.5rem; font-size: 0.9rem; color: #166534; line-height: 1.5;">
+						<strong id="alert-fit-title">✅ Capacité Parfaite (270 m² disponibles) :</strong><br />
+						<span id="alert-fit-body">Votre salle de 18 m × 15 m offre l'espace idéal pour accueillir 19 tables, la piste de danse et des allées de 1,50 m.</span>
+					</div>
+
+					<!-- Action Buttons -->
+					<div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<button id="btn-print-floorplan" class="hand-btn" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>🖨️</span> Imprimer la Fiche (PDF)
+						</button>
+						<button id="btn-export-doc" class="hand-btn secondary" style="flex: 1; padding: 12px; font-size: 1rem; gap: 0.4rem;">
+							<span>📄</span> Export Word (.doc)
+						</button>
+					</div>
+
+				</div>
+
+				<!-- Table Clearance & ADA Rules Card -->
+				<div class="hand-card" style="padding: 1.5rem; background: var(--bg-paper);">
+					<strong class="font-heading" style="font-size: 1.15rem; color: var(--accent-red); display: block; margin-bottom: 0.4rem;">
+						📏 Règle d'Or des 1,50 m d'Allée :
+					</strong>
+					<ul style="margin: 0 0 0 1.25rem; padding: 0; font-size: 0.92rem; color: var(--fg-pencil); line-height: 1.6;">
+						<li><strong>Bord à bord de table :</strong> Conservez <strong>1,50 mètre</strong> entre les tables rondes. Cela compte 45 cm de recul pour chaque chaise et 60 cm d'allée centrale pour le passage des plateaux traiteur.</li>
+						<li><strong>Murs et fenêtres :</strong> Placez les tables à au moins <strong>1,00 à 1,20 m</strong> des murs pour fluidifier la circulation.</li>
+						<li><strong>Table d'Honneur :</strong> Placez-la face à la piste de danse avec un recul de <strong>3 à 4 mètres</strong> pour les photos et discours.</li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Section -->
+		<div class="hand-card" style="margin-bottom: 3.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--post-it); border: 2.5px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			
+			<div style="text-align: center; margin-bottom: 1.25rem;">
+				<span class="badge-postit" style="position: static; display: inline-block; transform: rotate(-1deg); margin-bottom: 0.5rem;">⚡ Repères Clés</span>
+				<h2 class="font-heading" style="font-size: clamp(1.4rem, 3.5vw, 2.1rem); color: var(--fg-pencil); margin: 0 0 0.4rem 0;">
+					Guide Rapide : Taille Piste de Danse & Surface de Salle
+				</h2>
+			</div>
+
+			<!-- Semantic Benchmark Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; padding: 0.5rem;">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem; min-width: 650px;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); font-size: 1rem;">Nombre d'Invités</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Taille Piste Danse</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Dalles 1×1 m</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Tables Rondes 150 cm</th>
+							<th style="padding: 0.65rem 0.75rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Surface Salle Min.</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-red);">50 à 75 Invités</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">4 m × 4 m (16 m²)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">16 Dalles</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">7 à 10 Tables</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">120 à 150 m²</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: var(--accent-blue);">100 à 125 Invités</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">5 m × 5 m (25 m²)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">25 Dalles</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">13 à 16 Tables</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">180 à 220 m²</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #16a34a);">150 à 175 Invités</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">5,5 m × 6 m (33 m²)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">32 Dalles</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">19 à 22 Tables</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">250 à 300 m²</td>
+						</tr>
+						<tr style="background: #faf8f5;">
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: bold; color: #7c3aed);">200 à 250 Invités</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); font-weight: 600;">6 m × 7 m (42 m²)</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">42 Dalles</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil);">25 à 32 Tables</td>
+							<td style="padding: 0.55rem 0.75rem; border: 1px solid var(--fg-pencil); text-align: center; font-weight: bold;">340 à 420 m²</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Related Planning Tools -->
+		<RelatedTools currentPath="/fr/seating-clearance-calculator" category="guests" />
+
+	</main>
+
+	<!-- Interactive Logic -->
+	<script is:inline>
+		const presetSelect = document.getElementById('layout-preset');
+		const guestsInput = document.getElementById('input-guests');
+		const dancePartSelect = document.getElementById('dance-participation');
+		const tableStyleSelect = document.getElementById('table-style');
+
+		const roomLengthInput = document.getElementById('room-length');
+		const roomWidthInput = document.getElementById('room-width');
+
+		const checkBand = document.getElementById('check-band');
+		const checkBuffet = document.getElementById('check-buffet');
+		const checkBars = document.getElementById('check-bar-stations');
+
+		const danceTileBadge = document.getElementById('dance-tile-count-badge');
+		const displayDanceDimensions = document.getElementById('display-dance-dimensions');
+		const displayPeakDancers = document.getElementById('display-peak-dancers');
+
+		const displayTablesNeeded = document.getElementById('display-tables-needed');
+		const displayDiningSqft = document.getElementById('display-dining-sqft');
+		const displayDanceSqft = document.getElementById('display-dance-sqft');
+		const displayProductionSqft = document.getElementById('display-production-sqft');
+		const displayTotalRoomNeeded = document.getElementById('display-total-room-needed');
+
+		const roomCapacityAlert = document.getElementById('room-capacity-alert');
+		const alertFitTitle = document.getElementById('alert-fit-title');
+		const alertFitBody = document.getElementById('alert-fit-body');
+
+		const btnPrint = document.getElementById('btn-print-floorplan');
+		const btnDoc = document.getElementById('btn-export-doc');
+
+		function calculateFloorPlan() {
+			const guests = parseInt(guestsInput.value, 10) || 1;
+			const dancerPct = parseFloat(dancePartSelect.value) || 0.45;
+			const tableStyle = tableStyleSelect.value;
+
+			// Dance Floor Math (m2)
+			const peakDancers = Math.round(guests * dancerPct);
+			const danceSqM = Math.round(peakDancers * 0.45);
+			const side = Math.round(Math.sqrt(danceSqM) * 2) / 2;
+			const danceL = Math.max(4, side);
+			const danceW = Math.max(4, Math.round((danceSqM / danceL) * 2) / 2);
+			const actualDanceSqM = Math.round(danceL * danceW);
+			const tileCount = actualDanceSqM;
+
+			// Table Math
+			let seatsPerTable = 8;
+			let sqMPerGuest = 1.2;
+			let tableTypeName = 'Tables Rondes 150 cm';
+
+			if (tableStyle === 'round-60') {
+				seatsPerTable = 8;
+				sqMPerGuest = 1.2;
+				tableTypeName = 'Tables Rondes 150 cm (8 pers.)';
+			} else if (tableStyle === 'round-72') {
+				seatsPerTable = 10;
+				sqMPerGuest = 1.4;
+				tableTypeName = 'Tables Rondes 180 cm (10 pers.)';
+			} else if (tableStyle === 'rect-8ft') {
+				seatsPerTable = 8;
+				sqMPerGuest = 1.1;
+				tableTypeName = 'Tables Rectangulaires 240 cm (8 pers.)';
+			}
+
+			const tablesCount = Math.ceil(guests / seatsPerTable);
+			const diningSqM = Math.round(guests * sqMPerGuest);
+
+			// Production & Buffers
+			let productionSqM = 0;
+			if (checkBand.checked) productionSqM += 20;
+			else productionSqM += 10;
+
+			if (checkBuffet.checked) productionSqM += 15;
+			if (checkBars.checked) productionSqM += 20;
+
+			const totalRoomNeeded = diningSqM + actualDanceSqM + productionSqM;
+
+			// Room Fit Evaluation
+			const rLength = parseFloat(roomLengthInput.value) || 0;
+			const rWidth = parseFloat(roomWidthInput.value) || 0;
+			const roomAvailableSqM = Math.round(rLength * rWidth);
+
+			// Update UI
+			danceTileBadge.textContent = `${tileCount} Dalles Modulaires (1×1 m)`;
+			displayDanceDimensions.textContent = `${danceL} m × ${danceW} m (${actualDanceSqM} m²)`;
+			displayPeakDancers.textContent = `${peakDancers} danseurs en simultané`;
+
+			displayTablesNeeded.textContent = `${tablesCount} ${tableTypeName}`;
+			displayDiningSqft.textContent = `${diningSqM} m²`;
+			displayDanceSqft.textContent = `${actualDanceSqM} m²`;
+			displayProductionSqft.textContent = `${productionSqM} m²`;
+			displayTotalRoomNeeded.textContent = `${totalRoomNeeded} m²`;
+
+			if (roomAvailableSqM > 0) {
+				if (roomAvailableSqM >= totalRoomNeeded) {
+					const surplus = roomAvailableSqM - totalRoomNeeded;
+					roomCapacityAlert.style.display = 'block';
+					roomCapacityAlert.style.background = '#f0fdf4';
+					roomCapacityAlert.style.borderColor = '#16a34a';
+					roomCapacityAlert.style.color = '#166534';
+					alertFitTitle.textContent = `✅ Capacité Parfaite (${roomAvailableSqM} m² disponibles) :`;
+					alertFitBody.textContent = `Votre salle de ${rLength} m × ${rWidth} m accueille confortablement les ${tablesCount} tables, la piste de danse et conserve ${surplus} m² de marge pour la circulation.`;
+				} else {
+					const deficit = totalRoomNeeded - roomAvailableSqM;
+					roomCapacityAlert.style.display = 'block';
+					roomCapacityAlert.style.background = '#fef2f2';
+					roomCapacityAlert.style.borderColor = '#ef4444';
+					roomCapacityAlert.style.color = '#991b1b';
+					alertFitTitle.textContent = `⚠️ Espace Trop Juste (Manque ${deficit} m²) :`;
+					alertFitBody.textContent = `Votre salle de ${rLength} m × ${rWidth} m (${roomAvailableSqM} m²) risque d'être à l'étroit. Envisagez des tables rondes 180 cm (10 convives) ou de réduire les zones de buffet.`;
+				}
+			} else {
+				roomCapacityAlert.style.display = 'none';
+			}
+		}
+
+		presetSelect.addEventListener('change', () => {
+			const p = presetSelect.value;
+			if (p === 'ballroom-150') {
+				guestsInput.value = 150;
+				dancePartSelect.value = '0.45';
+				tableStyleSelect.value = 'round-60';
+				roomLengthInput.value = 18;
+				roomWidthInput.value = 15;
+				checkBand.checked = false;
+				checkBuffet.checked = true;
+				checkBars.checked = true;
+			} else if (p === 'tent-200') {
+				guestsInput.value = 200;
+				dancePartSelect.value = '0.45';
+				tableStyleSelect.value = 'round-60';
+				roomLengthInput.value = 24;
+				roomWidthInput.value = 12;
+				checkBand.checked = true;
+				checkBuffet.checked = true;
+				checkBars.checked = true;
+			} else if (p === 'barn-120') {
+				guestsInput.value = 120;
+				dancePartSelect.value = '0.45';
+				tableStyleSelect.value = 'rect-8ft';
+				roomLengthInput.value = 18;
+				roomWidthInput.value = 12;
+				checkBand.checked = false;
+				checkBuffet.checked = true;
+				checkBars.checked = true;
+			} else if (p === 'intimate-75') {
+				guestsInput.value = 75;
+				dancePartSelect.value = '0.33';
+				tableStyleSelect.value = 'round-60';
+				roomLengthInput.value = 14;
+				roomWidthInput.value = 10;
+				checkBand.checked = false;
+				checkBuffet.checked = false;
+				checkBars.checked = true;
+			}
+			calculateFloorPlan();
+		});
+
+		[guestsInput, dancePartSelect, tableStyleSelect, roomLengthInput, roomWidthInput, checkBand, checkBuffet, checkBars].forEach(inp => {
+			inp.addEventListener('input', calculateFloorPlan);
+			inp.addEventListener('change', calculateFloorPlan);
+		});
+
+		btnPrint.addEventListener('click', () => {
+			const printWindow = window.open('', '_blank');
+			if (!printWindow) { window.print(); return; }
+			printWindow.document.write(`
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Fiche Technique Espace Salle — Manage.Wedding</title>
+					<style>
+						body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #1e293b; padding: 20px; }
+						h1 { font-size: 18pt; margin-bottom: 4px; color: #0f172a; }
+						table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+						th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+						th { background-color: #f1f5f9; font-weight: bold; }
+						.total-row { font-size: 12pt; font-weight: bold; background-color: #fef3c7; }
+					</style>
+				</head>
+				<body>
+					<h1>Fiche d'Implantation Salle & Piste de Danse</h1>
+					<p>Invités : ${guestsInput.value} | Surface Salle Requise : ${displayTotalRoomNeeded.textContent}</p>
+					
+					<table>
+						<thead><tr><th>Poste d'Aménagement</th><th>Spécifications / Quantité</th><th>Surface</th></tr></thead>
+						<tbody>
+							<tr><td><strong>Piste de Danse</strong></td><td>${displayDanceDimensions.textContent} (${danceTileBadge.textContent})</td><td>${displayDanceSqft.textContent}</td></tr>
+							<tr><td><strong>Espace Dîner & Tables</strong></td><td>${displayTablesNeeded.textContent}</td><td>${displayDiningSqft.textContent}</td></tr>
+							<tr><td><strong>Bars, Buffets & Scène</strong></td><td>DJ/Orchestre, Buffets, 2 Bars</td><td>${displayProductionSqft.textContent}</td></tr>
+							<tr class="total-row"><td>SURFACE TOTALE SALLE RECOMMANDÉE</td><td>—</td><td>${displayTotalRoomNeeded.textContent}</td></tr>
+						</tbody>
+					</table>
+					<script>window.onload = function() { window.print(); };<\/script>
+				</body></html>
+			`);
+			printWindow.document.close();
+		});
+
+		btnDoc.addEventListener('click', () => {
+			const content = `
+				<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+				<head><title>Fiche Espace Salle</title>
+				<style>body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; } table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid #999; padding: 8px; }</style>
+				</head>
+				<body>
+					<h2>Manage.Wedding — Fiche d'Implantation Salle & Piste de Danse</h2>
+					<p>Invités : ${guestsInput.value} | <strong>Surface Totale Requise : ${displayTotalRoomNeeded.textContent}</strong></p>
+					<table>
+						<thead><tr><th>Élément</th><th>Détails</th><th>Surface</th></tr></thead>
+						<tbody>
+							<tr><td>Piste de Danse</td><td>${displayDanceDimensions.textContent} (${danceTileBadge.textContent})</td><td>${displayDanceSqft.textContent}</td></tr>
+							<tr><td>Tables Dîner</td><td>${displayTablesNeeded.textContent}</td><td>${displayDiningSqft.textContent}</td></tr>
+							<tr><td>Postes Techniques & Bars</td><td>Bars, Buffets, DJ</td><td>${displayProductionSqft.textContent}</td></tr>
+							<tr style="font-weight:bold; background-color:#eee;"><td>TOTAL SALLE</td><td>—</td><td>${displayTotalRoomNeeded.textContent}</td></tr>
+						</tbody>
+					</table>
+				</body></html>
+			`;
+			const blob = new Blob([content], { type: 'application/msword' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = 'fiche-implantation-salle-mariage.doc';
+			link.click();
+		});
+
+		calculateFloorPlan();
+	</script>
+</Layout>

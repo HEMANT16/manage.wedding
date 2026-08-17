@@ -1,0 +1,843 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/it/rsvp-tracker/#webapp",
+      "name": "Gestione Conferme RSVP Matrimonio & Presenze Invitati",
+      "url": "https://manage.wedding/it/rsvp-tracker",
+      "inLanguage": "it",
+      "description": "Strumento online per tracciare le conferme di partecipazione (RSVP) al matrimonio: ospiti confermati, in attesa o assenti, scelte menù, intolleranze alimentari ed export in Word e PDF.",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "Come gestire e sollecitare le conferme RSVP del matrimonio",
+      "description": "Metodo per registrare le risposte degli invitati, monitorare le scelte gastronomiche e comunicare il numero esatto dei coperti al catering.",
+      "inLanguage": "it",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "1. Fissare la data limite per le conferme",
+          "text": "Imposta la scadenza RSVP a 3–4 settimane prima del matrimonio per avere il tempo di contattare i ritardatari."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "2. Registrare conferme e intolleranze alimentari",
+          "text": "Segna in tempo reale gli ospiti presenti (Sì), assenti (No) o in sospeso, annotando celiachia, allergie e scelte di menù."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "3. Inviare un sollecito cordiale a chi non ha risposto",
+          "text": "Filtra la lista per 'In Attesa' 48–72 ore dopo la scadenza e invia un messaggio WhatsApp amichevole."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "4. Esportare la lista definitiva per il catering",
+          "text": "Scarica il riepilogo dei coperti e delle intolleranze in formato Word o PDF da consegnare al banqueting 15 giorni prima delle nozze."
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "inLanguage": "it",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Entro quando va richiesta la conferma di partecipazione (RSVP) agli invitati?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La data limite per l'RSVP va solitamente fissata a 4 settimane prima del matrimonio. Questo lascia agli sposi circa 7-10 giorni per sollecitare i ritardatari e comunicare il numero definitivo dei coperti al catering 14-20 giorni prima delle nozze."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quale percentuale di invitati solitamente non partecipa alle nozze?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In media, per matrimoni nella stessa provincia o regione declina tra il 10% e il 15% degli invitati. Per destination wedding o matrimoni che richiedono voli e pernottamenti la percentuale di assenze può raggiungere il 25% – 35%."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Gestione Conferme RSVP Matrimonio & Presenze Invitati | Manage.Wedding"
+	description="Traccia in tempo reale le conferme di partecipazione (RSVP) al matrimonio: ospiti confermati, in attesa o assenti, preferenze menù, intolleranze ed esportazione Word e PDF."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: clamp(0.75rem, 2.5vw, 2rem); box-sizing: border-box; overflow-x: hidden;">
+		<Breadcrumb title="Gestione Conferme RSVP" category="guests-logistics" />
+		
+		<!-- Hero & Header -->
+		<section class="section-paper" style="margin-bottom: 2rem;">
+			<div style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1rem; text-align: center;">
+				<div class="tape" style="margin: 0 auto 1rem;"></div>
+				<h1 class="font-heading" style="font-size: clamp(32px, 5vw, 56px); color: var(--fg-pencil); line-height: 1.15;">
+					Gestione Conferme <span class="accent-italic">RSVP Matrimonio</span>
+				</h1>
+				<p class="font-body" style="font-size: 1.25rem; color: var(--fg-pencil); max-width: 650px; margin: 1rem auto 0;">
+					Monitora in tempo reale invitati confermati, in attesa o assenti, preferenze gastronomiche e intolleranze. Esporta il riepilogo in <strong>Word (.doc)</strong>, <strong>PDF</strong> o <strong>Excel (.csv)</strong>.
+				</p>
+			</div>
+		</section>
+
+		<!-- Overview Stats & Export Dashboard -->
+		<div class="hand-card" style="margin-bottom: 2rem; padding: 1.5rem; background: #fff;">
+			<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+				<div>
+					<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin: 0;">
+						📈 Avanzamento Risposte & Statistiche Coperti
+					</h2>
+					<span class="font-body" style="color: var(--text-secondary); font-size: 0.95rem;">
+						Sincronizzato automaticamente con la lista invitati e i tavoli
+					</span>
+				</div>
+
+				<!-- Export & Action Buttons -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" class="export-btn-group">
+					<button type="button" id="btn-export-doc" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #eff6ff;">
+						📝 Esporta Word (.doc)
+					</button>
+					<button type="button" id="btn-export-pdf" class="hand-btn" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; background: #fef2f2;">
+						🖨️ Stampa PDF
+					</button>
+					<button type="button" id="btn-export-csv" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						📊 Excel (.csv)
+					</button>
+					<button type="button" id="btn-sample-data" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+						➕ Esempio
+					</button>
+					<button type="button" id="btn-clear-all" class="hand-btn secondary" style="padding: 0.4rem 0.8rem; font-size: 0.9rem; color: var(--accent-red);">
+						🗑️ Cancella
+					</button>
+				</div>
+			</div>
+
+			<!-- Stat Counters Grid -->
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
+				<div style="background: var(--bg-paper); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Totale Invitati</span>
+					<strong id="stat-total" class="font-heading" style="font-size: 1.8rem; color: var(--fg-pencil);">0</strong>
+					<span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">(<span id="stat-parties">0</span> partecipazioni)</span>
+				</div>
+				<div style="background: #f0fdf4; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #166534; display: block;">Presenti (Sì)</span>
+					<strong id="stat-attending" class="font-heading" style="font-size: 1.8rem; color: #15803d;">0</strong>
+					<span id="stat-attending-pct" style="font-size: 0.75rem; color: #166534; display: block;">0% del totale</span>
+				</div>
+				<div style="background: #fefce8; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #854d0e; display: block;">In Attesa (?)</span>
+					<strong id="stat-pending" class="font-heading" style="font-size: 1.8rem; color: #a16207;">0</strong>
+					<span id="stat-pending-pct" style="font-size: 0.75rem; color: #854d0e; display: block;">0% del totale</span>
+				</div>
+				<div style="background: #fef2f2; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #991b1b; display: block;">Assenti (No)</span>
+					<strong id="stat-declined" class="font-heading" style="font-size: 1.8rem; color: var(--accent-red);">0</strong>
+					<span id="stat-declined-pct" style="font-size: 0.75rem; color: #991b1b; display: block;">0% del totale</span>
+				</div>
+				<div style="background: #eff6ff; border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 0.75rem; text-align: center;">
+					<span class="font-body" style="font-size: 0.85rem; color: #1e40af; display: block;">Tasso Risposta</span>
+					<strong id="stat-response-rate" class="font-heading" style="font-size: 1.8rem; color: var(--accent-blue);">0%</strong>
+					<span style="font-size: 0.75rem; color: #1e40af; display: block;">Obiettivo: 95%+</span>
+				</div>
+			</div>
+
+			<!-- Dynamic Visual Attendance Progress Bar -->
+			<div>
+				<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem;">
+					<span class="font-heading" style="font-size: 0.95rem; color: var(--fg-pencil);">Ripartizione Risposte</span>
+					<span id="stat-summary-note" class="font-body" style="font-size: 0.85rem; color: var(--text-secondary);">Pronto per l'inserimento</span>
+				</div>
+				<div style="display: flex; height: 26px; border: 2px solid var(--fg-pencil); border-radius: 4px; overflow: hidden; background: #e5e0d8; margin-bottom: 0.75rem;">
+					<div id="bar-attending" style="height: 100%; width: 0%; background-color: #22c55e; border-right: 1px solid var(--fg-pencil); transition: width 0.3s ease;" title="Presenti"></div>
+					<div id="bar-pending" style="height: 100%; width: 0%; background-color: #eab308; border-right: 1px solid var(--fg-pencil); transition: width 0.3s ease;" title="In Attesa"></div>
+					<div id="bar-declined" style="height: 100%; width: 0%; background-color: var(--accent-red); transition: width 0.3s ease;" title="Assenti"></div>
+				</div>
+				<div style="display: flex; justify-content: space-between; font-family: var(--font-body); font-size: 0.85rem;">
+					<span style="color: #15803d; font-weight: bold;">🟢 Presenti (<span id="legend-attending">0</span>)</span>
+					<span style="color: #a16207; font-weight: bold;">🟡 In Attesa (<span id="legend-pending">0</span>)</span>
+					<span style="color: var(--accent-red); font-weight: bold;">🔴 Assenti (<span id="legend-declined">0</span>)</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Workspace Grid: Add / Edit RSVP + Filterable Guest List -->
+		<div style="display: grid; grid-template-columns: 1fr; lg:grid-template-columns: 360px 1fr; gap: 2rem; align-items: start; margin-bottom: 3.5rem;" class="rsvp-workspace-grid">
+			
+			<!-- Left Column: Add / Log RSVP Response -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				<h2 class="font-heading" style="font-size: 1.5rem; margin-bottom: 1.25rem; color: var(--fg-pencil); display: flex; align-items: center; gap: 0.5rem;">
+					<span>📬</span> Registra Risposta RSVP
+				</h2>
+
+				<form id="rsvp-form" style="display: flex; flex-direction: column; gap: 1rem;">
+					
+					<!-- Guest Full Name -->
+					<div>
+						<label for="rsvp-name" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+							Nome Invitato / Famiglia *
+						</label>
+						<input type="text" id="rsvp-name" required placeholder="es. Zio Roberto o Famiglia Rossi" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper); font-family: var(--font-body); font-size: 1.05rem;">
+					</div>
+
+					<!-- Group -->
+					<div>
+						<label for="rsvp-group" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+							Gruppo / Lato
+						</label>
+						<select id="rsvp-group" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 1.05rem;">
+							<option value="Famiglia Sposa">Famiglia Sposa</option>
+							<option value="Famiglia Sposo">Famiglia Sposo</option>
+							<option value="Amici Sposa">Amici Sposa</option>
+							<option value="Amici Sposo">Amici Sposo</option>
+							<option value="Amici Comuni">Amici Comuni</option>
+							<option value="Testimoni & VIP">Testimoni & VIP</option>
+							<option value="Colleghi di Lavoro">Colleghi di Lavoro</option>
+						</select>
+					</div>
+
+					<!-- Party Size & RSVP Selection -->
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+						<div>
+							<label for="rsvp-party" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+								Coperti / Posti
+							</label>
+							<select id="rsvp-party" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 1.05rem;">
+								<option value="1">1 (Singolo)</option>
+								<option value="2" selected>2 (Coppia / +1)</option>
+								<option value="3">3 (Famiglia)</option>
+								<option value="4">4 (Famiglia da 4)</option>
+								<option value="5">5+ (Gruppo)</option>
+							</select>
+						</div>
+						<div>
+							<label for="rsvp-status" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+								Stato RSVP
+							</label>
+							<select id="rsvp-status" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 1.05rem;">
+								<option value="Attending">✅ Confermato (Sì)</option>
+								<option value="Pending">⏳ In Attesa (?)</option>
+								<option value="Declined">❌ Assente (No)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Meal Selection / Dietary -->
+					<div>
+						<label for="rsvp-dietary" class="font-heading" style="display: block; margin-bottom: 0.3rem; font-size: 1rem; color: var(--fg-pencil);">
+							Menù & Intolleranze Alimentari
+						</label>
+						<input type="text" id="rsvp-dietary" placeholder="es. Celiachia / Senza Glutine, Vegetariano" class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.65rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: var(--bg-paper); font-family: var(--font-body); font-size: 1rem;">
+						<div style="display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem;">
+							<button type="button" class="meal-tag-btn" data-val="Carne" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">🥩 Carne</button>
+							<button type="button" class="meal-tag-btn" data-val="Pesce" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">🐟 Pesce</button>
+							<button type="button" class="meal-tag-btn" data-val="Vegetariano" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">🥗 Vegetariano</button>
+							<button type="button" class="meal-tag-btn" data-val="Senza Glutine" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">🌾 Senza Glutine</button>
+							<button type="button" class="meal-tag-btn" data-val="Senza Lattosio" style="font-size: 0.75rem; padding: 0.15rem 0.4rem; border: 1px dashed var(--fg-pencil); background: #fff; border-radius: 3px; cursor: pointer;">🥛 Senza Lattosio</button>
+						</div>
+					</div>
+
+					<button type="submit" class="hand-btn" style="width: 100%; padding: 0.85rem; font-size: 1.15rem; margin-top: 0.5rem;">
+						✨ Salva Risposta RSVP
+					</button>
+
+				</form>
+
+				<!-- Follow-Up Message Copy Box -->
+				<div style="margin-top: 1.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 4px; padding: 1rem;">
+					<strong class="font-heading" style="display: block; font-size: 1rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+						💬 Messaggio di Sollecito WhatsApp:
+					</strong>
+					<p id="copy-template-text" class="font-body" style="font-size: 0.9rem; line-height: 1.4; margin-bottom: 0.5rem; color: var(--fg-pencil);">
+						"Ciao! Stiamo chiudendo il numero definitivo dei coperti con il catering questa settimana. Ci faresti sapere con una conferma se riuscirai a festeggiare con noi? Non vediamo l'ora! ❤️"
+					</p>
+					<button type="button" id="btn-copy-template" class="hand-btn secondary" style="padding: 0.25rem 0.6rem; font-size: 0.8rem; width: 100%;">
+						📋 Copia Testo di Sollecito
+					</button>
+				</div>
+			</div>
+
+			<!-- Right Column: Searchable, Filterable RSVP Registry Table -->
+			<div class="hand-card" style="padding: 1.75rem; background: #fff;">
+				
+				<!-- Filter & Search Bar -->
+				<div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 1rem;">
+					
+					<!-- Search -->
+					<div style="flex: 1; min-width: 180px;">
+						<input type="text" id="search-input" placeholder="🔍 Cerca invitato o intolleranza..." class="form-input" style="width: 100%; box-sizing: border-box; padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; font-family: var(--font-body); font-size: 1rem;">
+					</div>
+
+					<!-- RSVP Status Filter -->
+					<div>
+						<select id="filter-status" class="form-input" style="padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+							<option value="all">Tutti gli Stati</option>
+							<option value="Attending">✅ Solo Presenti</option>
+							<option value="Pending">⏳ Solo In Attesa</option>
+							<option value="Declined">❌ Solo Assenti</option>
+						</select>
+					</div>
+
+					<!-- Group Filter -->
+					<div>
+						<select id="filter-group" class="form-input" style="padding: 0.6rem; border: 2px solid var(--fg-pencil); border-radius: 4px; background: #fff; font-family: var(--font-body); font-size: 0.95rem;">
+							<option value="all">Tutti i Gruppi</option>
+							<option value="Famiglia Sposa">Famiglia Sposa</option>
+							<option value="Famiglia Sposo">Famiglia Sposo</option>
+							<option value="Amici Sposa">Amici Sposa</option>
+							<option value="Amici Sposo">Amici Sposo</option>
+							<option value="Amici Comuni">Amici Comuni</option>
+							<option value="Testimoni & VIP">Testimoni & VIP</option>
+							<option value="Colleghi di Lavoro">Colleghi di Lavoro</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- Table Container -->
+				<div id="rsvp-table-wrap" style="overflow-x: auto; max-height: 550px;">
+					<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 1rem;">
+						<thead>
+							<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil); position: sticky; top: 0; z-index: 1;">
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Nome Invitato</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Gruppo</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Posti</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Stato RSVP</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading);">Menù & Intolleranze</th>
+								<th style="padding: 0.6rem; border: 1px solid var(--fg-pencil); font-family: var(--font-heading); text-align: center;">Azioni</th>
+							</tr>
+						</thead>
+						<tbody id="rsvp-table-body"></tbody>
+					</table>
+				</div>
+
+				<!-- Empty State Box -->
+				<div id="empty-state-box" style="display: none; text-align: center; padding: 3rem 1rem; color: var(--text-secondary);">
+					<div style="font-size: 2.5rem; margin-bottom: 0.5rem;">💌</div>
+					<h3 class="font-heading" style="font-size: 1.3rem; color: var(--fg-pencil); margin-bottom: 0.25rem;">Nessuna risposta registrata</h3>
+					<p class="font-body" style="font-size: 1.05rem; margin-bottom: 1.25rem;">Aggiungi risposte con il modulo a sinistra o carica i dati di prova.</p>
+					<button type="button" id="btn-empty-sample" class="hand-btn" style="padding: 0.5rem 1.25rem; font-size: 1rem;">
+						➕ Carica Risposte Esempio
+					</button>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- Hidden Printable Sheet for PDF Generation -->
+		<div id="printable-pdf-sheet" class="print-only">
+			<div style="border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
+				<h1 style="font-size: 24px; margin: 0 0 5px 0;">Manage.Wedding — Elenco Ufficiale RSVP Matrimonio</h1>
+				<p style="margin: 0; font-size: 13px; color: #555;">Data: <span id="print-date"></span> | Coperti Confermati: <span id="print-attending-headcount"></span></p>
+			</div>
+			<table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+				<thead>
+					<tr style="background: #f2f2f2;">
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Nome Invitato</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Gruppo</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: center;">Posti</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: center;">Stato</th>
+						<th style="border: 1px solid #ccc; padding: 6px; text-align: left;">Menù / Intolleranze</th>
+					</tr>
+				</thead>
+				<tbody id="print-table-body"></tbody>
+			</table>
+		</div>
+
+		<!-- SEO Article -->
+		<article class="hand-card" style="padding: clamp(1.5rem, 4vw, 3.5rem); margin-bottom: 4rem;">
+			<div style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+				<h2 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					Guida Completa alla Gestione degli RSVP di Nozze
+				</h2>
+				<p class="font-body" style="font-size: 1.15rem; color: var(--text-secondary); line-height: 1.6;">
+					Come evitare ritardi nelle conferme, raccogliere le intolleranze alimentari e comunicare i coperti al banqueting.
+				</p>
+			</div>
+
+			<section style="margin-bottom: 3rem;">
+				<h3 class="font-heading" style="font-size: 1.75rem; color: var(--accent-red); margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					1. La Comunicazione delle Intolleranze al Catering
+				</h3>
+				<p class="font-body" style="font-size: 1.05rem; line-height: 1.7; color: var(--fg-pencil); margin-bottom: 1rem;">
+					Raccogliere le intolleranze alimentari (celiachia, allergie a frutta a guscio o crostacei, diete vegane) è fondamentale per consentire alla cucina del catering di preparare menù alternativi dedicati senza bloccare il servizio dei tavoli durante il ricevimento.
+				</p>
+			</section>
+		</article>
+
+		<RelatedTools currentPath="/it/rsvp-tracker" category="guests-logistics" />
+	</main>
+</Layout>
+
+<style>
+	.rsvp-workspace-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+	@media (min-width: 992px) {
+		.rsvp-workspace-grid {
+			grid-template-columns: 360px 1fr;
+		}
+	}
+
+	.btn-status-toggle {
+		cursor: pointer;
+		padding: 0.2rem 0.5rem;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 4px;
+		font-family: var(--font-heading);
+		font-size: 0.8rem;
+		transition: all 0.15s ease;
+		white-space: nowrap;
+	}
+
+	.btn-status-toggle.active-attending {
+		background: #22c55e !important;
+		color: #fff !important;
+		border-color: #15803d !important;
+		font-weight: bold;
+	}
+	.btn-status-toggle.active-pending {
+		background: #eab308 !important;
+		color: #000 !important;
+		border-color: #a16207 !important;
+		font-weight: bold;
+	}
+	.btn-status-toggle.active-declined {
+		background: var(--accent-red) !important;
+		color: #fff !important;
+		border-color: #991b1b !important;
+		font-weight: bold;
+	}
+
+	.action-icon-btn {
+		background: none;
+		border: none;
+		cursor: pointer;
+		font-size: 1.1rem;
+		padding: 0.25rem;
+		border-radius: 3px;
+	}
+	.action-icon-btn:hover {
+		background: var(--muted-paper);
+	}
+
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		body * {
+			visibility: hidden;
+		}
+		.print-only, .print-only * {
+			visibility: visible;
+		}
+		.print-only {
+			display: block !important;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #fff;
+			color: #000;
+			padding: 20px;
+		}
+	}
+</style>
+
+<script is:inline>
+	const STORAGE_KEY = 'manage_wedding_guests_it';
+
+	const sampleRSVPs = [
+		{ id: '1', name: 'Eleonora & Marco', group: "Famiglia Sposa", partySize: 2, rsvpStatus: 'Attending', dietary: 'Carne' },
+		{ id: '2', name: 'Giacomo Bianchi', group: "Famiglia Sposo", partySize: 2, rsvpStatus: 'Attending', dietary: 'Pesce' },
+		{ id: '3', name: 'Marta De Luca', group: "Testimoni & VIP", partySize: 1, rsvpStatus: 'Attending', dietary: 'Vegetariano' },
+		{ id: '4', name: 'Davide & Sara', group: "Amici Sposo", partySize: 2, rsvpStatus: 'Pending', dietary: 'Nessuna' },
+		{ id: '5', name: 'Chiara Moretti', group: "Amici Sposa", partySize: 2, rsvpStatus: 'Pending', dietary: 'Senza Glutine' },
+		{ id: '6', name: 'Luca Valli', group: "Colleghi di Lavoro", partySize: 1, rsvpStatus: 'Declined', dietary: 'Nessuna' },
+		{ id: '7', name: 'Zia Rosa', group: "Famiglia Sposa", partySize: 1, rsvpStatus: 'Attending', dietary: 'Senza Lattosio' }
+	];
+
+	let guests = [];
+
+	function loadGuests() {
+		const raw = localStorage.getItem(STORAGE_KEY);
+		if (raw) {
+			try {
+				guests = JSON.parse(raw);
+				guests.forEach(g => {
+					if (!g.rsvpStatus) g.rsvpStatus = 'Attending';
+					if (!g.partySize) g.partySize = 1;
+					if (!g.dietary) g.dietary = 'Nessuna';
+				});
+			} catch (e) {
+				guests = [];
+			}
+		} else {
+			guests = JSON.parse(JSON.stringify(sampleRSVPs));
+			saveGuests();
+		}
+	}
+
+	function saveGuests() {
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(guests));
+		render();
+	}
+
+	const form = document.getElementById('rsvp-form');
+	const tableBody = document.getElementById('rsvp-table-body');
+	const emptyStateBox = document.getElementById('empty-state-box');
+	const tableWrap = document.getElementById('rsvp-table-wrap');
+
+	const statTotal = document.getElementById('stat-total');
+	const statParties = document.getElementById('stat-parties');
+	const statAttending = document.getElementById('stat-attending');
+	const statAttendingPct = document.getElementById('stat-attending-pct');
+	const statPending = document.getElementById('stat-pending');
+	const statPendingPct = document.getElementById('stat-pending-pct');
+	const statDeclined = document.getElementById('stat-declined');
+	const statDeclinedPct = document.getElementById('stat-declined-pct');
+	const statResponseRate = document.getElementById('stat-response-rate');
+	const statSummaryNote = document.getElementById('stat-summary-note');
+
+	const barAttending = document.getElementById('bar-attending');
+	const barPending = document.getElementById('bar-pending');
+	const barDeclined = document.getElementById('bar-declined');
+
+	const legendAttending = document.getElementById('legend-attending');
+	const legendPending = document.getElementById('legend-pending');
+	const legendDeclined = document.getElementById('legend-declined');
+
+	const searchInput = document.getElementById('search-input');
+	const filterStatus = document.getElementById('filter-status');
+	const filterGroup = document.getElementById('filter-group');
+
+	form.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const name = document.getElementById('rsvp-name').value.trim();
+		const group = document.getElementById('rsvp-group').value;
+		const partySize = parseInt(document.getElementById('rsvp-party').value) || 1;
+		const rsvpStatus = document.getElementById('rsvp-status').value;
+		const dietary = document.getElementById('rsvp-dietary').value.trim() || 'Nessuna';
+
+		if (!name) return;
+
+		const newEntry = {
+			id: Date.now().toString(),
+			name,
+			group,
+			partySize,
+			rsvpStatus,
+			dietary
+		};
+
+		guests.unshift(newEntry);
+		saveGuests();
+		form.reset();
+		document.getElementById('rsvp-dietary').value = '';
+	});
+
+	document.querySelectorAll('.meal-tag-btn').forEach(btn => {
+		btn.addEventListener('click', () => {
+			const input = document.getElementById('rsvp-dietary');
+			const val = btn.getAttribute('data-val');
+			if (!input.value || input.value === 'Nessuna') {
+				input.value = val;
+			} else if (!input.value.includes(val)) {
+				input.value += `, ${val}`;
+			}
+		});
+	});
+
+	document.getElementById('btn-copy-template').addEventListener('click', () => {
+		const text = document.getElementById('copy-template-text').textContent.trim();
+		navigator.clipboard.writeText(text).then(() => {
+			const btn = document.getElementById('btn-copy-template');
+			btn.textContent = '✅ Copiato negli Appunti!';
+			setTimeout(() => { btn.textContent = '📋 Copia Testo di Sollecito'; }, 2000);
+		});
+	});
+
+	window.deleteRsvpItem = function(id) {
+		if (confirm("Rimuovere questo invitato dal registro RSVP?")) {
+			guests = guests.filter(g => g.id !== id);
+			saveGuests();
+		}
+	};
+
+	window.setRsvpStatus = function(id, status) {
+		const g = guests.find(item => item.id === id);
+		if (g) {
+			g.rsvpStatus = status;
+			saveGuests();
+		}
+	};
+
+	searchInput.addEventListener('input', render);
+	filterStatus.addEventListener('change', render);
+	filterGroup.addEventListener('change', render);
+
+	document.getElementById('btn-sample-data').addEventListener('click', () => {
+		guests = JSON.parse(JSON.stringify(sampleRSVPs));
+		saveGuests();
+	});
+	document.getElementById('btn-empty-sample').addEventListener('click', () => {
+		guests = JSON.parse(JSON.stringify(sampleRSVPs));
+		saveGuests();
+	});
+	document.getElementById('btn-clear-all').addEventListener('click', () => {
+		if (confirm("Cancellare tutte le risposte nel registro?")) {
+			guests = [];
+			saveGuests();
+		}
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		if (guests.length === 0) {
+			alert("Il registro RSVP è vuoto. Aggiungi prima degli invitati!");
+			return;
+		}
+
+		let tableRows = '';
+		guests.forEach((g, idx) => {
+			tableRows += `
+				<tr>
+					<td style="border:1px solid #ccc; padding:8px;">${idx + 1}</td>
+					<td style="border:1px solid #ccc; padding:8px; font-weight:bold;">${g.name}</td>
+					<td style="border:1px solid #ccc; padding:8px;">${g.group || "Generale"}</td>
+					<td style="border:1px solid #ccc; padding:8px; text-align:center;">${g.partySize || 1}</td>
+					<td style="border:1px solid #ccc; padding:8px; text-align:center; font-weight:bold;">${g.rsvpStatus === 'Attending' ? 'Confermato (Sì)' : g.rsvpStatus === 'Declined' ? 'Assente (No)' : 'In Attesa'}</td>
+					<td style="border:1px solid #ccc; padding:8px;">${g.dietary || 'Nessuna'}</td>
+				</tr>
+			`;
+		});
+
+		const totalSeats = guests.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const attendingSeats = guests.filter(g => g.rsvpStatus === 'Attending').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const declinedSeats = guests.filter(g => g.rsvpStatus === 'Declined').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const pendingSeats = guests.filter(g => g.rsvpStatus === 'Pending').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+
+		const html = `
+			<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+			<head>
+				<meta charset="utf-8">
+				<title>Registro RSVP Matrimonio</title>
+				<style>
+					body { font-family: Arial, sans-serif; padding: 20px; }
+					table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+					th { background-color: #f2f2f2; border: 1px solid #ccc; padding: 8px; text-align: left; }
+				</style>
+			</head>
+			<body>
+				<h1>Manage.Wedding — Elenco Ufficiale RSVP Matrimonio</h1>
+				<p>Generato il ${new Date().toLocaleDateString('it-IT')} | Totale Invitati: ${totalSeats} | <strong>Coperti Confermati: ${attendingSeats}</strong> | In Attesa: ${pendingSeats} | Assenti: ${declinedSeats}</p>
+				<table>
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Nome Invitato</th>
+							<th>Gruppo</th>
+							<th>Posti</th>
+							<th>Stato RSVP</th>
+							<th>Menù & Intolleranze</th>
+						</tr>
+					</thead>
+					<tbody>
+						${tableRows}
+					</tbody>
+				</table>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Registro_RSVP_Matrimonio_${new Date().toISOString().slice(0, 10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	document.getElementById('btn-export-pdf').addEventListener('click', () => {
+		if (guests.length === 0) {
+			alert("Il registro RSVP è vuoto. Aggiungi prima degli invitati!");
+			return;
+		}
+
+		document.getElementById('print-date').textContent = new Date().toLocaleDateString('it-IT');
+		const attendingSeats = guests.filter(g => g.rsvpStatus === 'Attending').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const totalSeats = guests.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		document.getElementById('print-attending-headcount').textContent = `${attendingSeats} confermati (su ${totalSeats} invitati)`;
+
+		const printTbody = document.getElementById('print-table-body');
+		printTbody.innerHTML = '';
+		guests.forEach(g => {
+			const tr = document.createElement('tr');
+			tr.innerHTML = `
+				<td style="border: 1px solid #ccc; padding: 6px; font-weight: bold;">${g.name}</td>
+				<td style="border: 1px solid #ccc; padding: 6px;">${g.group || '-'}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align: center;">${g.partySize || 1}</td>
+				<td style="border: 1px solid #ccc; padding: 6px; text-align: center; font-weight: bold;">${g.rsvpStatus === 'Attending' ? 'Sì' : g.rsvpStatus === 'Declined' ? 'No' : '?'}</td>
+				<td style="border: 1px solid #ccc; padding: 6px;">${g.dietary || 'Nessuna'}</td>
+			`;
+			printTbody.appendChild(tr);
+		});
+
+		window.print();
+	});
+
+	document.getElementById('btn-export-csv').addEventListener('click', () => {
+		if (guests.length === 0) {
+			alert("Il registro RSVP è vuoto. Aggiungi prima degli invitati!");
+			return;
+		}
+
+		let csv = "Nome Invitato,Gruppo,Posti,Stato RSVP,Menu e Intolleranze\n";
+		guests.forEach(g => {
+			const safeName = `"${(g.name || '').replace(/"/g, '""')}"`;
+			const safeGroup = `"${(g.group || '').replace(/"/g, '""')}"`;
+			const safeDiet = `"${(g.dietary || '').replace(/"/g, '""')}"`;
+			csv += `${safeName},${safeGroup},${g.partySize || 1},${g.rsvpStatus},${safeDiet}\n`;
+		});
+
+		const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Registro_RSVP_${new Date().toISOString().slice(0, 10)}.csv`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	function render() {
+		const q = searchInput.value.toLowerCase().trim();
+		const selStatus = filterStatus.value;
+		const selGroup = filterGroup.value;
+
+		const filtered = guests.filter(g => {
+			const matchesQuery = !q || g.name.toLowerCase().includes(q) || (g.dietary && g.dietary.toLowerCase().includes(q)) || (g.group && g.group.toLowerCase().includes(q));
+			const matchesStatus = selStatus === 'all' || g.rsvpStatus === selStatus;
+			const matchesGroup = selGroup === 'all' || g.group === selGroup;
+			return matchesQuery && matchesStatus && matchesGroup;
+		});
+
+		const totalParties = guests.length;
+		const totalSeats = guests.reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		
+		const attendingSeats = guests.filter(g => g.rsvpStatus === 'Attending').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const pendingSeats = guests.filter(g => g.rsvpStatus === 'Pending').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+		const declinedSeats = guests.filter(g => g.rsvpStatus === 'Declined').reduce((sum, g) => sum + (parseInt(g.partySize) || 1), 0);
+
+		const respondedSeats = attendingSeats + declinedSeats;
+		const responsePct = totalSeats > 0 ? Math.round((respondedSeats / totalSeats) * 100) : 0;
+
+		statTotal.textContent = totalSeats;
+		statParties.textContent = totalParties;
+		statAttending.textContent = attendingSeats;
+		statAttendingPct.textContent = totalSeats > 0 ? `${Math.round((attendingSeats / totalSeats) * 100)}% del totale` : '0%';
+		
+		statPending.textContent = pendingSeats;
+		statPendingPct.textContent = totalSeats > 0 ? `${Math.round((pendingSeats / totalSeats) * 100)}% del totale` : '0%';
+
+		statDeclined.textContent = declinedSeats;
+		statDeclinedPct.textContent = totalSeats > 0 ? `${Math.round((declinedSeats / totalSeats) * 100)}% del totale` : '0%';
+
+		statResponseRate.textContent = `${responsePct}%`;
+
+		if (totalSeats > 0) {
+			const attPct = (attendingSeats / totalSeats) * 100;
+			const penPct = (pendingSeats / totalSeats) * 100;
+			const decPct = (declinedSeats / totalSeats) * 100;
+
+			barAttending.style.width = `${attPct}%`;
+			barPending.style.width = `${penPct}%`;
+			barDeclined.style.width = `${decPct}%`;
+
+			legendAttending.textContent = attendingSeats;
+			legendPending.textContent = pendingSeats;
+			legendDeclined.textContent = declinedSeats;
+
+			statSummaryNote.textContent = `${attendingSeats} confermati • ${pendingSeats} da sollecitare`;
+		} else {
+			barAttending.style.width = '0%';
+			barPending.style.width = '0%';
+			barDeclined.style.width = '0%';
+			legendAttending.textContent = '0';
+			legendPending.textContent = '0';
+			legendDeclined.textContent = '0';
+			statSummaryNote.textContent = 'Aggiungi risposte per visualizzare la ripartizione';
+		}
+
+		tableBody.innerHTML = '';
+		if (filtered.length === 0 && guests.length === 0) {
+			tableWrap.style.display = 'none';
+			emptyStateBox.style.display = 'block';
+		} else {
+			tableWrap.style.display = 'block';
+			emptyStateBox.style.display = 'none';
+
+			if (filtered.length === 0) {
+				tableBody.innerHTML = `<tr><td colspan="6" style="padding: 2rem; text-align: center; color: var(--text-secondary); font-style: italic;">Nessun invitato corrisponde ai filtri selezionati.</td></tr>`;
+			} else {
+				filtered.forEach((g, idx) => {
+					const tr = document.createElement('tr');
+					tr.style.borderBottom = '1px solid var(--muted-paper)';
+					tr.style.background = idx % 2 === 0 ? '#fff' : '#faf8f5';
+
+					tr.innerHTML = `
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper);">
+							<strong style="display: block; font-size: 1.05rem; color: var(--fg-pencil);">${g.name}</strong>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper);">
+							<span style="font-size: 0.85rem; color: var(--text-secondary);">${g.group || 'Generale'}</span>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper); text-align: center; font-weight: bold;">
+							${g.partySize || 1}
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper); text-align: center;">
+							<div style="display: flex; justify-content: center; gap: 0.25rem;">
+								<button type="button" class="btn-status-toggle ${g.rsvpStatus === 'Attending' ? 'active-attending' : ''}" onclick="setRsvpStatus('${g.id}', 'Attending')">✓ Sì</button>
+								<button type="button" class="btn-status-toggle ${g.rsvpStatus === 'Pending' ? 'active-pending' : ''}" onclick="setRsvpStatus('${g.id}', 'Pending')">? Attesa</button>
+								<button type="button" class="btn-status-toggle ${g.rsvpStatus === 'Declined' ? 'active-declined' : ''}" onclick="setRsvpStatus('${g.id}', 'Declined')">✗ No</button>
+							</div>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper);">
+							<span style="font-size: 0.9rem; ${g.dietary && g.dietary !== 'Nessuna' ? 'color: var(--accent-blue); font-weight: bold;' : 'color: var(--text-secondary);'}">
+								${g.dietary || 'Nessuna'}
+							</span>
+						</td>
+						<td style="padding: 0.6rem; border: 1px solid var(--muted-paper); text-align: center;">
+							<button type="button" class="action-icon-btn" title="Elimina RSVP" onclick="deleteRsvpItem('${g.id}')">
+								🗑️
+							</button>
+						</td>
+					`;
+					tableBody.appendChild(tr);
+				});
+			}
+		}
+	}
+
+	loadGuests();
+	render();
+</script>

@@ -1,0 +1,454 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Contador de Palavras e Cronômetro de Votos de Casamento",
+      "url": "https://manage.wedding/pt/wedding-vow-timer",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "Calcule a duração exata da leitura dos seus votos de casamento no altar, ajuste pausas para emoção e lágrimas, compare com seu parceiro e ensaie com cronômetro.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  ]
+};
+---
+
+<Layout
+	title="Cronômetro de Votos de Casamento — Contador de Palavras e Ritmo"
+	description="Calcule o tempo de fala dos seus votos de casamento, compare o tamanho com o do noivo/noiva e ensaie com o cronômetro para o altar."
+	lang="pt"
+	schema={jsonLd}
+>
+	<nav class="breadcrumb-nav" aria-label="Breadcrumb" style="max-width: 1200px; margin: 1rem auto 0; padding: 0 1rem; font-size: 0.88rem;">
+		<ol style="list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; color: var(--text-secondary);">
+			<li><a href="/pt/" style="color: var(--text-secondary); text-decoration: none;">Início</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li><a href="/pt/stationery" style="color: var(--text-secondary); text-decoration: none;">Discursos e Papelaria</a></li>
+			<li><span style="color: var(--text-muted);">&rsaquo;</span></li>
+			<li aria-current="page" style="color: var(--fg-pencil); font-weight: 700;">Cronômetro de Votos</li>
+		</ol>
+	</nav>
+
+	<main style="max-width: 1200px; margin: 0 auto; padding: 1rem 1rem 3.5rem;">
+		
+		<!-- Hero Section -->
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<div class="tape" style="margin: 0 auto 0.75rem;"></div>
+			<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--post-it); border: 2px solid var(--fg-pencil); border-radius: 999px; padding: 4px 14px; margin-bottom: 0.75rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<span>💍</span>
+				<span style="font-size: 0.85rem; font-weight: 700; color: var(--fg-pencil);">Cronômetro para o Altar e Caderninho de Votos</span>
+			</div>
+			<h1 class="font-heading" style="font-size: clamp(1.85rem, 4vw, 2.75rem); color: var(--fg-pencil); margin: 0.25rem 0 0.75rem; line-height: 1.15;">
+				Cronômetro de Votos de Casamento
+			</h1>
+			<p class="font-body" style="font-size: 1.05rem; color: var(--text-secondary); max-width: 780px; margin: 0 auto; line-height: 1.5;">
+				Cole o rascunho dos seus votos para calcular o <strong>tempo real de fala</strong>, adicionar pausas para emoção e risos, comparar a extensão com a do parceiro e treinar a leitura em voz alta.
+			</p>
+		</div>
+
+		<!-- Interactive Calculator Grid -->
+		<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start; margin-bottom: 2.5rem;">
+			
+			<!-- Left Column: Inputs -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fff;">
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.5rem;">
+					<h2 class="font-heading" style="font-size: 1.2rem; color: var(--fg-pencil); margin: 0; display: flex; align-items: center; gap: 0.4rem;">
+						<span>✍️</span> Rascunho dos Seus Votos
+					</h2>
+					<button type="button" id="btn-load-sample" style="background: none; border: none; color: #1e40af; font-size: 0.8rem; font-weight: 700; cursor: pointer; text-decoration: underline;">
+						Carregar Exemplo
+					</button>
+				</div>
+
+				<div style="margin-bottom: 1.25rem;">
+					<textarea id="input-vow-text" rows="11" placeholder="Escreva ou cole seus votos aqui..." style="width: 100%; padding: 0.85rem; border: 2px solid var(--fg-pencil); border-radius: 6px; font-family: inherit; font-size: 0.95rem; line-height: 1.6; resize: vertical; box-sizing: border-box;"></textarea>
+				</div>
+
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; margin-bottom: 1.25rem;">
+					<strong style="color: var(--fg-pencil); display: block; font-size: 0.85rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+						Ritmo de Fala e Pausas Emocionais
+					</strong>
+
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+						<div>
+							<label for="select-speaking-pace" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Velocidade de Fala:</label>
+							<select id="select-speaking-pace" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="105" selected>❤️ Romântico / Pausado (105 ppm)</option>
+								<option value="125">🗣️ Conversação Natural (125 ppm)</option>
+								<option value="145">⚡ Rápido / Nervoso (145 ppm)</option>
+							</select>
+						</div>
+						<div>
+							<label for="select-emotion-buffer" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">Margem Emoção e Lágrimas:</label>
+							<select id="select-emotion-buffer" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem; background: #fff;">
+								<option value="20" selected>💧 +20% (Respirações e choro)</option>
+								<option value="10">🙂 +10% (Pausas leves)</option>
+								<option value="0">⏱️ +0% (Leitura direta)</option>
+							</select>
+						</div>
+					</div>
+
+					<div>
+						<label for="input-partner-words" style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 0.2rem;">
+							Palavras do Noivo/Noiva (Opcional para comparar):
+						</label>
+						<input type="number" id="input-partner-words" min="0" max="2000" placeholder="Ex: 280 palavras" style="width: 100%; padding: 0.4rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; font-size: 0.85rem;" />
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right Column: Results -->
+			<div class="hand-card" style="padding: 1.5rem; background: #fffdfa; border-color: var(--fg-pencil); position: sticky; top: 1rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 0.75rem;">
+					<div>
+						<span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-secondary);">Análise do Discurso</span>
+						<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); margin: 0;">
+							Tempo Estimado no Altar
+						</h2>
+					</div>
+					<span id="badge-word-status" style="background: #dcfce7; border: 1.5px solid #15803d; color: #15803d; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">Tamanho Ideal</span>
+				</div>
+
+				<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem;">
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Tempo de Fala</span>
+						<strong id="stat-duration-time" style="font-size: 2rem; font-weight: 900; color: #1e40af; line-height: 1.1;">2m 35s</strong>
+						<span id="stat-duration-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">(Ideal: 2m 00s – 3m 00s)</span>
+					</div>
+
+					<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 0.85rem; text-align: center; box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block;">Total de Palavras</span>
+						<strong id="stat-word-count" style="font-size: 2rem; font-weight: 900; color: #b91c1c; line-height: 1.1;">274</strong>
+						<span id="stat-words-sub" style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 2px;">Meta: 250–350 palavras</span>
+					</div>
+				</div>
+
+				<div style="background: #f8fafc; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.88rem;">
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">📏 Caracteres:</span>
+						<strong id="stat-char-count" style="color: var(--fg-pencil);">1.450 caracteres</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px dashed #cbd5e1;">
+						<span style="color: #475569;">📑 Páginas do Caderninho (10x15):</span>
+						<strong id="stat-booklet-pages" style="color: var(--fg-pencil);">2 páginas / 1 cartão frente e verso</strong>
+					</div>
+					<div style="display: flex; justify-content: space-between; padding: 0.3rem 0;">
+						<span style="color: #475569;">⚖️ Equilíbrio com o Parceiro:</span>
+						<strong id="stat-partner-balance" style="color: #15803d;">Muito Equilibrado</strong>
+					</div>
+				</div>
+
+				<!-- Live Stopwatch -->
+				<div style="background: #fff; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem; text-align: center;">
+					<span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">🎙️ Cronômetro para Ensaio em Voz Alta</span>
+					<div id="display-stopwatch" style="font-size: 2.25rem; font-family: monospace; font-weight: 900; color: var(--fg-pencil); margin: 0.25rem 0 0.5rem;">
+						00:00.0
+					</div>
+					<div style="display: flex; justify-content: center; gap: 0.5rem;">
+						<button type="button" id="btn-timer-toggle" class="hand-btn" style="background: #15803d; color: #fff; padding: 0.4rem 1.2rem; font-weight: 700; font-size: 0.85rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; cursor: pointer;">
+							▶️ Iniciar Ensaio
+						</button>
+						<button type="button" id="btn-timer-reset" class="hand-btn" style="background: #e2e8f0; color: #334155; padding: 0.4rem 0.8rem; font-weight: 700; font-size: 0.85rem; border: 1.5px solid var(--fg-pencil); border-radius: 4px; cursor: pointer;">
+							🔄 Reiniciar
+						</button>
+					</div>
+				</div>
+
+				<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+					<button type="button" id="btn-print-vow-card" class="hand-btn" style="flex: 1; background: var(--accent-red); color: #fff; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>🖨️</span> Imprimir Cartão de Votos (PDF)
+					</button>
+					<button type="button" id="btn-export-doc" class="hand-btn" style="flex: 1; background: #fff; color: var(--fg-pencil); padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--fg-pencil); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<span>📄</span> Exportar Word (.doc)
+					</button>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Related Tools Component -->
+		<RelatedTools currentPath="/pt/wedding-vow-timer" category="stationery" />
+
+	</main>
+
+	<!-- Hidden Print Containers for Vector PDF / Window.print -->
+	<div id="print-root" class="print-only">
+		<div id="print-vow-container" class="print-page" style="padding: 15mm; font-family: 'Times New Roman', serif;">
+			<div style="border: 2pt solid #444; border-radius: 8pt; padding: 15mm; min-height: 80vh; display: flex; flex-direction: column; justify-content: space-between;">
+				<div>
+					<div style="text-align: center; border-bottom: 1pt solid #ccc; padding-bottom: 4mm; margin-bottom: 8mm;">
+						<h1 style="font-size: 18pt; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 2mm 0;">Meus Votos de Casamento</h1>
+						<p id="print-vow-meta" style="font-size: 9pt; color: #666; margin: 0;">Cartão de Cerimônia | Manage.Wedding</p>
+					</div>
+					<div id="print-vow-body" style="font-size: 13pt; line-height: 1.8; color: #111; white-space: pre-wrap;">
+					</div>
+				</div>
+				<div style="text-align: center; border-top: 1pt solid #eee; padding-top: 4mm; font-size: 9pt; color: #888;">
+					Para Sempre & Sempre
+				</div>
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.hand-card {
+		background: #fff;
+		border: 2px solid var(--fg-pencil);
+		border-radius: 8px;
+		box-shadow: 4px 4px 0px var(--fg-pencil);
+	}
+
+	.badge-postit {
+		background: var(--post-it);
+		border: 1.5px solid var(--fg-pencil);
+		box-shadow: 2px 2px 0px var(--fg-pencil);
+	}
+</style>
+
+<style is:global>
+	.print-only {
+		display: none;
+	}
+
+	@media print {
+		nav,
+		footer,
+		.nav-sketch,
+		.site-footer,
+		.site-header,
+		.nav-links-desktop,
+		.lang-dropdown-wrapper,
+		.hamburger-btn,
+		.no-print,
+		main,
+		.breadcrumb-nav {
+			display: none !important;
+		}
+
+		.print-only,
+		#print-root {
+			display: block !important;
+			visibility: visible !important;
+			position: static !important;
+			width: 100% !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		#print-root * {
+			visibility: visible !important;
+		}
+
+		.print-page {
+			page-break-after: always !important;
+			break-after: page !important;
+		}
+	}
+</style>
+
+<script is:inline>
+	const inputVowText = document.getElementById('input-vow-text');
+	const btnLoadSample = document.getElementById('btn-load-sample');
+	const selectSpeakingPace = document.getElementById('select-speaking-pace');
+	const selectEmotionBuffer = document.getElementById('select-emotion-buffer');
+	const inputPartnerWords = document.getElementById('input-partner-words');
+
+	const statDurationTime = document.getElementById('stat-duration-time');
+	const statDurationSub = document.getElementById('stat-duration-sub');
+	const statWordCount = document.getElementById('stat-word-count');
+	const badgeWordStatus = document.getElementById('badge-word-status');
+	const statCharCount = document.getElementById('stat-char-count');
+	const statBookletPages = document.getElementById('stat-booklet-pages');
+	const statPartnerBalance = document.getElementById('stat-partner-balance');
+
+	const displayStopwatch = document.getElementById('display-stopwatch');
+	const btnTimerToggle = document.getElementById('btn-timer-toggle');
+	const btnTimerReset = document.getElementById('btn-timer-reset');
+
+	const SAMPLE_VOWS = `Desde o primeiro instante em que nossos caminhos se cruzaram naquela tarde em São Paulo, eu soube que minha vida havia mudado para sempre. Você trouxe alegria sincera, leveza e paz para todos os meus dias.
+
+Admiro sua bondade sem limites, sua paciência e a capacidade única de me fazer sorrir mesmo após os dias mais difíceis.
+
+Hoje, diante das nossas famílias e de todos os nossos amigos mais queridos, eu prometo a você:
+Prometo te ouvir sempre com o coração aberto e compreensivo.
+Prometo incentivar seus maiores sonhos e celebrar cada conquista ao seu lado.
+Prometo ser seu abrigo nos momentos incertos e seu parceiro em todas as alegrias.
+E prometo deixar você sempre escolher as músicas nas nossas viagens de carro.
+
+Você é minha pessoa favorita, minha melhor aventura e o grande amor da minha vida. Hoje, amanhã e por todos os anos que virão, eu escolho você.`;
+
+	function calculateVows() {
+		const text = inputVowText.value.trim();
+		const words = text.length > 0 ? text.split(/\s+/).filter(Boolean) : [];
+		const wordCount = words.length;
+		const charCount = text.length;
+
+		statWordCount.textContent = wordCount.toLocaleString();
+		statCharCount.textContent = `${charCount.toLocaleString()} caracteres`;
+
+		const paceWPM = parseInt(selectSpeakingPace.value, 10) || 105;
+		const emotionPercent = parseInt(selectEmotionBuffer.value, 10) || 20;
+
+		const rawMinutes = wordCount / paceWPM;
+		const totalSeconds = Math.round(rawMinutes * 60 * (1 + emotionPercent / 100));
+
+		const mins = Math.floor(totalSeconds / 60);
+		const secs = totalSeconds % 60;
+		statDurationTime.textContent = `${mins}m ${secs < 10 ? '0' : ''}${secs}s`;
+
+		if (wordCount === 0) {
+			badgeWordStatus.textContent = 'Digite seus votos';
+			badgeWordStatus.style.background = '#f1f5f9';
+			badgeWordStatus.style.color = '#64748b';
+			badgeWordStatus.style.borderColor = '#cbd5e1';
+		} else if (wordCount < 180) {
+			badgeWordStatus.textContent = 'Muito curto (<1,5 min)';
+			badgeWordStatus.style.background = '#fef3c7';
+			badgeWordStatus.style.color = '#b45309';
+			badgeWordStatus.style.borderColor = '#b45309';
+		} else if (wordCount > 450) {
+			badgeWordStatus.textContent = 'Muito longo (>4 min)';
+			badgeWordStatus.style.background = '#fee2e2';
+			badgeWordStatus.style.color = '#dc2626';
+			badgeWordStatus.style.borderColor = '#dc2626';
+		} else {
+			badgeWordStatus.textContent = 'Tamanho Ideal (2–3 min)';
+			badgeWordStatus.style.background = '#dcfce7';
+			badgeWordStatus.style.color = '#15803d';
+			badgeWordStatus.style.borderColor = '#15803d';
+		}
+
+		const pagesNeeded = Math.max(1, Math.ceil(wordCount / 140));
+		statBookletPages.textContent = `${pagesNeeded} ${pagesNeeded === 1 ? 'página' : 'páginas'} (cartão 10x15 cm)`;
+
+		const partnerWords = parseInt(inputPartnerWords.value, 10);
+		if (!partnerWords || partnerWords <= 0) {
+			statPartnerBalance.textContent = 'Digite palavras do parceiro';
+			statPartnerBalance.style.color = '#64748b';
+		} else {
+			const diff = Math.abs(wordCount - partnerWords);
+			const ratio = wordCount / partnerWords;
+			if (ratio >= 0.75 && ratio <= 1.35) {
+				statPartnerBalance.textContent = `✅ Muito Equilibrado (${diff} palavras de dif.)`;
+				statPartnerBalance.style.color = '#15803d';
+			} else if (ratio < 0.75) {
+				statPartnerBalance.textContent = `⚠️ Seus votos são menores (-${diff} palavras)`;
+				statPartnerBalance.style.color = '#b45309';
+			} else {
+				statPartnerBalance.textContent = `⚠️ Seus votos são maiores (+${diff} palavras)`;
+				statPartnerBalance.style.color = '#dc2626';
+			}
+		}
+
+		document.getElementById('print-vow-body').textContent = text || 'Escreva seus votos para imprimir...';
+	}
+
+	btnLoadSample.addEventListener('click', () => {
+		inputVowText.value = SAMPLE_VOWS;
+		inputPartnerWords.value = "260";
+		calculateVows();
+	});
+
+	[inputVowText, selectSpeakingPace, selectEmotionBuffer, inputPartnerWords].forEach(el => {
+		el.addEventListener('input', calculateVows);
+		el.addEventListener('change', calculateVows);
+	});
+
+	let timerInterval = null;
+	let startTime = 0;
+	let elapsedTime = 0;
+	let isRunning = false;
+
+	function updateStopwatch() {
+		const now = Date.now();
+		const totalMs = elapsedTime + (now - startTime);
+		const totalSecs = Math.floor(totalMs / 1000);
+		const mins = Math.floor(totalSecs / 60);
+		const secs = totalSecs % 60;
+		const tenths = Math.floor((totalMs % 1000) / 100);
+		displayStopwatch.textContent = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}.${tenths}`;
+	}
+
+	btnTimerToggle.addEventListener('click', () => {
+		if (!isRunning) {
+			isRunning = true;
+			startTime = Date.now();
+			timerInterval = setInterval(updateStopwatch, 100);
+			btnTimerToggle.textContent = '⏸️ Pausar';
+			btnTimerToggle.style.background = '#dc2626';
+		} else {
+			isRunning = false;
+			elapsedTime += Date.now() - startTime;
+			clearInterval(timerInterval);
+			btnTimerToggle.textContent = '▶️ Retomar';
+			btnTimerToggle.style.background = '#15803d';
+		}
+	});
+
+	btnTimerReset.addEventListener('click', () => {
+		isRunning = false;
+		clearInterval(timerInterval);
+		elapsedTime = 0;
+		displayStopwatch.textContent = '00:00.0';
+		btnTimerToggle.textContent = '▶️ Iniciar Ensaio';
+		btnTimerToggle.style.background = '#15803d';
+	});
+
+	document.getElementById('btn-print-vow-card').addEventListener('click', () => {
+		calculateVows();
+		window.print();
+	});
+
+	document.getElementById('btn-export-doc').addEventListener('click', () => {
+		calculateVows();
+		const text = inputVowText.value.replace(/\n/g, '<br/>');
+		const duration = statDurationTime.textContent;
+		const words = statWordCount.textContent;
+
+		const html = `
+			<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+			<head><meta charset='utf-8'><title>Votos de Casamento</title>
+			<style>body{font-family:Georgia,serif;line-height:1.8;padding:20pt;} h1{text-align:center;font-size:20pt;} .meta{text-align:center;color:#666;font-size:10pt;}</style>
+			</head>
+			<body>
+				<h1>Nossos Votos de Casamento</h1>
+				<p class="meta"><strong>Tempo de Fala:</strong> ${duration} | <strong>Total de Palavras:</strong> ${words}</p>
+				<hr/>
+				<div style="font-size:14pt; margin-top:20pt;">
+					${text}
+				</div>
+				<br/><br/>
+				<p style="text-align:center;font-style:italic;">— Para Sempre & Sempre —</p>
+			</body>
+			</html>
+		`;
+
+		const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `Votos-Casamento-${new Date().toISOString().slice(0,10)}.doc`;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	});
+
+	if (!inputVowText.value) {
+		inputVowText.value = SAMPLE_VOWS;
+		inputPartnerWords.value = "260";
+	}
+	calculateVows();
+</script>

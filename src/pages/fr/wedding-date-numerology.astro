@@ -1,0 +1,325 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/fr/wedding-date-numerology/#webapp",
+      "name": "Calculateur de Numérologie de Date de Mariage et Compatibilité",
+      "url": "https://manage.wedding/fr/wedding-date-numerology",
+      "description": "Calculateur de numérologie de mariage gratuit. Calculez les chemins de vie des conjoints, réduisez la date du grand jour et découvrez la vibration énergétique et la compatibilité de votre couple.",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "All",
+      "inLanguage": "fr",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qu'est-ce que la numérologie de la date de mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La numérologie de mariage consiste à additionner les chiffres de la date (jour, mois, année) pour obtenir un nombre racine entre 1 et 9. Ce chiffre révèle la vibration dominante et la dynamique symbolique de votre future union."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment le score de compatibilité est-il calculé ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'algorithme analyse l'interaction entre les chemins de vie des deux partenaires (issus de leurs dates de naissance respectives) et le chiffre racine de la date de mariage choisie."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quels sont les chiffres les plus propices pour un mariage ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Les chiffres 2 (harmonie, écoute, union d'âmes) et 6 (amour familial, douceur du foyer) sont traditionnellement les plus plébiscités pour un mariage, même si chaque nombre apporte ses propres vertus."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "Comment Calculer la Numérologie de Votre Date de Mariage",
+      "description": "Guide pour calculer les chemins de vie et interpréter l'archétype spirituel de son mariage.",
+      "inLanguage": "fr",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Étape 1 : Calculer le Chemin de Vie du Conjoint 1",
+          "text": "Additionnez tous les chiffres de la date de naissance de la première personne jusqu'à obtenir un chiffre entre 1 et 9."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 2 : Calculer le Chemin de Vie du Conjoint 2",
+          "text": "Additionnez tous les chiffres de la date de naissance de la seconde personne pour trouver son nombre racine."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 3 : Réduire la Date du Mariage",
+          "text": "Additionnez jour + mois + année du mariage prévu (ex. 14 Octobre 2026 = 1+4 + 1+0 + 2+0+2+6 = 5 + 1 + 10 = 16 = 1+6 = 7)."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Étape 4 : Découvrir la Vibration et le Thème de votre Couple",
+          "text": "Consultez l'archétype associé à votre nombre pour aligner la thématique de votre cérémonie."
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+	title="Numérologie Date de Mariage & Compatibilité Couple (Gratuit) | Manage.Wedding"
+	description="Découvrez la numérologie de votre date de mariage et votre score de compatibilité de couple. Calculez vos chemins de vie et l'archétype de votre grand jour."
+	schema={schema}
+>
+	<main style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<Breadcrumb title="Numérologie Date de Mariage" category="stationery" />
+		
+		<section class="section-paper fade-in" style="min-height: 100vh; padding: 2rem 1rem;">
+			<div style="max-width: 800px; margin: 0 auto;">
+				
+				<div class="hand-card" style="margin-bottom: 2rem; padding: 2rem; background: #fff;">
+					<div class="tape" style="margin: 0 auto 1rem;"></div>
+					<span class="badge-postit" style="display: table; margin: 0 auto 0.75rem;">Astrologie & Symbolique</span>
+					<h1 class="font-heading" style="text-align: center; color: var(--fg-pencil); font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 0.75rem;">
+						Calculateur de Numérologie <span class="accent-italic">de Mariage</span>
+					</h1>
+					<p class="font-body" style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.1rem;">
+						Entrez vos dates de naissance et votre date de mariage pour révéler votre vibration cosmique et votre score de compatibilité !
+					</p>
+					
+					<form id="numerology-form" style="display: flex; flex-direction: column; gap: 1.5rem;">
+						<div>
+							<label for="partner1" class="font-heading" style="display: block; margin-bottom: 0.5rem; color: var(--accent-red);">Date de Naissance — Conjoint(e) 1</label>
+							<input type="date" id="partner1" required style="width: 100%; box-sizing: border-box; padding: 0.75rem; border: 2px solid var(--fg-pencil); background: #fff; font-family: inherit; color: var(--fg-pencil); font-size: 1rem; border-radius: 4px;" />
+						</div>
+						<div>
+							<label for="partner2" class="font-heading" style="display: block; margin-bottom: 0.5rem; color: var(--accent-blue);">Date de Naissance — Conjoint(e) 2</label>
+							<input type="date" id="partner2" required style="width: 100%; box-sizing: border-box; padding: 0.75rem; border: 2px solid var(--fg-pencil); background: #fff; font-family: inherit; color: var(--fg-pencil); font-size: 1rem; border-radius: 4px;" />
+						</div>
+						<div>
+							<label for="wedding-date" class="font-heading" style="display: block; margin-bottom: 0.5rem; color: #16a34a;">Date Prévue du Mariage</label>
+							<input type="date" id="wedding-date" required style="width: 100%; box-sizing: border-box; padding: 0.75rem; border: 2px solid var(--fg-pencil); background: #fff; font-family: inherit; color: var(--fg-pencil); font-size: 1rem; border-radius: 4px;" />
+						</div>
+						<button type="submit" class="hand-btn" style="width: 100%; font-size: 1.2rem; margin-top: 0.5rem; padding: 0.85rem;">
+							✨ Découvrir Notre Numérologie
+						</button>
+					</form>
+				</div>
+
+				<div id="result-box" class="hand-card" style="margin-bottom: 3rem; padding: 2rem; background: #fff;">
+					<h2 class="font-heading" style="color: var(--fg-pencil); margin-bottom: 1rem; font-size: 1.8rem; text-align: center;">Votre Lecture Numérologique</h2>
+					<div id="initial-message" class="font-body" style="color: var(--text-secondary); font-style: italic; text-align: center;">
+						Remplissez le formulaire ci-dessus pour révéler les secrets énergétiques de votre grand jour !
+					</div>
+					
+					<div id="results-content" style="display: none;">
+						<div style="margin-bottom: 1.5rem; background: #eff6ff; padding: 1.25rem; border-radius: 6px; border: 1.5px solid var(--accent-blue);">
+							<h3 class="font-heading" style="color: var(--accent-blue); font-size: 1.25rem; margin-top: 0;">Chemin de Vie Conjoint(e) 1 : Nombre <span id="p1-number"></span></h3>
+							<p id="p1-desc" class="font-body" style="color: var(--fg-pencil); margin-top: 0.5rem; line-height: 1.6;"></p>
+						</div>
+						
+						<div style="margin-bottom: 1.5rem; background: #fef2f2; padding: 1.25rem; border-radius: 6px; border: 1.5px solid var(--accent-red);">
+							<h3 class="font-heading" style="color: var(--accent-red); font-size: 1.25rem; margin-top: 0;">Chemin de Vie Conjoint(e) 2 : Nombre <span id="p2-number"></span></h3>
+							<p id="p2-desc" class="font-body" style="color: var(--fg-pencil); margin-top: 0.5rem; line-height: 1.6;"></p>
+						</div>
+						
+						<div style="margin-bottom: 2rem; background: #f0fdf4; padding: 1.25rem; border-radius: 6px; border: 1.5px solid #16a34a;">
+							<h3 class="font-heading" style="color: #166534; font-size: 1.25rem; margin-top: 0;">Nombre Vibratoire du Mariage : <span id="wd-number"></span></h3>
+							<p id="wd-desc" class="font-body" style="color: var(--fg-pencil); margin-top: 0.5rem; line-height: 1.6;"></p>
+						</div>
+						
+						<div style="border-top: 2px dashed var(--fg-pencil); padding-top: 1.5rem; text-align: center;">
+							<h3 class="font-heading" style="color: var(--fg-pencil); font-size: 1.5rem; margin-bottom: 0.5rem;">Score d'Harmonie & Compatibilité : <span id="comp-score" style="color: #16a34a;"></span>%</h3>
+							
+							<div style="width: 100%; height: 26px; border: 2px solid var(--fg-pencil); border-radius: 13px; overflow: hidden; margin: 1rem 0; position: relative; background: #eee;">
+								<div id="gauge-fill" style="width: 0%; height: 100%; background: #16a34a; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+							</div>
+							
+							<p id="comp-desc" class="font-body" style="font-style: italic; color: var(--fg-pencil); font-size: 1.05rem;"></p>
+						</div>
+					</div>
+				</div>
+
+				<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+				<div class="result-box" style="margin-bottom: 2.5rem; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); padding: 1.5rem 1.75rem; position: relative;">
+					<div class="badge-postit" style="top: -12px; right: 15px;">⚡ Règle de Calcul</div>
+					<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+						<span>⚡</span> Guide Rapide : Formule de Réduction Numérologique
+					</h3>
+					<p class="font-body" style="font-size: 1rem; line-height: 1.6; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+						<strong>La Règle d'Or :</strong> Pour calculer le chiffre de votre mariage, additionnez chaque chiffre de la date <strong>(Jour + Mois + Année)</strong> jusqu'à obtenir un <strong>chiffre unique entre 1 et 9</strong>. Par exemple, le <em>14 Octobre 2026</em> donne : <code style="background: rgba(255,255,255,0.7); padding: 2px 6px; border-radius: 3px; font-weight: bold;">(1+4) + (1+0) + (2+0+2+6) = 5 + 1 + 10 = 16 → 1 + 6 = 7 (Le Chercheur de Sens)</code>.
+					</p>
+					
+					<!-- Benchmark Numerology Chart Table -->
+					<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">
+						<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+							<thead>
+								<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+									<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Nombre</th>
+									<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Archétype</th>
+									<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Force du Couple</th>
+									<th style="padding: 0.65rem 0.8rem; font-family: var(--font-heading); color: var(--fg-pencil);">Ambiance Idéale</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr style="border-bottom: 1px solid #e2e8f0;">
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">Nombre 1</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Le Pionnier</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Nouveaux départs, audace, indépendance</td>
+									<td style="padding: 0.6rem 0.8rem;">Mariage urbain contemporain, lignes épurées</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">Nombre 2 (Top Choix)</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 600;">L'Harmonieux</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Complicité intime, écoute, union profonde</td>
+									<td style="padding: 0.6rem 0.8rem; color: #16a34a; font-weight: 600;">Cérémonie romantique aux chandelles, quatuor à cordes</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e2e8f0;">
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">Nombre 3</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Le Créatif</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Rires, optimisme débordant, vie festive</td>
+									<td style="padding: 0.6rem 0.8rem;">Cocktail dînatoire pétillant, live band</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">Nombre 4</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Le Bâtisseur</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Stabilité, loyauté, valeurs familiales solides</td>
+									<td style="padding: 0.6rem 0.8rem;">Domaine historique, banquet traditionnel</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e2e8f0;">
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">Nombre 5</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 600;">L'Aventurier</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Voyages, liberté, dynamisme</td>
+									<td style="padding: 0.6rem 0.8rem;">Mariage à l'étranger (Destination Wedding), bord de mer</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">Nombre 6 (Top Choix)</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Le Protecteur</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Amour du foyer, douceur, bienveillance</td>
+									<td style="padding: 0.6rem 0.8rem; color: #16a34a; font-weight: 600;">Grange rénovée, mas provençal, grandes tablées</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e2e8f0;">
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">Nombre 7</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 600;">Le Sage</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Profondeur d'esprit, connexion mystique</td>
+									<td style="padding: 0.6rem 0.8rem;">Lieu intime, verrière botanique ou abbaye</td>
+								</tr>
+								<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">Nombre 8</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 600;">La Réussite</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Prospérité, puissance, objectifs ambitieux</td>
+									<td style="padding: 0.6rem 0.8rem;">Château prestigieux, cascade de champagne</td>
+								</tr>
+								<tr>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700; color: var(--accent-blue);">Nombre 9</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 600;">L'Humaniste</td>
+									<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Générosité, ouverture d'esprit, altruisme</td>
+									<td style="padding: 0.6rem 0.8rem;">Mariage écoresponsable, nature et authenticité</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<!-- Related Planning Tools -->
+				<RelatedTools currentPath="/fr/wedding-date-numerology" category="stationery" />
+
+			</div>
+		</section>
+	</main>
+</Layout>
+
+<script is:inline>
+	const descriptions = {
+		1: "Le Pionnier : Votre énergie est marquée par l'indépendance, l'audace et l'esprit d'initiative. Votre couple construit son propre chemin avec fierté et ambition.",
+		2: "Le Partenaire : Rayonnement d'harmonie, d'écoute et de tendresse. Ce nombre apporte un équilibre idéal axé sur la complicité intime et le respect mutuel.",
+		3: "Le Créatif : Une vie à deux débordante de rires, d'optimisme, de vie sociale animée et d'inspiration partagée.",
+		4: "Le Bâtisseur : Stabilité inébranlable, fidélité et pragmatisme. Vous bâtissez un foyer solide et pérenne capable de traverser toutes les épreuves.",
+		5: "L'Aventurier : Soif de liberté, de voyages et d'expériences palpitantes. Une relation dynamique qui ne connaît jamais la routine.",
+		6: "Le Protecteur : Centré sur l'amour inconditionnel, la famille et le bien-être du foyer. Une union chaleureuse et réconfortante.",
+		7: "Le Sage : Une connexion intellectuelle et spirituelle profonde qui transcende le quotidien pour toucher à l'essentiel.",
+		8: "La Réussite : Énergie de prospérité, d'ambition et de projets d'envergure menés main dans la main.",
+		9: "L'Humaniste : Générosité, empathie, tolérance et ouverture bienveillante sur le monde qui vous entoure."
+	};
+
+	function reduceDate(dateString) {
+		if (!dateString) return 0;
+		let sum = dateString.replace(/\D/g, '').split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+		while (sum > 9) {
+			sum = sum.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+		}
+		return sum || 1; 
+	}
+
+	const form = document.getElementById('numerology-form');
+	if (form) {
+		form.addEventListener('submit', function(e) {
+			e.preventDefault();
+			
+			const p1Input = document.getElementById('partner1');
+			const p2Input = document.getElementById('partner2');
+			const wdInput = document.getElementById('wedding-date');
+			
+			if (!p1Input.value || !p2Input.value || !wdInput.value) return;
+			
+			const p1Num = reduceDate(p1Input.value);
+			const p2Num = reduceDate(p2Input.value);
+			const wdNum = reduceDate(wdInput.value);
+			
+			const initialMsg = document.getElementById('initial-message');
+			const resultsContent = document.getElementById('results-content');
+			
+			if (initialMsg) initialMsg.style.display = 'none';
+			if (resultsContent) resultsContent.style.display = 'block';
+			
+			document.getElementById('p1-number').textContent = p1Num.toString();
+			document.getElementById('p1-desc').textContent = descriptions[p1Num];
+			
+			document.getElementById('p2-number').textContent = p2Num.toString();
+			document.getElementById('p2-desc').textContent = descriptions[p2Num];
+			
+			document.getElementById('wd-number').textContent = wdNum.toString();
+			document.getElementById('wd-desc').textContent = descriptions[wdNum];
+			
+			const seed = (p1Num * 3 + p2Num * 7 + wdNum * 5);
+			const score = Math.floor((seed % 26) + 75);
+			
+			document.getElementById('comp-score').textContent = score.toString();
+			
+			const gaugeFill = document.getElementById('gauge-fill');
+			if (gaugeFill) {
+				gaugeFill.style.width = '0%';
+				setTimeout(() => {
+					gaugeFill.style.width = score + '%';
+				}, 50);
+			}
+			
+			const compDesc = document.getElementById('comp-desc');
+			if (compDesc) {
+				if (score >= 95) {
+					compDesc.textContent = "Une alliance exceptionnelle ! Les astres et les nombres s'alignent parfaitement pour une vie radieuse.";
+				} else if (score >= 85) {
+					compDesc.textContent = "Une très belle harmonie énergétique, alliant complicité, joie de vivre et soutien mutuel.";
+				} else {
+					compDesc.textContent = "Un lien fort et équilibré où vos personnalités respectives se complètent avec harmonie.";
+				}
+			}
+		});
+	}
+</script>

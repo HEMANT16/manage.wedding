@@ -1,0 +1,409 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RelatedTools from '../../components/RelatedTools.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "CalculatorApplication"],
+      "@id": "https://manage.wedding/es/wedding-checklist/#webapp",
+      "name": "Checklist de Boda Interactivo y Planificador de Tareas a 12 Meses",
+      "url": "https://manage.wedding/es/wedding-checklist",
+      "inLanguage": "es",
+      "description": "Checklist interactivo y planificador de boda a 12 meses. Controla todas las tareas y fases de organización con guardado automático en tu navegador.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cuándo se debe empezar a usar el checklist de boda?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Lo ideal es comenzar entre 12 y 14 meses antes de la fecha deseada. Esto permite reservar la finca o iglesia con antelación y contratar a los proveedores más solicitados sin prisas."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Se guarda mi progreso automáticamente en este checklist?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí, cada tarea que marques se guarda automáticamente en la memoria local (localStorage) de tu navegador para que puedas retomar la lista cuando quieras."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuáles son las primeras tareas obligatorias que hay que cerrar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fijar el presupuesto máximo, redactar el borrador de la lista de invitados y reservar el espacio de la ceremonia y el banquete."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "Cómo Organizar tu Boda con el Checklist a 12 Meses",
+      "description": "Cronograma maestro estructurado en 6 fases para planificar tu enlace de principio a fin.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Fase 1 (12+ Meses): Presupuesto, Invitados y Espacio",
+          "text": "Define el presupuesto total, número estimado de invitados y reserva la finca o iglesia."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Fase 2 (9–10 Meses): Proveedores Principales y Vestido",
+          "text": "Contrata fotógrafo, vídeo, catering, música/DJ y comienza la búsqueda del vestido de novia y traje de novio."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Fase 3 (6–7 Meses): Save the Date y Flores",
+          "text": "Envía los Save the Date, contrata floristería y reserva luna de miel y alojamiento para invitados."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Fase 4 (3–4 Meses): Invitaciones, Tarta y Alianzas",
+          "text": "Encarga las invitaciones oficiales, elige las alianzas y realiza la prueba de peinado y maquillaje."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Fase 5 (1–2 Meses): Confirmaciones y Trámites",
+          "text": "Envía las invitaciones con 8 semanas de antelación, tramita el expediente matrimonial y realiza la última prueba de vestido."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Fase 6 (Semana de la Boda y Día D): Coordinación y Disfrute",
+          "text": "Cierra el seating plan final, prepara los sobres de proveedores y ¡disfruta al máximo de tu gran día!"
+        }
+      ]
+    }
+  ]
+};
+
+const tasks = [
+  {
+    month: "12+ Meses Antes",
+    items: [
+      "Fijar el presupuesto global de la boda",
+      "Redactar un borrador de la lista de invitados",
+      "Elegir la fecha o temporada del enlace",
+      "Contratar wedding planner (opcional)",
+      "Reservar el lugar de ceremonia y el salón/finca"
+    ]
+  },
+  {
+    month: "10-11 Meses Antes",
+    items: [
+      "Elegir padrinos, madrina y testigos",
+      "Contratar fotógrafo y videógrafo",
+      "Reservar oficiante o sacerdote",
+      "Empezar a mirar vestidos de novia y trajes"
+    ]
+  },
+  {
+    month: "8-9 Meses Antes",
+    items: [
+      "Contratar catering y programar prueba de menú",
+      "Contratar grupo de música en directo o DJ",
+      "Abrir lista de bodas o cuenta de regalos",
+      "Bloquear habitaciones de hotel para invitados de fuera"
+    ]
+  },
+  {
+    month: "6-7 Meses Antes",
+    items: [
+      "Comprar el vestido de novia y complementos",
+      "Contratar florista y decoración",
+      "Enviar el Save the Date a los invitados",
+      "Reservar el viaje de luna de miel",
+      "Elegir vestidos de damas de honor y pajes"
+    ]
+  },
+  {
+    month: "4-5 Meses Antes",
+    items: [
+      "Reservar restaurante para la cena de ensayo",
+      "Encargar la tarta nupcial y mesa dulce",
+      "Comprar las alianzas y arras",
+      "Reservar estilista de peluquería y maquillaje",
+      "Cerrar la lista definitiva de invitados"
+    ]
+  },
+  {
+    month: "3 Meses Antes",
+    items: [
+      "Imprimir las invitaciones de boda y minutas",
+      "Cerrar la selección de vinos y menú definitivo",
+      "Comprar o alquilar el traje del novio",
+      "Elegir los detalles y regalos para invitados"
+    ]
+  },
+  {
+    month: "2 Meses Antes",
+    items: [
+      "Enviar las invitaciones de boda oficiales",
+      "Escribir los votos y dedicatorias de brindis",
+      "Comprar los regalos para padres y testigos",
+      "Realizar la prueba de maquillaje y peinado"
+    ]
+  },
+  {
+    month: "1 Mes Antes",
+    items: [
+      "Tramitar y recoger el expediente matrimonial",
+      "Última prueba y ajuste del vestido de novia",
+      "Organizar el seating plan y distribución de mesas",
+      "Confirmar horarios finales con todos los proveedores"
+    ]
+  },
+  {
+    month: "2 Semanas Antes",
+    items: [
+      "Comunicar el número final de comensales al catering",
+      "Repasar la lista de fotos imprescindibles con el fotógrafo",
+      "Corte de pelo y retoque de color"
+    ]
+  },
+  {
+    month: "1 Semana Antes",
+    items: [
+      "Hacer las maletas para la luna de miel",
+      "Ensayar los votos en voz alta",
+      "Preparar sobres con los pagos pendientes para proveedores",
+      "Manicura, pedicura y tratamientos relajantes"
+    ]
+  },
+  {
+    month: "El Día Antes",
+    items: [
+      "Asistir al ensayo de la ceremonia",
+      "Disfrutar de la cena previa con los más cercanos",
+      "Descansar y dormir temprano"
+    ]
+  },
+  {
+    month: "El Día de la Boda",
+    items: [
+      "Tomar un buen desayuno nutritivo",
+      "Entregar las alianzas al padrino o padrinos",
+      "¡Casarse y disfrutar cada segundo!"
+    ]
+  }
+];
+---
+
+<Layout 
+	title="Checklist de Boda Interactivo y Planificador a 12 Meses | Manage.Wedding"
+	description="Checklist interactivo y planificador de boda a 12 meses. Controla cada tarea y fase de organización con guardado automático en tu navegador."
+	schema={schema}
+>
+	<main class="section-paper" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+		<Breadcrumb title="Checklist de Boda a 12 Meses" category="guests-logistics" />
+
+		<header class="fade-in category-header" style="text-align: center; margin-top: 1rem;">
+			<h1 class="font-heading" style="font-size: 3.5rem; margin-bottom: 0.5rem; font-weight: 500;">
+				Checklist <span class="accent-italic">de Boda a 12 Meses</span>
+			</h1>
+			<p class="font-body" style="color: var(--secondary-ink); max-width: 600px; margin: 0 auto;">
+				Organiza cada detalle de tu boda paso a paso con nuestro gestor interactivo de tareas categorizadas.
+			</p>
+		</header>
+
+		<div class="home-grid fade-in" style="animation-delay: 0.2s; max-width: 900px; margin: 0 auto;">
+            
+			<div class="hand-card result-box" style="margin-bottom: 2rem;">
+				<h3 class="font-heading" style="margin-bottom: 1rem; text-align: center;">Progreso Global de la Boda</h3>
+				
+                <div style="width: 100%; border: 2px solid var(--fg-pencil); height: 30px; position: relative; overflow: hidden; background: var(--bg-paper); border-radius: 4px;">
+                    <div id="progress-bar-fill" style="width: 0%; height: 100%; background-color: var(--fg-pencil); transition: width 0.3s ease;"></div>
+                    <div id="progress-text" class="font-heading" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--bg-paper); mix-blend-mode: difference; font-weight: bold;">0%</div>
+                </div>
+			</div>
+
+			<div class="hand-card">
+				<form id="checklist-form">
+                    {tasks.map((category, catIndex) => (
+                        <div class="checklist-category" style="margin-bottom: 2rem;">
+                            <h3 class="font-heading" style="margin-bottom: 1rem; border-bottom: 1px dashed var(--fg-pencil); padding-bottom: 0.5rem; color: var(--accent-blue);">{category.month}</h3>
+                            {category.items.map((item, itemIndex) => (
+                                <label style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; cursor: pointer; font-family: var(--font-body); font-size: 1.02rem;">
+                                    <input 
+                                        type="checkbox" 
+                                        class="task-checkbox" 
+                                        data-id={`task-${catIndex}-${itemIndex}`}
+                                        style="width: 1.25rem; height: 1.25rem; accent-color: var(--fg-pencil); cursor: pointer;"
+                                    />
+                                    <span>{item}</span>
+                                </label>
+                            ))}
+                        </div>
+                    ))}
+				</form>
+			</div>
+
+		</div>
+
+		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
+		<div class="result-box" style="max-width: 900px; margin: 2.5rem auto; background: var(--post-it); border: 2.5px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); padding: 1.5rem 1.75rem; position: relative;">
+			<div class="badge-postit" style="top: -12px; right: 15px;">⚡ Guía Rápida de Planificación</div>
+			<h3 class="font-heading" style="font-size: 1.35rem; color: var(--fg-pencil); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+				<span>⚡</span> Cronograma en 6 Fases Clave
+			</h3>
+			<p class="font-body" style="font-size: 1rem; line-height: 1.6; margin-bottom: 1.25rem; color: var(--fg-pencil);">
+				<strong>La Fórmula de Éxito:</strong> Divide la organización de tu boda en <strong>6 etapas principales</strong>: <strong>12+ Meses</strong> (Espacio, Presupuesto y Lista Base), <strong>9–10 Meses</strong> (Proveedores Clave y Vestido), <strong>6–7 Meses</strong> (Save the Date y Flores), <strong>3–4 Meses</strong> (Invitaciones y Alianzas), <strong>1–2 Meses</strong> (Expediente Matrimonial y Confirmaciones), y <strong>Semana de la Boda</strong> (Repaso Final y Celebración).
+			</p>
+			
+			<!-- Benchmark Milestone Table -->
+			<div style="overflow-x: auto; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 4px; box-shadow: 2px 2px 0px var(--fg-pencil);">
+				<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-body); font-size: 0.92rem;">
+					<thead>
+						<tr style="background: var(--muted-paper); border-bottom: 2px solid var(--fg-pencil);">
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Fase de Planificación</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Ventana Temporal</th>
+							<th style="padding: 0.65rem 0.8rem; border-right: 1px solid var(--fg-pencil); font-family: var(--font-heading); color: var(--fg-pencil);">Tareas Imprescindibles</th>
+							<th style="padding: 0.65rem 0.8rem; font-family: var(--font-heading); color: var(--fg-pencil);">Riesgo de Retrasarse</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">1. Cimientos</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">12+ Meses Antes</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Presupuesto máximo, lista borrador, reservar finca/iglesia</td>
+							<td style="padding: 0.6rem 0.8rem; color: var(--accent-red); font-weight: 600;">Los sábados de temporada alta se reservan con 1 año de antelación</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">2. Proveedores Clave</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">9–10 Meses Antes</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Foto/vídeo, catering, música/DJ, búsqueda de vestido</td>
+							<td style="padding: 0.6rem 0.8rem;">Los talleres de novia requieren 6 a 9 meses para confeccionar</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">3. Contacto con Invitados</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">6–7 Meses Antes</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Save the Date, bloqueo de hoteles, damas de honor</td>
+							<td style="padding: 0.6rem 0.8rem;">Los invitados reservan otros planes o suben los precios de hotel</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0; background: #fdfbf7;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">4. Detalles y Logística</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">3–4 Meses Antes</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Invitaciones, tarta, alianzas, prueba de peinado</td>
+							<td style="padding: 0.6rem 0.8rem;">Suplementos por urgencia en imprentas o joyería</td>
+						</tr>
+						<tr style="border-bottom: 1px solid #e2e8f0;">
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">5. Recta Final</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">1–2 Meses Antes</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Envío invitaciones (8 sem), expediente matrimonial, pruebas</td>
+							<td style="padding: 0.6rem 0.8rem;">Caducidad de certificados o plazos del catering</td>
+						</tr>
+						<tr>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1; font-weight: 700;">6. El Gran Día</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Últimas 1–2 Semanas</td>
+							<td style="padding: 0.6rem 0.8rem; border-right: 1px solid #cbd5e1;">Seating plan final, sobres de proveedores y ensayo</td>
+							<td style="padding: 0.6rem 0.8rem; color: #16a34a; font-weight: 600;">Una celebración fluida y sin estrés</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+        <article class="hand-card" style="max-width: 900px; margin: 3rem auto;">
+            <h2 class="font-heading" style="font-size: 2.5rem; margin-bottom: 1.5rem;">Guía Maestra para Planificar tu Boda</h2>
+            
+            <p class="font-body" style="margin-bottom: 1.5rem; line-height: 1.6;">Organizar una boda es un proyecto ilusionante que no tiene por qué resultar abrumador. Dividir el proceso en etapas mensuales te permite mantener el control y disfrutar de cada preparativo. Nuestro checklist interactivo actúa como tu asistente personal de planificación, asegurando que ningún detalle importante quede en el olvido.</p>
+            
+            <h3 class="font-heading" style="font-size: 1.8rem; margin-bottom: 1rem;">¿Por Qué Usar una Lista Digital Interactiva?</h3>
+            <p class="font-body" style="margin-bottom: 1.5rem; line-height: 1.6;">A diferencia de una libreta física que se puede perder o quedar desactualizada, este gestor guarda tu progreso automáticamente en tu navegador. A medida que completas hitos, la barra de porcentaje te ofrece una gratificante visión de todo lo que ya habéis conseguido juntos.</p>
+            
+            <div style="margin-top: 3rem;">
+                <h3 class="font-heading" style="font-size: 2rem; margin-bottom: 1.5rem;">Preguntas Frecuentes</h3>
+                
+                <details style="margin-bottom: 1rem; border-bottom: 1px solid var(--fg-pencil); padding-bottom: 0.5rem;">
+                    <summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; list-style-type: '👉 '; margin-bottom: 0.5rem;">¿Cuándo se debe empezar a usar el checklist de boda?</summary>
+                    <p class="font-body" style="padding-left: 1.5rem; margin-top: 0.5rem; line-height: 1.5;">Lo ideal es comenzar entre 12 y 14 meses antes de la fecha deseada. Esto permite reservar la finca o iglesia con antelación y contratar a los proveedores más solicitados sin prisas.</p>
+                </details>
+                
+                <details style="margin-bottom: 1rem; border-bottom: 1px solid var(--fg-pencil); padding-bottom: 0.5rem;">
+                    <summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; list-style-type: '👉 '; margin-bottom: 0.5rem;">¿Se guarda mi progreso automáticamente?</summary>
+                    <p class="font-body" style="padding-left: 1.5rem; margin-top: 0.5rem; line-height: 1.5;">Sí, cada tarea que marques se guarda automáticamente en la memoria local (localStorage) de tu navegador para que puedas retomar la lista cuando quieras.</p>
+                </details>
+
+                <details style="margin-bottom: 1rem; border-bottom: 1px solid var(--fg-pencil); padding-bottom: 0.5rem;">
+                    <summary class="font-heading" style="font-size: 1.2rem; cursor: pointer; list-style-type: '👉 '; margin-bottom: 0.5rem;">¿Cuáles son las primeras tareas obligatorias?</summary>
+                    <p class="font-body" style="padding-left: 1.5rem; margin-top: 0.5rem; line-height: 1.5;">Fijar el presupuesto máximo, redactar el borrador de la lista de invitados y reservar el espacio de la ceremonia y el banquete.</p>
+                </details>
+            </div>
+        </article>
+
+		<RelatedTools currentPath="/es/wedding-checklist" category="guests" />
+
+	</main>
+</Layout>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const checkboxes = document.querySelectorAll('.task-checkbox');
+		const progressBarFill = document.getElementById('progress-bar-fill');
+        const progressText = document.getElementById('progress-text');
+        
+        const STORAGE_KEY = 'wedding_checklist_tasks_es';
+
+        const loadState = () => {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    checkboxes.forEach((cb: any) => {
+                        if (parsed.includes(cb.dataset.id)) {
+                            cb.checked = true;
+                        }
+                    });
+                } catch(e) {
+                    console.error("Error parsing saved checklist tasks", e);
+                }
+            }
+            updateProgress();
+        };
+
+        const saveState = () => {
+            const checkedIds = Array.from(checkboxes)
+                .filter((cb: any) => cb.checked)
+                .map((cb: any) => cb.dataset.id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedIds));
+        };
+
+        const updateProgress = () => {
+            const total = checkboxes.length;
+            const checkedCount = Array.from(checkboxes).filter((cb: any) => cb.checked).length;
+            
+            if (total === 0) return;
+
+            const percentage = Math.round((checkedCount / total) * 100);
+            
+            if(progressBarFill) {
+                progressBarFill.style.width = `${percentage}%`;
+            }
+            if(progressText) {
+                progressText.textContent = `${percentage}%`;
+            }
+        };
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                saveState();
+                updateProgress();
+            });
+        });
+
+        loadState();
+	});
+</script>
