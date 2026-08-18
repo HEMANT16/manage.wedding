@@ -12,5 +12,24 @@ export default defineConfig({
     '/wedding-transportation-calculator': '/wedding-shuttle-bus-calculator',
     '/wedding-bus-calculator': '/wedding-shuttle-bus-calculator',
     '/wedding-coffee-calculator': '/wedding-coffee-bar-calculator',
+  },
+  vite: {
+    server: {
+      watch: {
+        ignored: [
+          '**/node_modules/**',
+          '**/dist/**',
+          '**/.git/**',
+          '**/public/**',
+          '**/.astro/**',
+          '**/scratch/**'
+        ]
+      }
+    },
+    build: {
+      rollupOptions: {
+        maxParallelFileOps: 50
+      }
+    }
   }
 });
