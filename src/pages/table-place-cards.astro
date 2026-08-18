@@ -318,17 +318,6 @@ const schema = {
 
 		</div>
 
-		<!-- Clean Printable Sheet Container for PDF Generation -->
-		<div id="printable-pdf-sheet" class="print-container">
-			<div class="print-header-banner" style="border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 20px; text-align: center;">
-				<h1 style="font-size: 22px; margin: 0 0 4px 0; font-family: 'Playfair Display', serif; font-weight: bold;">Official Wedding Reception Place Cards</h1>
-				<p style="margin: 0; font-size: 12px; color: #444;">Exported via Manage.Wedding on <span id="print-date"></span> | Total Seated Guests: <span id="print-guest-count"></span></p>
-			</div>
-			<div id="print-cards-grid" class="print-grid">
-				<!-- Dynamically generated cut-ready cards -->
-			</div>
-		</div>
-
 		<!-- ⚡ Quick Rule of Thumb (BLUF) Post-It Box -->
 		<div class="hand-card" style="margin: 0 auto 3rem auto; max-width: 900px; background: var(--post-it); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); padding: clamp(1.25rem, 3vw, 2rem); position: relative;">
 			<div class="tape" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%);"></div>
@@ -652,63 +641,6 @@ const schema = {
 	.selected-guest-row {
 		background: #eff6ff !important;
 		border-left: 3px solid #2563eb !important;
-	}
-
-	/* Screen display for print container (hidden by default) */
-	.print-container {
-		display: none;
-	}
-
-	/* Clean CSS Print & PDF Pagination Styles */
-	@page {
-		size: letter portrait;
-		margin: 0.5in;
-	}
-
-	@media print {
-		/* Hide everything on screen except print container */
-		body > * {
-			display: none !important;
-		}
-		
-		html, body {
-			background: #fff !important;
-			color: #000 !important;
-			margin: 0 !important;
-			padding: 0 !important;
-			font-size: 11pt;
-		}
-
-		.print-container {
-			display: block !important;
-			position: static !important;
-			width: 100% !important;
-			margin: 0 !important;
-			padding: 0 !important;
-			visibility: visible !important;
-		}
-
-		.print-container * {
-			visibility: visible !important;
-		}
-
-		.print-header-banner {
-			page-break-after: avoid;
-			break-after: avoid;
-		}
-
-		.print-grid {
-			display: grid !important;
-			grid-template-columns: 1fr 1fr !important;
-			gap: 20px !important;
-			width: 100% !important;
-		}
-
-		.print-card-box {
-			break-inside: avoid !important;
-			page-break-inside: avoid !important;
-			box-sizing: border-box !important;
-		}
 	}
 </style>
 
@@ -1096,71 +1028,285 @@ const schema = {
 		URL.revokeObjectURL(url);
 	});
 
-	// 🖨️ Export PDF / Print Cards
+	// Helper to generate standalone printable HTML for PDF
+	function generatePrintDocHtml(cardsHtml, cardType, theme) {
+		let borderColor = "#111827";
+		let bgStyle = "#ffffff";
+		let fontFamily = "'Playfair Display', Georgia, serif";
+
+		if (theme === 'botanical') {
+			borderColor = "#234e32";
+			bgStyle = "#fcfbf7";
+			fontFamily = "'Cormorant Garamond', 'Playfair Display', Georgia, serif";
+		} else if (theme === 'crest') {
+			borderColor = "#b45309";
+			bgStyle = "#fdfaf4";
+			fontFamily = "'Cinzel', 'Playfair Display', Georgia, serif";
+		}
+
+		return `
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<meta charset="utf-8">
+				<title>Wedding Place Cards — Printable Sheet</title>
+				<link rel="preconnect" href="https://fonts.googleapis.com">
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+				<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:wght@600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+				<style>
+					@page {
+						size: letter portrait;
+						margin: 0.4in;
+					}
+					* { box-sizing: border-box; }
+					body {
+						margin: 0;
+						padding: 0;
+						background: #fff;
+						color: #111;
+						font-family: ${fontFamily};
+					}
+					.header-info {
+						border-bottom: 2px solid #333;
+						padding-bottom: 6px;
+						margin-bottom: 16px;
+						text-align: center;
+						page-break-after: avoid;
+						break-after: avoid;
+					}
+					.header-info h1 {
+						font-size: 16pt;
+						margin: 0 0 2px 0;
+						font-weight: 700;
+					}
+					.header-info p {
+						margin: 0;
+						font-size: 8.5pt;
+						color: #555;
+						font-family: sans-serif;
+					}
+					.cards-grid {
+						display: grid;
+						grid-template-columns: 1fr 1fr;
+						gap: 16px;
+						width: 100%;
+					}
+					.card-item {
+						background: ${bgStyle};
+						border: 1.5px solid ${borderColor};
+						position: relative;
+						page-break-inside: avoid;
+						break-inside: avoid;
+						display: flex;
+						flex-direction: column;
+						box-sizing: border-box;
+					}
+					.inner-border {
+						position: absolute;
+						inset: 4px;
+						border: 1px dashed ${borderColor};
+						opacity: 0.6;
+						pointer-events: none;
+					}
+					/* Tent Card (3.5" x 4" unfolded) */
+					.tent-card {
+						height: 3.6in;
+					}
+					.tent-top-flap {
+						flex: 1;
+						border-bottom: 1px dashed #888;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						background: rgba(0,0,0,0.02);
+					}
+					.fold-line-text {
+						font-size: 7.5pt;
+						letter-spacing: 2px;
+						color: #666;
+						font-family: sans-serif;
+						text-transform: uppercase;
+					}
+					.tent-bottom-face {
+						flex: 1.25;
+						padding: 12px;
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+						align-items: center;
+						text-align: center;
+						position: relative;
+					}
+					/* Flat Card (3.5" x 2") */
+					.flat-card {
+						height: 1.8in;
+						padding: 12px;
+						justify-content: center;
+						align-items: center;
+						text-align: center;
+					}
+					/* Table Number Card (5" x 7") */
+					.tablenum-card {
+						height: 4.8in;
+						padding: 20px;
+						justify-content: center;
+						align-items: center;
+						text-align: center;
+					}
+					.guest-name {
+						font-size: 15pt;
+						margin: 0 0 2px 0;
+						font-weight: 700;
+						line-height: 1.2;
+					}
+					.divider {
+						width: 32px;
+						height: 1.5px;
+						background: ${borderColor};
+						margin: 4px auto;
+					}
+					.table-num {
+						font-size: 9.5pt;
+						font-weight: 700;
+						letter-spacing: 2px;
+						text-transform: uppercase;
+						margin: 2px 0 0 0;
+						color: ${borderColor};
+					}
+					.meal-badge {
+						position: absolute;
+						bottom: 6px;
+						right: 8px;
+						font-size: 13pt;
+					}
+					.table-top-label {
+						font-size: 11pt;
+						letter-spacing: 4px;
+						text-transform: uppercase;
+						margin: 0 0 4px 0;
+					}
+					.table-number-big {
+						font-size: 46pt;
+						font-weight: 700;
+						line-height: 1;
+						margin: 4px 0;
+						color: ${borderColor};
+					}
+					.table-bottom-sub {
+						font-size: 9.5pt;
+						font-style: italic;
+						margin: 4px 0 0 0;
+						color: #555;
+					}
+					@media print {
+						body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+						.card-item { page-break-inside: avoid !important; break-inside: avoid !important; }
+					}
+				</style>
+			</head>
+			<body>
+				<div class="header-info">
+					<h1>Official Wedding Reception Place Cards</h1>
+					<p>Generated via Manage.Wedding • Total Seated Guests: ${seatedGuestList.length}</p>
+				</div>
+				<div class="cards-grid">
+					${cardsHtml}
+				</div>
+			</body>
+			</html>
+		`;
+	}
+
+	// 🖨️ Export PDF / Print Cards (Isolated Sandbox Window / Hidden Iframe)
 	document.getElementById('btn-export-pdf').addEventListener('click', () => {
-		document.getElementById('print-date').textContent = new Date().toLocaleDateString();
-		document.getElementById('print-guest-count').textContent = seatedGuestList.length;
-
-		const grid = document.getElementById('print-cards-grid');
-		grid.innerHTML = '';
-
 		const cardType = selectCardType.value;
+		const theme = selectBorderTheme.value;
 		const showMeal = chkShowMealIcons.checked;
 		const showTable = chkShowTableBadge.checked;
 
+		let cardsHtml = '';
+
 		if (cardType === 'tablenum') {
-			// Print Table Numbers (Unique tables only)
 			const uniqueTables = [...new Set(seatedGuestList.map(g => g.table))];
 			if (uniqueTables.length === 0) uniqueTables.push("1");
 
 			uniqueTables.forEach(tbl => {
-				const card = document.createElement('div');
-				card.className = "print-card-box";
-				card.style.cssText = `border: 2.5px solid #000; padding: 35px 20px; text-align: center; font-family: 'Playfair Display', serif; position: relative; height: 320px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #fff;`;
-				card.innerHTML = `
-					<p style="font-size: 13px; letter-spacing: 4px; text-transform: uppercase; margin: 0 0 8px 0;">TABLE</p>
-					<div style="font-size: 50px; font-weight: bold; line-height: 1; margin: 4px 0;">${tbl.replace(/[^0-9]/g, '') || tbl}</div>
-					<div style="width: 40px; height: 1.5px; background: #000; margin: 12px auto;"></div>
-					<p style="font-size: 11px; font-style: italic; margin: 0;">Please Be Seated</p>
+				cardsHtml += `
+					<div class="card-item tablenum-card">
+						<div class="inner-border"></div>
+						<p class="table-top-label">TABLE</p>
+						<div class="table-number-big">${tbl.replace(/[^0-9]/g, '') || tbl}</div>
+						<div class="divider"></div>
+						<p class="table-bottom-sub">Please Be Seated</p>
+					</div>
 				`;
-				grid.appendChild(card);
 			});
 		} else if (cardType === 'tent') {
-			// Print Folded Tent Cards (with fold & cut lines)
 			seatedGuestList.forEach(g => {
-				const card = document.createElement('div');
-				card.className = "print-card-box";
-				card.style.cssText = `border: 1.5px solid #000; height: 220px; display: flex; flex-direction: column; box-sizing: border-box; background: #fff; font-family: 'Playfair Display', serif;`;
-				card.innerHTML = `
-					<div style="flex: 1; border-bottom: 1px dashed #666; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #777;">
-						✂️ FOLD LINE
-					</div>
-					<div style="flex: 1.25; padding: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; text-align: center;">
-						<h2 style="font-size: 18px; margin: 0 0 4px 0;">${g.name}</h2>
-						<div style="width: 30px; height: 1px; background: #000; margin: 4px auto;"></div>
-						${showTable ? `<p style="font-size: 12px; font-weight: bold; margin: 2px 0 0 0; text-transform: uppercase;">Table ${g.table}</p>` : ''}
-						${showMeal ? `<span style="position: absolute; bottom: 8px; right: 10px; font-size: 16px;">${g.meal.split(' ')[0] || '🥩'}</span>` : ''}
+				cardsHtml += `
+					<div class="card-item tent-card">
+						<div class="tent-top-flap">
+							<span class="fold-line-text">✂️ FOLD LINE • BACK STAND</span>
+						</div>
+						<div class="tent-bottom-face">
+							<div class="inner-border"></div>
+							<h2 class="guest-name">${g.name}</h2>
+							<div class="divider"></div>
+							${showTable ? `<p class="table-num">TABLE ${g.table}</p>` : ''}
+							${showMeal ? `<div class="meal-badge">${g.meal.split(' ')[0] || '🥩'}</div>` : ''}
+						</div>
 					</div>
 				`;
-				grid.appendChild(card);
 			});
 		} else {
-			// Print Flat Escort Cards
 			seatedGuestList.forEach(g => {
-				const card = document.createElement('div');
-				card.className = "print-card-box";
-				card.style.cssText = `border: 1.5px solid #000; padding: 20px 15px; text-align: center; font-family: 'Playfair Display', serif; position: relative; height: 130px; box-sizing: border-box; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center;`;
-				card.innerHTML = `
-					<h2 style="font-size: 18px; margin: 0 0 4px 0;">${g.name}</h2>
-					<div style="width: 30px; height: 1px; background: #000; margin: 4px auto;"></div>
-					${showTable ? `<p style="font-size: 12px; font-weight: bold; margin: 2px 0 0 0; text-transform: uppercase;">Table ${g.table}</p>` : ''}
-					${showMeal ? `<span style="position: absolute; bottom: 8px; right: 10px; font-size: 16px;">${g.meal.split(' ')[0] || '🥩'}</span>` : ''}
+				cardsHtml += `
+					<div class="card-item flat-card">
+						<div class="inner-border"></div>
+						<h2 class="guest-name">${g.name}</h2>
+						<div class="divider"></div>
+						${showTable ? `<p class="table-num">TABLE ${g.table}</p>` : ''}
+						${showMeal ? `<div class="meal-badge">${g.meal.split(' ')[0] || '🥩'}</div>` : ''}
+					</div>
 				`;
-				grid.appendChild(card);
 			});
 		}
 
-		window.print();
+		const fullHtml = generatePrintDocHtml(cardsHtml, cardType, theme);
+
+		// Try opening clean print window first
+		const printWin = window.open('', '_blank');
+		if (printWin) {
+			printWin.document.open();
+			printWin.document.write(fullHtml);
+			printWin.document.close();
+			printWin.focus();
+			setTimeout(() => {
+				printWin.print();
+			}, 350);
+		} else {
+			// Fallback to hidden iframe if popups are blocked
+			let iframe = document.getElementById('print-sandbox-iframe');
+			if (!iframe) {
+				iframe = document.createElement('iframe');
+				iframe.id = 'print-sandbox-iframe';
+				iframe.style.position = 'fixed';
+				iframe.style.right = '0';
+				iframe.style.bottom = '0';
+				iframe.style.width = '0';
+				iframe.style.height = '0';
+				iframe.style.border = '0';
+				document.body.appendChild(iframe);
+			}
+			const doc = iframe.contentWindow.document;
+			doc.open();
+			doc.write(fullHtml);
+			doc.close();
+			setTimeout(() => {
+				iframe.contentWindow.focus();
+				iframe.contentWindow.print();
+			}, 300);
+		}
 	});
 
 	// 📊 Export Excel (.csv)
