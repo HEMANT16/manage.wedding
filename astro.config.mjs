@@ -4,7 +4,7 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://manage.wedding',
-  trailingSlash: 'never',
+  trailingSlash: 'always',
   redirects: {
     '/wedding-diy-photo-booth-calculator': '/wedding-photo-booth-calculator',
     '/diy-photo-booth-calculator': '/wedding-photo-booth-calculator',
