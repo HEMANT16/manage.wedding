@@ -10,8 +10,8 @@ export interface Props {
 
 const { title, description, schema, noindex } = Astro.props;
 
-// Dynamic Path & Language Detection (normalized with trailing slash)
-const pathname = Astro.url.pathname.replace(/\/$/, "");
+// Dynamic Path & Language Detection (normalized without trailing slash and without .html)
+const pathname = Astro.url.pathname.replace(/\.html$/, "").replace(/\/$/, "");
 const is404 = pathname === '/404' || pathname.endsWith('/404') || noindex === true;
 const robotsMeta = is404 ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
 
@@ -23,17 +23,17 @@ else if (pathname.startsWith('/it')) currentLang = 'it';
 else if (pathname.startsWith('/pt')) currentLang = 'pt';
 
 const langPrefix = currentLang === 'en' ? '' : `/${currentLang}`;
-const cleanPath = pathname.replace(/^\/(es|fr|de|it|pt)/, '').replace(/\/$/, '').replace(/^\//, '');
+const cleanPath = pathname.replace(/^\/(es|fr|de|it|pt)/, '').replace(/\.html$/, '').replace(/\/$/, '').replace(/^\//, '');
 
-const canonicalPath = is404 ? '/404' : (currentLang === 'en' ? (cleanPath ? `/${cleanPath}/` : '/') : (cleanPath ? `/${currentLang}/${cleanPath}/` : `/${currentLang}/`));
+const canonicalPath = is404 ? '/404' : (currentLang === 'en' ? (cleanPath ? `/${cleanPath}` : '/') : (cleanPath ? `/${currentLang}/${cleanPath}` : `/${currentLang}`));
 const canonicalURL = new URL(canonicalPath, Astro.site || 'https://manage.wedding');
 
 function getLangLink(targetLang: string) {
 	const prefix = targetLang === 'en' ? '' : `/${targetLang}`;
 	if (is404 || cleanPath === '404') {
-		return prefix ? `${prefix}/` : '/';
+		return prefix || '/';
 	}
-	const targetPath = cleanPath ? `${prefix}/${cleanPath}/` : (prefix ? `${prefix}/` : '/');
+	const targetPath = cleanPath ? `${prefix}/${cleanPath}` : (prefix || '/');
 	return targetPath;
 }
 
@@ -618,13 +618,13 @@ const currentT = i18n[currentLang as 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt'] ||
 		{!is404 && (
 			<>
 				<!-- Multilingual Hreflang Cluster -->
-				<link rel="alternate" hreflang="en" href={`https://manage.wedding${cleanPath ? `/${cleanPath}/` : '/'}`} />
-				<link rel="alternate" hreflang="es" href={`https://manage.wedding/es${cleanPath ? `/${cleanPath}/` : '/'}`} />
-				<link rel="alternate" hreflang="fr" href={`https://manage.wedding/fr${cleanPath ? `/${cleanPath}/` : '/'}`} />
-				<link rel="alternate" hreflang="de" href={`https://manage.wedding/de${cleanPath ? `/${cleanPath}/` : '/'}`} />
-				<link rel="alternate" hreflang="it" href={`https://manage.wedding/it${cleanPath ? `/${cleanPath}/` : '/'}`} />
-				<link rel="alternate" hreflang="pt" href={`https://manage.wedding/pt${cleanPath ? `/${cleanPath}/` : '/'}`} />
-				<link rel="alternate" hreflang="x-default" href={`https://manage.wedding${cleanPath ? `/${cleanPath}/` : '/'}`} />
+				<link rel="alternate" hreflang="en" href={`https://manage.wedding${cleanPath ? `/${cleanPath}` : ''}`} />
+				<link rel="alternate" hreflang="es" href={`https://manage.wedding/es${cleanPath ? `/${cleanPath}` : ''}`} />
+				<link rel="alternate" hreflang="fr" href={`https://manage.wedding/fr${cleanPath ? `/${cleanPath}` : ''}`} />
+				<link rel="alternate" hreflang="de" href={`https://manage.wedding/de${cleanPath ? `/${cleanPath}` : ''}`} />
+				<link rel="alternate" hreflang="it" href={`https://manage.wedding/it${cleanPath ? `/${cleanPath}` : ''}`} />
+				<link rel="alternate" hreflang="pt" href={`https://manage.wedding/pt${cleanPath ? `/${cleanPath}` : ''}`} />
+				<link rel="alternate" hreflang="x-default" href={`https://manage.wedding${cleanPath ? `/${cleanPath}` : ''}`} />
 			</>
 		)}
 
