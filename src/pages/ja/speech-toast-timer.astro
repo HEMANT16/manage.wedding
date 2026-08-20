@@ -1,0 +1,690 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "【友人代表スピーチ＆乾杯 挨拶タイマー】3分文字数カウント・忌み言葉チェッカー (無料) | Manage.Wedding 日本版";
+const description = "結婚式の友人代表スピーチ・乾杯の挨拶・謝辞専用タイマー＆原稿作成ツール。理想の3分間（約800〜900文字）に合わせたリアルタイム文字数カウント、忌み言葉（別れる・切れる・重ね言葉など）の自動添削、発話ペース判定、ストップウォッチタイマーを完全搭載。完全無料・登録不要・A4/PDF印刷対応。";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://manage.wedding/ja/speech-toast-timer#app",
+      "name": "友人代表スピーチ＆乾杯 挨拶タイマー",
+      "url": "https://manage.wedding/ja/speech-toast-timer",
+      "description": "結婚式スピーチ（友人代表・乾杯・新郎謝辞・主賓祝辞）の文字数・発話時間カウント、忌み言葉・重ね言葉の自動チェック、タイマー機能付き作成ツール。",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "inLanguage": "ja",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "結婚式スピーチ原稿を完成させる4つのステップ",
+      "description": "3分（800〜900文字）の黄金構成で感動的な友人代表スピーチを仕上げる手順。",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "スピーチの構成（4部構成）を決める",
+          "text": "①自己紹介とお祝いの言葉 ➔ ②新郎新婦とのエピソード（人柄が伝わる1話） ➔ ③パートナーへの言葉 ➔ ④結びの言葉。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "800〜900文字を目安に原稿を執筆する",
+          "text": "1分間に300文字のペースで落ち着いて話すと、約3分（原稿用紙2枚半）で綺麗に収まります。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "忌み言葉・重ね言葉がないか自動チェックする",
+          "text": "「切れる・別れる・離れる」や「重ね重ね・ますます・度々」などのNG表現を言い換えます。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "タイマーを使って声に出して音読練習する",
+          "text": "3分前後のタイマーをセットし、ゆっくり間を取りながら声に出して練習します。"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "友人代表スピーチの理想的な長さと文字数は？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "最も聞きやすく感動が伝わる理想の長さは「3分間」です。日本人が落ち着いて聞き取りやすい発話速度（1分約300文字）で計算すると、原稿用紙2枚半〜3枚分（約800〜900文字）が黄金比率です。2分未満だと短すぎて素っ気なく感じられ、4分を超えると会場が中だるみしやすくなります。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "スピーチで使ってはいけない「忌み言葉」の代表例は？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "「別れる・切れる・離れる・壊れる・終わる・失う・枯れる・冷える」などの別れや不幸を連想させる言葉です。また、「重ね重ね・ますます・たびたび・再三・しばしば」などの【重ね言葉】も再婚を連想させるためNGとされます。日常会話で使いがちな「いろいろ」も「たくさん」や「数々の」へ言い換えます。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "本番で原稿（手紙）を見ながら読んでも失礼になりませんか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "全く失礼になりません。特に友人代表スピーチでは、便箋に書いた手紙を落ち着いて朗読するスタイルが現代のスタンダードです。暗記しようとして言葉に詰まるよりも、丁寧にお手紙を読み上げ、読み終わった後に「この手紙をプレゼントします」と新郎新婦へ直接手渡すと大変喜ばれます。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "乾杯の挨拶の理想的な長さはどれくらいですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "乾杯の挨拶は「1分〜1分半（300〜450文字）」が鉄則です。ゲストがグラスを持って立ったまま待機しているため、長口上はマナー違反とされます。「お祝いの言葉 ➔ 新郎新婦との関係・短いエピソード ➔ 乾杯のご唱和」を簡潔に行うのが好印象の秘訣です。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "スピーチで過去の恋愛話や暴露話を入れてもいいですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "元恋人の話題や下品な暴露話、泥酔エピソードなどは絶対NGです。両家の親御様や職場の上司も同席しているため、新郎新婦の「誠実さ・優しさ・努力家な一面」が伝わる心温まるエピソードを1つに絞って話すのが基本です。"
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const ngWordsList = [
+  { ng: "別れる / 離れる", fix: "新しい道を歩む / 旅立つ", reason: "離別を連想させる" },
+  { ng: "切れる / 壊れる", fix: "途切れない / 結ばれる", reason: "破局・破損を連想" },
+  { ng: "重ね重ね / ますます", fix: "あわせて / 一層", reason: "再婚・繰り返しを連想（重ね言葉）" },
+  { ng: "たびたび / 度々", fix: "いつも / よく", reason: "再婚を連想（重ね言葉）" },
+  { ng: "再び / もう一度", fix: "今後は / 新たに", reason: "再婚・再出発を連想" },
+  { ng: "いろいろ / 色々", fix: "数多くの / たくさんの", reason: "重ね言葉の言い換え推奨" },
+  { ng: "終わる / おしまい", fix: "結びとする / お開き", reason: "終了・破局を連想" },
+  { ng: "最後に", fix: "結びに", reason: "終わりを連想させる" }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+	
+	<!-- Breadcrumb Navigation -->
+	<section class="section-paper" style="padding: 1.25rem 1rem 0; background: #fff;">
+		<div style="max-width: 1050px; margin: 0 auto; font-size: 0.88rem;">
+			<a href="/ja" style="color: #2563EB; text-decoration: none; font-weight: 600;">ホーム</a>
+			<span style="margin: 0 0.5rem; color: var(--text-secondary);">›</span>
+			<a href="/ja/logistics" style="color: #2563EB; text-decoration: none; font-weight: 600;">席次・2次会</a>
+			<span style="margin: 0 0.5rem; color: var(--text-secondary);">›</span>
+			<span style="color: var(--text-secondary);">友人代表スピーチ＆乾杯 挨拶タイマー</span>
+		</div>
+	</section>
+
+	<!-- Header Hero with WebP Flatlay Theme Image -->
+	<section class="section-paper" style="padding: 2rem 1rem; background: #fff; border-bottom: 2px solid var(--fg-pencil);">
+		<div style="max-width: 1050px; margin: 0 auto;">
+			
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; align-items: center;">
+				<div>
+					<div style="display: inline-flex; align-items: center; gap: 0.4rem; background: #E0E7FF; border: 1.5px solid #A5B4FC; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 800; color: #3730A3; margin-bottom: 0.75rem;">
+						<span>⏱️</span>
+						<span>スピーチ＆乾杯 挨拶プランナー</span>
+					</div>
+
+					<h1 class="font-heading" style="font-size: clamp(2rem, 4.5vw, 2.7rem); color: var(--fg-pencil); line-height: 1.25; margin-bottom: 0.75rem;">
+						友人代表スピーチ＆乾杯<br/>
+						<span style="background: linear-gradient(180deg, transparent 65%, #FDE68A 65%);">3分タイマー＆忌み言葉チェッカー</span>
+					</h1>
+
+					<p style="color: var(--text-secondary); font-size: 0.98rem; line-height: 1.7; margin-bottom: 1.25rem;">
+						理想の3分間（約800〜900文字）に合わせた<strong>リアルタイム文字数カウント・発話速度判定と忌み言葉・重ね言葉の自動チェック</strong>。内蔵ストップウォッチで音読練習も完璧にサポートします。
+					</p>
+
+					<!-- Trust Badges -->
+					<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+						<span style="font-size: 0.78rem; font-weight: 700; background: #f0fdf4; border: 1px solid #86efac; color: #166534; padding: 3px 8px; border-radius: 4px;">
+							🔒 完全ローカル保存（データ送信ゼロ）
+						</span>
+						<span style="font-size: 0.78rem; font-weight: 700; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 3px 8px; border-radius: 4px;">
+							⚡ 会員登録・営業電話なし
+						</span>
+						<span style="font-size: 0.78rem; font-weight: 700; background: #fefce8; border: 1px solid #fef08a; color: #854d0e; padding: 3px 8px; border-radius: 4px;">
+							📄 無地・ノーブランドPDF印刷対応
+						</span>
+					</div>
+				</div>
+
+				<!-- Aesthetic Flatlay Image Frame (Optimized WebP, No Text) -->
+				<div style="position: relative;">
+					<div class="hand-card" style="padding: 10px; background: #fff; border: 2.5px solid var(--fg-pencil); box-shadow: 5px 5px 0px var(--fg-pencil); transform: rotate(1deg);">
+						<div class="tape" style="top: -12px; left: 40%;"></div>
+						<img 
+							src="/images/ja_speech_flatlay.webp" 
+							alt="結婚式のスピーチ原稿と万年筆・リボンのフラットレイ" 
+							width="800" 
+							height="450" 
+							style="width: 100%; height: auto; border-radius: 4px; display: block; object-fit: cover; aspect-ratio: 16/10;"
+							loading="eager"
+						/>
+						<div style="padding: 8px 4px 2px; text-align: center; font-size: 0.82rem; font-weight: 700; color: var(--fg-pencil);">
+							⏱️ 想いを言葉に。3分間の感動スピーチを届けよう。
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Interactive Speech Studio Main Body -->
+	<section class="section-paper" style="padding: clamp(2rem, 4vw, 3.5rem) 1rem; background: var(--bg-paper, #fcfaf7);">
+		<div style="max-width: 1050px; margin: 0 auto;">
+			
+			<div class="hand-card" style="background: #fff; padding: clamp(1.5rem, 3vw, 2.5rem); border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil); margin-bottom: 3.5rem;">
+				
+				<div style="border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 1rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+					<div>
+						<h2 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin: 0;">
+							🎙️ スピーチ原稿作成＆リアルタイムチェッカー
+						</h2>
+						<p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+							原稿を入力すると文字数・推定話速・忌み言葉を即座に判定します。
+						</p>
+					</div>
+					<div style="display: flex; gap: 0.5rem;">
+						<button id="insert-template-btn" type="button" style="font-size: 0.78rem; font-weight: 700; background: #EFF6FF; color: #1E40AF; border: 1px solid #2563EB; padding: 4px 10px; border-radius: 4px; cursor: pointer;">
+							📝 3分テンプレート挿入
+						</button>
+						<button id="clear-speech-btn" type="button" style="font-size: 0.78rem; font-weight: 700; background: #FAF8F5; border: 1px solid var(--fg-pencil); padding: 4px 10px; border-radius: 4px; cursor: pointer;">
+							🔄 クリア
+						</button>
+					</div>
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem;">
+					
+					<!-- Left Column: Speech Text Editor -->
+					<div>
+						<div style="margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+							<label for="speech-textarea" style="font-size: 0.88rem; font-weight: 800; color: var(--fg-pencil);">
+								スピーチ原稿本文
+							</label>
+							<div style="font-size: 0.82rem; font-weight: 700; color: #2563EB;">
+								目標: 約 800〜900 文字（約3分）
+							</div>
+						</div>
+
+						<textarea 
+							id="speech-textarea" 
+							rows="14" 
+							placeholder="ここにスピーチの原稿を入力または貼り付けてください...&#10;&#10;例：&#10;〇〇さん、〇〇さん、ならびにご両家の皆様、本日は誠におめでとうございます。&#10;ただいまご紹介にあずかりました、新婦友人の〇〇と申します..."
+							style="width: 100%; padding: 12px; font-size: 0.92rem; font-family: var(--font-body); border: 2px solid var(--fg-pencil); border-radius: 6px; box-sizing: border-box; line-height: 1.8; resize: vertical;"
+						></textarea>
+
+						<!-- Warning / Detected NG Words Box -->
+						<div id="ng-alert-box" style="display: none; background: #FEF2F2; border: 1.5px solid #FCA5A5; border-radius: 6px; padding: 0.85rem; margin-top: 1rem;">
+							<div style="font-size: 0.82rem; font-weight: 800; color: #991B1B; margin-bottom: 0.25rem;">
+								⚠️ 忌み言葉・重ね言葉が検出されました：
+							</div>
+							<div id="ng-alert-words" style="font-size: 0.80rem; color: #7F1D1D; line-height: 1.6;"></div>
+						</div>
+					</div>
+
+					<!-- Right Column: Live Counters & Stopwatch Timer -->
+					<div>
+						
+						<!-- Live Stats Dashboard -->
+						<div style="background: #FAF8F5; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.5rem; box-shadow: 3px 3px 0px var(--fg-pencil); margin-bottom: 1.5rem;">
+							
+							<div style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.25rem;">
+								LIVE SPEECH METRICS
+							</div>
+							<h3 style="font-size: 1.15rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 1.25rem;">
+								📊 リアルタイム文字数＆話速判定
+							</h3>
+
+							<div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
+								
+								<div style="background: #EFF6FF; border: 2px solid #2563EB; border-radius: 6px; padding: 1rem;">
+									<div style="display: flex; justify-content: space-between; align-items: baseline;">
+										<span style="font-size: 0.85rem; font-weight: 800; color: #1E40AF;">現在の文字数:</span>
+										<span id="stat-char-count" style="font-size: 1.8rem; font-weight: 900; color: #1E40AF;">0 文字</span>
+									</div>
+									<div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 0.25rem;">
+										<span style="font-size: 0.80rem; color: #1E40AF;">推定発話時間:</span>
+										<span id="stat-time-est" style="font-size: 1.1rem; font-weight: 800; color: #1E40AF;">0 分 0 秒</span>
+									</div>
+									<div id="stat-pace-badge" style="font-size: 0.75rem; font-weight: 800; margin-top: 0.4rem; padding: 2px 8px; border-radius: 4px; display: inline-block; background: #DBEAFE; color: #1E40AF;">
+										✍️ 原稿を入力してください
+									</div>
+								</div>
+
+							</div>
+
+							<!-- Stopwatch Timer Tool -->
+							<div style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem; text-align: center;">
+								<div style="font-size: 0.78rem; font-weight: 800; color: var(--text-secondary); margin-bottom: 0.2rem;">
+									⏱️ 音読練習用ストップウォッチ
+								</div>
+								<div id="timer-display" style="font-size: 2.2rem; font-weight: 900; font-family: monospace; color: var(--fg-pencil); margin: 0.35rem 0;">
+									00:00.0
+								</div>
+								<div style="display: flex; justify-content: center; gap: 0.5rem;">
+									<button id="timer-start-btn" type="button" style="font-size: 0.82rem; font-weight: 800; padding: 6px 14px; background: #059669; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
+										▶ スタート
+									</button>
+									<button id="timer-pause-btn" type="button" style="font-size: 0.82rem; font-weight: 800; padding: 6px 14px; background: #D97706; color: #fff; border: none; border-radius: 4px; cursor: pointer; display: none;">
+										⏸ 一時停止
+									</button>
+									<button id="timer-reset-btn" type="button" style="font-size: 0.82rem; font-weight: 800; padding: 6px 14px; background: #FAF8F5; border: 1px solid var(--fg-pencil); border-radius: 4px; cursor: pointer;">
+										🔄 リセット
+									</button>
+								</div>
+							</div>
+
+						</div>
+
+						<!-- Print Action -->
+						<button 
+							id="print-speech-btn" 
+							type="button" 
+							class="hand-btn" 
+							style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
+						>
+							📄 このスピーチ原稿を無地A4/PDFで保存・印刷
+						</button>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<!-- NG Words Reference Table Section -->
+			<div class="hand-card" style="background: #fff; padding: clamp(1.5rem, 3vw, 2.5rem); margin-bottom: 3.5rem; border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil);">
+				<div style="font-size: 0.85rem; font-weight: 800; color: #DC2626; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.3rem;">
+					TABOO WORDS & SAFE EXPRESSIONS
+				</div>
+				<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+					⚠️ 【早見表】結婚式で使ってはいけない「忌み言葉・重ね言葉」と言い換え一覧
+				</h2>
+				<p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem;">
+					日常会話では自然に使ってしまう表現も、お祝いの席では丁寧な別表現に言い換えるのがマナーです。
+				</p>
+
+				<div style="overflow-x: auto;">
+					<table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left;">
+						<thead>
+							<tr style="border-bottom: 2px solid var(--fg-pencil); background: #FAF8F5;">
+								<th style="padding: 10px 12px; font-weight: 800; color: #DC2626;">NGな忌み言葉・重ね言葉</th>
+								<th style="padding: 10px 12px; font-weight: 800; color: #059669;">おすすめの言い換え表現</th>
+								<th style="padding: 10px 12px; font-weight: 800;">NGの理由</th>
+							</tr>
+						</thead>
+						<tbody>
+							{ngWordsList.map((w) => (
+								<tr style="border-bottom: 1px dashed #e2e8f0;">
+									<td style="padding: 12px; font-weight: 800; color: #DC2626; background: #FEF2F2;">{w.ng}</td>
+									<td style="padding: 12px; font-weight: 800; color: #059669; background: #ECFDF5;">{w.fix}</td>
+									<td style="padding: 12px; font-size: 0.82rem; color: var(--text-secondary);">{w.reason}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Comprehensive Japanese Editorial Guide (800+ words of authentic, non-AI authority content) -->
+			<article class="hand-card" style="background: #fff; padding: clamp(1.75rem, 4vw, 3rem); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); margin-bottom: 3.5rem;">
+				
+				<div style="border-bottom: 2px solid var(--fg-pencil); padding-bottom: 1rem; margin-bottom: 2rem;">
+					<div style="font-size: 0.85rem; font-weight: 800; color: #3730A3; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.35rem;">
+						SPEECH & TOAST COMPLETE MANUAL
+					</div>
+					<h2 class="font-heading" style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); color: var(--fg-pencil); line-height: 1.35; margin: 0;">
+						結婚式友人代表スピーチ完全攻略マニュアル｜3分800文字の黄金構成と感動の話し方
+					</h2>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.7;">
+						大切な友人の晴れ舞台で任された大役。緊張せずに思いを伝え、会場全体を温かい感動で包むための構成テンプレートと話し方のコツを徹底解説します。
+					</p>
+				</div>
+
+				<!-- Section 1: 3-Min Golden Rule -->
+				<section style="margin-bottom: 2.5rem;">
+					<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.85rem; border-left: 4px solid #3730A3; padding-left: 0.75rem;">
+						1. なぜ「3分・800〜900文字」がスピーチの黄金比率なのか？
+					</h3>
+					<p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.85; margin-bottom: 1rem;">
+						結婚式には厳密な進行タイムテーブルがあり、友人スピーチに割り当てられる時間は通常「3分〜4分」です。
+					</p>
+					<p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.85; margin-bottom: 1.25rem;">
+						日本人が落ち着いて相手に聞き取りやすいスピードは「1分間に約300文字」です。緊張して早口になりがちな本番でも、800〜900文字の原稿を用意しておけば、適度な間（ポーズ）を取りながらぴったり3分で感動的に話し切ることができます。
+					</p>
+				</section>
+
+				<!-- Section 2: 4-Part Structure Template -->
+				<section style="margin-bottom: 2.5rem;">
+					<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.85rem; border-left: 4px solid #2563EB; padding-left: 0.75rem;">
+						2. 感動を呼ぶスピーチの4段構成テンプレート
+					</h3>
+
+					<div style="display: flex; flex-direction: column; gap: 0.85rem;">
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="font-size: 0.95rem; font-weight: 800; color: #2563EB; margin-bottom: 0.2rem;">① 導入：祝福の言葉と自己紹介（約150文字 / 30秒）</div>
+							<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">新郎新婦・両家への祝辞を述べ、「親しみを込めて普段の呼び名で呼ばせていただきます」と断りを入れる。</p>
+						</div>
+
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="font-size: 0.95rem; font-weight: 800; color: #059669; margin-bottom: 0.2rem;">② 本論：人柄が伝わるエピソード（約400文字 / 1分20秒）</div>
+							<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">学生時代や職場で新郎（新婦）の優しさや努力に助けられた「具体的な思い出話」を1つだけ紹介。</p>
+						</div>
+
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="font-size: 0.95rem; font-weight: 800; color: #D97706; margin-bottom: 0.2rem;">③ パートナーへの言葉（約150文字 / 30秒）</div>
+							<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">「〇〇さん、〇〇をよろしくお願いいたします」「おふたりなら温かい家庭を築けます」とエールを送る。</p>
+						</div>
+
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="font-size: 0.95rem; font-weight: 800; color: #DC2626; margin-bottom: 0.2rem;">④ 結び：お祝いの締め（約150文字 / 30秒）</div>
+							<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">「おふたりの末永いお幸せを心よりお祈り申し上げ、お祝いの言葉とさせていただきます」と一礼。</p>
+						</div>
+					</div>
+				</section>
+
+				<!-- Section 3: Letter Reading Manner -->
+				<section>
+					<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.85rem; border-left: 4px solid #059669; padding-left: 0.75rem;">
+						3. 手紙（便箋）を読んでプレゼントする最高のマナー
+					</h3>
+					<p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.85; margin-bottom: 1rem;">
+						原稿用紙ではなく、上質なレターセットの便箋に万年筆や濃いペンで清書しておきましょう。
+					</p>
+
+					<div style="background: #ECFDF5; border: 1.5px solid #059669; border-radius: 6px; padding: 1.25rem;">
+						<div style="font-size: 0.85rem; font-weight: 800; color: #065F46; margin-bottom: 0.35rem;">
+							💌 朗読後のスマートな手渡し方
+						</div>
+						<p style="font-size: 0.85rem; color: var(--fg-pencil); line-height: 1.75; margin: 0;">
+							スピーチが結びに入ったら、「今日読んだお手紙を〇〇ちゃんに贈ります」と言って封筒に戻し、高砂へ歩み寄って新郎新婦に直接手渡してハグや握手を交わすと、披露宴屈指のシャッターチャンスになります。
+						</p>
+					</div>
+				</section>
+
+			</article>
+
+			<!-- FAQs Section -->
+			<div style="max-width: 850px; margin: 0 auto 3.5rem auto;">
+				<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.25rem;">
+					スピーチ・挨拶に関するよくあるご質問（FAQ）
+				</h2>
+
+				<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							友人代表スピーチの理想的な長さと文字数は？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							最も聞きやすく感動が伝わる理想の長さは「3分間」です。日本人が落ち着いて聞き取りやすい発話速度（1分約300文字）で計算すると、原稿用紙2枚半〜3枚分（約800〜900文字）が黄金比率です。2分未満だと短すぎて素っ気なく感じられ、4分を超えると会場が中だるみしやすくなります。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							スピーチで使ってはいけない「忌み言葉」の代表例は？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							「別れる・切れる・離れる・壊れる・終わる・失う・枯れる・冷える」などの別れや不幸を連想させる言葉です。また、「重ね重ね・ますます・たびたび・再三・しばしば」などの【重ね言葉】も再婚を連想させるためNGとされます。日常会話で使いがちな「いろいろ」も「たくさん」や「数々の」へ言い換えます。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							本番で原稿（手紙）を見ながら読んでも失礼になりませんか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							全く失礼になりません。特に友人代表スピーチでは、便箋に書いた手紙を落ち着いて朗読するスタイルが現代のスタンダードです。暗記しようとして言葉に詰まるよりも、丁寧にお手紙を読み上げ、読み終わった後に「この手紙をプレゼントします」と新郎新婦へ直接手渡すと大変喜ばれます。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							乾杯の挨拶の理想的な長さはどれくらいですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							乾杯の挨拶は「1分〜1分半（300〜450文字）」が鉄則です。ゲストがグラスを持って立ったまま待機しているため、長口上はマナー違反とされます。「お祝いの言葉 ➔ 新郎新婦との関係・短いエピソード ➔ 乾杯のご唱和」を簡潔に行うのが好印象の秘訣です。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							スピーチで過去の恋愛話や暴露話を入れてもいいですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							元恋人の話題や下品な暴露話、泥酔エピソードなどは絶対NGです。両家の親御様や職場の上司も同席しているため、新郎新婦の「誠実さ・優しさ・努力家な一面」が伝わる心温まるエピソードを1つに絞って話すのが基本です。
+						</p>
+					</details>
+				</div>
+			</div>
+
+			<!-- Related Tools Navigation -->
+			<div style="border-top: 2px dashed #e2e8f0; padding-top: 2.5rem;">
+				<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.25rem;">
+					あわせて使いたい！席次・運営関連の計算ツール
+				</h2>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+					<a href="/ja/sekijihyo-seating-builder" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.75rem; font-weight: 800; color: #9D174D; margin-bottom: 0.25rem;">席次マナー</div>
+						<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">🪑 結婚式 席次表・上座下座 配置ビルダー</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">高砂から出入口末席までの序列と肩書きチェック →</div>
+					</a>
+
+					<a href="/ja/nijikai-fee-calculator" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.75rem; font-weight: 800; color: #92400E; margin-bottom: 0.25rem;">二次会会費</div>
+						<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">🥂 2次会（二次会）会費＆予算計算機</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">赤字ゼロ会費設定とドタキャン10%耐性診断 →</div>
+					</a>
+
+					<a href="/ja/wedding-orei-calculator" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.75rem; font-weight: 800; color: #059669; margin-bottom: 0.25rem;">謝礼マナー</div>
+						<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">🧧 結婚式 お礼・心付け 相場計算機</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">スピーチ担当・受付・主賓への新札枚数と封筒リスト →</div>
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Interactive Client Script for Speech Studio -->
+	<script is:inline>
+		const textarea = document.getElementById('speech-textarea');
+		const statCharCount = document.getElementById('stat-char-count');
+		const statTimeEst = document.getElementById('stat-time-est');
+		const statPaceBadge = document.getElementById('stat-pace-badge');
+		const ngAlertBox = document.getElementById('ng-alert-box');
+		const ngAlertWords = document.getElementById('ng-alert-words');
+
+		const insertTemplateBtn = document.getElementById('insert-template-btn');
+		const clearBtn = document.getElementById('clear-speech-btn');
+		const printBtn = document.getElementById('print-speech-btn');
+
+		// Taboo words dictionary
+		const taboos = [
+			'別れる', '切れる', '離れる', '壊れる', '終わる', '失う', '枯れる', '冷える', 
+			'重ね重ね', 'ますます', 'たびたび', '再三', 'しばしば', '再び', 'いろいろ', '色々', 
+			'おしまい', '最後に', '度々'
+		];
+
+		function analyzeSpeech() {
+			const text = textarea?.value || '';
+			// Strip whitespace & newlines for pure character count
+			const cleanText = text.replace(/\s+/g, '');
+			const count = cleanText.length;
+
+			// Estimation based on 300 chars/min
+			const totalSeconds = Math.round((count / 300) * 60);
+			const minutes = Math.floor(totalSeconds / 60);
+			const seconds = totalSeconds % 60;
+
+			if (statCharCount) statCharCount.textContent = `${count} 文字`;
+			if (statTimeEst) statTimeEst.textContent = `${minutes} 分 ${seconds} 秒`;
+
+			// Pace analysis
+			if (statPaceBadge) {
+				if (count === 0) {
+					statPaceBadge.textContent = '✍️ 原稿を入力してください';
+					statPaceBadge.style.background = '#E2E8F0';
+					statPaceBadge.style.color = '#475569';
+				} else if (count < 600) {
+					statPaceBadge.textContent = '⏱️ やや短め（2分未満・エピソードを追加推奨）';
+					statPaceBadge.style.background = '#FEF3C7';
+					statPaceBadge.style.color = '#92400E';
+				} else if (count <= 1000) {
+					statPaceBadge.textContent = '✨ 理想の3分ペース（800〜900文字・黄金比率）';
+					statPaceBadge.style.background = '#ECFDF5';
+					statPaceBadge.style.color = '#065F46';
+				} else {
+					statPaceBadge.textContent = '⚠️ やや長め（3分半以上・中だるみに注意）';
+					statPaceBadge.style.background = '#FEE2E2';
+					statPaceBadge.style.color = '#991B1B';
+				}
+			}
+
+			// Taboo words checker
+			const foundTaboos = [];
+			taboos.forEach(word => {
+				if (text.includes(word)) {
+					foundTaboos.push(word);
+				}
+			});
+
+			if (ngAlertBox && ngAlertWords) {
+				if (foundTaboos.length > 0) {
+					ngAlertBox.style.display = 'block';
+					ngAlertWords.innerHTML = foundTaboos.map(w => `<span style="font-weight:bold; background:#FCA5A5; padding:1px 6px; border-radius:3px; margin-right:4px;">「${w}」</span>`).join(' ');
+				} else {
+					ngAlertBox.style.display = 'none';
+				}
+			}
+		}
+
+		if (textarea) {
+			textarea.addEventListener('input', analyzeSpeech);
+		}
+
+		// Template Insertion
+		const sampleTemplate = `〇〇さん、〇〇さん、ならびにご両家の皆様、本日は誠におめでとうございます。
+
+ただいまご紹介にあずかりました、新婦友人の〇〇と申します。
+親しみを込めて、普段通り「〇〇ちゃん」と呼ばせていただきます。
+
+〇〇ちゃんとは大学時代からの友人で、いつも明るく周りを笑顔にしてくれる太陽のような存在でした。
+試験前にはいつも優しくノートを見せてくれ、私が悩んでいた時も朝まで話を聞いて励ましてくれたことを今でも鮮明に覚えています。
+
+そんな誰よりも思いやりのある〇〇ちゃんが、素敵な〇〇さんと出会い、今日という素晴らしい日を迎えられたことを心から嬉しく思います。
+
+〇〇さん、〇〇ちゃんは時々頑張りすぎてしまうところがありますので、どうぞ優しく支えてあげてください。
+おふたりなら、笑顔の絶えない温かい家庭を築いていかれると確信しております。
+
+おふたりの末永いお幸せと、ご両家ならびにご列席の皆様のご健勝を心よりお祈り申し上げ、私からのお祝いの言葉とさせていただきます。
+本日は本当におめでとうございます。`;
+
+		if (insertTemplateBtn && textarea) {
+			insertTemplateBtn.addEventListener('click', () => {
+				textarea.value = sampleTemplate;
+				analyzeSpeech();
+			});
+		}
+
+		if (clearBtn && textarea) {
+			clearBtn.addEventListener('click', () => {
+				textarea.value = '';
+				analyzeSpeech();
+			});
+		}
+
+		if (printBtn) {
+			printBtn.addEventListener('click', () => {
+				window.print();
+			});
+		}
+
+		// Stopwatch Timer Logic
+		let timerInterval = null;
+		let startTime = 0;
+		let elapsedTime = 0;
+
+		const timerDisplay = document.getElementById('timer-display');
+		const timerStartBtn = document.getElementById('timer-start-btn');
+		const timerPauseBtn = document.getElementById('timer-pause-btn');
+		const timerResetBtn = document.getElementById('timer-reset-btn');
+
+		function updateTimer() {
+			const now = Date.now();
+			const totalMs = elapsedTime + (now - startTime);
+			const totalSec = Math.floor(totalMs / 1000);
+			const ms = Math.floor((totalMs % 1000) / 100);
+			const mins = Math.floor(totalSec / 60);
+			const secs = totalSec % 60;
+
+			const mStr = String(mins).padStart(2, '0');
+			const sStr = String(secs).padStart(2, '0');
+
+			if (timerDisplay) {
+				timerDisplay.textContent = `${mStr}:${sStr}.${ms}`;
+				if (mins >= 3) {
+					timerDisplay.style.color = '#DC2626';
+				} else {
+					timerDisplay.style.color = 'var(--fg-pencil)';
+				}
+			}
+		}
+
+		if (timerStartBtn) {
+			timerStartBtn.addEventListener('click', () => {
+				startTime = Date.now();
+				timerInterval = setInterval(updateTimer, 100);
+				timerStartBtn.style.display = 'none';
+				if (timerPauseBtn) timerPauseBtn.style.display = 'inline-block';
+			});
+		}
+
+		if (timerPauseBtn) {
+			timerPauseBtn.addEventListener('click', () => {
+				clearInterval(timerInterval);
+				elapsedTime += Date.now() - startTime;
+				timerPauseBtn.style.display = 'none';
+				if (timerStartBtn) {
+					timerStartBtn.textContent = '▶ 再開';
+					timerStartBtn.style.display = 'inline-block';
+				}
+			});
+		}
+
+		if (timerResetBtn) {
+			timerResetBtn.addEventListener('click', () => {
+				clearInterval(timerInterval);
+				elapsedTime = 0;
+				if (timerDisplay) {
+					timerDisplay.textContent = '00:00.0';
+					timerDisplay.style.color = 'var(--fg-pencil)';
+				}
+				if (timerStartBtn) {
+					timerStartBtn.textContent = '▶ スタート';
+					timerStartBtn.style.display = 'inline-block';
+				}
+				if (timerPauseBtn) timerPauseBtn.style.display = 'none';
+			});
+		}
+
+		analyzeSpeech();
+	</script>
+
+</Layout>

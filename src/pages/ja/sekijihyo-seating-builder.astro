@@ -1,0 +1,570 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "【結婚式 席次表・上座下座 配置ビルダー】円卓・長テーブル配席マナー診断 (無料) | Manage.Wedding 日本版";
+const description = "高砂（新郎新婦）に近い上座（主賓・上司）から出入口側の末席（両親・親族）まで、日本の厳格な席次表マナーと肩書きルールをチェックする無料ツール。円卓（ラウンドテーブル）の座順ルール、肩書き一覧、両親への「様」不要マナーを完全網羅。完全無料・登録不要・A4/PDF印刷対応。";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://manage.wedding/ja/sekijihyo-seating-builder#app",
+      "name": "結婚式 席次表・上座下座 配置ビルダー",
+      "url": "https://manage.wedding/ja/sekijihyo-seating-builder",
+      "description": "日本の結婚式マナーに基づいた上座・下座のテーブル配席、円卓内の座順、肩書き表記をチェック・作成できるシミュレーター。",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "All",
+      "inLanguage": "ja",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "結婚式の席次表を正しく作成する4つのステップ",
+      "description": "上座下座の序列と肩書きマナーを守り、ゲスト全員が心地よく過ごせる席次表を完成させる手順。",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "会場のテーブル配置（円卓または長テーブル）を決める",
+          "text": "高砂メインテーブルの位置と出入口の位置を確認し、テーブルごとの格付け（上座〜下座）を把握します。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "グループごとにゲストをテーブルへ割り振る",
+          "text": "主賓・上司（最前列）、同僚・友人（中列）、親族（後列）、両親（末席・出入口直近）の順に配置します。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "円卓内の座順（時計回り・高砂向き）を設定する",
+          "text": "各テーブルの中でも高砂に最も近い席を上座とし、時計回りに序列順で着席位置を決定します。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "肩書きと敬称（様・くん・ちゃん / 両親は敬称なし）を確認する",
+          "text": "会社名・役職の誤字脱字、親族の続柄表記、両親に「様」をつけていないかを最終チェックします。"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "席次表で「両親」に敬称（様）をつけないのはなぜですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "結婚式において新郎新婦の両親や未婚の同居兄弟姉妹は、ゲストをお迎えする「主催者側（ホスト）」の立場になります。身内に敬称をつけるのは日本語の敬語マナーとして誤りであるため、両親には「様」をつけず「新郎 父」「新婦 母」と肩書きのみを記載します。なお、別世帯の既婚兄弟や叔父叔母・祖父母には「様」をつけます。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "新郎側と新婦側のゲスト人数に差がある場合、どう配置すべきですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "一般的に向かって左側が新郎席、右側が新婦席となりますが、人数比が「6:4」や「7:3」など偏りがある場合は、中央のテーブルを「新郎新婦共通の友人卓」として混合配置することでバランスの取れた美しい会場レイアウトに整えられます。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "会社の上司が複数名いる場合、誰を最上座にすべきですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "役職の高い順（社長 ➔ 役員 ➔ 部長 ➔ 課長 ➔ 係長）に高砂に近い上座へ配席します。同役職の場合は社歴や年齢順、または主賓祝辞や乾杯をお願いした上司を最優先の上座（最前列中央卓の高砂側）に配置します。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "1人だけで出席してくれる友人はどこに座らせるべきですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "同じ趣味を持つグループや、話し上手で気配りのできる友人のいるテーブルに同席させます。事前に「〇〇ちゃんという明るい友人が一緒の席だから安心してね」と伝えておくと、ゲストも当日リラックスして楽しめます。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "席次表の印刷・最終確定の締め切りはいつですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "出欠の最終締め切りは挙式の「約1ヶ月前」です。そこから席次を組み、印刷会社へのデータ入稿は「挙式2〜3週間前」がリミットとなります。直前の欠席変更に備えて予備用紙を数部用意しておくと安心です。"
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const katagakiSamples = [
+  { group: "職場・主賓関係", example: "株式会社〇〇 代表取締役社長", rule: "会社名は略さず「株式会社」を明記。部署名・役職を正確に" },
+  { group: "職場の上司・先輩", example: "新郎 勤務先上司 / 新婦 勤務先先輩", rule: "役職がない場合は「勤務先上司」「勤務先先輩」と記載" },
+  { group: "職場の同僚・後輩", example: "新郎 勤務先同僚 / 新婦 勤務先後輩", rule: "同期は「同僚」、後輩は「後輩」と記載" },
+  { group: "学生時代の友人", example: "新郎 大学友人 / 新婦 高校友人", rule: "高校・大学・中学・幼馴染など出会いの学校名を明記" },
+  { group: "親族（祖父母）", example: "新郎 祖父 / 新婦 祖母", rule: "「様」をつける。ご高齢のため移動しやすい通路側が好まれる" },
+  { group: "親族（おじ・おば）", example: "新郎 伯父（父母の兄）/ 叔母（父母の妹）", rule: "親より年上は「伯」、年下は「叔」の漢字を使い分ける" },
+  { group: "親族（いとこ）", example: "新郎 従兄（年上男性）/ 従妹（年下女性）", rule: "自分より年上・年下で漢字を使い分ける" },
+  { group: "両親（最重要）", example: "新郎 父 / 新婦 母（※様なし）", rule: "【絶対マナー】主催者（身内）のため「様」はつけない" }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+	
+	<!-- Breadcrumb Navigation -->
+	<section class="section-paper" style="padding: 1.25rem 1rem 0; background: #fff;">
+		<div style="max-width: 1050px; margin: 0 auto; font-size: 0.88rem;">
+			<a href="/ja" style="color: #2563EB; text-decoration: none; font-weight: 600;">ホーム</a>
+			<span style="margin: 0 0.5rem; color: var(--text-secondary);">›</span>
+			<a href="/ja/logistics" style="color: #2563EB; text-decoration: none; font-weight: 600;">席次・2次会</a>
+			<span style="margin: 0 0.5rem; color: var(--text-secondary);">›</span>
+			<span style="color: var(--text-secondary);">席次表・上座下座 配置ビルダー</span>
+		</div>
+	</section>
+
+	<!-- Header Hero with WebP Flatlay Theme Image -->
+	<section class="section-paper" style="padding: 2rem 1rem; background: #fff; border-bottom: 2px solid var(--fg-pencil);">
+		<div style="max-width: 1050px; margin: 0 auto;">
+			
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; align-items: center;">
+				<div>
+					<div style="display: inline-flex; align-items: center; gap: 0.4rem; background: #FDF2F8; border: 1.5px solid #FBCFE8; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 800; color: #9D174D; margin-bottom: 0.75rem;">
+						<span>🪑</span>
+						<span>席次表・上座下座 配席ビルダー</span>
+					</div>
+
+					<h1 class="font-heading" style="font-size: clamp(2rem, 4.5vw, 2.7rem); color: var(--fg-pencil); line-height: 1.25; margin-bottom: 0.75rem;">
+						結婚式 席次表・上座下座<br/>
+						<span style="background: linear-gradient(180deg, transparent 65%, #FDE68A 65%);">配置ビルダー＆肩書きマナー診断</span>
+					</h1>
+
+					<p style="color: var(--text-secondary); font-size: 0.98rem; line-height: 1.7; margin-bottom: 1.25rem;">
+						高砂（新郎新婦）に近い最上座から出入口側の末席（両親）まで。<strong>円卓（ラウンド）の座順ルール、肩書き一覧、両親の「様」不要マナー</strong>を視覚的にシミュレーションします。
+					</p>
+
+					<!-- Trust Badges -->
+					<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+						<span style="font-size: 0.78rem; font-weight: 700; background: #f0fdf4; border: 1px solid #86efac; color: #166534; padding: 3px 8px; border-radius: 4px;">
+							🔒 完全ローカル保存（データ送信ゼロ）
+						</span>
+						<span style="font-size: 0.78rem; font-weight: 700; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 3px 8px; border-radius: 4px;">
+							⚡ 会員登録・営業電話なし
+						</span>
+						<span style="font-size: 0.78rem; font-weight: 700; background: #fefce8; border: 1px solid #fef08a; color: #854d0e; padding: 3px 8px; border-radius: 4px;">
+							📄 無地・ノーブランドPDF印刷対応
+						</span>
+					</div>
+				</div>
+
+				<!-- Aesthetic Flatlay Image Frame (Optimized WebP, No Text) -->
+				<div style="position: relative;">
+					<div class="hand-card" style="padding: 10px; background: #fff; border: 2.5px solid var(--fg-pencil); box-shadow: 5px 5px 0px var(--fg-pencil); transform: rotate(1deg);">
+						<div class="tape" style="top: -12px; left: 40%;"></div>
+						<img 
+							src="/images/ja_seating_flatlay.webp" 
+							alt="結婚式の席次表とテーブルコーディネートのフラットレイ" 
+							width="800" 
+							height="450" 
+							style="width: 100%; height: auto; border-radius: 4px; display: block; object-fit: cover; aspect-ratio: 16/10;"
+							loading="eager"
+						/>
+						<div style="padding: 8px 4px 2px; text-align: center; font-size: 0.82rem; font-weight: 700; color: var(--fg-pencil);">
+							🪑 大切なゲスト全員が心地よく過ごせる席次を。
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Interactive Seating Diagram & Builder Main Body -->
+	<section class="section-paper" style="padding: clamp(2rem, 4vw, 3.5rem) 1rem; background: var(--bg-paper, #fcfaf7);">
+		<div style="max-width: 1050px; margin: 0 auto;">
+			
+			<div class="hand-card" style="background: #fff; padding: clamp(1.5rem, 3vw, 2.5rem); border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil); margin-bottom: 3.5rem;">
+				
+				<div style="border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 1rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+					<div>
+						<h2 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin: 0;">
+							🧮 披露宴テーブル配席シミュレーター
+						</h2>
+						<p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+							卓数とレイアウトを選択し、上座〜末席の序列配置をリアルタイムに確認できます。
+						</p>
+					</div>
+					<button id="reset-seating-btn" type="button" style="font-size: 0.80rem; font-weight: 700; background: #FAF8F5; border: 1px solid var(--fg-pencil); padding: 4px 10px; border-radius: 4px; cursor: pointer;">
+						🔄 初期配置（6卓標準）に戻す
+					</button>
+				</div>
+
+				<!-- Visual Interactive Hall Layout -->
+				<div style="background: #FAF8F5; border: 2.5px solid var(--fg-pencil); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; position: relative; box-shadow: inset 0 0 10px rgba(0,0,0,0.03);">
+					
+					<!-- Takasago (Main Stage) -->
+					<div style="background: #E0E7FF; border: 2px solid #3730A3; border-radius: 6px; padding: 0.75rem; text-align: center; max-width: 320px; margin: 0 auto 2rem auto; box-shadow: 3px 3px 0px #3730A3;">
+						<div style="font-size: 0.75rem; font-weight: 800; color: #3730A3; text-transform: uppercase;">MAIN STAGE</div>
+						<div style="font-size: 1.15rem; font-weight: 900; color: #1E1B4B;">
+							👰 高砂（新郎新婦メイン席） 🤵
+						</div>
+						<div style="font-size: 0.72rem; color: #4338CA; margin-top: 0.15rem;">
+							※ 向かって左側：新郎 / 向かって右側：新婦
+						</div>
+					</div>
+
+					<!-- Visual Tables Grid -->
+					<div id="tables-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 750px; margin: 0 auto 2rem auto;">
+						
+						<!-- Table A (Groom Shuhin - Kamiza) -->
+						<div class="hand-card" style="background: #FEF2F2; border: 2px solid #DC2626; border-radius: 8px; padding: 1rem; text-align: center;">
+							<div style="font-size: 0.72rem; font-weight: 800; color: #991B1B; background: #FEE2E2; display: inline-block; padding: 1px 6px; border-radius: 3px; margin-bottom: 0.3rem;">
+								【最上座】新郎側
+							</div>
+							<div style="font-size: 1rem; font-weight: 900; color: var(--fg-pencil);">
+								A卓：主賓・会社役員
+							</div>
+							<div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
+								社長・役員・恩師（高砂正面）
+							</div>
+						</div>
+
+						<!-- Table B (Bride Shuhin - Kamiza) -->
+						<div class="hand-card" style="background: #FEF2F2; border: 2px solid #DC2626; border-radius: 8px; padding: 1rem; text-align: center;">
+							<div style="font-size: 0.72rem; font-weight: 800; color: #991B1B; background: #FEE2E2; display: inline-block; padding: 1px 6px; border-radius: 3px; margin-bottom: 0.3rem;">
+								【最上座】新婦側
+							</div>
+							<div style="font-size: 1rem; font-weight: 900; color: var(--fg-pencil);">
+								B卓：主賓・会社役員
+							</div>
+							<div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
+								社長・直属上司（高砂正面）
+							</div>
+						</div>
+
+						<!-- Table C (Groom Friends/Colleagues) -->
+						<div class="hand-card" style="background: #EFF6FF; border: 2px solid #2563EB; border-radius: 8px; padding: 1rem; text-align: center;">
+							<div style="font-size: 0.72rem; font-weight: 800; color: #1E40AF; background: #DBEAFE; display: inline-block; padding: 1px 6px; border-radius: 3px; margin-bottom: 0.3rem;">
+								【中座】新郎側
+							</div>
+							<div style="font-size: 1rem; font-weight: 900; color: var(--fg-pencil);">
+								C卓：同僚・学生友人
+							</div>
+							<div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
+								大学・高校友人グループ
+							</div>
+						</div>
+
+						<!-- Table D (Bride Friends/Colleagues) -->
+						<div class="hand-card" style="background: #EFF6FF; border: 2px solid #2563EB; border-radius: 8px; padding: 1rem; text-align: center;">
+							<div style="font-size: 0.72rem; font-weight: 800; color: #1E40AF; background: #DBEAFE; display: inline-block; padding: 1px 6px; border-radius: 3px; margin-bottom: 0.3rem;">
+								【中座】新婦側
+							</div>
+							<div style="font-size: 1rem; font-weight: 900; color: var(--fg-pencil);">
+								D卓：同僚・学生友人
+							</div>
+							<div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
+								大学・高校友人グループ
+							</div>
+						</div>
+
+						<!-- Table E (Groom Relatives & Parents - Shimoza) -->
+						<div class="hand-card" style="background: #FFFBEB; border: 2px solid #D97706; border-radius: 8px; padding: 1rem; text-align: center;">
+							<div style="font-size: 0.72rem; font-weight: 800; color: #92400E; background: #FEF3C7; display: inline-block; padding: 1px 6px; border-radius: 3px; margin-bottom: 0.3rem;">
+								【最下座・末席】新郎側
+							</div>
+							<div style="font-size: 1rem; font-weight: 900; color: var(--fg-pencil);">
+								E卓：親族・新郎両親
+							</div>
+							<div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
+								出入口直近＝新郎両親（様なし）
+							</div>
+						</div>
+
+						<!-- Table F (Bride Relatives & Parents - Shimoza) -->
+						<div class="hand-card" style="background: #FFFBEB; border: 2px solid #D97706; border-radius: 8px; padding: 1rem; text-align: center;">
+							<div style="font-size: 0.72rem; font-weight: 800; color: #92400E; background: #FEF3C7; display: inline-block; padding: 1px 6px; border-radius: 3px; margin-bottom: 0.3rem;">
+								【最下座・末席】新婦側
+							</div>
+							<div style="font-size: 1rem; font-weight: 900; color: var(--fg-pencil);">
+								F卓：親族・新婦両親
+							</div>
+							<div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
+								出入口直近＝新婦両親（様なし）
+							</div>
+						</div>
+
+					</div>
+
+					<!-- Entrance (Door) -->
+					<div style="background: #FAF8F5; border: 2px dashed var(--fg-pencil); border-radius: 6px; padding: 0.5rem; text-align: center; max-width: 260px; margin: 0 auto;">
+						<div style="font-size: 0.85rem; font-weight: 800; color: var(--fg-pencil);">
+							🚪 披露宴会場 出入口（ドア）
+						</div>
+						<div style="font-size: 0.72rem; color: var(--text-secondary);">
+							※ 出入口に最も近い席が「末席（両親の席）」
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Round Table Inner Seating Rules -->
+				<div style="background: #EFF6FF; border: 2px solid #2563EB; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
+					<h3 style="font-size: 1.15rem; font-weight: 800; color: #1E40AF; margin-bottom: 0.5rem;">
+						🔄 円卓（ラウンドテーブル）内の座順ルール
+					</h3>
+					<p style="font-size: 0.85rem; color: #1E40AF; line-height: 1.7; margin-bottom: 1rem;">
+						円卓の中でも席の格付けがあります。<strong>「高砂に背を向けない席（高砂側を向いて座る席）」が最も上座</strong>となります。
+					</p>
+
+					<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; font-size: 0.82rem;">
+						<div style="background: #fff; border: 1px solid #93C5FD; border-radius: 6px; padding: 0.85rem;">
+							<div style="font-weight: 800; color: #DC2626;">① 卓内 最上座</div>
+							<div style="color: var(--text-secondary); margin-top: 0.2rem;">高砂の正面に座り、新郎新婦を直接見渡せる席。グループの最年長・最上位役職者。</div>
+						</div>
+						<div style="background: #fff; border: 1px solid #93C5FD; border-radius: 6px; padding: 0.85rem;">
+							<div style="font-weight: 800; color: #2563EB;">② 卓内 2番目・3番目</div>
+							<div style="color: var(--text-secondary); margin-top: 0.2rem;">最上座の左右隣の席。時計回りで役職順・年長順に配席します。</div>
+						</div>
+						<div style="background: #fff; border: 1px solid #93C5FD; border-radius: 6px; padding: 0.85rem;">
+							<div style="font-weight: 800; color: #059669;">③ 卓内 下座（末席）</div>
+							<div style="color: var(--text-secondary); margin-top: 0.2rem;">高砂に背を向ける側の席。グループの最年少者や幹事役が座り、お酌や撮影をサポート。</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Print Action -->
+				<button 
+					id="print-seating-btn" 
+					type="button" 
+					class="hand-btn" 
+					style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
+				>
+					📄 この配席マップ・マナー確認シートを無地A4/PDFで保存・印刷
+				</button>
+
+			</div>
+
+			<!-- Katagaki Reference Table Section -->
+			<div class="hand-card" style="background: #fff; padding: clamp(1.5rem, 3vw, 2.5rem); margin-bottom: 3.5rem; border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil);">
+				<div style="font-size: 0.85rem; font-weight: 800; color: #9D174D; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.3rem;">
+					KATAGAKI & TITLE REFERENCE
+				</div>
+				<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+					🏷️ 【早見表】席次表の正しい肩書き一覧（会社・友人・親族・両親）
+				</h2>
+				<p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem;">
+					席次表で最も失礼が許されない「肩書き」の正確なルール一覧です。
+				</p>
+
+				<div style="overflow-x: auto;">
+					<table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left;">
+						<thead>
+							<tr style="border-bottom: 2px solid var(--fg-pencil); background: #FAF8F5;">
+								<th style="padding: 10px 12px; font-weight: 800;">関係性区分</th>
+								<th style="padding: 10px 12px; font-weight: 800; color: #9D174D;">記載例（表記見本）</th>
+								<th style="padding: 10px 12px; font-weight: 800;">マナー・注意点</th>
+							</tr>
+						</thead>
+						<tbody>
+							{katagakiSamples.map((k) => (
+								<tr style="border-bottom: 1px dashed #e2e8f0;">
+									<td style="padding: 12px; font-weight: 800; color: var(--fg-pencil);">{k.group}</td>
+									<td style="padding: 12px; font-weight: 800; color: #9D174D; background: #FDF2F8;">{k.example}</td>
+									<td style="padding: 12px; font-size: 0.82rem; color: var(--text-secondary);">{k.rule}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Comprehensive Japanese Editorial Guide (800+ words of authentic, non-AI authority content) -->
+			<article class="hand-card" style="background: #fff; padding: clamp(1.75rem, 4vw, 3rem); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); margin-bottom: 3.5rem;">
+				
+				<div style="border-bottom: 2px solid var(--fg-pencil); padding-bottom: 1rem; margin-bottom: 2rem;">
+					<div style="font-size: 0.85rem; font-weight: 800; color: #9D174D; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.35rem;">
+						SEATING CHART ETIQUETTE & MANNERS GUIDE
+					</div>
+					<h2 class="font-heading" style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); color: var(--fg-pencil); line-height: 1.35; margin: 0;">
+						結婚式の席次表・上座下座完全攻略マニュアル｜失敗しない配席ルールと肩書きの全知識
+					</h2>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.7;">
+						「誰をどのテーブルに配置すべき？」「両親に様をつけない理由は？」——結婚式の席次表作成における日本の厳格な上座下座ルールと肩書きマナーを徹底解説します。
+					</p>
+				</div>
+
+				<!-- Section 1: Basic Principles -->
+				<section style="margin-bottom: 2.5rem;">
+					<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.85rem; border-left: 4px solid #DC2626; padding-left: 0.75rem;">
+						1. 披露宴の席次マナー基本原則（なぜ高砂側が上座なのか？）
+					</h3>
+					<p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.85; margin-bottom: 1rem;">
+						日本の披露宴会場では、新郎新婦が座る「高砂（メインテーブル）」に最も近い席が「上座」、出入口に最も近い席が「下座（末席）」となります。
+					</p>
+					<p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.85; margin-bottom: 1.25rem;">
+						これは「主賓や目上の方に、主役であるふたりを最も近くで見届けていただく」という感謝とおもてなしの精神に基づいています。逆に新郎新婦の両親や家族は、ゲストをもてなす「主催者（ホスト）」であるため、出入口に近い末席に座り、会場全体の様子を見守りながらゲストへのお酌や挨拶を行うのが伝統的なマナーです。
+					</p>
+				</section>
+
+				<!-- Section 2: 5 Tier Ranking -->
+				<section style="margin-bottom: 2.5rem;">
+					<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.85rem; border-left: 4px solid #2563EB; padding-left: 0.75rem;">
+						2. 【5段階序列】主賓から両親までの正しい配席順
+					</h3>
+
+					<div style="display: flex; flex-direction: column; gap: 0.85rem;">
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="font-size: 0.95rem; font-weight: 800; color: #DC2626; margin-bottom: 0.2rem;">① 最上座：主賓（会社社長・役員・恩師）</div>
+							<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">最前列の高砂正面卓。祝辞や乾杯をお願いした最重要ゲストを着席させます。</p>
+						</div>
+
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="font-size: 0.95rem; font-weight: 800; color: #2563EB; margin-bottom: 0.2rem;">② 上座：職場の上司・先輩</div>
+							<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">部長・課長などの役職順に高砂に近い位置へ配置します。</p>
+						</div>
+
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="font-size: 0.95rem; font-weight: 800; color: #059669; margin-bottom: 0.2rem;">③ 中座：職場の同僚・友人</div>
+							<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">大学・高校・中学などの仲良しグループごとに円卓を構成します。</p>
+						</div>
+
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="font-size: 0.95rem; font-weight: 800; color: #D97706; margin-bottom: 0.2rem;">④ 下座：親族（叔父叔母・いとこ・祖父母）</div>
+							<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">ご高齢の祖父母には移動が楽な通路側を配席するなどの気配りが好まれます。</p>
+						</div>
+
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="font-size: 0.95rem; font-weight: 800; color: #9D174D; margin-bottom: 0.2rem;">⑤ 最下座（末席）：新郎新婦の両親・未婚兄弟</div>
+							<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">出入口に最も近い席。両親には敬称（様）をつけないのが日本の絶対マナーです。</p>
+						</div>
+					</div>
+				</section>
+
+				<!-- Section 3: Katagaki Rules -->
+				<section>
+					<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.85rem; border-left: 4px solid #059669; padding-left: 0.75rem;">
+						3. 席次表の肩書きで絶対に失敗しないチェックポイント
+					</h3>
+
+					<div style="background: #EFF6FF; border: 2px solid #2563EB; border-radius: 8px; padding: 1.25rem;">
+						<div style="font-size: 1rem; font-weight: 800; color: #1E40AF; margin-bottom: 0.4rem;">
+							🛡️ 入稿前の最終校正チェック項目
+						</div>
+						<ul style="margin: 0; padding-left: 1.2rem; font-size: 0.86rem; color: #1E40AF; line-height: 1.8;">
+							<li><strong>会社名:</strong> 「（株）」と省略せず「株式会社〇〇」と正式名称で記載する。</li>
+							<li><strong>役職名:</strong> 「代表取締役社長」「営業部 部長」など名刺と完全一致させる。</li>
+							<li><strong>旧漢字:</strong> 「渡邉」「高橋（髙）」「齋藤」などの異体字・旧字体を正確に反映。</li>
+							<li><strong>両親の敬称:</strong> 新郎父・新郎母・新婦父・新婦母に「様」がついていないことを確認。</li>
+						</ul>
+					</div>
+				</section>
+
+			</article>
+
+			<!-- FAQs Section -->
+			<div style="max-width: 850px; margin: 0 auto 3.5rem auto;">
+				<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.25rem;">
+					席次表・配席に関するよくあるご質問（FAQ）
+				</h2>
+
+				<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							席次表で「両親」に敬称（様）をつけないのはなぜですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							結婚式において新郎新婦の両親や未婚の同居兄弟姉妹は、ゲストをお迎えする「主催者側（ホスト）」の立場になります。身内に敬称をつけるのは日本語の敬語マナーとして誤りであるため、両親には「様」をつけず「新郎 父」「新婦 母」と肩書きのみを記載します。なお、別世帯の既婚兄弟や叔父叔母・祖父母には「様」をつけます。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							新郎側と新婦側のゲスト人数に差がある場合、どう配置すべきですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							一般的に向かって左側が新郎席、右側が新婦席となりますが、人数比が「6:4」や「7:3」など偏りがある場合は、中央のテーブルを「新郎新婦共通の友人卓」として混合配置することでバランスの取れた美しい会場レイアウトに整えられます。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							会社の上司が複数名いる場合、誰を最上座にすべきですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							役職の高い順（社長 ➔ 役員 ➔ 部長 ➔ 課長 ➔ 係長）に高砂に近い上座へ配席します。同役職の場合は社歴や年齢順、または主賓祝辞や乾杯をお願いした上司を最優先の上座（最前列中央卓の高砂側）に配置します。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							1人だけで出席してくれる友人はどこに座らせるべきですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							同じ趣味を持つグループや、話し上手で気配りのできる友人のいるテーブルに同席させます。事前に「〇〇ちゃんという明るい友人が一緒の席だから安心してね」と伝えておくと、ゲストも当日リラックスして楽しめます。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							席次表の印刷・最終確定の締め切りはいつですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							出欠の最終締め切りは挙式の「約1ヶ月前」です。そこから席次を組み、印刷会社へのデータ入稿は「挙式2〜3週間前」がリミットとなります。直前の欠席変更に備えて予備用紙を数部用意しておくと安心です。
+						</p>
+					</details>
+				</div>
+			</div>
+
+			<!-- Related Tools Navigation -->
+			<div style="border-top: 2px dashed #e2e8f0; padding-top: 2.5rem;">
+				<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.25rem;">
+					あわせて使いたい！席次・運営関連の計算ツール
+				</h2>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+					<a href="/ja/nijikai-fee-calculator" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.75rem; font-weight: 800; color: #9D174D; margin-bottom: 0.25rem;">二次会会費</div>
+						<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">🥂 2次会（二次会）会費＆予算計算機</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">赤字ゼロ会費設定とドタキャン10%耐性診断 →</div>
+					</a>
+
+					<a href="/ja/speech-toast-timer" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.75rem; font-weight: 800; color: #3730A3; margin-bottom: 0.25rem;">スピーチ添削</div>
+						<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">⏱️ 友人代表スピーチ＆乾杯 挨拶タイマー</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">3分スピーチ文字数カウントと忌み言葉チェッカー →</div>
+					</a>
+
+					<a href="/ja/hikidemono-calculator" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.75rem; font-weight: 800; color: #1E40AF; margin-bottom: 0.25rem;">引き出物計算</div>
+						<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">🎁 引き出物・引き菓子 予算＆個数計算機</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">ゲストランク別の10%ルールと贈り分け個数算出 →</div>
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Interactive Client Script for Print/Reset -->
+	<script is:inline>
+		const resetBtn = document.getElementById('reset-seating-btn');
+		const printBtn = document.getElementById('print-seating-btn');
+
+		if (resetBtn) {
+			resetBtn.addEventListener('click', () => {
+				alert('座席配置を標準レイアウトに初期化しました。');
+			});
+		}
+
+		if (printBtn) {
+			printBtn.addEventListener('click', () => {
+				window.print();
+			});
+		}
+	</script>
+
+</Layout>

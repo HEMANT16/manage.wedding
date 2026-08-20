@@ -1,0 +1,490 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "【公式】結婚式 費用・ご祝儀・お車代・準備 計算ツール一覧 | Manage.Wedding 日本版";
+const description = "プレ花嫁のための完全無料・登録不要の結婚式計算スイート。データ送信ゼロ・研究利用なしの完全ローカル保存。自己負担額シミュレーター、見積もり跳ね上がり予測、遠方ゲストのお車代計算、六曜カレンダーなど全14ツール。打ち合わせ用の無地PDF印刷対応。";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://manage.wedding/ja/#website",
+      "url": "https://manage.wedding/ja",
+      "name": "Manage.Wedding 日本版",
+      "description": "日本の結婚式に特化した完全無料・登録不要・完全ローカル保存のウェディング計算プラットフォーム。",
+      "inLanguage": "ja"
+    },
+    {
+      "@type": "CollectionPage",
+      "@id": "https://manage.wedding/ja/#collection",
+      "name": "結婚式 計算＆準備ツール カテゴリ一覧",
+      "url": "https://manage.wedding/ja",
+      "inLanguage": "ja"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "入力した見積もり金額やゲスト情報が外部に送信されたり、研究・マーケティングに利用されることはありますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "いいえ、一切ありません。当サイトは「完全ローカル保存（端末内完結）」で動作します。入力された金額やゲスト名、個人情報は当社のサーバーに送信されず、第三者への提供や研究目的の収集も一切行いません。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "PDFや印刷した書類にサイトの宣伝ロゴなどは入りますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "いいえ、打ち合わせやご両親への相談にそのままお使いいただけるよう、PDFおよび印刷出力は不要な広告や透かしのない清潔なレイアウトで出力されます。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "会員登録や電話番号の入力なしで本当にすべての機能を使えますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "はい、全14種類の計算ツール、シミュレーター、チェックリストは会員登録・ログイン不要でどなたでも今すぐ完全無料でご利用いただけます。"
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const categories = [
+  {
+    step: "STEP 01",
+    id: "budget",
+    title: "費用・見積もり・自己負担",
+    icon: "💰",
+    badge: "5 ツール収録",
+    badgeColor: "#fee2e2",
+    badgeBorder: "#fca5a5",
+    badgeText: "#991b1b",
+    url: "/ja/budget",
+    lead: "契約後の「100万円アップ」を防ぐ。自己負担額（手出し額）と持ち込み料の損益分岐点を正確に計算。",
+    tools: [
+      { name: "自己負担額シミュレーター", url: "/ja/jiko-futangaku-calculator", tag: "人気No.1" },
+      { name: "見積もり跳ね上がり予測計算機", url: "/ja/mitsumori-jump-calculator", tag: "値上がり診断" },
+      { name: "持ち込み料 vs DIY 損益分岐点", url: "/ja/mochikomi-savings-calculator", tag: "節約判定" },
+      { name: "引き出物・引き菓子 予算＆個数", url: "/ja/hikidemono-calculator", tag: "マナー対応" },
+      { name: "フォトウェディング・前撮り 費用", url: "/ja/photo-wedding-calculator", tag: "前撮り試算" }
+    ]
+  },
+  {
+    step: "STEP 02",
+    id: "goshugi",
+    title: "ご祝儀・お車代・マナー",
+    icon: "✉️",
+    badge: "3 ツール収録",
+    badgeColor: "#dbeafe",
+    badgeBorder: "#93c5fd",
+    badgeText: "#1e40af",
+    url: "/ja/goshugi",
+    lead: "新幹線・飛行機の遠方ゲストお車代支給ルール、ご祝儀袋の旧字体・大字（参萬圓）変換、受付・主賓お礼相場。",
+    tools: [
+      { name: "お車代＆宿泊費 計算・封筒準備", url: "/ja/okurumadai-calculator", tag: "遠方ゲスト" },
+      { name: "ご祝儀袋 漢数字（大字）変換", url: "/ja/goshugi-kanji-formatter", tag: "縦書き出力" },
+      { name: "結婚式 お礼・心付け 相場計算機", url: "/ja/wedding-orei-calculator", tag: "謝礼マナー" }
+    ]
+  },
+  {
+    step: "STEP 03",
+    id: "schedule",
+    title: "日程・顔合わせ・準備",
+    icon: "📅",
+    badge: "3 ツール収録",
+    badgeColor: "#dcfce7",
+    badgeBorder: "#86efac",
+    badgeText: "#166534",
+    url: "/ja/schedule",
+    lead: "大安・仏滅の六曜割引シミュレーション、両家顔合わせ食事会の食事代割り勘、婚姻届開運日チェックリスト。",
+    tools: [
+      { name: "六曜カレンダー＆大安・仏滅 割引比較", url: "/ja/rokuyo-wedding-calendar", tag: "お日柄割引" },
+      { name: "両家顔合わせ 予算＆タイムライン", url: "/ja/kaoawase-planner", tag: "食事会ガイド" },
+      { name: "婚姻届・入籍 準備チェックリスト", url: "/ja/nyuseki-checklist", tag: "開運日診断" }
+    ]
+  },
+  {
+    step: "STEP 04",
+    id: "logistics",
+    title: "席次表・2次会・スピーチ",
+    icon: "🪑",
+    badge: "3 ツール収録",
+    badgeColor: "#fef08a",
+    badgeBorder: "#fde047",
+    badgeText: "#854d0e",
+    url: "/ja/logistics",
+    lead: "高砂からの上座・下座マナー配席、赤字を出さない二次会の男女別会費設定、3分スピーチ添削タイマー。",
+    tools: [
+      { name: "結婚式 席次表・上座下座 配置ビルダー", url: "/ja/sekijihyo-seating-builder", tag: "配席ルール" },
+      { name: "2次会（二次会）会費＆予算計算機", url: "/ja/nijikai-fee-calculator", tag: "幹事必見" },
+      { name: "友人代表スピーチ＆乾杯 挨拶タイマー", url: "/ja/speech-toast-timer", tag: "文字数カウント" }
+    ]
+  }
+];
+
+const featuredPicks = [
+  {
+    title: "自己負担額シミュレーター",
+    category: "費用・自己負担",
+    icon: "💰",
+    url: "/ja/jiko-futangaku-calculator",
+    desc: "式場総費用と予想ご祝儀から、おふたりが実際に貯金から持ち出す自己負担額を瞬時に計算。",
+    badge: "人気No.1"
+  },
+  {
+    title: "お車代＆宿泊費 計算ツール",
+    category: "ご祝儀・マナー",
+    icon: "🚗",
+    url: "/ja/okurumadai-calculator",
+    desc: "新幹線・飛行機代の半額/全額支給ルールとキリの良い新札封筒準備リストを自動生成。",
+    badge: "遠方ゲスト必須"
+  },
+  {
+    title: "六曜カレンダー＆割引比較",
+    category: "日程・準備",
+    icon: "📅",
+    url: "/ja/rokuyo-wedding-calendar",
+    desc: "2026/2027年 六曜カレンダー。仏滅割・日曜夕方割とお日柄のメリットを比較診断。",
+    badge: "お日柄診断"
+  },
+  {
+    title: "ご祝儀袋 漢数字変換",
+    category: "ご祝儀・マナー",
+    icon: "🖋️",
+    url: "/ja/goshugi-kanji-formatter",
+    desc: "3万円→「金 参萬圓 也」など、旧字体（大字）への即時変換と中袋・表書きの書き方見本。",
+    badge: "縦書き大字"
+  }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+	
+	<!-- Hero Section with Prominent Japanese Couple Visual & Privacy Guarantees -->
+	<section class="section-paper" style="padding: clamp(2rem, 4vw, 3.5rem) 1rem; background: #fff; border-bottom: 2px solid var(--fg-pencil); position: relative;">
+		<div style="max-width: 1100px; margin: 0 auto;">
+			
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; align-items: center; margin-bottom: 2.5rem;">
+				
+				<!-- Left Column: Emotional Copy & Core Values -->
+				<div>
+					<div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #FFF0F5; border: 1.5px solid #FBCFE8; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; color: #9D174D; margin-bottom: 1.25rem;">
+						<span>🌸</span>
+						<span>プレ花嫁のための完全無料・安心プライバシー設計</span>
+					</div>
+
+					<h1 class="font-heading" style="font-size: clamp(2.2rem, 4.5vw, 3.2rem); color: var(--fg-pencil); line-height: 1.25; margin-bottom: 1rem;">
+						ふたりの理想を、<br/>
+						<span style="background: linear-gradient(180deg, transparent 65%, #FDE68A 65%);">安心の数字に。</span>
+					</h1>
+
+					<p style="color: var(--text-secondary); font-size: 1.02rem; line-height: 1.8; margin-bottom: 1.75rem;">
+						式場見積もりの値上がり、自己負担額、お車代、席次表マナーまで。<br/>
+						データ送信や研究利用なし。<strong>100%お使いの端末内でのみ処理される安心の完全無料計算スイート</strong>です。
+					</p>
+
+					<!-- Search Bar -->
+					<div style="position: relative; max-width: 480px; margin-bottom: 1.5rem;">
+						<input 
+							type="text" 
+							id="ja-search-input" 
+							placeholder="🔍 ツールやキーワードを検索 (例: 自己負担額, お車代, 大安...)" 
+							style="width: 100%; padding: 12px 16px; font-size: 0.95rem; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 3px 3px 0px var(--fg-pencil); outline: none; font-family: var(--font-body); box-sizing: border-box;"
+						/>
+						<div id="ja-search-results" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #fff; border: 2px solid var(--fg-pencil); border-radius: 6px; box-shadow: 4px 4px 0px var(--fg-pencil); z-index: 100; max-height: 280px; overflow-y: auto; padding: 6px 0;"></div>
+					</div>
+
+					<div style="font-size: 0.82rem; color: var(--text-secondary);">
+						💡 会員登録なしですぐに計算結果やA4/PDF印刷シートを作成できます
+					</div>
+				</div>
+
+				<!-- Right Column: Prominent Japanese Bride & Groom Photo Frame -->
+				<div style="position: relative;">
+					<div class="hand-card" style="padding: 12px; background: #fff; border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil); transform: rotate(1deg);">
+						<div class="tape" style="top: -12px; left: 38%;"></div>
+						<img 
+							src="/images/ja_wedding_hero.webp" 
+							alt="笑顔で寄り添う日本の新郎新婦と美しいウェディングブーケ" 
+							width="800"
+							height="500"
+							style="width: 100%; height: auto; border-radius: 4px; display: block; object-fit: cover; aspect-ratio: 16/10;"
+							loading="eager"
+						/>
+						<div style="padding: 10px 4px 2px; display: flex; justify-content: space-between; align-items: center;">
+							<span style="font-size: 0.88rem; font-weight: 700; color: var(--fg-pencil);">
+								💍 プレ花嫁の「リアルな不安」をゼロにする。
+							</span>
+							<span style="font-size: 0.75rem; font-weight: 700; color: #059669; background: #ECFDF5; border: 1px solid #A7F3D0; padding: 2px 6px; border-radius: 3px;">
+								完全無料
+							</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- 3 Core Guarantees Ribbon (3大安心ポリシー) -->
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; border-top: 2px dashed #e2e8f0; padding-top: 2rem;">
+				
+				<div class="hand-card" style="background: #FAF8F5; padding: 1.15rem; border: 1.5px solid var(--fg-pencil); display: flex; gap: 0.75rem; align-items: flex-start;">
+					<span style="font-size: 1.6rem; line-height: 1;">🔒</span>
+					<div>
+						<div style="font-size: 0.95rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							完全ローカル保存・データ収集ゼロ
+						</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+							入力した見積金額やゲスト名はお使いの端末内にのみ保持。外部送信や研究データ利用は一切行いません。
+						</div>
+					</div>
+				</div>
+
+				<div class="hand-card" style="background: #FAF8F5; padding: 1.15rem; border: 1.5px solid var(--fg-pencil); display: flex; gap: 0.75rem; align-items: flex-start;">
+					<span style="font-size: 1.6rem; line-height: 1;">⚡</span>
+					<div>
+						<div style="font-size: 0.95rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							会員登録・営業電話なし
+						</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+							アカウント作成や電話番号登録は不要。式場カウンターのような営業電話やメルマガの心配はゼロです。
+						</div>
+					</div>
+				</div>
+
+				<div class="hand-card" style="background: #FAF8F5; padding: 1.15rem; border: 1.5px solid var(--fg-pencil); display: flex; gap: 0.75rem; align-items: flex-start;">
+					<span style="font-size: 1.6rem; line-height: 1;">📄</span>
+					<div>
+						<div style="font-size: 0.95rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+							無地・ノーブランドのPDF印刷対応
+						</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+							スマホでもサクサク動作。打ち合わせにそのまま持参できるよう、余計な広告のない清潔なA4/PDFを出力。
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Main 4 Category Hubs Section (フェーズ別 4大カテゴリ) -->
+	<section class="section-paper" style="padding: clamp(2.5rem, 5vw, 4rem) 1rem; background: var(--bg-paper, #fcfaf7);">
+		<div style="max-width: 1100px; margin: 0 auto;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<div style="font-size: 0.88rem; font-weight: 800; color: #2563EB; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.35rem;">
+					WEDDING PLANNING CATEGORIES
+				</div>
+				<h2 class="font-heading" style="font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					準備フェーズから探す 4大カテゴリ
+				</h2>
+				<p style="color: var(--text-secondary); font-size: 0.98rem; max-width: 650px; margin: 0 auto; line-height: 1.7;">
+					婚約から式場見学、お日柄選び、見積もり確定、当日のお車代・席次表まで。必要なステップに合わせてツールをお選びいただけます。
+				</p>
+			</div>
+
+			<!-- 4 Category Cards Grid -->
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 3.5rem;">
+				{categories.map((cat) => (
+					<div class="hand-card" style="background: #fff; padding: 1.75rem 1.5rem; display: flex; flex-direction: column; justify-content: space-between; border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); position: relative;">
+						<div>
+							<!-- Header: Step & Badge -->
+							<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+								<span style="font-size: 0.78rem; font-weight: 900; color: #2563EB; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 2px 8px; border-radius: 4px;">
+									{cat.step}
+								</span>
+								<span style={`font-size: 0.75rem; font-weight: 700; background: ${cat.badgeColor}; border: 1px solid ${cat.badgeBorder}; color: ${cat.badgeText}; padding: 2px 8px; border-radius: 4px;`}>
+									{cat.badge}
+								</span>
+							</div>
+
+							<!-- Category Title -->
+							<div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+								<span style="font-size: 1.8rem;">{cat.icon}</span>
+								<h3 style="font-size: 1.25rem; font-weight: 800; color: var(--fg-pencil); line-height: 1.3;">
+									{cat.title}
+								</h3>
+							</div>
+
+							<!-- Category Description -->
+							<p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem;">
+								{cat.lead}
+							</p>
+
+							<!-- Tools List in Category -->
+							<div style="border-top: 1.5px dashed #e2e8f0; padding-top: 1rem; margin-bottom: 1.25rem;">
+								<div style="font-size: 0.78rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.5rem; text-transform: uppercase;">
+									収録ツール:
+								</div>
+								<div style="display: flex; flex-direction: column; gap: 0.4rem;">
+									{cat.tools.map((t) => (
+										<a href={t.url} style="display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem; color: var(--fg-pencil); text-decoration: none; padding: 4px 6px; border-radius: 4px; background: #FAF8F5; transition: background 0.15s ease;">
+											<span style="font-weight: 600;">• {t.name}</span>
+											<span style="font-size: 0.70rem; color: #2563EB; background: #fff; border: 1px solid #BFDBFE; padding: 1px 5px; border-radius: 3px;">{t.tag}</span>
+										</a>
+									))}
+								</div>
+							</div>
+						</div>
+
+						<!-- Open Category Button -->
+						<a href={cat.url} class="hand-btn" style="text-align: center; text-decoration: none; display: block; padding: 10px; font-size: 0.92rem; font-weight: 700; margin-top: 0.5rem;">
+							{cat.title} 一覧へ →
+						</a>
+					</div>
+				))}
+			</div>
+
+			<!-- Featured Pick Tools Section -->
+			<div style="margin-bottom: 3.5rem;">
+				<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
+					<div>
+						<h3 class="font-heading" style="font-size: 1.6rem; color: var(--fg-pencil);">
+							⭐ 今すぐ使える！人気計算ツール Top 4
+						</h3>
+						<p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+							全国のプレ花嫁に最も利用されている定番シミュレーターです。
+						</p>
+					</div>
+					<a href="/ja/wedding-checklist" style="font-size: 0.88rem; font-weight: 700; color: #2563EB; text-decoration: none;">
+						結婚準備チェックリストを見る →
+					</a>
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
+					{featuredPicks.map((pick) => (
+						<a href={pick.url} style="text-decoration: none; color: inherit;">
+							<div class="hand-card" style="background: #fff; padding: 1.25rem; height: 100%; display: flex; flex-direction: column; justify-content: space-between; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil); transition: transform 0.15s ease;">
+								<div>
+									<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+										<span style="font-size: 1.6rem;">{pick.icon}</span>
+										<span style="font-size: 0.72rem; font-weight: 700; background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; padding: 2px 6px; border-radius: 3px;">
+											{pick.badge}
+										</span>
+									</div>
+									<div style="font-size: 0.75rem; font-weight: 700; color: #2563EB; margin-bottom: 0.25rem;">
+										{pick.category}
+									</div>
+									<h4 style="font-size: 1.08rem; font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.4rem; line-height: 1.35;">
+										{pick.title}
+									</h4>
+									<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+										{pick.desc}
+									</p>
+								</div>
+								<div style="font-size: 0.82rem; font-weight: 800; color: #059669; margin-top: 0.75rem;">
+									ツールを開く →
+								</div>
+							</div>
+						</a>
+					))}
+				</div>
+			</div>
+
+			<!-- FAQs Accordion -->
+			<div style="max-width: 850px; margin: 0 auto;">
+				<h3 class="font-heading" style="font-size: 1.6rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.25rem;">
+					よくあるご質問（FAQ）
+				</h3>
+
+				<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							入力した見積もり金額やゲスト情報が外部に送信されたり、研究・マーケティングに利用されることはありますか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							いいえ、一切ありません。当サイトは「完全ローカル保存（端末内完結）」で動作します。入力された金額やゲスト名、個人情報は当社のサーバーに送信されず、第三者への提供や研究目的の収集も一切行いません。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							PDFや印刷した書類にサイトの宣伝ロゴなどは入りますか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							いいえ、打ち合わせやご両親への相談にそのままお使いいただけるよう、PDFおよび印刷出力は不要な広告や透かしのない清潔なレイアウトで出力されます。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							会員登録や電話番号の入力なしで本当にすべての機能を使えますか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							はい、全14種類の計算ツール、シミュレーター、チェックリストは会員登録・ログイン不要でどなたでも今すぐ完全無料でご利用いただけます。
+						</p>
+					</details>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Live Search Script -->
+	<script is:inline>
+		const searchData = [
+			{ title: "自己負担額シミュレーター", cat: "費用・自己負担", url: "/ja/jiko-futangaku-calculator", keywords: "手出し 費用 計算 ご祝儀相殺 貯金 予算 見積もり" },
+			{ title: "見積もり跳ね上がり予測計算機", cat: "費用・自己負担", url: "/ja/mitsumori-jump-calculator", keywords: "初期見積もり 最終見積もり 値上がり アップ額 追加料金 ドレス 料理" },
+			{ title: "持ち込み料 vs DIY 損益分岐点", cat: "費用・自己負担", url: "/ja/mochikomi-savings-calculator", keywords: "持ち込み料 保管料 節約 外注 自作 ペーパーアイテム" },
+			{ title: "引き出物・引き菓子 予算＆個数", cat: "費用・自己負担", url: "/ja/hikidemono-calculator", keywords: "引き出物 引き菓子 縁起物 贈り分け 10% 相場 上司 友人 親族" },
+			{ title: "フォトウェディング・前撮り 費用", cat: "費用・自己負担", url: "/ja/photo-wedding-calculator", keywords: "前撮り スタジオ ロケーション 和装 白無垢 色打掛 ドレス" },
+			{ title: "お車代＆宿泊費 計算・封筒準備", cat: "ご祝儀・マナー", url: "/ja/okurumadai-calculator", keywords: "お車代 交通費 宿泊費 新幹線 飛行機 遠方ゲスト ポチ袋 のし袋" },
+			{ title: "ご祝儀袋 漢数字（大字）変換", cat: "ご祝儀・マナー", url: "/ja/goshugi-kanji-formatter", keywords: "大字 漢数字 参萬圓 壱 弐 参 萬 縦書き 中袋 表書き ご祝儀" },
+			{ title: "結婚式 お礼・心付け 相場計算機", cat: "ご祝儀・マナー", url: "/ja/wedding-orei-calculator", keywords: "お礼 心付け 受付 主賓 スピーチ 司会 美容師 スタッフ 謝礼" },
+			{ title: "六曜カレンダー＆大安・仏滅 割引比較", cat: "日程・準備", url: "/ja/rokuyo-wedding-calendar", keywords: "六曜 大安 友引 仏滅 赤口 先勝 先負 お日柄 割引 カレンダー" },
+			{ title: "両家顔合わせ 予算＆タイムライン", cat: "日程・準備", url: "/ja/kaoawase-planner", keywords: "顔合わせ 食事会 結納 割り勘 手土産 しおり 進行 スケジュール" },
+			{ title: "婚姻届・入籍 準備チェックリスト", cat: "日程・準備", url: "/ja/nyuseki-checklist", keywords: "婚姻届 入籍 開運日 一粒万倍日 天赦日 名義変更 戸籍謄本" },
+			{ title: "結婚式 席次表・上座下座 配置ビルダー", cat: "席次・2次会", url: "/ja/sekijihyo-seating-builder", keywords: "席次表 上座 下座 円卓 高砂 主賓 親族 両親 肩書き 配席" },
+			{ title: "2次会（二次会）会費＆予算計算機", cat: "席次・2次会", url: "/ja/nijikai-fee-calculator", keywords: "二次会 2次会 会費 幹事 景品 会場費 ビュッフェ 飲み放題 赤字" },
+			{ title: "友人代表スピーチ＆乾杯 挨拶タイマー", cat: "席次・2次会", url: "/ja/speech-toast-timer", keywords: "スピーチ 乾杯 友人代表 挨拶 3分 文字数 タイマー 忌み言葉" },
+			{ title: "結婚準備パーフェクト・チェックリスト", cat: "完全ガイド", url: "/ja/wedding-checklist", keywords: "結婚準備 チェックリスト ToDo スケジュール 婚約 プロポーズ" }
+		];
+
+		const searchInput = document.getElementById('ja-search-input');
+		const searchResults = document.getElementById('ja-search-results');
+
+		if (searchInput && searchResults) {
+			searchInput.addEventListener('input', (e) => {
+				const q = e.target.value.trim().toLowerCase();
+				if (!q) {
+					searchResults.style.display = 'none';
+					searchResults.innerHTML = '';
+					return;
+				}
+
+				const matched = searchData.filter(item => 
+					item.title.toLowerCase().includes(q) || 
+					item.keywords.toLowerCase().includes(q) ||
+					item.cat.toLowerCase().includes(q)
+				);
+
+				if (matched.length === 0) {
+					searchResults.innerHTML = '<div style="padding: 10px 14px; font-size: 0.88rem; color: #64748b;">該当するツールが見つかりませんでした</div>';
+					searchResults.style.display = 'block';
+					return;
+				}
+
+				searchResults.innerHTML = matched.map(m => `
+					<a href="${m.url}" style="display: block; padding: 8px 14px; text-decoration: none; color: #2D3134; border-bottom: 1px dashed #e2e8f0;">
+						<div style="font-size: 0.72rem; color: #2563EB; font-weight: 700;">${m.cat}</div>
+						<div style="font-size: 0.92rem; font-weight: 700;">${m.title}</div>
+					</a>
+				`).join('');
+				searchResults.style.display = 'block';
+			});
+
+			document.addEventListener('click', (e) => {
+				if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+					searchResults.style.display = 'none';
+				}
+			});
+		}
+	</script>
+
+</Layout>

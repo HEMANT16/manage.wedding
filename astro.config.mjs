@@ -5,6 +5,10 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://manage.wedding',
   trailingSlash: 'never',
+  server: {
+    port: 3000,
+    host: true
+  },
   build: {
     format: 'file'
   },

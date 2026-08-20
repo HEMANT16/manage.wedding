@@ -642,13 +642,15 @@ details p {
   outline: none !important;
 }
 
-/* Universal Print Cleanup */
+/* Universal Precision Print & Clean Unbranded A4 / PDF Export */
 @media print {
   @page {
-    margin: 10mm;
-    size: auto;
+    size: A4 portrait;
+    margin: 12mm 15mm;
   }
 
+  /* 1. Hide Site-Wide Chrome, Navigation, Headers, Footers & Search */
+  nav,
   nav.nav-sketch,
   header,
   header.site-header,
@@ -661,18 +663,142 @@ details p {
   .no-print,
   .tape,
   .search-hero-box,
-  button,
+  #ja-search-input,
+  #ja-search-results,
   .breadcrumb-nav,
   .breadcrumb-trail,
   .related-tools-section,
-  .pro-tip-box {
+  .pro-tip-box,
+  .trust-badges,
+  div[style*="f0fdf4"], /* Trust badges container */
+  span[style*="完全ローカル保存"],
+  span[style*="会員登録・営業電話なし"],
+  span[style*="無地・ノーブランドPDF印刷"] {
     display: none !important;
   }
 
-  body {
-    background: #fff !important;
+  /* 2. Hide Non-Data Heavy Editorial Articles & FAQs to Keep Printout Clean & Focused */
+  article,
+  article.hand-card,
+  details,
+  details.hand-card,
+  .faq-container,
+  .editorial-guide,
+  section:has(details),
+  div:has(details),
+  div[style*="border-top: 2px dashed"], /* Related tools / cross-category nav */
+  section[style*="border-top: 2px dashed"] {
+    display: none !important;
+  }
+
+  /* 3. Hide Decorative Photos, Images & Hero Flatlays */
+  img,
+  picture,
+  svg:not(.keep-print-icon),
+  div[style*="transform: rotate(1deg)"], /* Flatlay photo frame */
+  div[style*="transform: rotate(-1deg)"] {
+    display: none !important;
+  }
+
+  /* 4. Hide All Action Buttons */
+  button,
+  .hand-btn,
+  input[type="button"],
+  input[type="submit"],
+  #reset-btn,
+  #print-btn,
+  button[id*="btn"],
+  button[id*="reset"],
+  button[id*="print"],
+  button[id*="template"],
+  button[id*="clear"] {
+    display: none !important;
+  }
+
+  /* 5. Clean White Paper Background & Crisp Typography */
+  html, body {
+    background: #ffffff !important;
     background-image: none !important;
-    color: #000 !important;
+    color: #111827 !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .section-paper {
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  /* 6. Precision Page Split & Slicing Protection */
+  .hand-card,
+  .card,
+  table,
+  tr,
+  tbody,
+  thead,
+  fieldset,
+  .phase-card,
+  .checklist-step,
+  .envelope-preview,
+  .nakabukuro-preview,
+  div[style*="border: 2px solid"],
+  div[style*="border: 1.5px solid"],
+  div[style*="border: 2.5px solid"] {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    box-shadow: none !important;
+    border-color: #94a3b8 !important;
+  }
+
+  /* 7. Typography Optimization for Print */
+  h1 {
+    font-size: 16pt !important;
+    margin-bottom: 6pt !important;
+    color: #0f172a !important;
+    border-bottom: 1.5pt solid #0f172a !important;
+    padding-bottom: 4pt !important;
+  }
+
+  h2, h3 {
+    font-size: 13pt !important;
+    margin-top: 8pt !important;
+    margin-bottom: 4pt !important;
+    color: #1e293b !important;
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  /* 8. Crisp Form Inputs & Results */
+  input, select, textarea {
+    border: 1px solid #64748b !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+
+  /* 9. Preserve Checklist Checkmarks */
+  input[type="checkbox"] {
+    display: inline-block !important;
+    width: 14px !important;
+    height: 14px !important;
+    border: 1.5px solid #000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 10. High-Contrast Summary Numbers */
+  div[id*="res-"],
+  div[id*="hero"],
+  div[id*="grand-budget"],
+  div[id*="total"] {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color: #0f172a !important;
   }
 
   .print-only {

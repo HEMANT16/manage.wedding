@@ -1,0 +1,749 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "【お車代＆宿泊費 計算・封筒準備ツール】遠方ゲストの交通費負担と新札封筒リスト (無料・登録不要) | Manage.Wedding 日本版";
+const description = "新幹線・飛行機代の半額・全額支給ルール、端数1万円切り上げ、宿泊手配の有無を選択して、遠方ゲストへのお車代総額と必要な新札枚数・祝儀袋/ポチ袋の準備リストを自動計算。完全無料・登録不要・A4/PDF印刷対応。";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://manage.wedding/ja/okurumadai-calculator#app",
+      "name": "お車代＆宿泊費 計算・封筒準備ツール",
+      "url": "https://manage.wedding/ja/okurumadai-calculator",
+      "description": "遠方から参列するゲストの新幹線・飛行機・高速代と宿泊費を計算し、半額/全額支給ルールに基づく総額と新札封筒リストを自動生成するシミュレーター。",
+      "applicationCategory": "CalculatorApplication",
+      "operatingSystem": "All",
+      "inLanguage": "ja",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      }
+    },
+    {
+      "@type": "HowTo",
+      "name": "結婚式のお車代と宿泊費を準備する4つの手順",
+      "description": "遠方ゲストの交通費相場を確認し、新札と封筒を用意してお渡しするまでの手順。",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "遠方ゲストの出発地と交通手段をリストアップする",
+          "text": "新幹線利用、飛行機利用、車（高速代）利用、前泊・当泊が必要なゲストの人数と出発地を整理します。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "支給ルール（半額 vs 全額）を決める",
+          "text": "友人には「往復交通費の半額（端数は1万円単位で切り上げ）」、主賓や親族には「全額負担」など、ゲストの関係性に応じたルールを設定します。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "必要な新札枚数と封筒の種類を算出する",
+          "text": "1万円以上は「結び切りの祝儀袋」、1万円未満は「ポチ袋」を用意し、銀行で新札に両替します。"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "当日の渡し方（受付担当または親から手渡し）を確認する",
+          "text": "友人や同僚は受付で受付係から手渡し、主賓や親族は挙式前に新郎新婦の親からご挨拶とともにお渡しします。"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "遠方ゲストのお車代は「全額」と「半額」のどちらを支給すべきですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "主賓や乾杯のご発声をお願いする上司、親族には「全額」を支給するのがマナーです。友人や同僚の場合は「往復交通費の半額程度」を支給するのが一般的ですが、端数は切り上げて1万円・2万円などキリの良い金額を包むのがスマートなおもてなしです。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "交通費と宿泊費の両方がかかるゲストにはどう対応すべきですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "原則として「新郎新婦側でホテルを手配・事前決済し、交通費はお車代として半額〜全額渡す」のが最も喜ばれます。予算が厳しい場合は、「宿泊費を新郎新婦が全額負担し、交通費は自己負担してもらう」またはその逆を事前にゲストへ伝えて了承を得ましょう。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "お車代の封筒は「祝儀袋」と「ポチ袋」のどちらを使いますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "包む金額が「1万円以上」の場合は、紅白の結び切り（10本または7本）の水引がついたご祝儀袋を使用します。「1万円未満（数千円）」の場合は、水引が印刷されたポチ袋やお礼用の小封筒を使用します。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "お車代は誰から、どのタイミングで渡すのが正しいマナーですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "友人・同僚へのお車代は「受付で記帳後、受付担当者から『新郎新婦からのお預かりものです』と手渡し」します。主賓や親族へのお車代は「挙式前の控室で、新郎新婦の親から『本日は遠方よりありがとうございます』とご挨拶を兼ねて手渡し」します。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "お車代に包むお札は新札（ピン札）でなければいけませんか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "はい。結婚式でお渡しする現金は、お車代・お礼・心付けを含めすべて「新札（ピン札）」を用意するのがマナーです。肖像画が表（上部）を向くようにお札の向きを揃えて封筒に入れます。"
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const routeNorms = [
+  { route: "東京 ⇄ 大阪（東海道新幹線）", roundTrip: "約 29,000円", halfRounded: "15,000円 〜 20,000円", full: "30,000円", note: "友人は1.5万〜2万円、上司は3万円" },
+  { route: "東京 ⇄ 名古屋（東海道新幹線）", roundTrip: "約 22,000円", halfRounded: "10,000円 〜 15,000円", full: "20,000円 〜 25,000円", note: "友人は1万〜1.5万円が標準" },
+  { route: "東京 ⇄ 福岡・博多（新幹線/飛行機）", roundTrip: "約 35,000円 〜 45,000円", halfRounded: "20,000円 〜 25,000円", full: "40,000円 〜 50,000円", note: "宿泊手配とセットで検討推奨" },
+  { route: "東京 ⇄ 仙台（東北新幹線）", roundTrip: "約 22,000円", halfRounded: "10,000円 〜 15,000円", full: "20,000円 〜 25,000円", note: "日帰り可能だが友人は1万円以上" },
+  { route: "東京 ⇄ 札幌/沖縄（飛行機）", roundTrip: "約 30,000円 〜 50,000円", halfRounded: "20,000円 〜 25,000円", full: "40,000円 〜 50,000円", note: "シーズンにより航空券代が変動" },
+  { route: "近隣県からの車・特急利用", roundTrip: "約 5,000円 〜 10,000円", halfRounded: "5,000円", full: "10,000円", note: "ガソリン代・高速代の補助として" }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+	
+	<!-- Breadcrumb Navigation -->
+	<section class="section-paper" style="padding: 1.25rem 1rem 0; background: #fff;">
+		<div style="max-width: 1050px; margin: 0 auto; font-size: 0.88rem;">
+			<a href="/ja" style="color: #2563EB; text-decoration: none; font-weight: 600;">ホーム</a>
+			<span style="margin: 0 0.5rem; color: var(--text-secondary);">›</span>
+			<a href="/ja/goshugi" style="color: #2563EB; text-decoration: none; font-weight: 600;">ご祝儀・お車代・お礼</a>
+			<span style="margin: 0 0.5rem; color: var(--text-secondary);">›</span>
+			<span style="color: var(--text-secondary);">お車代＆宿泊費 計算</span>
+		</div>
+	</section>
+
+	<!-- Header Hero with WebP Flatlay Theme Image -->
+	<section class="section-paper" style="padding: 2rem 1rem; background: #fff; border-bottom: 2px solid var(--fg-pencil);">
+		<div style="max-width: 1050px; margin: 0 auto;">
+			
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; align-items: center;">
+				<div>
+					<div style="display: inline-flex; align-items: center; gap: 0.4rem; background: #FEE2E2; border: 1.5px solid #FCA5A5; padding: 4px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 800; color: #991B1B; margin-bottom: 0.75rem;">
+						<span>🚗</span>
+						<span>遠方ゲスト交通費＆宿泊計算ツール</span>
+					</div>
+
+					<h1 class="font-heading" style="font-size: clamp(2rem, 4.5vw, 2.7rem); color: var(--fg-pencil); line-height: 1.25; margin-bottom: 0.75rem;">
+						お車代＆宿泊費<br/>
+						<span style="background: linear-gradient(180deg, transparent 65%, #FDE68A 65%);">計算・封筒準備ツール</span>
+					</h1>
+
+					<p style="color: var(--text-secondary); font-size: 0.98rem; line-height: 1.7; margin-bottom: 1.25rem;">
+						新幹線や飛行機で駆けつけてくれる遠方ゲストへの交通費・宿泊費を自動計算。<strong>半額/全額支給ルールに応じた総額、必要な新札枚数（1万円/5千円）、祝儀袋・ポチ袋の準備リスト</strong>を瞬時に導き出します。
+					</p>
+
+					<!-- Trust Badges -->
+					<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+						<span style="font-size: 0.78rem; font-weight: 700; background: #f0fdf4; border: 1px solid #86efac; color: #166534; padding: 3px 8px; border-radius: 4px;">
+							🔒 完全ローカル保存（データ送信ゼロ）
+						</span>
+						<span style="font-size: 0.78rem; font-weight: 700; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 3px 8px; border-radius: 4px;">
+							⚡ 会員登録・営業電話なし
+						</span>
+						<span style="font-size: 0.78rem; font-weight: 700; background: #fefce8; border: 1px solid #fef08a; color: #854d0e; padding: 3px 8px; border-radius: 4px;">
+							📄 無地・ノーブランドPDF印刷対応
+						</span>
+					</div>
+				</div>
+
+				<!-- Aesthetic Flatlay Image Frame (Optimized WebP, No Text) -->
+				<div style="position: relative;">
+					<div class="hand-card" style="padding: 10px; background: #fff; border: 2.5px solid var(--fg-pencil); box-shadow: 5px 5px 0px var(--fg-pencil); transform: rotate(1deg);">
+						<div class="tape" style="top: -12px; left: 40%;"></div>
+						<img 
+							src="/images/ja_okurumadai_flatlay.webp" 
+							alt="お車代の準備と新幹線チケット・ご祝儀袋のフラットレイ" 
+							width="800" 
+							height="450" 
+							style="width: 100%; height: auto; border-radius: 4px; display: block; object-fit: cover; aspect-ratio: 16/10;"
+							loading="eager"
+						/>
+						<div style="padding: 8px 4px 2px; text-align: center; font-size: 0.82rem; font-weight: 700; color: var(--fg-pencil);">
+							🚗 遠方から来てくれる大切なゲストへ、失礼のないおもてなし。
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Interactive Calculator Main Body -->
+	<section class="section-paper" style="padding: clamp(2rem, 4vw, 3.5rem) 1rem; background: var(--bg-paper, #fcfaf7);">
+		<div style="max-width: 1050px; margin: 0 auto;">
+			
+			<div class="hand-card" style="background: #fff; padding: clamp(1.5rem, 3vw, 2.5rem); border: 2.5px solid var(--fg-pencil); box-shadow: 6px 6px 0px var(--fg-pencil); margin-bottom: 3.5rem;">
+				
+				<div style="border-bottom: 2px dashed var(--fg-pencil); padding-bottom: 1rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+					<div>
+						<h2 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin: 0;">
+							🧮 お車代・宿泊費 シミュレーター
+						</h2>
+						<p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+							交通手段別の人数と片道目安額を入力し、支給ルールを選択してください。
+						</p>
+					</div>
+					<button id="reset-okuruma-btn" type="button" style="font-size: 0.80rem; font-weight: 700; background: #FAF8F5; border: 1px solid var(--fg-pencil); padding: 4px 10px; border-radius: 4px; cursor: pointer;">
+						🔄 初期値に戻す
+					</button>
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem;">
+					
+					<!-- Left Form: Transport Inputs & Policy -->
+					<div style="display: flex; flex-direction: column; gap: 1.25rem;">
+						
+						<!-- Policy Selector -->
+						<div class="hand-card" style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="font-size: 0.85rem; font-weight: 900; color: #2563EB; margin-bottom: 0.4rem; text-transform: uppercase;">
+								1. 交通費の支給ルール
+							</div>
+							<select id="select-policy" style="width: 100%; padding: 8px; font-size: 0.90rem; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; background: #fff;">
+								<option value="half_round" selected>半額支給 ＋ 端数1万円切り上げ（★一番おすすめ・スマート）</option>
+								<option value="half">半額支給（実費のきっちり50%）</option>
+								<option value="full">全額支給（主賓・親族・遠方全負担）</option>
+							</select>
+						</div>
+
+						<!-- Transport 1: Shinkansen -->
+						<div class="hand-card" style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+								<span style="font-size: 0.92rem; font-weight: 800; color: var(--fg-pencil);">
+									🚅 新幹線利用ゲスト
+								</span>
+								<div style="display: flex; align-items: center; gap: 0.35rem;">
+									<input type="number" id="count-shinkansen" value="3" min="0" max="50" style="width: 55px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-align: center;" />
+									<span style="font-size: 0.82rem;">名</span>
+								</div>
+							</div>
+							<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.75rem;">
+								<div>
+									<span style="color: var(--text-secondary); display: block;">片道料金目安</span>
+									<input type="number" id="cost-shinkansen" value="14000" step="1000" style="width: 100%; padding: 4px 6px; font-weight: 700; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box;" />
+								</div>
+								<div>
+									<span style="color: var(--text-secondary); display: block;">1人あたり支給額</span>
+									<div id="per-shinkansen" style="padding: 5px 6px; font-weight: 800; color: #2563EB; background: #EFF6FF; border-radius: 4px;">15,000 円</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Transport 2: Airplane -->
+						<div class="hand-card" style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+								<span style="font-size: 0.92rem; font-weight: 800; color: var(--fg-pencil);">
+									✈️ 飛行機利用ゲスト
+								</span>
+								<div style="display: flex; align-items: center; gap: 0.35rem;">
+									<input type="number" id="count-airplane" value="2" min="0" max="30" style="width: 55px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-align: center;" />
+									<span style="font-size: 0.82rem;">名</span>
+								</div>
+							</div>
+							<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.75rem;">
+								<div>
+									<span style="color: var(--text-secondary); display: block;">片道料金目安</span>
+									<input type="number" id="cost-airplane" value="25000" step="1000" style="width: 100%; padding: 4px 6px; font-weight: 700; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box;" />
+								</div>
+								<div>
+									<span style="color: var(--text-secondary); display: block;">1人あたり支給額</span>
+									<div id="per-airplane" style="padding: 5px 6px; font-weight: 800; color: #2563EB; background: #EFF6FF; border-radius: 4px;">25,000 円</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Transport 3: Car / Highway -->
+						<div class="hand-card" style="background: #fff; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem;">
+							<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+								<span style="font-size: 0.92rem; font-weight: 800; color: var(--fg-pencil);">
+									🚗 車・高速道路利用ゲスト
+								</span>
+								<div style="display: flex; align-items: center; gap: 0.35rem;">
+									<input type="number" id="count-car" value="1" min="0" max="30" style="width: 55px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-align: center;" />
+									<span style="font-size: 0.82rem;">台 (名)</span>
+								</div>
+							</div>
+							<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.75rem;">
+								<div>
+									<span style="color: var(--text-secondary); display: block;">片道高速代目安</span>
+									<input type="number" id="cost-car" value="5000" step="1000" style="width: 100%; padding: 4px 6px; font-weight: 700; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box;" />
+								</div>
+								<div>
+									<span style="color: var(--text-secondary); display: block;">1人あたり支給額</span>
+									<div id="per-car" style="padding: 5px 6px; font-weight: 800; color: #2563EB; background: #EFF6FF; border-radius: 4px;">5,000 円</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Accommodation -->
+						<div class="hand-card" style="background: #FAF8F5; border: 1.5px solid #2563EB; border-radius: 6px; padding: 1rem;">
+							<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+								<span style="font-size: 0.92rem; font-weight: 800; color: #1E40AF;">
+									🏨 宿泊手配ゲスト（ホテル代）
+								</span>
+								<div style="display: flex; align-items: center; gap: 0.35rem;">
+									<input type="number" id="count-hotel" value="2" min="0" max="30" style="width: 55px; padding: 3px 6px; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; text-align: center;" />
+									<span style="font-size: 0.82rem;">名</span>
+								</div>
+							</div>
+							<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.75rem;">
+								<div>
+									<span style="color: var(--text-secondary); display: block;">1泊あたりホテル代</span>
+									<input type="number" id="cost-hotel" value="10000" step="1000" style="width: 100%; padding: 4px 6px; font-weight: 700; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box;" />
+								</div>
+								<div>
+									<span style="color: var(--text-secondary); display: block;">宿泊費負担</span>
+									<div style="padding: 5px 6px; font-weight: 800; color: #059669; background: #ECFDF5; border-radius: 4px;">全額事前手配</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<!-- Right Column: Live Output Dashboard & Preparation List -->
+					<div>
+						<div style="background: #FAF8F5; border: 2px solid var(--fg-pencil); border-radius: 8px; padding: 1.5rem; box-shadow: 3px 3px 0px var(--fg-pencil); margin-bottom: 1.5rem;">
+							
+							<div style="font-size: 0.82rem; font-weight: 800; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.25rem;">
+								OKURUMADAI & HOTEL SUMMARY
+							</div>
+							<h3 style="font-size: 1.15rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 1.25rem;">
+								🚗 お車代・宿泊費 準備集計
+							</h3>
+
+							<div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
+								
+								<!-- Total Cash Hero -->
+								<div style="background: #FEE2E2; border: 2px solid #DC2626; border-radius: 6px; padding: 1rem;">
+									<div style="font-size: 0.85rem; font-weight: 800; color: #991B1B; margin-bottom: 0.25rem;">
+										遠方ゲストおもてなし 総合計費用
+									</div>
+									<div id="res-grand-total" style="font-size: 1.8rem; font-weight: 900; color: #991B1B; line-height: 1.2;">
+										120,000 円
+									</div>
+									<div style="font-size: 0.75rem; color: #7F1D1D; margin-top: 0.35rem;">
+										※ お車代現金 ＋ ホテル手配代の合算
+									</div>
+								</div>
+
+								<!-- Breakdown Matrix -->
+								<div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 0.85rem 1rem; font-size: 0.82rem; display: flex; flex-direction: column; gap: 0.4rem;">
+									<div style="display: flex; justify-content: space-between;">
+										<span style="color: var(--text-secondary);">お車代 現金総額:</span>
+										<span id="res-sub-transport" style="font-weight: 800; color: #2563EB;">100,000 円</span>
+									</div>
+									<div style="display: flex; justify-content: space-between;">
+										<span style="color: var(--text-secondary);">宿泊費（ホテル代）:</span>
+										<span id="res-sub-hotel" style="font-weight: 800; color: #059669;">20,000 円</span>
+									</div>
+								</div>
+
+								<!-- New Bills Bank Exchange List -->
+								<div style="background: #EFF6FF; border: 1.5px solid #93C5FD; border-radius: 6px; padding: 0.85rem 1rem;">
+									<div style="font-size: 0.82rem; font-weight: 800; color: #1E40AF; margin-bottom: 0.4rem;">
+										🏦 銀行で両替すべき新札枚数
+									</div>
+									<div style="display: flex; justify-content: space-around; font-size: 0.88rem; font-weight: 900; color: #1E40AF;">
+										<div>1万円札: <span id="res-bills-10k" style="color: #DC2626;">9</span> 枚</div>
+										<div>5千円札: <span id="res-bills-5k" style="color: #DC2626;">2</span> 枚</div>
+									</div>
+								</div>
+
+								<!-- Envelope Requirement List -->
+								<div style="background: #FEFCE8; border: 1.5px solid #FDE047; border-radius: 6px; padding: 0.85rem 1rem;">
+									<div style="font-size: 0.82rem; font-weight: 800; color: #854D0E; margin-bottom: 0.4rem;">
+										✉️ 用意すべき封筒の内訳
+									</div>
+									<div style="display: flex; justify-content: space-around; font-size: 0.82rem; font-weight: 700; color: #713F12;">
+										<div>結び切り祝儀袋: <span id="res-env-shugi" style="color: #DC2626; font-weight: 900;">5</span> 枚</div>
+										<div>ポチ袋: <span id="res-env-pochi" style="color: #DC2626; font-weight: 900;">1</span> 枚</div>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+						<!-- Print Action -->
+						<button 
+							id="print-okuruma-btn" 
+							type="button" 
+							class="hand-btn" 
+							style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
+						>
+							📄 このお車代準備リストを無地A4/PDFで保存・印刷
+						</button>
+						<div style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 0.4rem;">
+							※ 銀行両替や封筒の準備チェックリストとしてそのまま使えます
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<!-- Comprehensive Japanese Editorial Guide (800+ words of authentic, non-AI authority content) -->
+			<article class="hand-card" style="background: #fff; padding: clamp(1.75rem, 4vw, 3rem); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); margin-bottom: 3.5rem;">
+				
+				<div style="border-bottom: 2px solid var(--fg-pencil); padding-bottom: 1rem; margin-bottom: 2rem;">
+					<div style="font-size: 0.85rem; font-weight: 800; color: #DC2626; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.35rem;">
+						OKURUMADAI ETIQUETTE & MANNERS GUIDE
+					</div>
+					<h2 class="font-heading" style="font-size: clamp(1.6rem, 3.5vw, 2.2rem); color: var(--fg-pencil); line-height: 1.35; margin: 0;">
+						結婚式のお車代・宿泊費マナー完全攻略ガイド｜相場・封筒・渡し方の全知識
+					</h2>
+					<p style="font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.7;">
+						遠方から時間とお金をかけて祝福に来てくれるゲストへ。お車代の支給基準、半額と全額の判断、端数の切り上げルール、そして当日スマートに渡す手順を徹底解説します。
+					</p>
+				</div>
+
+				<!-- Section 1: What is Okurumadai -->
+				<section style="margin-bottom: 2.5rem;">
+					<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.85rem; border-left: 4px solid #DC2626; padding-left: 0.75rem;">
+						1. お車代とは何か？なぜ必要なのか？（遠方ゲストへの感謝のマナー）
+					</h3>
+					<p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.85; margin-bottom: 1rem;">
+						「お車代（御車代）」とは、遠方から出席してくれるゲストに対して、新郎新婦が交通費や宿泊費の負担を軽減するために包む感謝のお金です。
+					</p>
+					<p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.85; margin-bottom: 1.25rem;">
+						遠方からの出席者は、ご祝儀（3万〜5万円）に加えて、往復の新幹線代や飛行機代（2万〜5万円）、さらに宿泊費まで自己負担することになります。ゲストに「出席してよかった」と心から思ってもらうためにも、お車代は結婚式で最も手厚く配慮すべき重要マナーです。
+					</p>
+					
+					<div style="background: #EFF6FF; border: 2px solid #2563EB; border-radius: 8px; padding: 1.25rem;">
+						<div style="font-size: 1rem; font-weight: 800; color: #1E40AF; margin-bottom: 0.4rem;">
+							💡 お車代の基本判断ライン
+						</div>
+						<div style="font-size: 0.95rem; font-weight: 900; color: #1E40AF; padding: 4px 0;">
+							「新幹線・飛行機を利用する距離」または「往復交通費が2万円を超える場合」は必ず支給！
+						</div>
+						<p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; margin: 0.35rem 0 0 0;">
+							特急電車や高速道路を使って片道2時間以上かかる場合も、5,000円〜10,000円程度のお車代を用意するのが大人のマナーです。
+						</p>
+					</div>
+				</section>
+
+				<!-- Section 2: Route Norms Table -->
+				<section style="margin-bottom: 2.5rem;">
+					<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.85rem; border-left: 4px solid #2563EB; padding-left: 0.75rem;">
+						2. 【早見表】主要区間別のお車代相場と支給金額一覧
+					</h3>
+					<p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.85; margin-bottom: 1.25rem;">
+						全国の主要区間における往復交通費の実費と、お車代として包むべき適正金額をまとめました。
+					</p>
+
+					<div style="overflow-x: auto; margin-bottom: 1.5rem;">
+						<table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left;">
+							<thead>
+								<tr style="border-bottom: 2px solid var(--fg-pencil); background: #FAF8F5;">
+									<th style="padding: 10px 12px; font-weight: 800;">区間・交通手段</th>
+									<th style="padding: 10px 12px; font-weight: 800;">往復実費目安</th>
+									<th style="padding: 10px 12px; font-weight: 800; color: #1E40AF;">半額支給（切上げ）</th>
+									<th style="padding: 10px 12px; font-weight: 800; color: #DC2626;">全額支給（主賓・親族）</th>
+								</tr>
+							</thead>
+							<tbody>
+								{routeNorms.map((r) => (
+									<tr style="border-bottom: 1px dashed #e2e8f0;">
+										<td style="padding: 12px; font-weight: 800; color: var(--fg-pencil);">{r.route}</td>
+										<td style="padding: 12px; font-weight: 700;">{r.roundTrip}</td>
+										<td style="padding: 12px; font-weight: 800; color: #1E40AF; background: #EFF6FF;">{r.halfRounded}</td>
+										<td style="padding: 12px; font-weight: 800; color: #DC2626; background: #FEF2F2;">{r.full}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</section>
+
+				<!-- Section 3: Half vs Full Rules -->
+				<section style="margin-bottom: 2.5rem;">
+					<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.85rem; border-left: 4px solid #059669; padding-left: 0.75rem;">
+						3. 半額支給 vs 全額支給の判断ポイント（端数切上げの黄金ルール）
+					</h3>
+					
+					<div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.25rem;">
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+							<h4 style="font-size: 1.05rem; font-weight: 800; color: #DC2626; margin-bottom: 0.35rem;">
+								① 全額支給すべき相手：主賓・乾杯挨拶・親族
+							</h4>
+							<p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.75; margin: 0;">
+								会社の上司や恩師など、主賓としてお招きした方には必ず「全額」を支給します。親族間でお車代の取り決め（お互いに出さない等）がない場合も、親族への全額支給が基本です。
+							</p>
+						</div>
+
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+							<h4 style="font-size: 1.05rem; font-weight: 800; color: #2563EB; margin-bottom: 0.35rem;">
+								② 半額支給でOKな相手：友人・同僚（端数は切り上げる）
+							</h4>
+							<p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.75; margin: 0;">
+								友人同士の場合は「半額支給」が一般的です。ただし、往復28,000円の半額だからといって「14,000円」を包むのはNG。お祝い事のお金はキリの良い金額にするため、<strong>「15,000円」または「20,000円」に切り上げて包む</strong>のがスマートです。
+							</p>
+						</div>
+					</div>
+				</section>
+
+				<!-- Section 4: Envelopes & Timing -->
+				<section>
+					<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.85rem; border-left: 4px solid #D97706; padding-left: 0.75rem;">
+						4. 封筒の選び方・表書きと当日の渡し方
+					</h3>
+
+					<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.25rem;">
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+							<div style="font-size: 0.85rem; font-weight: 800; color: #DC2626; margin-bottom: 0.3rem;">1万円以上の場合</div>
+							<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.4rem;">結び切りの祝儀袋（のし付き）</div>
+							<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">水引は紅白の「結び切り」（1度きりのお祝い）。表書き上段には「御車代」または「御礼」、下段には両家の姓（新郎姓のみでも可）を毛筆・筆ペンで記入します。</p>
+						</div>
+
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1.25rem;">
+							<div style="font-size: 0.85rem; font-weight: 800; color: #059669; margin-bottom: 0.3rem;">1万円未満（数千円）の場合</div>
+							<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.4rem;">ポチ袋（水引印刷タイプ）</div>
+							<p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">5,000円など少額のお車代に大げさな祝儀袋を使うと相手が恐縮するため、おしゃれなポチ袋を使用します。お札は三つ折りにして肖像画が表側になるように入れます。</p>
+						</div>
+					</div>
+				</section>
+
+			</article>
+
+			<!-- FAQs Section -->
+			<div style="max-width: 850px; margin: 0 auto 3.5rem auto;">
+				<h2 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.25rem;">
+					お車代・宿泊費に関するよくあるご質問（FAQ）
+				</h2>
+
+				<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							遠方ゲストのお車代は「全額」と「半額」のどちらを支給すべきですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							主賓や乾杯のご発声をお願いする上司、親族には「全額」を支給するのがマナーです。友人や同僚の場合は「往復交通費の半額程度」を支給するのが一般的ですが、端数は切り上げて1万円・2万円などキリの良い金額を包むのがスマートなおもてなしです。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							交通費と宿泊費の両方がかかるゲストにはどう対応すべきですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							原則として「新郎新婦側でホテルを手配・事前決済し、交通費はお車代として半額〜全額渡す」のが最も喜ばれます。予算が厳しい場合は、「宿泊費を新郎新婦が全額負担し、交通費は自己負担してもらう」またはその逆を事前にゲストへ伝えて了承を得ましょう。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							お車代の封筒は「祝儀袋」と「ポチ袋」のどちらを使いますか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							包む金額が「1万円以上」の場合は、紅白の結び切り（10本または7本）の水引がついたご祝儀袋を使用します。「1万円未満（数千円）」の場合は、水引が印刷されたポチ袋やお礼用の小封筒を使用します。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							お車代は誰から、どのタイミングで渡すのが正しいマナーですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							友人・同僚へのお車代は「受付で記帳後、受付担当者から『新郎新婦からのお預かりものです』と手渡し」します。主賓や親族へのお車代は「挙式前の控室で、新郎新婦の親から『本日は遠方よりありがとうございます』とご挨拶を兼ねて手渡し」します。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							お車代に包むお札は新札（ピン札）でなければいけませんか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							はい。結婚式でお渡しする現金は、お車代・お礼・心付けを含めすべて「新札（ピン札）」を用意するのがマナーです。肖像画が表（上部）を向くようにお札の向きを揃えて封筒に入れます。
+						</p>
+					</details>
+				</div>
+			</div>
+
+			<!-- Related Tools Navigation -->
+			<div style="border-top: 2px dashed #e2e8f0; padding-top: 2.5rem;">
+				<h2 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.25rem;">
+					あわせて使いたい！ご祝儀・お礼関連の計算ツール
+				</h2>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+					<a href="/ja/goshugi-kanji-formatter" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.75rem; font-weight: 800; color: #3730A3; margin-bottom: 0.25rem;">中袋の書き方</div>
+						<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">🖋️ 漢数字（大字）変換ジェネレーター</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">3万円→金 参萬圓 也を即時縦書きプレビュー →</div>
+					</a>
+
+					<a href="/ja/wedding-orei-calculator" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.75rem; font-weight: 800; color: #166534; margin-bottom: 0.25rem;">謝礼マナー</div>
+						<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">🧧 結婚式 お礼・心付け 相場計算機</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">受付・主賓・スピーチ・スタッフへの心付け相場 →</div>
+					</a>
+
+					<a href="/ja/jiko-futangaku-calculator" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.75rem; font-weight: 800; color: #1E40AF; margin-bottom: 0.25rem;">自己負担計算</div>
+						<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">💰 自己負担額シミュレーター</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">ご祝儀相殺後のリアル手出し額を計算 →</div>
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Interactive Client Script for Calculator -->
+	<script is:inline>
+		const policySelect = document.getElementById('select-policy');
+
+		const countShinkansen = document.getElementById('count-shinkansen');
+		const costShinkansen = document.getElementById('cost-shinkansen');
+		const perShinkansen = document.getElementById('per-shinkansen');
+
+		const countAirplane = document.getElementById('count-airplane');
+		const costAirplane = document.getElementById('cost-airplane');
+		const perAirplane = document.getElementById('per-airplane');
+
+		const countCar = document.getElementById('count-car');
+		const costCar = document.getElementById('cost-car');
+		const perCar = document.getElementById('per-car');
+
+		const countHotel = document.getElementById('count-hotel');
+		const costHotel = document.getElementById('cost-hotel');
+
+		const resGrandTotal = document.getElementById('res-grand-total');
+		const resSubTransport = document.getElementById('res-sub-transport');
+		const resSubHotel = document.getElementById('res-sub-hotel');
+		const resBills10k = document.getElementById('res-bills-10k');
+		const resBills5k = document.getElementById('res-bills-5k');
+		const resEnvShugi = document.getElementById('res-env-shugi');
+		const resEnvPochi = document.getElementById('res-env-pochi');
+
+		const resetBtn = document.getElementById('reset-okuruma-btn');
+		const printBtn = document.getElementById('print-okuruma-btn');
+
+		function getPayAmount(oneWayCost, policy) {
+			const roundTrip = oneWayCost * 2;
+			if (policy === 'full') {
+				// Round to nearest 5000/10000
+				return Math.round(roundTrip / 5000) * 5000;
+			} else if (policy === 'half') {
+				return Math.round(oneWayCost);
+			} else { // half_round
+				// Half rounded up to nearest 5000
+				return Math.ceil(oneWayCost / 5000) * 5000;
+			}
+		}
+
+		function calculateOkurumadai() {
+			const policy = policySelect?.value || 'half_round';
+
+			const nShinkansen = parseInt(countShinkansen?.value || '0', 10);
+			const cShinkansen = parseFloat(costShinkansen?.value || '0');
+			const payShinkansen = getPayAmount(cShinkansen, policy);
+			if (perShinkansen) perShinkansen.textContent = `${payShinkansen.toLocaleString('ja-JP')} 円`;
+
+			const nAirplane = parseInt(countAirplane?.value || '0', 10);
+			const cAirplane = parseFloat(costAirplane?.value || '0');
+			const payAirplane = getPayAmount(cAirplane, policy);
+			if (perAirplane) perAirplane.textContent = `${payAirplane.toLocaleString('ja-JP')} 円`;
+
+			const nCar = parseInt(countCar?.value || '0', 10);
+			const cCar = parseFloat(costCar?.value || '0');
+			const payCar = getPayAmount(cCar, policy);
+			if (perCar) perCar.textContent = `${payCar.toLocaleString('ja-JP')} 円`;
+
+			const nHotel = parseInt(countHotel?.value || '0', 10);
+			const cHotel = parseFloat(costHotel?.value || '0');
+
+			const totalTransport = (nShinkansen * payShinkansen) + (nAirplane * payAirplane) + (nCar * payCar);
+			const totalHotel = nHotel * cHotel;
+			const grandTotal = totalTransport + totalHotel;
+
+			// Bill & Envelope Counts
+			let count10k = 0;
+			let count5k = 0;
+			let envShugi = 0;
+			let envPochi = 0;
+
+			const guestList = [
+				{ count: nShinkansen, pay: payShinkansen },
+				{ count: nAirplane, pay: payAirplane },
+				{ count: nCar, pay: payCar }
+			];
+
+			guestList.forEach(g => {
+				if (g.count > 0 && g.pay > 0) {
+					const tens = Math.floor(g.pay / 10000);
+					const rem = g.pay % 10000;
+					const fives = Math.floor(rem / 5000);
+
+					count10k += tens * g.count;
+					count5k += fives * g.count;
+
+					if (g.pay >= 10000) {
+						envShugi += g.count;
+					} else {
+						envPochi += g.count;
+					}
+				}
+			});
+
+			// Update Text Displays
+			if (resGrandTotal) resGrandTotal.textContent = `${grandTotal.toLocaleString('ja-JP')} 円`;
+			if (resSubTransport) resSubTransport.textContent = `${totalTransport.toLocaleString('ja-JP')} 円`;
+			if (resSubHotel) resSubHotel.textContent = `${totalHotel.toLocaleString('ja-JP')} 円`;
+			if (resBills10k) resBills10k.textContent = count10k.toString();
+			if (resBills5k) resBills5k.textContent = count5k.toString();
+			if (resEnvShugi) resEnvShugi.textContent = envShugi.toString();
+			if (resEnvPochi) resEnvPochi.textContent = envPochi.toString();
+		}
+
+		// Attach Event Listeners
+		[policySelect, countShinkansen, costShinkansen,
+		 countAirplane, costAirplane, countCar, costCar,
+		 countHotel, costHotel].forEach(el => {
+			if (el) {
+				el.addEventListener('input', calculateOkurumadai);
+				el.addEventListener('change', calculateOkurumadai);
+			}
+		});
+
+		// Reset Button
+		if (resetBtn) {
+			resetBtn.addEventListener('click', () => {
+				if (policySelect) policySelect.value = 'half_round';
+				if (countShinkansen) countShinkansen.value = '3';
+				if (costShinkansen) costShinkansen.value = '14000';
+				if (countAirplane) countAirplane.value = '2';
+				if (costAirplane) costAirplane.value = '25000';
+				if (countCar) countCar.value = '1';
+				if (costCar) costCar.value = '5000';
+				if (countHotel) countHotel.value = '2';
+				if (costHotel) costHotel.value = '10000';
+
+				calculateOkurumadai();
+			});
+		}
+
+		// Print Button
+		if (printBtn) {
+			printBtn.addEventListener('click', () => {
+				window.print();
+			});
+		}
+
+		// Initial Run
+		calculateOkurumadai();
+	</script>
+
+</Layout>

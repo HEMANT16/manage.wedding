@@ -1,0 +1,2711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Manage.Wedding — 16-Week Substack Master Editorial Vault & Prompt Hub</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--bg-warm: #faf8f5;
+			--card-bg: #ffffff;
+			--pencil: #1e1b18;
+			--text-sub: #57534e;
+			--border-sketch: #e7e5e4;
+			--brand-primary: #e11d48;
+			--brand-rose: #f43f5e;
+			--brand-green: #059669;
+			--brand-amber: #d97706;
+			--brand-indigo: #4f46e5;
+			--brand-blue: #0284c7;
+			--brand-purple: #9333ea;
+			--tape: rgba(254, 240, 138, 0.85);
+			--paper-shadow: 4px 4px 0px #1e1b18;
+		}
+
+		* { box-sizing: border-box; margin: 0; padding: 0; }
+		body {
+			font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+			background-color: var(--bg-warm);
+			color: var(--pencil);
+			line-height: 1.75;
+			padding: 2rem 1rem;
+		}
+
+		.container {
+			max-width: 1520px;
+			margin: 0 auto;
+		}
+
+		/* Header */
+		.header-box {
+			background: #fff;
+			border: 2px solid var(--pencil);
+			border-radius: 16px;
+			padding: 2.5rem 2rem;
+			box-shadow: var(--paper-shadow);
+			margin-bottom: 2rem;
+			position: relative;
+		}
+
+		.tape {
+			position: absolute;
+			top: -12px;
+			left: 50%;
+			transform: translateX(-50%) rotate(-1deg);
+			width: 280px;
+			height: 28px;
+			background: var(--tape);
+			border: 1px dashed rgba(0,0,0,0.15);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-family: 'JetBrains Mono', monospace;
+			font-size: 0.75rem;
+			font-weight: 700;
+			letter-spacing: 1px;
+			color: #78350f;
+		}
+
+		.header-title {
+			font-family: 'Playfair Display', serif;
+			font-size: 2.4rem;
+			font-weight: 700;
+			margin-bottom: 0.5rem;
+			color: var(--pencil);
+		}
+
+		.header-desc {
+			color: var(--text-sub);
+			font-size: 1.05rem;
+			max-width: 1000px;
+			margin-bottom: 1.5rem;
+		}
+
+		.quick-stats {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.85rem;
+			border-top: 1px dashed var(--border-sketch);
+			padding-top: 1.25rem;
+		}
+
+		.stat-pill {
+			background: #f5f5f4;
+			border: 1px solid var(--border-sketch);
+			border-radius: 8px;
+			padding: 0.4rem 0.85rem;
+			font-size: 0.85rem;
+			font-weight: 600;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		/* Main Layout: Sidebar + Content Area */
+		.layout-grid {
+			display: grid;
+			grid-template-columns: 360px 1fr;
+			gap: 2rem;
+			align-items: start;
+		}
+
+		@media (max-width: 1024px) {
+			.layout-grid {
+				grid-template-columns: 1fr;
+			}
+		}
+
+		/* Sidebar / Tab List */
+		.tab-sidebar {
+			background: #fff;
+			border: 2px solid var(--pencil);
+			border-radius: 14px;
+			padding: 1.25rem;
+			box-shadow: var(--paper-shadow);
+			position: sticky;
+			top: 1.5rem;
+			max-height: calc(100vh - 3rem);
+			overflow-y: auto;
+		}
+
+		.sidebar-title {
+			font-size: 0.85rem;
+			font-weight: 800;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			color: var(--text-sub);
+			margin-bottom: 1rem;
+			padding-bottom: 0.5rem;
+			border-bottom: 1px solid var(--border-sketch);
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.tab-btn {
+			display: block;
+			width: 100%;
+			text-align: left;
+			background: transparent;
+			border: 1px solid transparent;
+			border-radius: 10px;
+			padding: 0.85rem 1rem;
+			margin-bottom: 0.5rem;
+			cursor: pointer;
+			transition: all 0.15s ease;
+			font-family: inherit;
+		}
+
+		.tab-btn:hover {
+			background: #f5f5f4;
+		}
+
+		.tab-btn.active {
+			background: #fff;
+			border: 2px solid var(--pencil);
+			box-shadow: 3px 3px 0px var(--pencil);
+			transform: translate(-1px, -1px);
+		}
+
+		.tab-week-label {
+			font-size: 0.75rem;
+			font-family: 'JetBrains Mono', monospace;
+			font-weight: 700;
+			color: var(--brand-primary);
+			text-transform: uppercase;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 0.2rem;
+		}
+
+		.tab-post-title {
+			font-size: 0.92rem;
+			font-weight: 700;
+			color: var(--pencil);
+			line-height: 1.35;
+		}
+
+		.tab-wordcount {
+			font-size: 0.72rem;
+			color: var(--text-sub);
+			margin-top: 0.25rem;
+			font-weight: 600;
+		}
+
+		.tab-badge {
+			font-size: 0.65rem;
+			padding: 0.15rem 0.45rem;
+			border-radius: 4px;
+			font-weight: 700;
+		}
+
+		.badge-ready { background: #dcfce7; color: #166534; }
+
+		/* Article Viewer */
+		.content-card {
+			background: #fff;
+			border: 2px solid var(--pencil);
+			border-radius: 16px;
+			padding: 2.75rem;
+			box-shadow: var(--paper-shadow);
+			display: none;
+		}
+
+		.content-card.active {
+			display: block;
+			animation: fadeIn 0.2s ease-in;
+		}
+
+		@keyframes fadeIn {
+			from { opacity: 0; transform: translateY(4px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+
+		/* Meta Strip */
+		.post-meta-strip {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem;
+			margin-bottom: 1.5rem;
+			align-items: center;
+		}
+
+		.meta-pill {
+			font-size: 0.78rem;
+			font-weight: 700;
+			padding: 0.35rem 0.75rem;
+			border-radius: 6px;
+			border: 1px solid var(--border-sketch);
+			background: #f5f5f4;
+			display: flex;
+			align-items: center;
+			gap: 0.4rem;
+		}
+
+		.meta-pill.primary {
+			background: #ffe4e6;
+			border-color: #fecdd3;
+			color: #9f1239;
+		}
+
+		.meta-pill.tool-link {
+			background: #eff6ff;
+			border-color: #bfdbfe;
+			color: #1e40af;
+			text-decoration: none;
+		}
+		.meta-pill.tool-link:hover {
+			text-decoration: underline;
+		}
+
+		.meta-pill.wordcount {
+			background: #ecfdf5;
+			border-color: #a7f3d0;
+			color: #065f46;
+		}
+
+		/* Action Bar */
+		.action-bar {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.75rem;
+			margin-bottom: 2rem;
+			padding-bottom: 1.5rem;
+			border-bottom: 2px dashed var(--border-sketch);
+		}
+
+		.btn-copy {
+			background: var(--pencil);
+			color: #fff;
+			border: 2px solid var(--pencil);
+			border-radius: 8px;
+			padding: 0.65rem 1.25rem;
+			font-size: 0.85rem;
+			font-weight: 700;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			transition: all 0.15s ease;
+			box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+			font-family: inherit;
+		}
+
+		.btn-copy:hover {
+			background: #3f3f46;
+			transform: translate(-1px, -1px);
+		}
+
+		.btn-copy.copied {
+			background: var(--brand-green);
+			border-color: var(--brand-green);
+		}
+
+		.btn-prompt {
+			background: #faf5ff;
+			color: var(--brand-purple);
+			border: 2px solid var(--brand-purple);
+			border-radius: 8px;
+			padding: 0.65rem 1.25rem;
+			font-size: 0.85rem;
+			font-weight: 700;
+			cursor: pointer;
+			box-shadow: 2px 2px 0px var(--brand-purple);
+			transition: all 0.15s ease;
+			font-family: inherit;
+		}
+
+		.btn-prompt:hover {
+			background: #f3e8ff;
+			transform: translate(-1px, -1px);
+		}
+
+		.btn-prompt.copied {
+			background: var(--brand-green);
+			color: #fff;
+			border-color: var(--brand-green);
+			box-shadow: 2px 2px 0px var(--brand-green);
+		}
+
+		.btn-secondary {
+			background: #fff;
+			color: var(--pencil);
+			border: 2px solid var(--pencil);
+			border-radius: 8px;
+			padding: 0.65rem 1.25rem;
+			font-size: 0.85rem;
+			font-weight: 700;
+			cursor: pointer;
+			box-shadow: 2px 2px 0px var(--pencil);
+			transition: all 0.15s ease;
+			font-family: inherit;
+		}
+
+		.btn-secondary:hover {
+			background: #f5f5f4;
+			transform: translate(-1px, -1px);
+		}
+
+		/* Typography for Articles */
+		.post-title-main {
+			font-family: 'Playfair Display', serif;
+			font-size: 2.2rem;
+			font-weight: 700;
+			line-height: 1.25;
+			color: var(--pencil);
+			margin-bottom: 0.75rem;
+		}
+
+		.post-subtitle-main {
+			font-size: 1.15rem;
+			color: var(--text-sub);
+			font-style: italic;
+			margin-bottom: 1.75rem;
+			padding-bottom: 1rem;
+			border-bottom: 1px solid var(--border-sketch);
+		}
+
+		.article-body {
+			font-size: 1.05rem;
+			line-height: 1.8;
+			color: #292524;
+		}
+
+		.article-body h2 {
+			font-family: 'Playfair Display', serif;
+			font-size: 1.45rem;
+			font-weight: 700;
+			margin: 2.25rem 0 0.85rem;
+			color: var(--pencil);
+			border-left: 4px solid var(--brand-primary);
+			padding-left: 0.85rem;
+		}
+
+		.article-body h3 {
+			font-size: 1.15rem;
+			font-weight: 700;
+			margin: 1.5rem 0 0.5rem;
+			color: var(--pencil);
+		}
+
+		.article-body p {
+			margin-bottom: 1.35rem;
+		}
+
+		.article-body ul, .article-body ol {
+			margin: 1rem 0 1.5rem 1.5rem;
+		}
+
+		.article-body li {
+			margin-bottom: 0.65rem;
+		}
+
+		.callout-box {
+			background: #fffbeb;
+			border: 2px solid #fde68a;
+			border-radius: 10px;
+			padding: 1.35rem 1.5rem;
+			margin: 1.75rem 0;
+			position: relative;
+		}
+
+		.callout-box.formula {
+			background: #f0fdf4;
+			border-color: #bbf7d0;
+		}
+
+		.callout-box.danger {
+			background: #fef2f2;
+			border-color: #fecaca;
+		}
+
+		.callout-title {
+			font-size: 0.9rem;
+			font-weight: 800;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			margin-bottom: 0.5rem;
+			display: flex;
+			align-items: center;
+			gap: 0.4rem;
+		}
+
+		.callout-box.formula .callout-title { color: #166534; }
+		.callout-box.danger .callout-title { color: #991b1b; }
+
+		/* Clean Tables */
+		.data-table {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 1.75rem 0;
+			font-size: 0.92rem;
+		}
+
+		.data-table th, .data-table td {
+			padding: 0.85rem 1rem;
+			text-align: left;
+			border: 1px solid var(--border-sketch);
+		}
+
+		.data-table th {
+			background: #f5f5f4;
+			font-weight: 700;
+			color: var(--pencil);
+		}
+
+		.data-table tr:nth-child(even) td {
+			background: #fafaf9;
+		}
+
+		/* CTA Box */
+		.substack-cta-card {
+			background: linear-gradient(135deg, #fff1f2, #ffe4e6);
+			border: 2px solid #fecdd3;
+			border-radius: 12px;
+			padding: 1.75rem;
+			margin: 2.5rem 0 1.5rem;
+			text-align: center;
+		}
+
+		.substack-cta-title {
+			font-family: 'Playfair Display', serif;
+			font-size: 1.35rem;
+			font-weight: 700;
+			margin-bottom: 0.5rem;
+			color: #881337;
+		}
+
+		.cta-button {
+			display: inline-block;
+			background: var(--brand-primary);
+			color: #fff !important;
+			text-decoration: none;
+			padding: 0.75rem 1.75rem;
+			border-radius: 8px;
+			font-weight: 700;
+			font-size: 0.95rem;
+			margin-top: 1rem;
+			box-shadow: 2px 2px 0px #881337;
+			transition: transform 0.15s ease;
+		}
+
+		.cta-button:hover {
+			transform: scale(1.02);
+		}
+
+		/* Image Prompt Box */
+		.hero-prompt-card {
+			background: #faf5ff;
+			border: 2px dashed #d8b4fe;
+			border-radius: 12px;
+			padding: 1.5rem;
+			margin-top: 2.5rem;
+		}
+
+		.hero-prompt-title {
+			font-size: 0.85rem;
+			font-weight: 800;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			color: #7e22ce;
+			margin-bottom: 0.5rem;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.hero-prompt-code {
+			background: #fff;
+			border: 1px solid #e9d5ff;
+			border-radius: 8px;
+			padding: 1rem;
+			font-family: 'JetBrains Mono', monospace;
+			font-size: 0.86rem;
+			color: #4c1d95;
+			line-height: 1.5;
+			word-break: break-word;
+		}
+
+	</style>
+</head>
+<body>
+
+<div class="container">
+	<!-- Top Header Box -->
+	<header class="header-box">
+		<div class="tape">16-WEEK MASTER VAULT</div>
+		<h1 class="header-title">Manage.Wedding — 16-Week In-Depth Substack Vault</h1>
+		<p class="header-desc">
+			Complete 4-month editorial pipeline. Every post is an in-depth 850–1,200+ word authority guide packed with data tables, formulas, psychological frameworks, contract warnings, and Midjourney/DALL-E 3/Flux hero image prompts.
+		</p>
+		
+		<div class="quick-stats">
+			<div class="stat-pill"><strong>📚 Word Count:</strong> 850 – 1,200+ Words / Post</div>
+			<div class="stat-pill"><strong>📅 Full Series:</strong> 16 Complete Weeks (4 Months)</div>
+			<div class="stat-pill"><strong>🎨 Hero Prompts:</strong> Included on all 16 posts</div>
+			<div class="stat-pill"><strong>🎯 Categories:</strong> Lifestyle & Personal Finance</div>
+			<div class="stat-pill"><strong>🔗 Target:</strong> manage.wedding calculators</div>
+		</div>
+	</header>
+
+	<!-- Main 2-Column App Grid -->
+	<div class="layout-grid">
+		
+		<!-- Left Navigation Sidebar -->
+		<aside class="tab-sidebar">
+			<div class="sidebar-title">
+				<span>Weekly Schedule</span>
+				<span style="color: var(--brand-primary); font-size: 0.75rem;">16 Posts</span>
+			</div>
+
+			<button class="tab-btn active" onclick="switchWeek(1)">
+				<div class="tab-week-label"><span>Week 1 • Budgeting</span><span class="tab-badge badge-ready">1002 Words</span></div>
+				<div class="tab-post-title">The 50/30/20 Rule of Wedding Budgeting (And Where Most Couples Bleed Money)</div>
+				<div class="tab-wordcount">How to allocate your venue, catering, and vendor funds ...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(2)">
+				<div class="tab-week-label"><span>Week 2 • Bar & Alcohol</span><span class="tab-badge badge-ready">910 Words</span></div>
+				<div class="tab-post-title">The BYOB Wedding Alcohol Formula: How Much Booze Do You ACTUALLY Need?</div>
+				<div class="tab-wordcount">Stop guessing bottle counts. Here is the exact math for...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(3)">
+				<div class="tab-week-label"><span>Week 3 • Bridal Party</span><span class="tab-badge badge-ready">872 Words</span></div>
+				<div class="tab-post-title">The "N-1" Rule: How to Split Bachelorette Party Costs Without Ruining Friendships</div>
+				<div class="tab-wordcount">Why splitting evenly causes bitter group chat resentmen...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(4)">
+				<div class="tab-week-label"><span>Week 4 • Timelines</span><span class="tab-badge badge-ready">887 Words</span></div>
+				<div class="tab-post-title">The Stress-Free Wedding Day Timeline (The 45-Minute Hair & Makeup Trap)</div>
+				<div class="tab-wordcount">Why 85% of wedding mornings run late by noon—and the ex...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(5)">
+				<div class="tab-week-label"><span>Week 5 • Catering</span><span class="tab-badge badge-ready">824 Words</span></div>
+				<div class="tab-post-title">Plated vs. Buffet vs. Family Style: The Dirty Secret of Catering Costs</div>
+				<div class="tab-wordcount">Why buffets are rarely cheaper than plated dinners once...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(6)">
+				<div class="tab-week-label"><span>Week 6 • Florals</span><span class="tab-badge badge-ready">942 Words</span></div>
+				<div class="tab-post-title">DIY Flowers vs. Professional Florist: The Brutal Cost & Stress Breakdown</div>
+				<div class="tab-wordcount">Stem counts, wholesale packing, and what blooms wilt in...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(7)">
+				<div class="tab-week-label"><span>Week 7 • Hidden Costs</span><span class="tab-badge badge-ready">965 Words</span></div>
+				<div class="tab-post-title">8 Sneaky "Gotcha" Wedding Fees You Didn't Budget For (And the Tipping Cheat Sheet)</div>
+				<div class="tab-wordcount">From 24% taxable service charges to cake cutting fees a...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(8)">
+				<div class="tab-week-label"><span>Week 8 • Desserts & Cakes</span><span class="tab-badge badge-ready">902 Words</span></div>
+				<div class="tab-post-title">The Great Wedding Cake Scam: Tier Math, Sheet Cakes & Dessert Table Ratios</div>
+				<div class="tab-wordcount">Why only 75% of your guests will actually eat cake, and...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(9)">
+				<div class="tab-week-label"><span>Week 9 • Headcount & RSVPs</span><span class="tab-badge badge-ready">956 Words</span></div>
+				<div class="tab-post-title">The 80/20 Wedding RSVP Attrition Law: How Many Guests Will ACTUALLY Show Up?</div>
+				<div class="tab-wordcount">Decline rates, B-List invitation timeline ethics, and h...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(10)">
+				<div class="tab-week-label"><span>Week 10 • Bachelor Parties</span><span class="tab-badge badge-ready">899 Words</span></div>
+				<div class="tab-post-title">The Real Cost of a Bachelor Party: From Vegas VIP to Mountain Cabins</div>
+				<div class="tab-wordcount">How best men can manage $1,000/guy budgets, cover the g...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(11)">
+				<div class="tab-week-label"><span>Week 11 • Bridal Showers</span><span class="tab-badge badge-ready">848 Words</span></div>
+				<div class="tab-post-title">Bridal Shower Economics & Who Pays (Backyard DIY vs. Private Room Dining)</div>
+				<div class="tab-wordcount">Host budget splits between the bridal party and mothers...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(12)">
+				<div class="tab-week-label"><span>Week 12 • Alterations</span><span class="tab-badge badge-ready">962 Words</span></div>
+				<div class="tab-post-title">The Hidden $900 Wedding Dress Alteration Reality (Hems, Bustles & Fittings)</div>
+				<div class="tab-wordcount">Why lace and horsehair hemming costs $350+, bustle mech...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(13)">
+				<div class="tab-week-label"><span>Week 13 • Photography</span><span class="tab-badge badge-ready">811 Words</span></div>
+				<div class="tab-post-title">Wedding Photography Hours: Why 10 Hours is Overkill (The 8-Hour Sweet Spot)</div>
+				<div class="tab-wordcount">Diminishing returns of late-night reception coverage, s...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(14)">
+				<div class="tab-week-label"><span>Week 14 • Honeymoon</span><span class="tab-badge badge-ready">828 Words</span></div>
+				<div class="tab-post-title">Honeymoon Budget Engineering: How to Save $2,500 on Flights & Luxury Resorts</div>
+				<div class="tab-wordcount">All-inclusive vs. European boutique travel math, should...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(15)">
+				<div class="tab-week-label"><span>Week 15 • Music & Sound</span><span class="tab-badge badge-ready">833 Words</span></div>
+				<div class="tab-post-title">Live 9-Piece Horn Band vs. Top Tier DJ: The True Cost of Wedding Music</div>
+				<div class="tab-wordcount">Rider requirements, stage power costs, and dance floor ...</div>
+			</button>
+			<button class="tab-btn" onclick="switchWeek(16)">
+				<div class="tab-week-label"><span>Week 16 • Gift Giving Math</span><span class="tab-badge badge-ready">832 Words</span></div>
+				<div class="tab-post-title">Wedding Gift Cash Math: How Much Should Guests ACTUALLY Give?</div>
+				<div class="tab-wordcount">Debunking the "cover your plate" myth, relationship tie...</div>
+			</button>
+		</aside>
+
+		<!-- Right Content Viewer -->
+		<main id="content-container">
+
+			<!-- ===================== WEEK 1 ===================== -->
+			<article id="week-1" class="content-card active">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 1 • Budgeting</span>
+					<span class="meta-pill wordcount">📊 1002 Words</span>
+					<a href="https://manage.wedding/budget" target="_blank" class="meta-pill tool-link">🔗 Tool: Master Budget Calculator</a>
+					<span class="meta-pill">📌 Pinterest: Budget Breakdowns & Spreadsheets</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(1)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(1)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(1)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-1">The 50/30/20 Rule of Wedding Budgeting (And Where Most Couples Bleed Money)</h1>
+				<div class="post-subtitle-main" id="subtitle-1">How to allocate your venue, catering, and vendor funds without drowning in surprise debt.</div>
+				<div class="article-body" id="body-1">
+					<p>Here is an uncomfortable truth that luxury bridal magazines and glossy Instagram mood boards never mention: <strong>Nobody overspends by accident on the big ticket items.</strong></p>
+
+<p>You don’t accidentally wake up having booked a $45,000 European chateau when your total life savings for the wedding is $18,000. Where couples actually blow past their budgets—sometimes by $8,000 to $15,000—is through the quiet, unsexy, continuous drip of $250 line items: taxable administrative service charges, audio power drops, cake cutting fees, rush shipping on escort cards, and mandatory vendor insurance policies.</p>
+
+<p>When you start planning without an ironclad mathematical allocation system, your wedding budget behaves like water in a cracked vase: it slowly drains out until you find yourself six weeks before the big day, panicking over how you’re going to pay for table linens.</p>
+
+<p>Before you tour a single venue or sign a non-refundable deposit, you need a battle-tested blueprint. Here is the exact <strong>50/30/20 Wedding Allocation Formula</strong> used by professional event planners to keep budgets completely under control.</p>
+
+<h2>1. The 50% Bucket: The "Big Three" (Venue, Food & Alcohol)</h2>
+<p>Exactly <strong>50% of your total wedding budget</strong> must be reserved for the core guest experience. This is non-negotiable.</p>
+<ul>
+    <li><strong>Venue Rental Fee:</strong> The physical space, tables, chairs, and site access.</li>
+    <li><strong>Catering & Food Service:</strong> Cocktail hour appetizers, main dinner courses, bread service, and waitstaff.</li>
+    <li><strong>Bar, Alcohol & Bartenders:</strong> Wine, beer, liquor, mixers, ice, bar setup, and certified pouring labor.</li>
+</ul>
+<p><strong>The Hard Stop Rule:</strong> If your total wedding budget is $30,000, your venue + food + booze cannot exceed $15,000 combined. If a picturesque historic barn quotes you $11,000 just for the empty hall without tables, chairs, or food, you simply cannot afford that venue. Signing that contract guarantees that the rest of your wedding will suffer severe financial compromises.</p>
+
+<h2>2. The 30% Bucket: Visuals, Entertainment & Lasting Memories</h2>
+<p>This 30% bucket covers everything your guests see, hear, and interact with—along with the tangible artifacts you will look back on for the next 50 years:</p>
+<ul>
+    <li><strong>Photography & Videography (12–14%):</strong> Your wedding photos are the only permanent physical asset left when the day is done. Never sacrifice photographer quality for expensive centerpieces.</li>
+    <li><strong>Attire, Alterations & Rings (8–10%):</strong> Dress, suit/tuxedo rental or purchase, professional seamstress alterations, veil, shoes, and wedding bands.</li>
+    <li><strong>Music & Entertainment (6–8%):</strong> Professional DJ/MC or live musician setup, including sound equipment and ceremony microphones.</li>
+</ul>
+
+<h2>3. The 20% Bucket: Atmosphere & The Mandatory 7% "Slush Fund"</h2>
+<p>This is where 80% of couples fail. Most couples allocate 100% of their cash to planned line items, leaving exactly $0 for unexpected fees. The 20% bucket must be divided as follows:</p>
+<ul>
+    <li><strong>Florals & Aesthetic Decor (8–10%):</strong> Bouquets, boutonnieres, ceremony focal points, and table greenery.</li>
+    <li><strong>Stationery, Postage & Signage (2–3%):</strong> Save-the-dates, invitation suites, stamps, seating charts, and day-of signage.</li>
+    <li><strong>The Mandatory 7–10% Emergency Slush Fund:</strong> Local sales taxes (often 7–10%), venue service charges (20–25%), unexpected rain tent rentals, day-of vendor cash tips, and delivery surcharges.</li>
+</ul>
+
+<div class="callout-box formula">
+    <div class="callout-title">💡 Concrete Budget Breakdowns at Three Real-World Price Points</div>
+    <p>Here is what the 50/30/20 formula looks like in actual cash across three common budget sizes:</p>
+    <ul>
+        <li><strong>$20,000 Budget (80 Guests):</strong> $10,000 for Venue/Food/Bar | $2,600 Photo | $1,800 Attire | $1,400 DJ | $1,800 Florals | $600 Invites | $1,800 Buffer & Tips</li>
+        <li><strong>$40,000 Budget (120 Guests):</strong> $20,000 for Venue/Food/Bar | $5,200 Photo/Video | $3,600 Attire | $2,800 DJ/Sound | $3,600 Florals | $1,200 Invites | $3,600 Buffer & Tips</li>
+        <li><strong>$70,000 Budget (160 Guests):</strong> $35,000 for Venue/Food/Bar | $9,500 Photo/Cinema | $6,500 Attire | $5,000 Band/DJ | $6,000 Florals | $2,000 Invites | $6,000 Buffer & Tips</li>
+    </ul>
+</div>
+
+<h2>The One Metric That Dictates Everything: Per-Guest Cost</h2>
+<p>Couples often believe they can control their budget through clever DIY hacks—making their own favors, printing menus at home, or thrifting glass vases. But the brutal math of weddings proves otherwise: <strong>Your budget is almost entirely dictated by your headcount.</strong></p>
+
+<p>Every single human being who walks through your reception doors carries a compound cost: one dinner plate ($75), three cocktails ($28), one chair rental ($8), table linen share ($4), a share of the centerpiece ($12), an invitation and stamp ($6), and a slice of cake ($6). That’s roughly <strong>$139 per guest minimum</strong>.</p>
+
+<p>If you cut 15 acquaintances or distant cousins from your guest list, you instantly save over <strong>$2,000 in cash</strong>—without having to glue a single ribbon or sacrifice your favorite photographer.</p>
+
+<h2>4 Contract Red Flags to Spot Before Signing</h2>
+<ol>
+    <li><strong>Mandatory Exclusive Caterer Lists with Kickbacks:</strong> Some venues force you to choose from a list of 3 caterers who pay a 10–15% commission back to the venue, which is quietly added to your food bill.</li>
+    <li><strong>The "Plus-Plus" (++):</strong> When a venue quotes <em>"$95/person ++"</em>, remember that the first plus is 7–10% sales tax and the second plus is 20–24% service charge. $95 becomes $128 per person.</li>
+    <li><strong>Strict Audio Curfews:</strong> If outdoor noise ordinances cut music at 9:30 PM, your 5-hour reception is effectively 3.5 hours.</li>
+    <li><strong>Absence of Rain Contingency Space:</strong> If rain forces you to rent a tent 48 hours before the event, expect to pay $2,500 to $4,500 for emergency delivery.</li>
+</ol>
+
+<h2>How to Allocate When Parents Are Contributing</h2>
+<p>If parents or in-laws offer financial contributions, clarify boundaries immediately before allocating funds. Ask whether the money is a gift with zero strings attached or if it comes with guest list demands. If a parent contributes $5,000 but demands inviting 30 of their personal friends, that $5,000 will be completely consumed by the 30 extra plates ($4,200), chair rentals, and alcohol, yielding zero net budget relief for the couple.</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Want to see your exact budget breakdown in seconds?</div>
+    <p>Plug your total target budget and estimated guest count into our free interactive tool to see customized category maximums.</p>
+    <a href="https://manage.wedding/budget" class="cta-button" target="_blank">👉 Try the Free Wedding Budget Calculator</a>
+</div>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(1)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-1">Editorial wedding planning flatlay, minimalist aesthetic, linen paper wedding budget planner notebook with hand-drawn pencil calculations and breakdown charts, ceramic coffee mug, gold fountain pen, subtle neutral beige linen tablecloth, soft natural morning window lighting, cinematic shallow depth of field, 35mm photography, ultra-clean composition, highly detailed textures --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 2 ===================== -->
+			<article id="week-2" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 2 • Bar & Alcohol</span>
+					<span class="meta-pill wordcount">📊 910 Words</span>
+					<a href="https://manage.wedding/how-much-alcohol-for-wedding-ratios" target="_blank" class="meta-pill tool-link">🔗 Tool: Alcohol & Ice Calculator</a>
+					<span class="meta-pill">📌 Pinterest: Bar Menus & Signature Cocktails</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(2)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(2)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(2)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-2">The BYOB Wedding Alcohol Formula: How Much Booze Do You ACTUALLY Need?</h1>
+				<div class="post-subtitle-main" id="subtitle-2">Stop guessing bottle counts. Here is the exact math for beer, wine, liquor, and ice for 100 guests.</div>
+				<div class="article-body" id="body-2">
+					<p>Running out of alcohol at 9:15 PM while the dance floor is in full swing is every couple’s worst hospitality nightmare. But overbuying 18 cases of tequila that you can't legally return is a $1,400 financial mistake that will leave you drinking margarita mixers until your second anniversary.</p>
+
+<p>If you have booked a venue that allows you to <strong>BYOB (Bring Your Own Beverage)</strong> and supply your own bar, you have unlocked the single largest savings opportunity in wedding planning. Catering companies routinely mark up alcohol by 250% to 400%—charging $9 for a glass of $12 grocery store Pinot Grigio. By purchasing your own bottles at wholesale prices, you can save anywhere from $2,000 to $5,000 on a 120-person wedding.</p>
+
+<p>However, running your own bar requires real mathematical precision. Here is the definitive formula professional event bartenders use to calculate exact bottle counts, ice weight, and mixer ratios.</p>
+
+<h2>The Universal Consumption Rate Formula</h2>
+<p>Bartenders calculate wedding drinking volume using this standard behavioral curve:</p>
+
+<div class="callout-box formula">
+    <div class="callout-title">🍸 The Core Consumption Equation</div>
+    <p><strong>2 drinks per guest</strong> during Cocktail Hour (Hour 1) + <strong>1 drink per guest per hour</strong> for the remainder of the reception.</p>
+    <p><em>Formula: Total Drinks = (Guest Count × 2) + [Guest Count × (Total Reception Hours - 1)]</em></p>
+</div>
+
+<p>For a standard <strong>5-hour reception with 100 drinking guests</strong>, the math is:<br>
+• Hour 1 (Cocktail Hour): 100 guests × 2 drinks = 200 drinks<br>
+• Hours 2, 3, 4, 5 (Dinner & Dancing): 100 guests × 4 hours × 1 drink = 400 drinks<br>
+• <strong>Total Volume Required: 600 drinks.</strong></p>
+
+<h2>The 50 / 30 / 20 Consumption Ratio</h2>
+<p>Unless your friend group consists entirely of craft IPA enthusiasts or bourbon aficionados, general wedding demographics drink across very predictable lines: <strong>50% Wine, 30% Beer/Seltzers, and 20% Spirits/Cocktails</strong>.</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Beverage Category</th>
+            <th>Drink Share</th>
+            <th>Standard Servings per Unit</th>
+            <th>What to Buy for 100 Guests (5-Hr Event)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Wine (Red, White, Rosé)</strong></td>
+            <td>50% (300 drinks)</td>
+            <td>5 glasses (5 oz) per 750ml bottle</td>
+            <td><strong>60 bottles</strong> (5 full 12-bottle cases)</td>
+        </tr>
+        <tr>
+            <td><strong>Beer & Hard Seltzers</strong></td>
+            <td>30% (180 drinks)</td>
+            <td>1 can/bottle (12 oz) per serving</td>
+            <td><strong>7.5 cases</strong> (24-can cases = 180 cans)</td>
+        </tr>
+        <tr>
+            <td><strong>Spirits / Mixed Drinks</strong></td>
+            <td>20% (120 drinks)</td>
+            <td>16 pours (1.5 oz shots) per 750ml bottle</td>
+            <td><strong>8 bottles</strong> (750ml) or 5 handles (1.75L)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>The Wine Breakdown: Red vs. White vs. Rosé</h2>
+<p>How should you split those 60 bottles of wine? It depends on the season, climate, and main course selection:</p>
+<ul>
+    <li><strong>Summer / Outdoor Warm Weather:</strong> 50% White (Sauvignon Blanc, Pinot Grigio), 30% Crisp Rosé, 20% Light Red (Pinot Noir).</li>
+    <li><strong>Fall / Winter / Indoor Evening:</strong> 50% Full-Bodied Red (Cabernet Sauvignon, Malbec, Syrah), 40% Rich White (Chardonnay), 10% Sparkling/Rosé.</li>
+    <li><strong>Heavy Beef/Steak Entrees:</strong> Shift Red wine allocation up by an extra 10% to pair with dinner.</li>
+</ul>
+
+<h2>The Most Overlooked Critical Asset: ICE 🧊</h2>
+<p>Nothing brings a wedding bar to a grinding halt faster than running out of ice in the middle of summer. You need ice for two completely distinct jobs:</p>
+<ol>
+    <li><strong>Chilling Ice (For tubs, kegs, and beer coolers):</strong> Plan <strong>1.5 lbs per guest</strong>. This ice stays in big commercial galvanized tubs to keep beer cans and white wine cold.</li>
+    <li><strong>Consumable Ice (Clean ice scooped into cocktail glasses):</strong> Plan <strong>1 lb per guest</strong>. This must be kept in dedicated clean coolers with an ice scoop and never mixed with chilling bottles.</li>
+</ol>
+<p><strong>Total for 100 guests:</strong> You need <strong>250 lbs of ice</strong> (approx. twenty-five 10-lb bags or thirteen 20-lb bags). Store them in marine coolers behind the bar.</p>
+
+<h2>Mixers, Garnishes & Glassware Counts</h2>
+<p>For a full bar setup with signature cocktails, stock these companion essentials per 100 guests:</p>
+<ul>
+    <li><strong>Club Soda & Tonic Water:</strong> 12 to 16 two-liter bottles (or 4 cases of cans).</li>
+    <li><strong>Juices (Cranberry, Orange, Pineapple):</strong> 4 to 6 gallons total.</li>
+    <li><strong>Fresh Citrus Garnishes:</strong> 30 fresh limes (cut into wedges) and 20 lemons.</li>
+    <li><strong>Bar Glassware Ratios:</strong> Plan <strong>3 clean glasses per guest</strong> across the evening (guests constantly misplace glasses on tables and request fresh ones at the bar). For 100 guests, rent 300 cocktail/wine glasses.</li>
+</ul>
+
+<h2>Legal Compliance: Bartenders & Insurance</h2>
+<p>Never attempt a "self-serve" open bar with liquor handles sitting on a table. It creates massive bottlenecks, messy spills, and immense legal liability.</p>
+<ul>
+    <li><strong>Certified Bartender Ratio:</strong> Hire <strong>1 TIPS or LEAD certified bartender for every 50–75 guests</strong> for a full liquor bar. For beer and wine only, 1 bartender per 75–100 guests is sufficient.</li>
+    <li><strong>Host Liquor Liability Insurance:</strong> Almost all BYOB venues require a $1,000,000 policy naming the venue as an additional insured. You can secure this online via event insurance providers for $150 to $250.</li>
+</ul>
+
+<h2>3 Money-Saving BYOB Tactics</h2>
+<ol>
+    <li><strong>Know Your State Buy-Back Laws:</strong> States like California, Washington, and Illinois allow retailers to refund unopened, unchilled cases of wine and liquor with a receipt. States like Pennsylvania and Georgia strictly ban returns. Always confirm return policies with your local store manager before buying.</li>
+    <li><strong>Batch 2 Signature Cocktails:</strong> Instead of stocking 8 different spirits, offer two pre-batched signature drinks (e.g., Spicy Margarita and Bourbon Old Fashioned). This drastically speeds up bartender service lines and reduces mixer waste.</li>
+    <li><strong>Skip the Dedicated Champagne Toast:</strong> Over 50% of poured champagne is left untouched on tables. Instruct your DJ to announce: <em>"Please raise whatever drink you currently have in your hand for the toast!"</em> You’ll save $400 to $800 instantly.</li>
+</ol>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Customize this math for your exact guest count!</div>
+    <p>Adjust heavy drinkers vs light drinkers, beer preferences, and mixer volumes using our interactive alcohol tool.</p>
+    <a href="https://manage.wedding/how-much-alcohol-for-wedding-ratios" class="cta-button" target="_blank">👉 Open the Wedding Alcohol Calculator</a>
+</div>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(2)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-2">Chic rustic outdoor wedding bar setup during twilight golden hour, curated glass dispensers with amber cocktails and sliced citrus, neatly arranged wine bottles and craft beer on wooden counter, crystal glassware with clear ice cubes, floral sprig garnishes, warm fairy string lights, bokeh background of guests mingling, high-end editorial photography, 50mm f/1.8 lens, rich cinematic warm tones --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 3 ===================== -->
+			<article id="week-3" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 3 • Bridal Party</span>
+					<span class="meta-pill wordcount">📊 872 Words</span>
+					<a href="https://manage.wedding/bachelorette-party-budget-split-n-1-formula" target="_blank" class="meta-pill tool-link">🔗 Tool: Bachelorette Split Calculator</a>
+					<span class="meta-pill">📌 Pinterest: Bachelorette Itineraries & Decor</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(3)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(3)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(3)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-3">The "N-1" Rule: How to Split Bachelorette Party Costs Without Ruining Friendships</h1>
+				<div class="post-subtitle-main" id="subtitle-3">Why splitting evenly causes bitter group chat resentment—and the polite math to fix it.</div>
+				<div class="article-body" id="body-3">
+					<p>Nothing tests female friendship in your late twenties and early thirties quite like an unsolicited luxury Airbnb link and a $450 dinner bill divided into eight identical, high-pressure Venmo requests.</p>
+
+<p>Every wedding season, thousands of bridesmaids silently seethe in side group chats. Someone ordered three rounds of $22 espresso martinis and a wagyu steak, while someone else ate a side salad and drank iced tap water. Yet at the end of the evening, the receipt is evenly divided down to the cent. Add in the unstated expectation of covering the bride’s meals, matching outfits, boat rentals, and airport Ubers, and what was supposed to be a fun weekend getaway turns into a $1,800 financial grudge match.</p>
+
+<p>It doesn’t have to be this way. Financial friction during bachelorette and bachelor trips is almost always caused by a lack of mathematical structure. Here is how to use the <strong>(N - 1) Rule</strong> and clear expense bucketing to keep the celebration fun, fair, and drama-free.</p>
+
+<h2>The Mathematical Golden Rule: The (N - 1) Formula</h2>
+<p>The universal social etiquette rule of modern bachelorette trips is that <strong>the bride does not pay for her share of shared group experiences</strong> (the rental home, group dinners, boat charters, themed decorations, and welcome favors).</p>
+
+<p>However, organizers frequently make a catastrophic mistake in their spreadsheet calculations: they divide total bills by the total number of humans on the trip ($N$), and then wonder why they come up short when paying the host.</p>
+
+<div class="callout-box formula">
+    <div class="callout-title">📐 The (N - 1) Mathematical Formula</div>
+    <p>If there are <strong>N total people</strong> on the trip (including the bride), every shared group expense must be divided by <strong>(N - 1) paying guests</strong>.</p>
+    <p><em>Formula: Bridesmaid Share = Total Shared Bill ÷ (Total Attendees - 1)</em></p>
+</div>
+
+<p><strong>Real-World Example:</strong><br>
+You book a 3-night Scottsdale Airbnb for $3,600 with 10 total attendees (1 bride + 9 bridesmaids).<br>
+• <em>Incorrect Division (by 10):</em> $360 each (leaving a $360 unpaid deficit for the bride’s room).<br>
+• <em>Correct (N-1) Division (by 9):</em> $3,600 ÷ 9 = <strong>$400 per paying bridesmaid</strong>. The bride pays $0, the bill is 100% settled, and nobody gets an emergency $40 surcharge request two weeks later.</p>
+
+<h2>The 3 Distinct Expense Buckets</h2>
+<p>To ensure fairness, every single dollar spent during the trip must fall into one of three distinct categories:</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Expense Bucket</th>
+            <th>Who Pays</th>
+            <th>Examples & Guidelines</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>1. Fixed Shared (N-1)</strong></td>
+            <td>Divided equally among all $(N-1)$ bridesmaids</td>
+            <td>Airbnb / VRBO rental, group grocery stocking, boat/pool cabana charter, bride's decorations and welcome gift bag.</td>
+        </tr>
+        <tr>
+            <td><strong>2. Individual Variable</strong></td>
+            <td>Every person pays strictly for themselves</td>
+            <td>Personal flights, rideshare from home airport, individual cocktail tabs at bars, personal spa treatments, and retail shopping.</td>
+        </tr>
+        <tr>
+            <td><strong>3. Prorated / Partial Stay</strong></td>
+            <td>Weighted by nights stayed</td>
+            <td>Bridesmaids arriving 1 day late or leaving early pay lodging per night stayed: <em>(Total House Cost ÷ Total Nights ÷ Total Paying Guests) × Nights Present</em>.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Handling Partial Stays & Non-Drinkers</h2>
+<p>Two common scenarios generate friction on bachelorette trips: guests who can only stay for 2 out of 3 nights, and pregnant or non-drinking guests.</p>
+<ul>
+    <li><strong>Partial Stay Guests:</strong> Charge fixed costs equally (favors, decorations, bride's gift) because these do not diminish by staying fewer nights. However, calculate their lodging share strictly on a per-night basis: <em>(Nightly Villa Rate ÷ Paying Guests) × Nights Stayed</em>.</li>
+    <li><strong>Non-Drinkers:</strong> Separate the alcohol grocery run from the food grocery run. Never make a sober or pregnant bridesmaid chip in $90 for 12 bottles of tequila and champagne they cannot consume.</li>
+</ul>
+
+<h2>What Does the Bride Pay For?</h2>
+<p>Etiquette guidelines differ depending on travel distance:</p>
+<ul>
+    <li><strong>For Destination Trips (Requiring Flights):</strong> The bride typically pays for her own flights and personal wardrobe. The bridal party covers her lodging share, group dining, and shared party activities.</li>
+    <li><strong>For Local / Road Trip Getaways:</strong> The bridal party often covers the bride’s entire weekend from door to door, including gas and meals.</li>
+</ul>
+
+<h2>3 Etiquette Rules Every Maid of Honor Must Enforce</h2>
+
+<h3>1. The Anonymous Google Survey (Before Booking Anything)</h3>
+<p>Never ask for budget comfort levels in an open group chat. Nobody wants to be the first person to say, <em>"I can only afford $400"</em> when someone else suggests a $1,200/night penthouse. Send a private, anonymous Google Form asking: <em>"What is the maximum all-in budget (including lodging, food, and activities) you can comfortably spend without stress?"</em> Plan the itinerary around the lowest submitted number.</p>
+
+<h3>2. Kill Venmo Requests: Use a Centralized Ledger</h3>
+<p>Nothing kills a party mood faster than the ping of 12 separate $8.42 Venmo requests for guacamole and lime seltzers. Use an app like <strong>Splitwise</strong> or <strong>Tab</strong>. One or two designated people put expenses on their cards, log the receipts, and the app automatically calculates single net settlement payments on Monday morning.</p>
+
+<h3>3. Give Clear Opt-Out Options for Expensive Extras</h3>
+<p>If you are planning an expensive excursion (e.g., $180 spa pass or $120 vineyard tour), always state: <em>"We are doing wine tasting at 2 PM! If anyone wants to relax by the pool or explore town instead, totally no pressure—just let me know by Wednesday so I have the reservation headcount."</em></p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Calculate your exact bachelorette split in seconds!</div>
+    <p>Enter your rental cost, attendee count, partial stay nights, and bride subsidy to get instant per-person totals.</p>
+    <a href="https://manage.wedding/bachelorette-party-budget-split-n-1-formula" class="cta-button" target="_blank">👉 Open the Bachelorette Split Calculator</a>
+</div>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(3)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-3">Aesthetic bachelorette party poolside brunch celebration, elegant sun-drenched terrace, modern champagne glasses with raspberries, pastel pink and terracotta table runner, modern typography menu cards, laughing stylish bridesmaids in neutral linen resort wear, soft sunny morning lighting, candid luxury lifestyle photography, shot on Contax 645, editorial color grading --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 4 ===================== -->
+			<article id="week-4" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 4 • Timelines</span>
+					<span class="meta-pill wordcount">📊 887 Words</span>
+					<a href="https://manage.wedding/day-of-timeline-generator" target="_blank" class="meta-pill tool-link">🔗 Tool: Day-of Timeline Generator</a>
+					<span class="meta-pill">📌 Pinterest: Wedding Morning Timelines & Prep</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(4)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(4)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(4)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-4">The Stress-Free Wedding Day Timeline (The 45-Minute Hair & Makeup Trap)</h1>
+				<div class="post-subtitle-main" id="subtitle-4">Why 85% of wedding mornings run late by noon—and the exact minute-by-minute master schedule to fix it.</div>
+				<div class="article-body" id="body-4">
+					<p>If you ask any seasoned wedding photographer, videographer, or venue coordinator where wedding days unravel, they will all give you the exact same answer: <strong>The bridal suite between 11:30 AM and 1:30 PM.</strong></p>
+
+<p>It rarely starts with an outright catastrophe. It starts with small, seemingly harmless delays: one bridesmaid who isn't satisfied with her contour, a search for missing eyelash glue, someone showing up with damp hair when the stylist asked for dry hair, or a room service fruit platter arriving 45 minutes late. By 1:00 PM, what was supposed to be a relaxing morning with mimosas is suddenly 55 minutes behind schedule.</p>
+
+<p>When the morning runs late, the domino effect is brutal: couple portraits get slashed from 45 minutes down to 12 minutes, the bridal party is rushed into hiding, the bride arrives at the ceremony feeling overwhelmed and breathless, and the cocktail hour is spent scrambling through family formal photos instead of enjoying drinks with guests.</p>
+
+<p>Here is how to structure your wedding day timeline with realistic industry benchmarks and bulletproof time buffers.</p>
+
+<h2>The Real Hair & Makeup Time Benchmarks</h2>
+<p>Professional beauty teams require precise time allocations per service. Never let a coordinator or friend compress these numbers:</p>
+<ul>
+    <li><strong>Bridesmaids / Mothers (Hair Only):</strong> 35–45 minutes per person</li>
+    <li><strong>Bridesmaids / Mothers (Makeup Only):</strong> 35–45 minutes per person</li>
+    <li><strong>Bride (Bridal Hair):</strong> 60–75 minutes (including veil and hairpiece placement)</li>
+    <li><strong>Bride (Bridal Makeup):</strong> 60–75 minutes (including skin prep, lashes, and chest glow)</li>
+    <li><strong>Mandatory Transition & Touch-up Buffer:</strong> 45 minutes of completely empty time before getting into the dress.</li>
+</ul>
+
+<div class="callout-box danger">
+    <div class="callout-title">⚠️ The Golden Rule: The Bride Must NEVER Go Last in Makeup</div>
+    <p>Amateur planners often schedule the bride as the final makeup chair slot thinking, <em>"Her makeup will be the freshest."</em> This is the single biggest timeline mistake in wedding planning.</p>
+    <p>If earlier bridesmaid services run over by just 10 minutes each, the entire delay eats directly into the bride’s glam window. The artist is forced to rush the most important makeup of the day. <strong>The bride should always finish second to last.</strong> This ensures her hair and makeup are completed with zero time pressure, leaving the final slot for a bridesmaid while the bride relaxes and takes bridal robe portraits.</p>
+</div>
+
+<h2>First Look vs. Traditional Aisle Reveal: The Time Audit</h2>
+<p>Deciding whether to do a "First Look" before the ceremony is primarily an emotional choice, but it carries profound logistical consequences for your timeline:</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Timeline Feature</th>
+            <th>With a First Look (Recommended)</th>
+            <th>Without a First Look (Traditional)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Photo Timing</strong></td>
+            <td>80% of photos done before ceremony (Couple, Wedding Party, Immediate Family).</td>
+            <td>100% of couple portraits, bridal party, and family formals crammed into Cocktail Hour.</td>
+        </tr>
+        <tr>
+            <td><strong>Cocktail Hour Experience</strong></td>
+            <td>Couple attends 45 minutes of their own cocktail hour, drinks and mingles with guests.</td>
+            <td>Couple misses entire cocktail hour, rushing through 20+ photo combinations.</td>
+        </tr>
+        <tr>
+            <td><strong>Sunset Photo Window</strong></td>
+            <td>Requires only a quick 15-minute sunset slip-away during dinner.</td>
+            <td>High stress if ceremony runs 15 minutes late and natural light is fading fast.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>The Master Timeline (Sample for a 4:30 PM Ceremony with First Look)</h2>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Milestone</th>
+            <th>Logistical Notes & Buffer Strategy</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>8:30 AM</strong></td>
+            <td>Breakfast & Suite Setup</td>
+            <td>Coffee, water, high-protein breakfast. Steaming bridesmaid dresses and robes.</td>
+        </tr>
+        <tr>
+            <td><strong>9:00 AM</strong></td>
+            <td>Hair & Makeup Begins</td>
+            <td>Stylists start with bridesmaids and mother of the bride.</td>
+        </tr>
+        <tr>
+            <td><strong>11:30 AM</strong></td>
+            <td>Bride Hair & Makeup Starts</td>
+            <td>Lead artists take over bride’s full glam.</td>
+        </tr>
+        <tr>
+            <td><strong>1:00 PM</strong></td>
+            <td>Photographer & Video Arrive</td>
+            <td>Shoot flat lays (rings, shoes, invitations, perfume) while bride finishes final touches.</td>
+        </tr>
+        <tr>
+            <td><strong>1:30 PM</strong></td>
+            <td>Robe Photos & Toast</td>
+            <td>Fun, relaxed champagne pop with bridesmaids.</td>
+        </tr>
+        <tr>
+            <td><strong>1:45 PM</strong></td>
+            <td>Bride Steps into Dress</td>
+            <td>Mom and Maid of Honor assist. <strong>Do not rush this moment.</strong></td>
+        </tr>
+        <tr>
+            <td><strong>2:30 PM</strong></td>
+            <td>First Look & Couple Portraits</td>
+            <td>Quiet, private moment away from the crowd. 40 minutes of relaxed portraits.</td>
+        </tr>
+        <tr>
+            <td><strong>3:15 PM</strong></td>
+            <td>Wedding Party & Family Formals</td>
+            <td>Knock out all group shots while hair and flowers are 100% pristine.</td>
+        </tr>
+        <tr>
+            <td><strong>4:00 PM</strong></td>
+            <td>In Hiding & Pre-Ceremony Refresh</td>
+            <td>Guests begin arriving; music starts. Couple drinks water and rests in private suite.</td>
+        </tr>
+        <tr>
+            <td><strong>4:30 PM</strong></td>
+            <td>Ceremony Begins</td>
+            <td>Processional, vows, rings, and first kiss (25–30 minutes).</td>
+        </tr>
+        <tr>
+            <td><strong>5:00 PM</strong></td>
+            <td>Cocktail Hour & Extended Family Photos</td>
+            <td>15 minutes of remaining family photos, then join cocktail hour!</td>
+        </tr>
+        <tr>
+            <td><strong>6:15 PM</strong></td>
+            <td>Grand Entrance & Seated Dinner</td>
+            <td>Welcome speeches, blessing, entrees served.</td>
+        </tr>
+        <tr>
+            <td><strong>7:30 PM</strong></td>
+            <td>Toasts, First Dance & Cake Cutting</td>
+            <td>Keep toasts under 4 minutes each to keep energy high.</td>
+        </tr>
+        <tr>
+            <td><strong>8:00 PM</strong></td>
+            <td>Open Dance Floor!</td>
+            <td>High energy music; bar in full swing.</td>
+        </tr>
+        <tr>
+            <td><strong>10:30 PM</strong></td>
+            <td>Last Dance & Grand Exit</td>
+            <td>Sparkler exit, vintage car, or shuttle bus departure.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>The Day-Of Emergency Kit Checklist</h2>
+<p>Assign your Maid of Honor or trusted friend to carry a dedicated emergency bag with these 8 essentials:</p>
+<ol>
+    <li>Handheld garment steamer with distilled water.</li>
+    <li>Crochet hook (indispensable for buttoning 40 delicate fabric buttons on wedding gowns).</li>
+    <li>Clear blister bandages and moleskin padding for high heels.</li>
+    <li>Stain remover pen (Tide to Go) and chalk (covers grease marks on white satin).</li>
+    <li>Safety pins, bobby pins, and clear fashion tape.</li>
+    <li>Electrolyte powder packets and high-protein snack bars.</li>
+    <li>Mini sewing kit with white, ivory, and black thread.</li>
+    <li>Mini scissors and eyelash glue.</li>
+</ol>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Generate your custom wedding day timeline!</div>
+    <p>Input your ceremony start time, sunset hour, and first look choice to get a custom, printable minute-by-minute schedule.</p>
+    <a href="https://manage.wedding/day-of-timeline-generator" class="cta-button" target="_blank">👉 Build Your Custom Day-of Timeline</a>
+</div>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(4)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-4">Cinematic wedding morning preparation in bright Parisian style bridal suite, lace wedding gown hanging on vintage French wardrobe, silk bridal robe, delicate veil on vanity table, soft natural window light streaming through sheer curtains, subtle perfume bottle and floral hairpins on marble vanity, calm and peaceful atmosphere, editorial fashion photography, 35mm film aesthetic, warm neutral palette --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 5 ===================== -->
+			<article id="week-5" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 5 • Catering</span>
+					<span class="meta-pill wordcount">📊 824 Words</span>
+					<a href="https://manage.wedding/catering-cost-per-person-wedding-buffet-vs-plated" target="_blank" class="meta-pill tool-link">🔗 Tool: Catering Cost Estimator</a>
+					<span class="meta-pill">📌 Pinterest: Wedding Menus & Table Settings</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(5)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(5)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(5)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-5">Plated vs. Buffet vs. Family Style: The Dirty Secret of Catering Costs</h1>
+				<div class="post-subtitle-main" id="subtitle-5">Why buffets are rarely cheaper than plated dinners once rentals and food volume enter the equation.</div>
+				<div class="article-body" id="body-5">
+					<p>Almost every newly engaged couple embarks on catering search with the exact same assumption: <em>"We want to save money, so we will just do a casual buffet instead of a formal sit-down plated dinner."</em></p>
+
+<p>Then the detailed catering proposals arrive, and the couple is left dumbfounded. The buffet quote is often within $5 to $10 per person of the plated option—and in some cases with specialty staffing and rentals, the buffet is actually <em>more expensive</em>.</p>
+
+<p>How is this possible? Why doesn't cutting waitstaff in half cut the bill in half? Here is the underlying economics of wedding catering that banquet directors and caterers understand, but rarely explain upfront.</p>
+
+<h2>The Real Catering Cost Equation: Food Volume vs. Labor Hours</h2>
+<p>Wedding dining costs are determined by two competing forces: <strong>Raw Ingredient Volume</strong> and <strong>Service Labor Ratios</strong>.</p>
+
+<h3>1. The Buffet Paradox (High Food Volume, Moderate Labor)</h3>
+<p>With a buffet, you do require fewer service staff (roughly 1 server for every 25 to 30 guests). However, <strong>caterers must prepare 20% to 30% MORE food than the actual headcount</strong>. Why?</p>
+<ul>
+    <li><strong>Lack of Portion Control:</strong> When guests serve themselves, they don't take a standard 6 oz portion of beef tenderloin and 4 oz of salmon; they take 10 oz of both.</li>
+    <li><strong>The Depletion Fear:</strong> The final two tables called to the buffet line cannot be greeted by empty, scraping chafing dishes. The display must look bountiful and appetizing until the very last guest sits down. You are paying for that required buffer food—most of which gets tossed at the end of the night due to commercial food safety regulations.</li>
+</ul>
+
+<h3>2. Plated Dinners (Zero Food Waste, High Labor Ratios)</h3>
+<p>With a plated meal, the kitchen chef knows the exact count: 64 roasted chickens, 42 filet mignons, 14 vegetarian risottos. Food waste is virtually zero. However, delivering 120 hot plates to 15 tables within an 8-minute window requires significant service labor: <strong>1 server for every 10 to 12 guests</strong> (roughly one dedicated server per table) plus culinary expediter staff in the kitchen.</p>
+
+<h3>3. Family Style (The Hidden Most Expensive Option)</h3>
+<p>Family style (large shared platters passed around each table) feels warm, European, and communal. But logistically, it is the most expensive format: it requires the high food buffer of a buffet (platters must always look full) PLUS the high staffing ratio of a plated meal to bus and replenish heavy ceramic serving platters, along with double the rental dishware.</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Service Style</th>
+            <th>Avg Cost / Guest</th>
+            <th>Server Ratio</th>
+            <th>Key Pros & Cons</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Plated Service</strong></td>
+            <td>$85 – $145</td>
+            <td>1 server per 10–12 guests</td>
+            <td><strong>Pros:</strong> Elegant, synchronized dining, zero guest lines.<br><strong>Cons:</strong> Requires strict RSVP meal tracking & escort cards.</td>
+        </tr>
+        <tr>
+            <td><strong>Buffet Service</strong></td>
+            <td>$70 – $115</td>
+            <td>1 server per 25–30 guests</td>
+            <td><strong>Pros:</strong> Variety of sides, casual vibe.<br><strong>Cons:</strong> Table delays, long lines, high food waste.</td>
+        </tr>
+        <tr>
+            <td><strong>Family Style</strong></td>
+            <td>$95 – $160</td>
+            <td>1 server per 12–15 guests</td>
+            <td><strong>Pros:</strong> Great conversation starter, lively energy.<br><strong>Cons:</strong> Cluttered tables, requires large floral compromises.</td>
+        </tr>
+        <tr>
+            <td><strong>Food Stations / Trucks</strong></td>
+            <td>$55 – $90</td>
+            <td>1 server per 30 guests</td>
+            <td><strong>Pros:</strong> Trendy, memorable, interactive.<br><strong>Cons:</strong> Major bottlenecks unless you book 2+ trucks for 100+ guests.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Decoding the "Plus-Plus" (++): The 24% Service Charge</h2>
+<p>When reviewing catering contracts, always look at the bottom line. A per-person price of $85 is never just $85.</p>
+
+<div class="callout-box formula">
+    <div class="callout-title">🧾 The True "Plus-Plus" Real Cost Math</div>
+    <p>• Quoted Price: $85.00 per person<br>
+    • Mandatory Administrative Service Charge (22%): +$18.70<br>
+    • Subtotal: $103.70<br>
+    • State & Local Sales Tax (8.5% on food + service charge): +$8.81<br>
+    • <strong>True Out-of-Pocket Cost: $112.51 per guest</strong> (32.3% above the base quote!).</p>
+</div>
+
+<h2>3 Essential Questions to Ask Before Signing a Catering Contract</h2>
+<ol>
+    <li><strong>Does the "Service Charge" include staff gratuity?</strong> In over 70% of venues, the service charge is an administrative facility fee kept by the company; none of it goes to the waitstaff. You must ask explicitly: <em>"Are tips for the servers and bartenders included in this charge, or will we need to provide cash tips at the end of the night?"</em></li>
+    <li><strong>What is the vendor meal rate?</strong> Your photographer, videographer, DJ, and wedding coordinator contractually require a hot meal during reception. Quality caterers offer vendor meals at a 30–50% discount (e.g., $35 instead of $85).</li>
+    <li><strong>Are table linens, napkins, silverware, and water goblets included?</strong> If not, rental company sourcing will add an unexpected $12 to $22 per guest.</li>
+</ol>
+
+<h2>How to Handle Dietary Restrictions Without Ballooning Costs</h2>
+<p>Between gluten-free, vegan, dairy-free, and nut allergies, modern wedding menus can quickly turn into a logistical nightmare. When collecting RSVPs, ask for allergies in a single text box rather than offering 5 custom options. Most caterers provide a single gourmet vegan/gluten-free entree (such as wild mushroom risotto or roasted cauliflower steak) that covers 90% of dietary needs without extra culinary surcharges.</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Compare your exact catering options!</div>
+    <p>Plug in your guest count, tax rates, and service fees into our catering estimator to see real per-guest totals.</p>
+    <a href="https://manage.wedding/catering-cost-per-person-wedding-buffet-vs-plated" class="cta-button" target="_blank">👉 Run the Catering Cost Estimator</a>
+</div>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(5)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-5">High-end wedding reception dining table setting, exquisite plated gourmet entree, gold flatware, crystal wine goblets, textured linen napkin with olive branch accent, flickering taper candles in brass holders, blurred romantic background of wedding dinner, Michelin star catering presentation, architectural lighting, luxury wedding magazine editorial --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 6 ===================== -->
+			<article id="week-6" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 6 • Florals</span>
+					<span class="meta-pill wordcount">📊 942 Words</span>
+					<a href="https://manage.wedding/diy-wedding-flowers-calculator" target="_blank" class="meta-pill tool-link">🔗 Tool: DIY Flower Calculator</a>
+					<span class="meta-pill">📌 Pinterest: Wedding Arches & Centerpiece Inspo</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(6)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(6)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(6)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-6">DIY Flowers vs. Professional Florist: The Brutal Cost & Stress Breakdown</h1>
+				<div class="post-subtitle-main" id="subtitle-6">Stem counts, wholesale packing, and what blooms wilt into sadness within 2 hours.</div>
+				<div class="article-body" id="body-6">
+					<p>On Pinterest and TikTok, arranging your own wedding flowers looks like a dreamy, slow-living ritual: sipping an iced latte in a linen apron while casually arranging garden roses and eucalyptus into vintage ceramic vases on a sunny kitchen island.</p>
+
+<p>In reality, at 11:45 PM the night before your wedding, you and two exhausted bridesmaids are standing in a cold garage surrounded by 14 plastic buckets of dripping water, thorn-scratched hands, strips of soggy floral tape, and 450 stems that need de-thorning. You are frantically Googling why your white hydrangeas have completely collapsed into brown mush, while wondering how on earth you are going to transport 18 sloshing glass vases to the venue in a midsize SUV without soaking the back seats.</p>
+
+<p>DIY florals can save $2,000 to $4,000—but only if you understand wholesale mechanics, stem math, and biological flower lifespans. Here is the realistic guide to making the DIY vs. Professional Florist decision.</p>
+
+<h2>The Real Stem Count Math (Why DIYers Always Underestimate)</h2>
+<p>Non-florists drastically underestimate how many individual stems are packed into professional arrangements:</p>
+<ul>
+    <li><strong>Bridal Bouquet (Lush Garden Style):</strong> 30–45 stems (focal flowers like Garden Roses/Peonies, secondary blooms like Lisianthus/Ranunculus, plus greenery fillers like Ruscus and Eucalyptus).</li>
+    <li><strong>Bridesmaid Bouquet:</strong> 15–20 stems.</li>
+    <li><strong>Groom / Groomsmen Boutonniere:</strong> 1–2 focal blooms + miniature greenery sprig + floral wire & stem wrap.</li>
+    <li><strong>Low Lush Table Centerpiece:</strong> 20–30 stems per table.</li>
+    <li><strong>Ceremony Floral Arch / Ground Meadows:</strong> 180–350 stems minimum.</li>
+</ul>
+
+<p><strong>The 15% Waste Multiplier:</strong> When buying wholesale bunches (from FiftyFlowers, Flower Moxie, or local flower marts), you must order <strong>15% to 20% extra stems</strong>. In every wholesale shipment, 10–15% of stems arrive with broken heads, bent necks, or failed petal blooms. If you need 400 stems, you must purchase 460 to 480 stems.</p>
+
+<h2>The Hidden Costs of DIY Florals</h2>
+<p>When calculating savings, most couples only look at the cost of the flowers themselves. They forget the mandatory equipment required to process and transport live perishables:</p>
+<ul>
+    <li>12–15 heavy-duty 5-gallon floral buckets: $60</li>
+    <li>Professional floral shears and thorn strippers: $35</li>
+    <li>Flower food, Chrysal hydrating treatments, and Crowning Glory finishing spray: $45</li>
+    <li>Floral foam blocks / agra-wool cages and chicken wire: $50</li>
+    <li>Waterproof floral tape, ribbons, and corsage pins: $30</li>
+    <li>Vases and vessels (15–20 tables): $150 – $350</li>
+    <li>Van / SUV rental for transport on wedding morning: $100 – $200</li>
+</ul>
+
+<h2>Flower Survival Test: Indestructible vs. Fragile Blooms</h2>
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Flower Variety</th>
+            <th>Vase Life & Heat Tolerance</th>
+            <th>DIY Suitability Rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Italian Ruscus & Silver Dollar Eucalyptus</strong></td>
+            <td>Indestructible. Can survive 24+ hours out of water without wilting.</td>
+            <td>✅ 10/10 (Perfect for DIY garlands & tables)</td>
+        </tr>
+        <tr>
+            <td><strong>Standard Commercial Roses & Carnations</strong></td>
+            <td>Extremely hardy. Firm stems, easy to de-thorn, hold up in foam.</td>
+            <td>✅ 9/10 (Beginner friendly)</td>
+        </tr>
+        <tr>
+            <td><strong>Ranunculus & Anemones</strong></td>
+            <td>Hollow, delicate stems that bend or snap easily without wire support.</td>
+            <td>⚠️ 5/10 (Handle with extreme care)</td>
+        </tr>
+        <tr>
+            <td><strong>Hydrangeas</strong></td>
+            <td>Drink water through petals. Will wilt into flat paper within 60 minutes in heat.</td>
+            <td>❌ 2/10 (Do not attempt unless trained)</td>
+        </tr>
+        <tr>
+            <td><strong>Peonies</strong></td>
+            <td>Temperature sensitive. Open from hard golf balls to blown out in 4 hours of warmth.</td>
+            <td>❌ 3/10 (High timing risk)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>The Smart Hybrid Compromise (Best of Both Worlds)</h2>
+<p>If you want substantial financial savings without the extreme stress of wedding-eve floral assembly, use the <strong>High-Impact Hybrid Strategy</strong>:</p>
+<div class="callout-box formula">
+    <div class="callout-title">🌸 The 80/20 Hybrid Floral Strategy</div>
+    <p>• <strong>Hire a Professional Florist for the "Photographed Personal Flowers":</strong> Bridal bouquet, bridesmaids' bouquets, boutonnieres, and ceremony focal arch. These require delicate wiring, precision mechanics, and are heavily featured in close-up photography.<br>
+    • <strong>DIY the Reception Tables:</strong> Order wholesale greenery garlands and standard roses to create simple, minimalist "bud vase" clusters (3–5 small bud vases per table with 2 stems each) surrounded by pillar candles. This takes 30 minutes to set up and saves thousands.</p>
+</div>
+
+<h2>The 48-Hour Blooming Timeline</h2>
+<p>Wholesale flowers arrive in tight, dormant bud stages. If you want open, lush roses on Saturday at 3:00 PM, they must be delivered on <strong>Thursday morning</strong>. Cut stems at a 45-degree angle under running water, strip all leaves below the waterline, place them in lukewarm water with floral preservative, and keep them in a cool, air-conditioned room (65°F to 68°F) away from direct sunlight.</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Calculate your exact DIY stem and bucket requirements!</div>
+    <p>Estimate how many bunches of greenery, focal blooms, and buckets you need for your wedding size.</p>
+    <a href="https://manage.wedding/diy-wedding-flowers-calculator" class="cta-button" target="_blank">👉 Open the DIY Flower Calculator</a>
+</div>
+
+<h2>Real-World Cost Case Study: 120-Guest Wedding</h2>
+<p>To see how the numbers shake out in reality, compare an itemized breakdown for a typical 120-guest celebration with 5 bridesmaids and 12 reception tables:</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Item / Floral Arrangement</th>
+            <th>Boutique Professional Florist</th>
+            <th>Wholesale DIY Direct Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Bridal Bouquet</strong></td>
+            <td>$250 – $350</td>
+            <td>$65 (Wholesale stems)</td>
+        </tr>
+        <tr>
+            <td><strong>5 Bridesmaid Bouquets</strong></td>
+            <td>$450 – $650</td>
+            <td>$120</td>
+        </tr>
+        <tr>
+            <td><strong>7 Boutonnieres (Groom + Groomsmen)</strong></td>
+            <td>$140 – $210</td>
+            <td>$25</td>
+        </tr>
+        <tr>
+            <td><strong>12 Low Table Centerpieces</strong></td>
+            <td>$1,400 – $2,200</td>
+            <td>$380 (Greenery + bud vases + roses)</td>
+        </tr>
+        <tr>
+            <td><strong>Ceremony Arch / Ground Florals</strong></td>
+            <td>$1,200 – $2,500</td>
+            <td>$350 (Greens, foam cages, zip ties)</td>
+        </tr>
+        <tr>
+            <td><strong>Labor, Delivery & Setup Fees</strong></td>
+            <td>$800 – $1,200</td>
+            <td>$0 (Your time and transport)</td>
+        </tr>
+        <tr>
+            <td><strong>Total Estimated Cost</strong></td>
+            <td><strong>$4,240 – $7,110</strong></td>
+            <td><strong>$940 – $1,350</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Transportation Mechanics: How to Avoid Disaster on the Highway</h2>
+<p>Assembling flowers in a garage is only half the battle. Getting 12 water-filled glass vases and delicate bouquets to the venue without tipping over during a sharp turn requires planning:</p>
+<ul>
+    <li>Collect shallow cardboard produce boxes (ask your local grocery store for apple or banana boxes).</li>
+    <li>Cut cardboard dividers or use crumpled newspaper to wedge each vase firmly upright inside the box.</li>
+    <li>Place non-slip rubber shelf liners on the floor of your SUV or van.</li>
+    <li>Blast the vehicle's air conditioner on maximum cold during the entire drive to prevent heat wilt!</li>
+</ul>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(6)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-6">Artisanal botanical flower workshop setting, wooden workbench with fresh cut garden roses, trailing eucalyptus, ranunculus, vintage bronze florist shears, spools of raw silk ribbon, glass bud vases catching morning sunlight, rustic studio aesthetic, macro details of flower petals, editorial lifestyle photography, warm earthy tones, 50mm lens, natural daylight --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 7 ===================== -->
+			<article id="week-7" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 7 • Hidden Costs</span>
+					<span class="meta-pill wordcount">📊 965 Words</span>
+					<a href="https://manage.wedding/how-to-save-money-on-a-wedding-cut-10k" target="_blank" class="meta-pill tool-link">🔗 Tool: $10k Cost Cutting Guide</a>
+					<span class="meta-pill">📌 Pinterest: Tipping Checklists & Envelopes</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(7)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(7)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(7)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-7">8 Sneaky "Gotcha" Wedding Fees You Didn't Budget For (And the Tipping Cheat Sheet)</h1>
+				<div class="post-subtitle-main" id="subtitle-7">From 24% taxable service charges to cake cutting fees and vendor overtime rules.</div>
+				<div class="article-body" id="body-7">
+					<p>You tracked every estimate in a spreadsheet. You negotiated down your photography package. You found an affordable DJ.</p>
+
+<p>Then, three weeks before the wedding, the final invoices begin landing in your inbox. Suddenly, you owe an extra <strong>$3,500 to $5,200 in unexpected fees</strong> that you never accounted for. Couples call this "wedding bill shock"—the moment when dozens of hidden contractual line items and tipping expectations surface all at once.</p>
+
+<p>Here is the definitive guide to uncovering the 8 most common "gotcha" wedding fees, along with a vendor-approved tipping cheat sheet so you never feel unprepared.</p>
+
+<h2>The 8 Most Common Hidden Wedding Fees</h2>
+
+<h3>1. The "Plus-Plus" Double Tax Trait</h3>
+<p>When venues quote food and beverage pricing as <em>"$110++"</em>, the first plus is state sales tax (6–10%) and the second is the mandatory administrative service charge (20–25%). In many jurisdictions, the service fee is legally categorized as labor and is therefore <strong>subject to sales tax as well</strong>! A $15,000 catering bill quickly becomes $19,800.</p>
+
+<h3>2. Cake Cutting & Plating Fees ($1.50 – $3.50 / Slice)</h3>
+<p>If you bring a wedding cake from an independent outside bakery rather than using the venue’s in-house chef, caterers frequently charge a "cake cutting and plating fee" to slice the cake, provide dessert plates, and distribute forks to tables. For 130 guests, that is an unexpected $200 to $450 charge.</p>
+
+<h3>3. Corkage Fees ($15 – $35 / Bottle)</h3>
+<p>Venues that allow outside wine will charge a corkage fee for every single bottle opened by their bartenders. If you bring 50 bottles of wine thinking you saved money, a $25 corkage fee adds $1,250 to your invoice.</p>
+
+<h3>4. Power Drops & Electrical Hookups ($250 – $600)</h3>
+<p>Historic estates, barn venues, and outdoor tented spaces often lack adequate commercial electrical circuits. When your DJ brings high-wattage sound rigs, uplighting, and catering food warmers, the venue may require you to pay for dedicated "power drops" or generator rentals.</p>
+
+<h3>5. Vendor Meals ($30 – $60 per Professional)</h3>
+<p>Your contract with your lead photographer, second shooter, videographer, DJ, and day-of coordinator legally mandates that you provide them with a hot meal during dinner. For a crew of 6 vendors, expect an extra $250 to $350.</p>
+
+<h3>6. Overtime Penalty Rates ($300 – $800 / Hour)</h3>
+<p>If your dance floor is raging and you ask the venue or DJ to stay 45 minutes longer, you aren't just paying pro-rated rates; overtime clauses often include 1.5x penalty fees for venue security, cleanup crews, and staff.</p>
+
+<h3>7. Setup & Breakdown Delivery Windows</h3>
+<p>Rental companies charge standard delivery for drop-offs between 9 AM and 5 PM. But if your venue requires all tables, chairs, and arches to be <strong>removed by midnight</strong> on wedding night, rental companies charge a "Late Night / Specific Hour Breakdown Fee" of $300 to $700.</p>
+
+<h3>8. Dress Alteration Surcharges ($400 – $900)</h3>
+<p>Almost zero wedding dresses fit perfectly off the rack. Hemming multi-layer tulle, taking in the bodice, adding a custom bustle for dancing, and sewing in bra cups routinely costs $500 to $900—rarely included in the boutique purchase price.</p>
+
+<h2>The Master Vendor Tipping Cheat Sheet</h2>
+<p>Who should you tip? How much is expected? Use this standard protocol:</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Vendor Category</th>
+            <th>Standard Tip Benchmark</th>
+            <th>Timing & Method</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Bartenders & Waitstaff</strong></td>
+            <td>$25 – $50 per server (if gratuity not in contract)</td>
+            <td>End of night in cash envelope handed to banquet captain.</td>
+        </tr>
+        <tr>
+            <td><strong>DJ / MC</strong></td>
+            <td>$75 – $150 or 10–15% of total fee</td>
+            <td>End of reception in cash envelope.</td>
+        </tr>
+        <tr>
+            <td><strong>Hair & Makeup Lead Artists</strong></td>
+            <td>15% – 20% of total service bill</td>
+            <td>Morning of wedding after glam completion.</td>
+        </tr>
+        <tr>
+            <td><strong>Lead Photographer / Videographer</strong></td>
+            <td>$100 – $200 (Optional if they own their business)</td>
+            <td>End of photo coverage.</td>
+        </tr>
+        <tr>
+            <td><strong>Second Shooters & Photo Assistants</strong></td>
+            <td>$50 – $75 each</td>
+            <td>End of photo coverage.</td>
+        </tr>
+        <tr>
+            <td><strong>Wedding Planner / Day-Of Coordinator</strong></td>
+            <td>$100 – $300 or a luxury personal gift</td>
+            <td>End of wedding or mailed after honeymoon.</td>
+        </tr>
+        <tr>
+            <td><strong>Officiant (Religious or Civil)</strong></td>
+            <td>$50 – $100 donation to institution or personal tip</td>
+            <td>Rehearsal dinner or ceremony morning.</td>
+        </tr>
+        <tr>
+            <td><strong>Delivery Drivers (Cake, Florals, Rentals)</strong></td>
+            <td>$10 – $20 per person per delivery</td>
+            <td>Upon drop-off completion.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Who You Do NOT Need to Tip</h2>
+<p>Business owners who set their own pricing (e.g., solo photographers or boutique owners) do not expect tips, though a thoughtful 5-star Google review and a $100 tip or thank-you gift is deeply appreciated. Additionally, never tip staff if a mandatory 20% gratuity is already itemized on your final catering contract!</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Need to cut $5,000 to $10,000 from your wedding?</div>
+    <p>Read our step-by-step strategic breakdown of major budget levers that cut thousands without cheapening your wedding.</p>
+    <a href="https://manage.wedding/how-to-save-money-on-a-wedding-cut-10k" class="cta-button" target="_blank">👉 Read the $10,000 Saving Guide</a>
+</div>
+
+<h2>4 High-Leverage Strategic Decisions to Cut $10,000</h2>
+<p>If you need to make substantial reductions without cheapening the look and feel of your wedding, focus on these four macroeconomic decisions rather than agonizing over small DIY crafts:</p>
+<ol>
+    <li><strong>Choose a Friday or Sunday Date:</strong> Venues frequently discount rental fees by 25% to 40% for non-Saturday dates, instantly saving $2,000 to $4,500.</li>
+    <li><strong>Trim Headcount by 20%:</strong> Reducing guest count from 140 to 110 eliminates 3 tables of centerpieces, 30 dinner plates, 30 bar shares, and invitations, saving roughly $4,200.</li>
+    <li><strong>Bundle Photography and Videography:</strong> Hiring a dedicated creative team that offers combined photo and cinema packages often yields a 15–20% discount compared to booking separate independent studios.</li>
+    <li><strong>Select an Naturally Beautiful Venue:</strong> Botanical gardens, art galleries, and historic estates already possess stunning architecture and foliage, requiring minimal floral decor and draping.</li>
+</ol>
+
+<h2>The 3.5% Credit Card Surcharge Trap</h2>
+<p>Many catering companies and venues have begun passing merchant processing fees back to clients. On a $20,000 catering bill, a 3.5% credit card fee adds a whopping $700! Always ask if the vendor offers a discount for ACH direct bank transfers, wire transfers, or physical checks.</p>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(7)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-7">Organized wedding coordinator clipboard with checklist on wooden table, labeled kraft paper tipping envelopes with elegant calligraphy handwriting, gold pen, vintage keys, satin ribbon, fresh eucalyptus leaves, shallow depth of field, warm cozy office lighting, high-end editorial photography, hyper-realistic details, 35mm lens --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 8 ===================== -->
+			<article id="week-8" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 8 • Desserts & Cakes</span>
+					<span class="meta-pill wordcount">📊 902 Words</span>
+					<a href="https://manage.wedding/cake-serving-calculator" target="_blank" class="meta-pill tool-link">🔗 Tool: Cake Serving Calculator</a>
+					<span class="meta-pill">📌 Pinterest: Dessert Tables & Modern Cakes</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(8)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(8)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(8)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-8">The Great Wedding Cake Scam: Tier Math, Sheet Cakes & Dessert Table Ratios</h1>
+				<div class="post-subtitle-main" id="subtitle-8">Why only 75% of your guests will actually eat cake, and the faux-tier secret bakeries love.</div>
+				<div class="article-body" id="body-8">
+					<p>A towering, 4-tier artisanal wedding cake adorned with handmade sugar flowers and edible gold leaf looks breathtaking in reception room photos. It also costs between <strong>$900 and $1,600</strong>.</p>
+
+<p>And here is the dirty secret banquet servers witness every single weekend: By 9:45 PM, after a rich multi-course dinner, two glasses of wine, a signature cocktail, and an energetic hour on the dance floor, <strong>between 25% and 35% of sliced cake servings are left completely untouched on tables</strong>. At 11:30 PM, servers scrape hundreds of dollars of artisanal cake straight into the venue trash bins.</p>
+
+<p>You do not need to overspend on tiered dessert math. Here is the insider pastry chef guide to calculating exact cake slices, avoiding cutting fees, and leveraging the famous "Kitchen Sheet Cake" trick.</p>
+
+<h2>The 75% Cake Consumption Rule</h2>
+<p>Never order a custom wedding cake sized for 100% of your invited guest count. In modern wedding logistics, the actual cake eating rate is consistently around <strong>70% to 80%</strong> of seated guests.</p>
+
+<div class="callout-box formula">
+    <div class="callout-title">🎂 The 75% Cake Serving Formula</div>
+    <p>If you have <strong>140 confirmed wedding guests</strong>, you only need <strong>105 actual dessert servings</strong> (140 × 0.75 = 105).</p>
+    <p><em>Why? Older guests leave before cake is served, guests deep in dancing skip dessert, and heavy dinner courses suppress appetite.</em></p>
+</div>
+
+<h2>The "Kitchen Sheet Cake" Secret (Save $500–$800)</h2>
+<p>This single industry trick saves couples hundreds of dollars without a single guest ever noticing:</p>
+<ol>
+    <li><strong>Order a Small 2-Tier Display Cake (Cutting Cake):</strong> Beautifully decorated with real fresh flowers and texturing (e.g., a 6-inch tier stacked on an 8-inch tier). This serves 35–40 people and provides the picture-perfect centerpiece for your ceremonial cake-cutting photos.</li>
+    <li><strong>Order Matching Sheet Cakes Kept in the Kitchen:</strong> Baked by the exact same baker using identical sponge and buttercream flavors. The kitchen staff cuts the sheet cakes into clean rectangular slices out of sight and serves them to tables. Sheet cake slices cost <strong>$1.50 to $2.50 per slice</strong> compared to <strong>$7.50 to $12.00 per slice</strong> for intricate tiered fondant structures!</li>
+</ol>
+
+<h2>Tier Size Geometry & Servings Guide</h2>
+<p>Professional wedding cake servings are standard industry portions measured as <strong>1 inch wide by 2 inches deep by 4 inches high</strong> (event style slices):</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Tier Configuration (Round)</th>
+            <th>Industry Standard Servings (1" × 2" Slice)</th>
+            <th>Best Wedding Size</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>6" + 8" (2 Tiers)</strong></td>
+            <td>35 – 40 servings</td>
+            <td>Intimate weddings / Display cutting cake</td>
+        </tr>
+        <tr>
+            <td><strong>6" + 8" + 10" (3 Tiers)</strong></td>
+            <td>75 – 95 servings</td>
+            <td>Medium weddings (100–120 guests)</td>
+        </tr>
+        <tr>
+            <td><strong>6" + 8" + 10" + 12" (4 Tiers)</strong></td>
+            <td>130 – 160 servings</td>
+            <td>Large luxury ballroom weddings (180+ guests)</td>
+        </tr>
+        <tr>
+            <td><strong>Sheet Cake (Half Sheet)</strong></td>
+            <td>48 – 54 servings</td>
+            <td>Kept in kitchen for secondary guest servings</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>The Faux Styrofoam Display Tier Secret</h2>
+<p>If you love the dramatic visual height of a 4-tier or 5-tier luxury cake for your ballroom photos but don't want to pay $1,500 for cake that won't be eaten, ask your baker to create <strong>"Dummy Faux Tiers."</strong> The bottom two tiers are sculpted from lightweight styrofoam and frosted in real matching fondant/buttercream, while the top tier is real edible cake for your ceremonial cutting. You achieve breathtaking luxury aesthetic for 40% of the cost.</p>
+
+<h2>Alternative: The Modern Dessert Table Ratio</h2>
+<p>If you prefer a trendy dessert bar (mini macarons, gourmet donuts, churro bites, and shooters) alongside a cutting cake, calculate dessert counts using this formula:</p>
+<ul>
+    <li><strong>Plan for 2.5 to 3 mini-dessert pieces per guest.</strong> For 100 guests, order 250 to 300 bite-sized items across 3–4 distinct flavor profiles (e.g., 80 mini chocolate tarts, 80 lemon macarons, 80 salted caramel shooters).</li>
+    <li>Always provide cute glassine favor bags so guests can take leftovers home as edible favors at the end of the night!</li>
+</ul>
+
+<h2>Temperature & Buttercream Hazards for Outdoor Weddings</h2>
+<p>If your wedding takes place outdoors in summer, never choose soft Italian Meringue Buttercream or whipped cream frostings. They begin melting and sliding off tiers at 78°F! Choose stable Swiss Meringue Buttercream or fondant, keep the cake in an air-conditioned room until 30 minutes before cutting, and place it in complete shade.</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Calculate your exact cake tier sizes and slice counts!</div>
+    <p>Use our interactive cake tool to test different tier combinations, sheet cake ratios, and price quotes.</p>
+    <a href="https://manage.wedding/cake-serving-calculator" class="cta-button" target="_blank">👉 Open the Cake Serving Calculator</a>
+</div>
+
+<h2>The Late-Night Savory Snack Pivot</h2>
+<p>Here is an observation from top wedding coordinators: by 10:30 PM, guests who have been dancing and drinking for four hours are craving salt, carbs, and protein—not sugar. If you cut your $1,200 multi-tier cake down to a $250 cutting cake and $150 sheet cake, you free up $800.</p>
+
+<p>Spend $350 of those savings to order <strong>40 hot late-night pizzas delivered at 10:15 PM</strong>, a gourmet soft pretzel warmer with warm cheese sauce, or a local street taco cart. Your guests will rave about it for the next five years, and zero food will go to waste.</p>
+
+<h2>Cake Transport Safety Protocols</h2>
+<p>If a friend or baker is delivering your wedding cake, follow these non-negotiable rules:</p>
+<ul>
+    <li>The cake box must sit on a completely flat, level surface—never on a car seat (which is tilted). Place it in the trunk on a non-skid silicone mat.</li>
+    <li>Never leave a buttercream cake in a parked car for even 5 minutes on a warm day.</li>
+    <li>Ensure the venue kitchen has dedicated walk-in refrigerator shelf space cleared for the cake box upon arrival.</li>
+</ul>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(8)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-8">Minimalist modern 2-tier wedding cake with organic textured buttercream frosting, subtle white floral blooms and delicate olive sprigs, antique brass cake stand, linen tablecloth, soft romantic reception candle glow in background, clean aesthetic food photography, editorial pastry styling, 50mm f/1.4 lens, creamy bokeh, warm neutral tones --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 9 ===================== -->
+			<article id="week-9" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 9 • Headcount & RSVPs</span>
+					<span class="meta-pill wordcount">📊 956 Words</span>
+					<a href="https://manage.wedding/how-to-track-wedding-rsvps-headcount-manager" target="_blank" class="meta-pill tool-link">🔗 Tool: RSVP Tracker & Headcount Manager</a>
+					<span class="meta-pill">📌 Pinterest: Seating Charts & Invitation Suites</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(9)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(9)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(9)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-9">The 80/20 Wedding RSVP Attrition Law: How Many Guests Will ACTUALLY Show Up?</h1>
+				<div class="post-subtitle-main" id="subtitle-9">Decline rates, B-List invitation timeline ethics, and how to stop overpaying caterers for empty chairs.</div>
+				<div class="article-body" id="body-9">
+					<p>Every newly engaged couple goes through the exact same emotional panic cycle when drafting their first wedding guest list. You open a blank Google Sheet, write down every friend, coworker, cousin, and family acquaintance, and suddenly find yourself looking at 180 names. You multiply 180 by your caterer's $145 per-person quote, realize you are $8,000 over budget, and spend the next three evenings arguing over whether your uncle’s new girlfriend really needs an invitation.</p>
+
+<p>Here is the statistical reality professional wedding planners and venue managers know by heart: <strong>Between 15% and 25% of the people you invite will decline your invitation.</strong> For destination weddings or weddings with heavy out-of-state guest counts, the decline rate routinely reaches <strong>30% to 45%</strong>.</p>
+
+<p>Understanding the mathematical laws of RSVP attrition allows you to build a realistic headcount, safely manage a "B-List" without offending anyone, and avoid paying $150 per plate for empty banquet chairs. Here is the data-driven breakdown of how guest attendance actually works.</p>
+
+<h2>The RSVP Attrition Curve: Local vs. Out-of-Town Friction</h2>
+<p>Guest attendance rates do not follow intuition; they follow geographical, logistical, and financial friction curves. Across thousands of wedding data points, here is how decline rates reliably distribute:</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Guest Category</th>
+            <th>Average Attendance Rate</th>
+            <th>Decline Rate</th>
+            <th>Key Driving Friction Factors</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Immediate Family & Bridal Party</strong></td>
+            <td>98% – 100%</td>
+            <td>0% – 2%</td>
+            <td>Non-negotiable attendance. Only severe medical emergencies or unavoidable life events cause dropouts.</td>
+        </tr>
+        <tr>
+            <td><strong>Local Guests (&lt; 60 mins drive)</strong></td>
+            <td>85% – 90%</td>
+            <td>10% – 15%</td>
+            <td>Low travel friction, zero hotel cost required, high attendance probability.</td>
+        </tr>
+        <tr>
+            <td><strong>Domestic Out-of-State Guests</strong></td>
+            <td>65% – 75%</td>
+            <td>25% – 35%</td>
+            <td>Requires flights ($350+), 2 nights hotel ($400+), rental cars, and Friday/Monday PTO work days.</td>
+        </tr>
+        <tr>
+            <td><strong>International / Destination Guests</strong></td>
+            <td>40% – 55%</td>
+            <td>45% – 60%</td>
+            <td>High passport/flight costs, currency conversion, long flight fatigue, childcare logistics.</td>
+        </tr>
+        <tr>
+            <td><strong>Distant Relatives & Coworkers</strong></td>
+            <td>50% – 65%</td>
+            <td>35% – 50%</td>
+            <td>Courtesy invites. Frequently decline due to lack of intimate closeness or schedule conflicts.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>The B-List Strategy: How to Execute Without Getting Caught</h2>
+<p>Having an "A-List" (first-wave invites) and a "B-List" (second-wave invites sent as declines roll in) is standard industry practice, but executing it poorly leads to awkward social drama. If a guest receives an invite postmarked 3 weeks before the wedding with an RSVP deadline of tomorrow, they know they were on the B-List.</p>
+
+<div class="callout-box formula">
+    <div class="callout-title">📅 The Seamless 4-Stage A/B Invitation Mailing Schedule</div>
+    <ul>
+        <li><strong>10 Weeks Before Wedding:</strong> Mail Round 1 (A-List) Invitations with an early online RSVP deadline of <strong>6 Weeks Out</strong>.</li>
+        <li><strong>6 Weeks Before Wedding (Day of Round 1 Deadline):</strong> Tally all Round 1 declines. You now know you have exactly 16 open seats.</li>
+        <li><strong>5.5 Weeks Before Wedding:</strong> Mail Round 2 (B-List) Invitations with a final online RSVP deadline of <strong>3 Weeks Out</strong>. <em>(Crucial Tip: Ensure your paper invitations do NOT have pre-printed RSVP deadline dates—use a wedding website URL with dynamic dates!)</em></li>
+        <li><strong>3 Weeks Before Wedding:</strong> Chasing down final stragglers and locking the headcount with your caterer and venue coordinator.</li>
+    </ul>
+</div>
+
+<h2>The Plus-One Policy Matrix</h2>
+<p>Giving a generic "and Guest" to 40 single friends will explode your catering bill by $5,800. Use this strict 3-tier boundary to keep your headcount disciplined:</p>
+<ol>
+    <li><strong>Mandatory Plus-Ones:</strong> Any guest who is married, engaged, or living with their romantic partner. Splitting established couples is a major etiquette violation.</li>
+    <li><strong>Solo Traveler Plus-Ones:</strong> Guests who do not know a single other person at the wedding besides the couple. Forcing someone to sit alone at a table of strangers is uncomfortable hosting.</li>
+    <li><strong>Zero Plus-One:</strong> Truly single guests who are part of a large mutual friend group (e.g., college friends, high school crew). They will have plenty of friends to socialize and dance with.</li>
+</ol>
+
+<h2>Chasing Down Non-Responders (Copy-Paste Script)</h2>
+<p>When your RSVP deadline passes and 18 people haven't responded, don't stew in silence. Send this polite, high-converting text message 48 hours after the deadline:</p>
+<div class="callout-box">
+    <div class="callout-title">📱 48-Hour RSVP Chase Script</div>
+    <p><em>"Hey [Name]! Hope you're having a great week. We're finalizing our final headcount and seating chart for the caterer this week and wanted to check if you'll be able to join us on [Date]? Please let us know by Friday so we can save your plate! If not, we completely understand and can't wait to celebrate together soon."</em></p>
+</div>
+
+<h2>The Last-Minute No-Show Buffer (The 3% Rule)</h2>
+<p>Even after receiving 120 enthusiastic "Yes" RSVPs, expect <strong>2 to 4 guests to not show up on the actual day</strong> due to unexpected illnesses, flight cancellations, or childcare emergencies. Do not take it personally—caterers plan for this standard margin.</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Track your guest list attrition dynamically!</div>
+    <p>Use our Headcount & RSVP Tracker to calculate your projected final attendance based on out-of-town ratios.</p>
+    <a href="https://manage.wedding/how-to-track-wedding-rsvps-headcount-manager" class="cta-button" target="_blank">👉 Open the Wedding RSVP Tracker</a>
+</div>
+
+<h2>The Seating Chart Mathematics: Table Density Ratios</h2>
+<p>Once your final RSVP headcount is locked 3 weeks prior to the wedding, you must translate the guest count into a functional banquet floor plan. Venue coordinators recommend these table capacity benchmarks to ensure guest comfort:</p>
+<ul>
+    <li><strong>60-Inch Round Tables (5-Foot Rounds):</strong> Comfortably seats <strong>8 guests</strong> (Maximum 9). Never seat 10 adults at a 60-inch round or their elbows will bump during dinner service.</li>
+    <li><strong>72-Inch Round Tables (6-Foot Rounds):</strong> Comfortably seats <strong>10 guests</strong> (Maximum 11).</li>
+    <li><strong>8-Foot Rectangular Banquet Tables (King / Farmhouse Tables):</strong> Seats <strong>8 guests</strong> (3 on each long side, 1 on each end cap).</li>
+</ul>
+<p><strong>The Golden Buffer Rule:</strong> Always keep one empty table space or 2 spare banquet chairs set aside in the reception hall. If an unexpected guest shows up with an unannounced plus-one, your coordinator can seat them seamlessly in under 60 seconds without creating any public embarrassment.</p>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(9)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-9">Artisanal luxury wedding invitation flatlay, heavy cotton deckled edge cardstock with calligraphy script and gold foil lettering, sage green envelope with custom wax seal, miniature brass stamp, dried botanicals, soft directional window light, high-end stationery editorial photography, sharp focus, 35mm film texture --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 10 ===================== -->
+			<article id="week-10" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 10 • Bachelor Parties</span>
+					<span class="meta-pill wordcount">📊 899 Words</span>
+					<a href="https://manage.wedding/bachelor-party-budget-calculator-cost-split" target="_blank" class="meta-pill tool-link">🔗 Tool: Bachelor Party Budget Calculator</a>
+					<span class="meta-pill">📌 Pinterest: Guy Weekend Itineraries & Cabin Trips</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(10)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(10)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(10)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-10">The Real Cost of a Bachelor Party: From Vegas VIP to Mountain Cabins</h1>
+				<div class="post-subtitle-main" id="subtitle-10">How best men can manage $1,000/guy budgets, cover the groom, and prevent last-minute flakeouts.</div>
+				<div class="article-body" id="body-10">
+					<p>Being asked to be Best Man is an incredible honor until you open an Excel spreadsheet, price out 8 plane tickets, a 10-person mountain rental villa, two rounds of golf, steaks, and a night out, only to realize the trip will cost $2,200 per guy.</p>
+
+<p>Within 48 hours of launching the group chat, three groomsmen ghost, two say it's way beyond their budget, and one complains about sharing a queen bed. Bachelor party planning collapses when organizers don't understand the financial friction points of the group and fail to collect non-refundable deposits upfront.</p>
+
+<p>Here is the realistic pricing breakdown across four popular bachelor trip archetypes, the math behind covering the groom, and the 90-day deposit rule that prevents organizers from eating $1,500 in non-refundable Airbnb fees.</p>
+
+<h2>The 4 Trip Archetypes: Real All-In Cost Comparison</h2>
+<p>Too many organizers only calculate the house rental and forget flights, meals, bar tabs, golf fees, and Ubers. Here is what groomsmen actually spend all-in for a 3-day weekend:</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Trip Archetype</th>
+            <th>Avg Lodging / Guy</th>
+            <th>Food, Booze & Activities</th>
+            <th>Total All-In Cost (with Flights)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>1. Mountain / Lake Cabin (Local Drive)</strong></td>
+            <td>$200 – $350</td>
+            <td>$300 – $450 (Costco run, boat rental, steaks, beer)</td>
+            <td><strong>$550 – $800</strong> per guy</td>
+        </tr>
+        <tr>
+            <td><strong>2. Golf & Brewery Weekend (e.g. Scottsdale/Denver)</strong></td>
+            <td>$350 – $550</td>
+            <td>$600 – $900 (2 rounds golf, brewery tours, dinners)</td>
+            <td><strong>$1,250 – $1,750</strong> per guy</td>
+        </tr>
+        <tr>
+            <td><strong>3. Nightlife Hub (e.g. Nashville/Miami/Austin)</strong></td>
+            <td>$400 – $700</td>
+            <td>$800 – $1,200 (Bar tabs, VIP entry, brunch, Ubers)</td>
+            <td><strong>$1,500 – $2,200</strong> per guy</td>
+        </tr>
+        <tr>
+            <td><strong>4. Las Vegas Strip VIP Experience</strong></td>
+            <td>$600 – $1,100</td>
+            <td>$1,200 – $2,500 (Club table service, fine dining, gambling)</td>
+            <td><strong>$2,200 – $4,000+</strong> per guy</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Covering the Groom: The (N - 1) Guy Rule</h2>
+<p>Just like bachelorette trips, the universal tradition is that <strong>the groom does not pay for his shared room, group dinners, or group excursions</strong>. The groom pays only for his own flight or gas.</p>
+
+<div class="callout-box formula">
+    <div class="callout-title">💰 Groom Subsidy Math Example</div>
+    <p>Trip: 9 Guys Total (1 Groom + 8 Groomsmen).<br>
+    • Shared House: $3,200 ($3,200 ÷ 8 = $400/guy)<br>
+    • Group Boat Rental: $1,200 ($1,200 ÷ 8 = $150/guy)<br>
+    • Group Grocery & Alcohol Stocking: $800 ($800 ÷ 8 = $100/guy)<br>
+    • <strong>Total Fixed Share per Groomsman: $650</strong> (Groom pays $0).</p>
+</div>
+
+<h2>The Best Man’s Golden Shield: The 90-Day Deposit Rule</h2>
+<p>The single biggest mistake best men make is putting a $4,000 Airbnb on their personal credit card based on verbal "I'm in!" promises in a group chat. Two weeks before the trip, two guys drop out due to work or money, leaving the remaining 6 guys to absorb a surprise $300 surcharge each.</p>
+<p><strong>The Protocol:</strong> Set a strict date <strong>90 to 120 days before the trip</strong>. Announce in the chat:</p>
+<div class="callout-box">
+    <div class="callout-title">💬 Best Man Deposit Message Script</div>
+    <p><em>"Hey guys! To lock in this house and tee times, everyone must Venmo a $250 non-refundable deposit to @BestMan by March 1st. If your deposit is not in by March 1st, we will book a house sized only for those who paid. Let's make this epic for [Groom]!"</em></p>
+</div>
+<p>Money upfront turns vague intentions into confirmed commitments and protects the organizer's personal bank account.</p>
+
+<h2>Handling Non-Golfers & Light Drinkers</h2>
+<p>If half the guys want to play an expensive $180 round of golf while the other half wants to hike or hang by the pool, never force non-golfers to subsidize the green fees. Keep high-ticket individual excursions separate from the shared lodging ledger. Use Splitwise to log receipts and settle on Monday morning.</p>
+
+<h2>Transportation Logistics: Renting Large Vans</h2>
+<p>Instead of hailing three separate Ubers every time the group travels to dinner or golf, rent a 12-passenger Transit Van at the airport. It costs roughly $120/day total and eliminates $600 in surge-priced rideshares over a 3-day weekend.</p>
+
+<h2>The Master Bedroom Auction System</h2>
+<p>When booking a luxury house with unequal rooms (e.g., 1 King Master Suite with private balcony, 2 Queen rooms, and 1 Bunk Bed room), don't draw straws. Use a tiered pricing discount: the guy who takes the Master pays $550, Queen rooms pay $450, and guys in the bunk beds pay $320. Everyone feels the pricing reflects their comfort level.</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Calculate your bachelor party costs and groom subsidy!</div>
+    <p>Test lodging costs, activity splits, and generate clear payment schedules for your group chat.</p>
+    <a href="https://manage.wedding/bachelor-party-budget-calculator-cost-split" class="cta-button" target="_blank">👉 Open the Bachelor Budget Calculator</a>
+</div>
+
+<h2>Group Dining & Dinner Tab Strategy</h2>
+<p>Nothing creates group chat resentment faster than a rowdy 10-person steakhouse dinner where three guys ordered $90 ribeyes and $35 scotches while two guys had a burger and water, followed by someone tossing a credit card on the table and announcing: <em>"Let's just split it 10 ways!"</em></p>
+
+<p>The Best Man should call restaurants ahead of time and request a <strong>Prix Fixe Group Menu</strong> (e.g., $75/person including appetizers and entree). Announce the price in advance so everyone knows the exact commitment. For alcohol at dinners, open a separate bar tab for heavy drinkers or have everyone buy drinks individually at the bar before sitting down.</p>
+
+<h2>The House Slush Fund & Hydration Protocol</h2>
+<p>On day one, have each guy contribute $40 into a shared "House Cash Slush Fund." Use this pool for incidental rideshares, bag ice runs, morning coffees, and bottled water. Stock the kitchen counter with Liquid I.V. or electrolyte powder packets, ibuprofen, and sunblock so everyone stays energized and feeling great all weekend.</p>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(10)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-10">Upscale mountain golf clubhouse patio during late afternoon golden hour, premium leather golf bags resting against stone pillars, glasses of craft beer and whiskey on wooden table, panoramic views of pine trees and mountains, stylish young men chatting in distance, luxury lifestyle photography, rich warm color tones, 50mm f/1.8 lens --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 11 ===================== -->
+			<article id="week-11" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 11 • Bridal Showers</span>
+					<span class="meta-pill wordcount">📊 848 Words</span>
+					<a href="https://manage.wedding/bridal-shower-budget-who-pays-cost-per-guest" target="_blank" class="meta-pill tool-link">🔗 Tool: Bridal Shower Budget Calculator</a>
+					<span class="meta-pill">📌 Pinterest: Bridal Shower Brunches & Decor</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(11)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(11)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(11)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-11">Bridal Shower Economics & Who Pays (Backyard DIY vs. Private Room Dining)</h1>
+				<div class="post-subtitle-main" id="subtitle-11">Host budget splits between the bridal party and mothers, cost-per-guest limits, and mimosa math.</div>
+				<div class="article-body" id="body-11">
+					<p>The bridal shower is one of the most heartwarming, cherished pre-wedding traditions. It gathers multiple generations—grandmothers, aunts, mothers, and college friends—to celebrate the bride over pastries, mimosas, and thoughtful gifts.</p>
+
+<p>However, behind the scenes, bridal shower planning frequently triggers intense financial friction. Who is supposed to pay for the venue? Should bridesmaids who are already spending $1,500 on dresses, travel, and bachelorette trips be expected to contribute another $250 each for a country club luncheon? And how many bottles of prosecco do you actually need for a 35-person brunch?</p>
+
+<p>Here is the modern financial playbook for hosting an elegant bridal shower without bankrupting the bridal party or causing family tension.</p>
+
+<h2>Who Pays? The Modern Shared Co-Hosting Formula</h2>
+<p>Historically, etiquette mandated that the bridal party (Maid of Honor and bridesmaids) hosted and funded the shower. However, in today’s economic climate where bridesmaid duties carry significant financial burdens, mothers and family members frequently co-host.</p>
+<ul>
+    <li><strong>The Shared Co-Host Model (Most Popular):</strong> The Mother of the Bride (and/or Mother of the Groom) pays for the large ticket items—the venue rental and catering—while the bridal party covers invitations, flowers, favors, games, and the mimosa bar ($40–$75 per bridesmaid).</li>
+    <li><strong>The Family-Funded Model:</strong> The bride's family or aunts fully fund the event at a private home or restaurant, while the bridal party helps coordinate games and manages the gift registry table.</li>
+    <li><strong>The Bridesmaid-Only Model:</strong> Hosted at a bridesmaid's home or backyard to eliminate venue rental fees, featuring DIY catering and signature cocktails.</li>
+</ul>
+
+<h2>Backyard DIY Brunch vs. Private Restaurant Dining (30 Guests)</h2>
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Expense Category</th>
+            <th>Backyard / Living Room DIY (30 Guests)</th>
+            <th>Private Restaurant Room (30 Guests)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Venue Fee</strong></td>
+            <td>$0 (Private home / garden)</td>
+            <td>$300 – $800 room fee or food minimum</td>
+        </tr>
+        <tr>
+            <td><strong>Food & Catering</strong></td>
+            <td>$400 – $600 ($15–$20/guest: quiches, fruit, pastries)</td>
+            <td>$1,200 – $1,800 ($40–$60/guest plated brunch)</td>
+        </tr>
+        <tr>
+            <td><strong>Drinks & Mimosa Bar</strong></td>
+            <td>$120 (8 bottles Prosecco + juices/berries)</td>
+            <td>$350 – $600 (Restaurant per-drink charges)</td>
+        </tr>
+        <tr>
+            <td><strong>Decor & Favors</strong></td>
+            <td>$150 (Florals, balloons, custom signs)</td>
+            <td>$100 (Table centerpieces only)</td>
+        </tr>
+        <tr>
+            <td><strong>Tax & 20% Gratuity</strong></td>
+            <td>$0</td>
+            <td>$350 – $550</td>
+        </tr>
+        <tr>
+            <td><strong>Total Cost</strong></td>
+            <td><strong>$670 – $870 (~$25/guest)</strong></td>
+            <td><strong>$2,300 – $3,850 (~$85/guest)</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>The Mimosa Bar Formula 🍾</h2>
+<p>Mimosas are the centerpiece of bridal shower hospitality. Use this exact ratio for a 3-hour event:</p>
+<div class="callout-box formula">
+    <div class="callout-title">🥂 Mimosa Calculator (30 Guests)</div>
+    <p>• Expect <strong>2 glasses per guest</strong> = 60 total mimosas.<br>
+    • Standard mimosa ratio is <strong>50% sparkling wine / 50% juice</strong> (3 oz Prosecco + 3 oz juice).<br>
+    • One 750ml bottle of Prosecco yields <strong>8 mimosas</strong>.<br>
+    • <strong>Total to Buy:</strong> 8 bottles of chilled Italian Prosecco ($10–$14/bottle) + 3 carafes of juice (Orange, Grapefruit, Cranberry) + 3 bowls of fresh berries/mint.</p>
+</div>
+
+<h2>The #1 Etiquette Mandate: The Wedding Invite Rule</h2>
+<p>Never, under any circumstances, invite someone to a bridal shower if they are not also receiving an invitation to the wedding. Inviting someone to a gift-giving shower while excluding them from the actual wedding is considered a major social slight.</p>
+
+<h2>Shower Games That Guests Actually Enjoy</h2>
+<p>Skip awkward, outdated shower games and opt for low-stress interactive alternatives:</p>
+<ul>
+    <li><strong>The Shoe Game / Couple Trivia:</strong> Pre-record the groom answering 10 funny questions on video and have the bride guess his answers live.</li>
+    <li><strong>Date Night Idea Jar:</strong> Guests write their favorite date recommendations on wooden tokens for the couple's first year of marriage.</li>
+    <li><strong>Recipe Card Keepsake:</strong> Send blank recipe cards with the invitations and collect family recipes into a custom linen binder for the bride.</li>
+</ul>
+
+<h2>The "No Double Gift" Rule for Bridesmaids</h2>
+<p>Bridesmaids who have already contributed $60 to $100 toward hosting the shower, purchasing floral centerpieces, and preparing food should NOT feel obligated to buy an expensive individual physical registry gift for the shower. Their financial contribution to hosting IS their shower gift!</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Plan your bridal shower budget and host cost splits!</div>
+    <p>Use our Bridal Shower Calculator to compare home vs venue pricing and split costs fairly among hostesses.</p>
+    <a href="https://manage.wedding/bridal-shower-budget-who-pays-cost-per-guest" class="cta-button" target="_blank">👉 Open Bridal Shower Calculator</a>
+</div>
+
+<h2>Itemized Host Cost Breakdown (4 Bridesmaids Example)</h2>
+<p>To see how a shared bridal shower budget works in practice, here is a realistic breakdown for 4 bridesmaids co-hosting a chic 30-person home brunch:</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Expense Line Item</th>
+            <th>Estimated Cost</th>
+            <th>Per-Host Share (÷ 4)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Mimosa Bar (8 Prosecco + Juices + Fruit)</strong></td>
+            <td>$120</td>
+            <td>$30.00</td>
+        </tr>
+        <tr>
+            <td><strong>Bakery Pastries, Quiches & Charcuterie</strong></td>
+            <td>$280</td>
+            <td>$70.00</td>
+        </tr>
+        <tr>
+            <td><strong>Fresh Table Greenery & Bud Vases</strong></td>
+            <td>$80</td>
+            <td>$20.00</td>
+        </tr>
+        <tr>
+            <td><strong>Paper Invitations & Postage (or Digital)</strong></td>
+            <td>$40</td>
+            <td>$10.00</td>
+        </tr>
+        <tr>
+            <td><strong>Custom Welcome Sign & Favor Bags</strong></td>
+            <td>$60</td>
+            <td>$15.00</td>
+        </tr>
+        <tr>
+            <td><strong>Total Shared Host Expense</strong></td>
+            <td><strong>$580</strong></td>
+            <td><strong>$145.00 per bridesmaid</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>The "Display Shower" Trend: Saving 90 Minutes of Boredom</h2>
+<p>Traditional bridal showers dedicate 60 to 90 minutes to watching the bride unwrap kitchen towels and salad tongs while guests sit politely in silence. To make the shower lively and social, consider a <strong>"Display Shower"</strong>:</p>
+<p>Include a sweet note on the invitation: <em>"In lieu of wrapping paper, we invite you to bring your gift unwrapped with a ribbon or bow! Your thoughtful gifts will be put on beautiful display so the bride can spend more time visiting with each of you."</em> This eliminates the wrapping paper mess and keeps the event conversational and relaxed.</p>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(11)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-11">Chic outdoor bridal shower garden luncheon, long sunlit banquet table with blush pink linen runner, delicate tiered porcelain cake stands with macarons and finger sandwiches, crystal champagne flutes with fresh raspberries and sparkling wine, soft floral arrangements of peonies and sweet peas, soft spring sunlight, high-end lifestyle photography, 35mm lens, warm pastel aesthetic --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 12 ===================== -->
+			<article id="week-12" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 12 • Alterations</span>
+					<span class="meta-pill wordcount">📊 962 Words</span>
+					<a href="https://manage.wedding/dress-alterations-estimator" target="_blank" class="meta-pill tool-link">🔗 Tool: Dress Alterations Estimator</a>
+					<span class="meta-pill">📌 Pinterest: Dress Alterations & Bustle Guides</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(12)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(12)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(12)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-12">The Hidden $900 Wedding Dress Alteration Reality (Hems, Bustles & Fittings)</h1>
+				<div class="post-subtitle-main" id="subtitle-12">Why lace and horsehair hemming costs $350+, bustle mechanics, and the 3 mandatory fitting milestones.</div>
+				<div class="article-body" id="body-12">
+					<p>You searched for months, tried on twenty gowns, and finally found "The One" on sale for $1,600. You celebrate with boutique champagne, high-five your mom, and swipe your credit card feeling accomplished.</p>
+
+<p>Then, two months before the wedding, you take the gown to an experienced bridal seamstress. She inspects the 4-layer tulle skirt, delicate scalloped lace hem, boned corset bodice, and 6-foot cathedral train, and hands you an alteration quote for <strong>$850 to $1,200</strong>.</p>
+
+<p>Boutique sample sizes almost never fit anyone off the rack. Bridal sizing runs 2 sizes smaller than street sizing, and gowns are manufactured to fit a standard 5'10" height with 4-inch heels. Here is the insider seamstress breakdown of why bridal alterations cost what they do, how to budget for them, and how to choose the right bustle.</p>
+
+<h2>Why Bridal Tailoring Costs So Much (The Hem Breakdown)</h2>
+<p>Non-seamstresses often wonder: <em>"Why does hemming a wedding dress cost $350 when hemming blue jeans costs $20?"</em></p>
+<ul>
+    <li><strong>Multi-Layer Construction:</strong> A typical A-line or ballgown dress has 4 to 7 separate layers: the outer silk/tulle layer, horsehair braid stiffener, secondary tulle crinoline, satin mid-layer, and lining. Every single layer must be individually measured, cut, and hand-hemmed.</li>
+    <li><strong>Scalloped Lace Appliques:</strong> If your hem has a lace border, the seamstress cannot simply cut the bottom off. She must unpick dozens of delicate lace appliques by hand, shorten the skirt from the middle or lining, and meticulously hand-sew the lace border back on. That is 8 to 14 hours of high-precision manual labor.</li>
+</ul>
+
+<h2>Itemized Alterations Cost Benchmark</h2>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Alteration Service</th>
+            <th>Average Cost Range</th>
+            <th>Complexity / Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Basic Skirt Hem (Clean Crepe/Satin)</strong></td>
+            <td>$150 – $250</td>
+            <td>Simple 2-3 layer skirts without lace trim.</td>
+        </tr>
+        <tr>
+            <td><strong>Complex Lace / Horsehair Hem</strong></td>
+            <td>$300 – $550</td>
+            <td>Requires unpicking and hand-resewing delicate lace borders.</td>
+        </tr>
+        <tr>
+            <td><strong>Taking In / Letting Out the Bodice</strong></td>
+            <td>$120 – $250</td>
+            <td>Adjusting side seams across boning and delicate zippers.</td>
+        </tr>
+        <tr>
+            <td><strong>Adding a Custom Bustle (3 to 7 Points)</strong></td>
+            <td>$75 – $200</td>
+            <td>Lifts the train off the floor for reception dancing.</td>
+        </tr>
+        <tr>
+            <td><strong>Sewing In Molded Bra Cups</strong></td>
+            <td>$30 – $50</td>
+            <td>Eliminates the need for strapless bras or tape.</td>
+        </tr>
+        <tr>
+            <td><strong>Shortening Straps / Sleeves</strong></td>
+            <td>$40 – $90</td>
+            <td>Lifting the shoulders to position the bust apex correctly.</td>
+        </tr>
+        <tr>
+            <td><strong>Total Typical Alterations Bill</strong></td>
+            <td><strong>$450 – $950</strong></td>
+            <td>Average bridal expenditure across 3 fittings.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>American vs. French Bustle: Which One Do You Need?</h2>
+<p>A bustle is a system of hidden buttons, loops, or ribbons that lifts your ceremony train off the floor so you don't trip while dancing at the reception:</p>
+<ul>
+    <li><strong>American Bustle (Over-Bustle):</strong> The train is gathered up and hooked onto hidden buttons on the outside of the waistline. Creates a clean, cascading drapery look. Best for lighter fabrics like chiffon, crepe, or satin.</li>
+    <li><strong>French Bustle (Under-Bustle):</strong> The train folds under itself using color-coded numbered ribbons tied beneath the skirt. Extremely strong, durable, and creates a dramatic vintage silhouette. Ideal for heavy lace and ballgowns.</li>
+    <li><strong>Ballroom Bustle:</strong> The train folds entirely under the skirt to create the illusion that the gown was tailored floor-length with no train at all. Highest labor cost ($150–$250).</li>
+</ul>
+
+<h2>The 3 Mandatory Fitting Milestones</h2>
+<ol>
+    <li><strong>Fitting 1 (8–10 Weeks Out):</strong> Bring your exact wedding shoes and undergarments/shapewear! The seamstress pins the hem height, marks bodice seams, and demonstrates bustle styles.</li>
+    <li><strong>Fitting 2 (4–5 Weeks Out):</strong> Try on the adjusted dress to verify fit, check strap tension, and practice tying the bustle with your Maid of Honor (take a video on your phone!).</li>
+    <li><strong>Final Pickup (10–14 Days Out):</strong> Final try-on, final inspection of all hooks and seams, followed by professional pressing and steaming.</li>
+</ol>
+
+<h2>What You MUST Bring to Every Fitting</h2>
+<p>Never show up to a bridal fitting with alternate shoes or different undergarments. Altering a hem requires the exact shoe heel height down to the quarter inch. If you change from 3-inch heels to flats on wedding day after your hem is cut, your dress will drag on the floor and become a severe tripping hazard.</p>
+
+<h2>The Perils of Sizing Down</h2>
+<p>Never order a wedding dress in a size smaller hoping you will lose weight before the wedding. It is vastly cheaper and easier for a seamstress to take in a dress that is 1 size too large than it is to let out a tight gown that lacks internal seam allowance fabric.</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Estimate your exact alterations pricing!</div>
+    <p>Select your dress fabric, lace detailing, and bustle points in our calculator to budget accurately.</p>
+    <a href="https://manage.wedding/dress-alterations-estimator" class="cta-button" target="_blank">👉 Open the Dress Alteration Estimator</a>
+</div>
+
+<h2>The Hemline Clearance Test: The 1-Inch Floor Rule</h2>
+<p>When standing on the fitting pedestal in your wedding shoes, look down at the hem. An ideal bridal hem should float exactly <strong>1/2 inch to 1 inch above the floor in the front</strong>. If the hem touches the floor, you will inevitably step on your skirt fabric when walking forward, creating a dangerous tripping risk during the processional. When you walk, your feet push the skirt outward; that 1-inch clearance ensures smooth, effortless movement.</p>
+
+<h2>Weight Fluctuations & Corset Conversions</h2>
+<p>It is completely normal for brides to fluctuate 3 to 6 pounds in the final two weeks due to wedding stress and hydration changes. If your dress features a zipper back with zero stretch, consider asking your seamstress about a <strong>Corset Lace-Up Back Conversion</strong> ($120–$180). A corset back provides 2 to 3 inches of flexible adjustability on the wedding morning, guaranteeing a snug, custom fit regardless of minor weight shifts.</p>
+
+<h2>Day-Of Steaming & Garment Care</h2>
+<p>Never spray tap water directly onto silk or satin gowns, as minerals in tap water leave permanent water marks. Always use distilled water in your steamer, test the steam head on a clean white towel first, and steam from the inside of the skirt outward.</p>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(12)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-12">Haute couture bridal tailoring atelier, dressmaker mannequin draped in an exquisite lace wedding gown with intricate train, seamstress hand pinning delicate silk fabric with pearl-headed pins, vintage brass measuring tape, spools of silk thread, soft warm sunlight filtering through tall loft windows, editorial fashion photography, shallow depth of field --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 13 ===================== -->
+			<article id="week-13" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 13 • Photography</span>
+					<span class="meta-pill wordcount">📊 811 Words</span>
+					<a href="https://manage.wedding/day-of-timeline-generator" target="_blank" class="meta-pill tool-link">🔗 Tool: Photo Timeline Generator</a>
+					<span class="meta-pill">📌 Pinterest: Photography Shot Lists & Inspiration</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(13)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(13)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(13)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-13">Wedding Photography Hours: Why 10 Hours is Overkill (The 8-Hour Sweet Spot)</h1>
+				<div class="post-subtitle-main" id="subtitle-13">Diminishing returns of late-night reception coverage, second shooter ROI, and flat lay timing.</div>
+				<div class="article-body" id="body-13">
+					<p>When booking a wedding photographer, couples frequently feel pressured to buy the largest package available: <em>"We need 10 or 12 hours of coverage so we don't miss a single second from 8:00 AM coffee to the 11:30 PM afterparty!"</em></p>
+
+<p>Upgrading from an 8-hour package to a 10 or 12-hour package typically costs an extra $800 to $1,500. But if you talk to experienced wedding photographers off the record, they will tell you a secret: <strong>Most couples do not need more than 8 hours of continuous coverage.</strong></p>
+
+<p>Here is how photography shot efficiency actually works, why late-night coverage delivers diminishing returns, and how to map an 8-hour package for maximum artistic value.</p>
+
+<h2>The Law of Diminishing Returns in Dance Floor Photography</h2>
+<p>Couples imagine their photographer capturing magical candid moments at 10:45 PM. In reality, after the first 45 minutes of open dancing, three things happen:</p>
+<ul>
+    <li>Guests become sweaty and their hair/makeup gets messy.</li>
+    <li>The photo album ends up with 140 photos of the same 12 friends doing the exact same dance moves in low lighting.</li>
+    <li>Older family members and relatives have already departed.</li>
+</ul>
+<p><strong>The Pro Hack (The Mock Grand Exit):</strong> You do not need your photographer to stay until midnight for an exit photo. At 9:15 PM, stage a "Mock Sparkler Exit" with your bridal party and immediate family. You get pristine, magazine-quality photos with fresh makeup, while saving $1,000 in overtime fees!</p>
+
+<h2>Package Comparison: 6 Hours vs. 8 Hours vs. 10 Hours</h2>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Coverage Window</th>
+            <th>What You Get</th>
+            <th>What Gets Cut / Tradeoffs</th>
+            <th>Best Fit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>6 Hours</strong></td>
+            <td>Getting into dress, ceremony, family formals, couple portraits, grand entrance, first dances.</td>
+            <td>No morning prep photos; photographer leaves right after dinner/toasts.</td>
+            <td>Intimate weddings, micro-weddings, tight budgets.</td>
+        </tr>
+        <tr>
+            <td><strong>8 Hours (The Gold Standard)</strong></td>
+            <td>Bridal robe portraits, dress zipping, First Look, bridal party, ceremony, full reception & first hour of open dancing.</td>
+            <td>None. Covers 95% of all meaningful photographic milestones.</td>
+            <td>Standard 100–180 guest weddings.</td>
+        </tr>
+        <tr>
+            <td><strong>10–12 Hours</strong></td>
+            <td>Full morning makeup from 8 AM, full reception through late-night exit.</td>
+            <td>Lots of downtime and duplicate photos of makeup blending and dark dance floors.</td>
+            <td>Multi-venue cultural weddings, large luxury estates.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Do You Really Need a Second Shooter?</h2>
+<p>Adding a second shooter costs $400 to $700. Is it worth it?</p>
+<ul>
+    <li><strong>YES, get a 2nd Shooter if:</strong> You have 130+ guests, the bride and groom are getting ready at different locations more than 15 minutes apart, or you want simultaneous reaction shots during the ceremony walk.</li>
+    <li><strong>NO, skip the 2nd Shooter if:</strong> You have under 100 guests and the entire wedding takes place at a single venue with a first look. A skilled lead photographer can easily capture everything solo.</li>
+</ul>
+
+<h2>How to Organize the "Details Box" for Arrival</h2>
+<p>Photographers spend their first 45 minutes shooting detail "flat lays." To prevent wasting shooting time searching through suitcases, pack a dedicated shoe box the night before with:</p>
+<ol>
+    <li>Both wedding bands and the engagement ring (clean them in jewelry dip!).</li>
+    <li>Two complete sets of your wedding invitation suite (with pristine envelopes and stamps).</li>
+    <li>Perfume and cologne bottles.</li>
+    <li>Bridal shoes, veil, and heirloom jewelry.</li>
+    <li>A few spare floral stems provided by your florist.</li>
+</ol>
+
+<h2>The Danger of the 80-Item Pinterest Shot List</h2>
+<p>Giving a photographer a checklist with 80 micro-shots copied from Pinterest forces them to stare at a clipboard instead of watching for genuine emotional moments between grandparents, parents, and friends. Trust their artistic instincts, provide a list of immediate family formal combinations, and let them capture authentic moments naturally.</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Map your exact photography timeline!</div>
+    <p>Use our timeline generator to fit your First Look, portraits, and ceremony into an 8-hour window.</p>
+    <a href="https://manage.wedding/day-of-timeline-generator" class="cta-button" target="_blank">👉 Build Your Photography Timeline</a>
+</div>
+
+<h2>Golden Hour Lighting Geometry</h2>
+<p>The single most flattering natural light of the entire day occurs during <strong>Golden Hour</strong> (the 45-minute window right before sunset). The sun is low on the horizon, creating soft, warm, diffused illumination that eliminates harsh facial shadows and makes veils glow with breathtaking rim lighting.</p>
+<p>Look up the exact sunset time for your wedding date and location (e.g., 7:42 PM). Schedule a dedicated <strong>15-to-20 minute portrait window starting 30 minutes before sunset</strong> (7:10 PM – 7:30 PM). Sneak away from dinner between the salad and entree courses—your photographer will capture the most breathtaking portraits of your entire gallery.</p>
+
+<h2>RAW Files & Copyright Demystified</h2>
+<p>A common misconception among couples is asking: <em>"Can we have all the unedited RAW photo files?"</em> Professional photographers will almost universally decline. A RAW file is an uncalibrated digital negative; half of a photographer’s signature artistry lies in their proprietary color grading, exposure curve, and skin tone correction. What you should ensure your contract includes is a <strong>"Full High-Resolution Gallery with Print Release Rights,"</strong> allowing you to print, share, and download all finished high-res images without watermarks.</p>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(13)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-13">Golden hour wedding couple portrait in romantic open meadow with tall wildflowers, glowing sunset backlighting creating a warm halo around the bride's veil and groom's dark suit, documentary style wedding photography, artistic bokeh, authentic emotional intimacy, shot on 85mm f/1.2 lens, rich film tones --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 14 ===================== -->
+			<article id="week-14" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 14 • Honeymoon</span>
+					<span class="meta-pill wordcount">📊 828 Words</span>
+					<a href="https://manage.wedding/honeymoon-budget-estimator" target="_blank" class="meta-pill tool-link">🔗 Tool: Honeymoon Budget Estimator</a>
+					<span class="meta-pill">📌 Pinterest: Honeymoon Destinations & Itineraries</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(14)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(14)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(14)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-14">Honeymoon Budget Engineering: How to Save $2,500 on Flights & Luxury Resorts</h1>
+				<div class="post-subtitle-main" id="subtitle-14">All-inclusive vs. European boutique travel math, shoulder season timing, and honeymoon fund etiquette.</div>
+				<div class="article-body" id="body-14">
+					<p>After a year of negotiating wedding invoices and juggling guest RSVPs, your honeymoon should be pure, unadulterated relaxation. But for many couples, honeymoon planning turns into a secondary financial headache with price tags climbing past $7,000 to $10,000.</p>
+
+<p>You do not need to settle for an ordinary vacation to stay on budget. By understanding airline pricing cycles, booking "shoulder seasons," and comparing all-inclusive packages against independent boutique travel, you can experience 5-star luxury while saving thousands.</p>
+
+<h2>All-Inclusive vs. European Boutique: The Cost Comparison</h2>
+<p>Couples often ask: <em>"Is an all-inclusive Caribbean resort cheaper than a romantic trip to Italy or Greece?"</em> Here is the 7-day budget comparison for two people:</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Expense Category</th>
+            <th>St. Lucia / Mexico 5-Star All-Inclusive</th>
+            <th>Amalfi Coast / Greek Islands Boutique</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Flights (2 People)</strong></td>
+            <td>$800 – $1,400 (Short haul)</td>
+            <td>$1,600 – $2,800 (Transatlantic)</td>
+        </tr>
+        <tr>
+            <td><strong>7 Nights Luxury Lodging</strong></td>
+            <td>$3,500 – $5,500 (Includes all meals/drinks)</td>
+            <td>$2,800 – $4,500 (Room & breakfast only)</td>
+        </tr>
+        <tr>
+            <td><strong>Dining & Cocktails</strong></td>
+            <td>$0 (Included)</td>
+            <td>$1,400 – $2,200 ($200–$300/day for 2)</td>
+        </tr>
+        <tr>
+            <td><strong>Activities & Transfers</strong></td>
+            <td>$300 – $500</td>
+            <td>$600 – $1,000 (Ferries, scooters, tours)</td>
+        </tr>
+        <tr>
+            <td><strong>Total Estimated Cost</strong></td>
+            <td><strong>$4,600 – $7,400 (Predictable)</strong></td>
+            <td><strong>$6,400 – $10,500 (Variable)</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>The Power of "Shoulder Season" Travel (Save 35–45%)</h2>
+<p>Peak tourist seasons (July/August in Europe; Christmas/February in the Caribbean) carry brutal 100% hotel markups and crowded beaches. Traveling during the <strong>Shoulder Season</strong> delivers perfect weather with drastically lower prices:</p>
+<ul>
+    <li><strong>Mediterranean (Italy, Greece, Spain):</strong> Travel in <strong>May or late September/October</strong>. The sea is warm, crowds are gone, and luxury 5-star cliffside hotels drop from $800/night to $380/night.</li>
+    <li><strong>Caribbean / Hawaii:</strong> Travel in <strong>late April to May</strong> (after spring break and before hurricane season).</li>
+    <li><strong>Southeast Asia (Bali, Thailand):</strong> Travel in <strong>May or September</strong> to avoid monsoons and peak holiday rates.</li>
+</ul>
+
+<h2>The Credit Card Point Multiplier Strategy</h2>
+<p>Since you are already spending thousands on wedding vendor deposits (catering, venue, dress), channel those expenses through travel rewards credit cards with high sign-up bonuses (e.g., Chase Sapphire Reserve, Amex Gold, Capital One Venture X). A single $4,000 venue deposit can trigger an 80,000-point bonus—covering round-trip international flights to Europe for free!</p>
+
+<h2>Honeymoon Fund Etiquette: How to Ask for Cash Gracefully</h2>
+<p>Modern couples living together already own toasters and blenders. Setting up a dedicated "Honeymoon Cash Fund" on your wedding website is 100% acceptable—if worded with warmth:</p>
+<div class="callout-box formula">
+    <div class="callout-title">💌 Copy-Paste Registry Wording</div>
+    <p><em>"Your presence at our wedding is the greatest gift of all. However, if you wish to honor us with a gift, we have set up a Honeymoon Adventure Fund to help us create lifelong memories on our dream trip to Greece! You can contribute toward romantic dinners, sailing excursions, or sunset drinks at the link below."</em></p>
+</div>
+
+<h2>The 6-Month Passport Expiration Trap</h2>
+<p>Many European, Asian, and Caribbean countries legally require your passport to have <strong>at least 6 months of validity remaining beyond your travel departure date</strong>. If your passport expires in 4 months, airlines will deny boarding at the gate. Check your expiration dates 6 months before the wedding!</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Plan your complete honeymoon budget!</div>
+    <p>Use our interactive tool to calculate flight, lodging, and daily meal expenses for top destinations.</p>
+    <a href="https://manage.wedding/honeymoon-budget-estimator" class="cta-button" target="_blank">👉 Open the Honeymoon Budget Estimator</a>
+</div>
+
+<h2>Hidden Island Taxes, VAT & Resort Fees</h2>
+<p>When budgeting for international resorts, always read the fine print regarding mandatory destination taxes. In the Caribbean, countries like Barbados and St. Lucia levy a <strong>10% to 18% Value Added Tax (VAT)</strong> plus an $8 to $12 per night government accommodation fee. In Hawaii and Mexico, luxury resorts often tack on a <strong>$45 to $65 per night "Resort Amenity Fee"</strong> covering beach towels, fitness center access, and Wi-Fi. Over a 7-night stay, these fees can add $400 to $650 to your final checkout bill if not anticipated.</p>
+
+<h2>The 120-Day Flight Booking Sweet Spot</h2>
+<p>Aviation pricing algorithms price international transatlantic and transpacific tickets on predictable curves. The cheapest window to book long-haul international flights to Europe or Asia is typically <strong>100 to 140 days (3 to 4.5 months) prior to departure</strong>. For domestic flights or Caribbean getaways, book 45 to 75 days out. Set up automated Google Flights price tracking alerts to monitor fare drops.</p>
+
+<h2>Travel Medical & Trip Interruption Insurance</h2>
+<p>For international honeymoons, never travel without comprehensive trip insurance. A basic $120 to $180 policy through providers like Allianz or World Nomads covers emergency medical evacuation, lost luggage replacement, and flight cancellations caused by severe weather or airline strikes, protecting your investment from unforeseen disruptions.</p>
+
+<h2>The "Minimoon" Alternative (Save Stress & Cash)</h2>
+<p>If you feel physically and financially drained right after your wedding, consider taking a <strong>3-day local "Minimoon"</strong> (e.g., booking a luxury boutique cabin or spa resort 2 hours away) immediately after the wedding weekend. You can then schedule your grand 2-week international adventure 4 to 6 months later when you have replenished your savings, recovered your energy, and can travel during ideal weather seasons.</p>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(14)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-14">Luxury honeymoon overwater villa balcony in Maldives overlooking crystal clear turquoise lagoon, infinity plunge pool, two rattan loungers with tropical linen pillows, fresh chilled coconut drinks with straw, breathtaking pastel sunset sky with lavender and gold hues, high-end travel magazine editorial photography, 35mm lens --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 15 ===================== -->
+			<article id="week-15" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 15 • Music & Sound</span>
+					<span class="meta-pill wordcount">📊 833 Words</span>
+					<a href="https://manage.wedding/how-to-save-money-on-a-wedding-cut-10k" target="_blank" class="meta-pill tool-link">🔗 Tool: $10k Savings Guide</a>
+					<span class="meta-pill">📌 Pinterest: Reception Music & DJ Setups</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(15)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(15)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(15)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-15">Live 9-Piece Horn Band vs. Top Tier DJ: The True Cost of Wedding Music</h1>
+				<div class="post-subtitle-main" id="subtitle-15">Rider requirements, stage power costs, and dance floor momentum retention curves.</div>
+				<div class="article-body" id="body-15">
+					<p>There is nothing quite like the electric energy of a live 9-piece brass horn band belting out Stevie Wonder or Earth, Wind & Fire. But there is also nothing quite like opening a band contract and discovering a <strong>$7,500 price tag</strong> plus $800 in catering meals for nine musicians.</p>
+
+<p>Music sets the emotional heartbeat of your entire celebration. Should you splurge on a live ensemble, hire a premium club DJ, or look for a hybrid compromise? Here is the real financial and logistical comparison.</p>
+
+<h2>The Total Cost of Ownership Comparison</h2>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Feature / Cost Item</th>
+            <th>Live 8 to 10-Piece Horn Band</th>
+            <th>Professional Wedding DJ / MC</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Base Booking Fee</strong></td>
+            <td>$5,000 – $9,000+</td>
+            <td>$1,400 – $2,400</td>
+        </tr>
+        <tr>
+            <td><strong>Vendor Meals Required</strong></td>
+            <td>8 to 10 hot meals ($350 – $600)</td>
+            <td>1 to 2 hot meals ($40 – $80)</td>
+        </tr>
+        <tr>
+            <td><strong>Stage & Electrical Requirements</strong></td>
+            <td>Requires 16x12 ft stage & 3 dedicated 20A circuits ($300–$600 venue power drop)</td>
+            <td>Compact 6 ft footprint, runs on single standard outlet ($0)</td>
+        </tr>
+        <tr>
+            <td><strong>Song Variety & Original Tracks</strong></td>
+            <td>Limited to band’s rehearsed repertoire (approx. 40–60 songs)</td>
+            <td>Unlimited (can play exact original studio tracks across any genre)</td>
+        </tr>
+        <tr>
+            <td><strong>Dance Floor Momentum</strong></td>
+            <td>Requires mandatory 15-20 min breaks between 45-min sets</td>
+            <td>Continuous, seamless beatmatching with zero breaks</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Dance Floor Retention: The Momentum Factor</h2>
+<p>The single biggest logistical challenge of live bands is <strong>the set break</strong>. When a live band pauses for 20 minutes to rest their vocal cords and brass players, energy can quickly drain from the room unless the venue transitions seamlessly to pre-recorded playlists.</p>
+<p>A top-tier DJ, by contrast, operates like a club selector: reading the crowd, quick-mixing songs when interest fades, and keeping people dancing for 2.5 hours without interruption.</p>
+
+<h2>The Best of Both Worlds: The "DJ + Live Musician" Hybrid</h2>
+<p>If you want the visual excitement of live brass with the versatile song selection and low cost of a DJ, book a <strong>Hybrid Setup (DJ + Live Saxophonist or Percussionist)</strong>:</p>
+<div class="callout-box formula">
+    <div class="callout-title">🎷 The Hybrid DJ/Live Sax Formula</div>
+    <p>• Cost: <strong>$2,200 – $3,200 total</strong> (saving $4,000+ vs a full 9-piece band).<br>
+    • The DJ plays all original tracks while the live sax player roams the dance floor, interacting directly with guests. High energy, unforgettable photos, and massive savings!</p>
+</div>
+
+<h2>Sound Ordinances & Outdoor Noise Curfews</h2>
+<p>Before booking any live drum kit or horn section, verify your venue's local municipal noise decibel limits. Many outdoor estate venues enforce a strict 85-decibel cap at the property line and require acoustic cutoff by 10:00 PM. Live acoustic drums cannot be turned down with a volume knob, whereas a DJ can precisely calibrate sound levels.</p>
+
+<h2>Curating the "Do Not Play" List</h2>
+<p>Every couple has songs that induce an immediate cringe (e.g., the Macarena, Cotton Eye Joe, or the Chicken Dance). Give your DJ a strict "Do Not Play" list of 10 to 15 songs. Experienced DJs appreciate this clarity and will protect your musical aesthetic from drunk guest requests.</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">See where else you can save thousands!</div>
+    <p>Explore our complete list of vendor-approved high-impact budget levers.</p>
+    <a href="https://manage.wedding/how-to-save-money-on-a-wedding-cut-10k" class="cta-button" target="_blank">👉 Read the $10,000 Savings Guide</a>
+</div>
+
+<h2>Wireless Sound Engineering & Outdoor Ceremony Mics</h2>
+<p>Nothing pulls guests out of an emotional ceremony faster than a screeching burst of microphone feedback or an officiant whose vows are muffled by wind gusts. Outdoor ceremonies require specialized audio precautions:</p>
+<ul>
+    <li><strong>Lavalier Lapel Mics with Wind Muffs:</strong> The officiant and groom should wear discrete wireless lavalier microphones equipped with high-density foam "deadcat" wind muffs. The bride does not need a mic pinned to her gown—the groom's lapel mic easily picks up both vows when standing 2 feet apart.</li>
+    <li><strong>Dedicated Ceremony Sound System:</strong> Ensure your DJ provides a separate, battery-powered sound system for the ceremony lawn so they don't have to scramble to move heavy speakers between the ceremony and reception ballroom.</li>
+</ul>
+
+<h2>Cocktail Hour & Dinner Playlist Architecture</h2>
+<p>The transition between cocktail hour, dinner, and dancing should follow a carefully curated emotional arch:</p>
+<ol>
+    <li><strong>Cocktail Hour:</strong> Upbeat, sophisticated, conversational energy (Bossa Nova, acoustic pop covers, classic jazz, upbeat indie).</li>
+    <li><strong>Dinner:</strong> Warm, romantic background volume (Motown soul, Frank Sinatra, Norah Jones, acoustic folk) kept at a volume where elderly grandparents can converse across the table without shouting.</li>
+    <li><strong>Open Dancing:</strong> Building momentum from multi-generational funk classics (Earth Wind & Fire, ABBA) to modern pop and nostalgic 2000s anthems as the night progresses.</li>
+</ol>
+
+<h2>DJ Stage Lighting & Uplighting Essentials</h2>
+<p>A great sound system without proper lighting leaves a dance floor feeling sterile. Ensure your DJ package includes at least <strong>8 to 12 wireless LED amber/warm-white uplights</strong> positioned along the perimeter walls, along with subtle sound-activated dance floor wash lights. Avoid harsh strobes during slow dances or dinner service.</p>
+
+<h2>Evaluating DJ Personality & MC Style</h2>
+<p>Ask your DJ candidate during your consultation: <em>"How do you handle guest announcements and microphone time?"</em> You want a refined, professional Master of Ceremonies who makes crisp, clear logistical announcements (introducing toasts, grand entrance, first dances) rather than an overbearing radio hype-man shouting over every song on the dance floor.</p>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(15)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-15">High energy luxury wedding reception party, live saxophonist in tailored modern suit playing in the middle of dancing guests, golden stage uplighting, shimmering confetti in the air, joyous dancing crowd with hands raised, dynamic motion blur, editorial concert and event photography, cinematic warm atmosphere, 35mm f/1.4 lens --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+			<!-- ===================== WEEK 16 ===================== -->
+			<article id="week-16" class="content-card">
+				<div class="post-meta-strip">
+					<span class="meta-pill primary">Week 16 • Gift Giving Math</span>
+					<span class="meta-pill wordcount">📊 832 Words</span>
+					<a href="https://manage.wedding/gift-cash-calculator" target="_blank" class="meta-pill tool-link">🔗 Tool: Wedding Cash Gift Calculator</a>
+					<span class="meta-pill">📌 Pinterest: Gift Tables & Card Boxes</span>
+				</div>
+				<div class="action-bar">
+					<button class="btn-copy" onclick="copyArticle(16)">📋 Copy Article (Markdown)</button>
+					<button class="btn-prompt" onclick="copyPrompt(16)">🎨 Copy Hero Image Prompt</button>
+					<button class="btn-secondary" onclick="copySubjectLine(16)">✉️ Copy Subject Line</button>
+				</div>
+				<h1 class="post-title-main" id="subject-16">Wedding Gift Cash Math: How Much Should Guests ACTUALLY Give?</h1>
+				<div class="post-subtitle-main" id="subtitle-16">Debunking the "cover your plate" myth, relationship tier matrices, and destination wedding gift rules.</div>
+				<div class="article-body" id="body-16">
+					<p>Few wedding topics generate more confusion, anxiety, and passive-aggressive debate than the question: <em>"How much cash are you supposed to give as a wedding gift?"</em></p>
+
+<p>For decades, well-meaning aunts have repeated the old rule of thumb: <em>"You have to give enough to cover the cost of your dinner plate."</em> But in an era where high-end city weddings cost $220 per plate while backyard casual weddings cost $45 per plate, that old rule makes zero practical sense.</p>
+
+<p>Guests shouldn't be penalized with a higher gift expectation just because a couple chose an extravagant venue. Here is the modern, data-backed relationship tier matrix for wedding gift giving.</p>
+
+<h2>Why the "Cover Your Plate" Rule is Dead</h2>
+<p>The "Cover Your Plate" rule fails for three fundamental reasons:</p>
+<ol>
+    <li><strong>Guests Have No Idea What the Plate Costs:</strong> Guests cannot see the catering invoice or service fees.</li>
+    <li><strong>It Punishes Generous Hospitality:</strong> A couple hosting a lavish luxury wedding did not do so to demand $500 checks from their 24-year-old cousins.</li>
+    <li><strong>It Ignores Travel Friction:</strong> A guest who spent $800 on flights and 2 nights in a hotel has already made a massive financial investment to celebrate with you.</li>
+</ol>
+
+<h2>The Modern Relationship & Location Gift Matrix</h2>
+<p>Wedding gift amounts should be based on <strong>your personal budget and your relationship closeness to the couple</strong>, adjusted for travel:</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Relationship Tier</th>
+            <th>Standard Cash Gift Benchmark</th>
+            <th>If You Traveled / Flew In</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Immediate Family / Siblings / Best Friends</strong></td>
+            <td>$150 – $300+ per person ($300 – $600 couple)</td>
+            <td>$150 – $250+</td>
+        </tr>
+        <tr>
+            <td><strong>Close Friends & Aunts / Uncles / Cousins</strong></td>
+            <td>$100 – $175 per person ($200 – $350 couple)</td>
+            <td>$100 – $150</td>
+        </tr>
+        <tr>
+            <td><strong>Casual Friends & Coworkers</strong></td>
+            <td>$75 – $125 per person ($150 – $225 couple)</td>
+            <td>$50 – $100</td>
+        </tr>
+        <tr>
+            <td><strong>Plus-One (Attending with a Friend)</strong></td>
+            <td>$50 – $75 (or contribute to partner's gift)</td>
+            <td>$50</td>
+        </tr>
+        <tr>
+            <td><strong>Destination Wedding (Flights + 3 Nights)</strong></td>
+            <td>$50 – $100 (Your presence IS the gift!)</td>
+            <td>$50 – $100</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Registry vs. Cash Fund vs. Physical Gifts</h2>
+<ul>
+    <li><strong>Cash / Honeymoon Funds:</strong> Preferred by over 82% of modern couples. Give via wedding website link or a crisp check in a thoughtful greeting card on the gift table.</li>
+    <li><strong>Physical Registry Items:</strong> Best when purchased directly from the couple’s registry 2–3 weeks before the wedding so it ships directly to their home. Never bring large boxed appliances to the wedding reception—the couple has to pack them into a getaway car at midnight!</li>
+</ul>
+
+<h2>Card Box Security on Wedding Night</h2>
+<p>Card boxes containing thousands of dollars in cash envelopes are common targets for theft at busy public hotel venues. Assign a trusted groomsman or family member to lock the card box in the bridal suite safe immediately before dinner begins!</p>
+
+<h2>Thank-You Note Timelines & Tracking</h2>
+<p>Etiquette gives couples up to <strong>3 months after returning from their honeymoon</strong> to send handwritten thank-you cards. Maintain a synchronized spreadsheet noting who gave which gift to ensure every note mentions the exact gift and how it will be enjoyed.</p>
+
+<div class="substack-cta-card">
+    <div class="substack-cta-title">Calculate custom gift recommendations!</div>
+    <p>Use our interactive Cash Gift Calculator to test relationship tiers, travel costs, and local city adjustments.</p>
+    <a href="https://manage.wedding/gift-cash-calculator" class="cta-button" target="_blank">👉 Open the Wedding Gift Calculator</a>
+</div>
+
+<h2>Digital Cash Platforms & Processing Fee Secrets</h2>
+<p>When setting up honeymoon or cash funds on wedding websites (Zola, The Knot, Honeyfund, WithJoy), be mindful of transaction fees. Most platforms charge a <strong>2.4% to 2.9% credit card processing fee</strong>. If you collect $4,000 in digital contributions, the payment processor keeps roughly $110. Many modern platforms allow you to link your direct Venmo handle or Zelle QR code on your registry page for completely fee-free direct transfers!</p>
+
+<h2>The 12-Month "Late Gift" Etiquette Window</h2>
+<p>If you have guests who didn't give a gift on the wedding day, do not assume they forgot or were rude. Traditional etiquette guidelines give wedding guests <strong>up to 12 months after the wedding date</strong> to send a wedding gift. Often, friends who traveled long distances or faced temporary budget constraints will send a thoughtful registry gift several months after the festivities have settled.</p>
+
+<h2>Card Box Security Protocol at the Reception</h2>
+<p>A card box on a gift table near the venue entrance holds between $3,000 and $8,000 in cash and personal checks. In public venues like hotels or golf clubs, unattended gift tables pose an unnecessary security risk. Assign your coordinator, Best Man, or a trusted sibling to <strong>remove the cards and place them in the bridal suite safe or locked trunk</strong> immediately as guests transition from cocktail hour into dinner.</p>
+
+<h2>Personalized Handwritten Thank-You Note Templates</h2>
+<p>A heartfelt thank-you card should always follow a 4-sentence formula: (1) Thank them for attending, (2) Specifically name the gift or cash amount, (3) Share exactly how you intend to use it, and (4) Express excitement to see them again soon. Avoid generic printed thank-you postcards!</p>
+
+<h2>Handling Group Cash Gifts from Coworkers</h2>
+<p>When a team of coworkers pools money for a single large $300 cash contribution or high-end registry item, write individual handwritten thank-you cards to each contributing colleague, mentioning how much you appreciate their collaborative generosity and workplace friendship.</p>
+					<div class="hero-prompt-card">
+						<div class="hero-prompt-title">
+							<span>🎨 Midjourney / DALL-E / Flux Hero Image Prompt</span>
+							<button class="btn-copy" style="padding: 0.3rem 0.75rem; font-size: 0.75rem;" onclick="copyPrompt(16)">Copy Prompt</button>
+						</div>
+						<div class="hero-prompt-code" id="prompt-16">Chic minimalist wedding gift reception table, clear glass and brass geometric card box filled with elegant linen envelopes, delicate white floral arrangement with spray roses and eucalyptus, glowing taper candles in glass hurricane holders, soft romantic bokeh background of wedding dinner, luxury editorial photography, 50mm f/1.4 lens, warm neutral tones --ar 16:9 --style raw --v 6.0</div>
+					</div>
+				</div>
+			</article>
+		</main>
+	</div>
+</div>
+
+<script>
+	// Tab Switcher
+	function switchWeek(weekNum) {
+		document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+			if (idx === weekNum - 1) {
+				btn.classList.add('active');
+			} else {
+				btn.classList.remove('active');
+			}
+		});
+
+		document.querySelectorAll('.content-card').forEach((card) => {
+			card.classList.remove('active');
+		});
+
+		const target = document.getElementById('week-' + weekNum);
+		if (target) {
+			target.classList.add('active');
+			window.scrollTo({ top: target.offsetTop - 30, behavior: 'smooth' });
+		}
+	}
+
+	// Copy full article text
+	function copyArticle(weekNum) {
+		const title = document.getElementById('subject-' + weekNum).innerText;
+		const subtitle = document.getElementById('subtitle-' + weekNum).innerText;
+		const body = document.getElementById('body-' + weekNum).innerText;
+
+		const fullContent = `# ${title}\n\n*${subtitle}*\n\n${body}`;
+
+		navigator.clipboard.writeText(fullContent).then(() => {
+			const btn = event.currentTarget;
+			const originalText = btn.innerHTML;
+			btn.innerHTML = '✅ Copied Full Markdown!';
+			btn.classList.add('copied');
+			setTimeout(() => {
+				btn.innerHTML = originalText;
+				btn.classList.remove('copied');
+			}, 2500);
+		});
+	}
+
+	// Copy Hero Image Prompt
+	function copyPrompt(weekNum) {
+		const promptText = document.getElementById('prompt-' + weekNum).innerText;
+		navigator.clipboard.writeText(promptText).then(() => {
+			const btn = event.currentTarget;
+			const originalText = btn.innerHTML;
+			btn.innerHTML = '✅ Copied Prompt!';
+			btn.classList.add('copied');
+			setTimeout(() => {
+				btn.innerHTML = originalText;
+				btn.classList.remove('copied');
+			}, 2500);
+		});
+	}
+
+	// Copy Subject Line
+	function copySubjectLine(weekNum) {
+		const title = document.getElementById('subject-' + weekNum).innerText;
+		navigator.clipboard.writeText(title).then(() => {
+			const btn = event.currentTarget;
+			const originalText = btn.innerHTML;
+			btn.innerHTML = '✅ Copied Subject!';
+			setTimeout(() => {
+				btn.innerHTML = originalText;
+			}, 2000);
+		});
+	}
+
+</script>
+
+</body>
+</html>

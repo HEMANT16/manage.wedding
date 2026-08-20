@@ -1,0 +1,512 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "【公式】結婚式 費用・見積もり・自己負担 計算ツール一覧 | Manage.Wedding 日本版";
+const description = "プレ花嫁のための結婚式費用・見積もり・自己負担計算ツール集。自己負担額シミュレーター、見積もり跳ね上がり予測、持ち込み料損益分岐点、引き出物予算、フォトウェディング費用計算など全5ツール。完全無料・登録不要・ローカル保存。";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://manage.wedding/ja/budget/#collection",
+      "name": "結婚式 費用・見積もり・自己負担 計算ツール一覧",
+      "url": "https://manage.wedding/ja/budget",
+      "description": "日本の結婚式に特化した自己負担額シミュレーター、初期見積もりアップ予測、持ち込み料計算ツール集。",
+      "inLanguage": "ja",
+      "hasPart": [
+        { "@type": "WebApplication", "name": "自己負担額シミュレーター", "url": "https://manage.wedding/ja/jiko-futangaku-calculator" },
+        { "@type": "WebApplication", "name": "見積もり跳ね上がり予測計算機", "url": "https://manage.wedding/ja/mitsumori-jump-calculator" },
+        { "@type": "WebApplication", "name": "持ち込み料 vs DIY 損益分岐点チェッカー", "url": "https://manage.wedding/ja/mochikomi-savings-calculator" },
+        { "@type": "WebApplication", "name": "引き出物・引き菓子 予算＆個数計算機", "url": "https://manage.wedding/ja/hikidemono-calculator" },
+        { "@type": "WebApplication", "name": "フォトウェディング・前撮り 費用計算機", "url": "https://manage.wedding/ja/photo-wedding-calculator" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "結婚式の自己負担額（手出し金額）の平均相場はいくらですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "全国平均（ゲスト60名規模）では、結婚式の総費用約330万〜350万円に対し、ご祝儀総額が約200万〜220万円となるため、新郎新婦の自己負担額（手出し）は約110万〜140万円程度が一般的な相場です。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "式場の初期見積もりから最終見積もりはなぜ100万円以上上がるのですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "初期見積もりは最安の料理コース、最低限の装花、基本ドレスプランで組まれていることが多いためです。衣装のランクアップ（+20〜40万円）、料理・ドリンクのグレードアップ（+20〜30万円）、記録映像・撮って出しエンドロール追加（+25〜40万円）、装花ボリュームアップ（+15〜25万円）などで平均100万〜150万円上がります。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "結婚式の費用支払いはいつ行いますか？ご祝儀で払えますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "約80%の式場は「挙式の1〜2週間前までの事前銀行振込」を原則としています。当日のご祝儀で後払い精算できる式場は全体の10〜20%にとどまるため、一時的にまとまった貯金やブライダルローンを用意しておく必要があります。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "持ち込み料を払ってでも外注した方が安くなるアイテムは何ですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ペーパーアイテム（招待状・席次表・席札）やプロフィールムービーは持ち込み料が「無料」の式場が多く、自作・外注で15万〜25万円節約できます。ウェディングドレスやカメラマンは持ち込み料（ドレス5万、カメラマン3〜5万）がかかっても、外部ショップが大幅に安い場合はトータルで安くなることがあります。"
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const tools = [
+  {
+    title: "自己負担額シミュレーター",
+    url: "/ja/jiko-futangaku-calculator",
+    icon: "💰",
+    badge: "人気No.1",
+    badgeBg: "#fee2e2",
+    badgeText: "#991b1b",
+    lead: "式場総費用とゲストの人数内訳（友人・上司・親族）から、おふたりが実際に貯金から持ち出す自己負担額（手出し金額）を瞬時に算出。",
+    highlights: ["ご祝儀相殺のリアル計算", "友人・上司・親族の相場別", "貯金残高のシミュレーション"],
+    cta: "手出し額を計算する →"
+  },
+  {
+    title: "見積もり跳ね上がり（アップ額）予測計算機",
+    url: "/ja/mitsumori-jump-calculator",
+    icon: "📈",
+    badge: "値上がり防止",
+    badgeBg: "#fef3c7",
+    badgeText: "#92400e",
+    lead: "初期見積もりの金額に潜む「ドレス差額」「料理ランクアップ」「エンドロール」「装花追加」などのリアル追加費用を事前に洗い出し。",
+    highlights: ["契約前の見積もり診断", "平均値上がり額+100万円を予測", "ランクアップ項目の内訳把握"],
+    cta: "値上がり額を診断する →"
+  },
+  {
+    title: "持ち込み料 vs DIY 損益分岐点チェッカー",
+    url: "/ja/mochikomi-savings-calculator",
+    icon: "✂️",
+    badge: "節約診断",
+    badgeBg: "#dcfce7",
+    badgeText: "#166534",
+    lead: "式場の持ち込み料（ドレス5万円、カメラマン3万円等）を支払ってでも、外部ショップや自作・DIYした方がトータルで安くなるかを自動判定。",
+    highlights: ["持ち込みペナルティ考慮", "外注 vs 式場プラン比較", "実質節約額を即時算出"],
+    cta: "持ち込み損益を計算する →"
+  },
+  {
+    title: "引き出物・引き菓子 予算＆個数計算機",
+    url: "/ja/hikidemono-calculator",
+    icon: "🎁",
+    badge: "マナー対応",
+    badgeBg: "#e0e7ff",
+    badgeText: "#3730a3",
+    lead: "主賓（5千〜1万円）・上司（5千円）・友人（3千円）・親族（1万円〜）のランク別に、ご祝儀10%ルールに基づく本命ギフト＋引き菓子＋縁起物の予算と個数を算出。",
+    highlights: ["ご祝儀10%ルール適用", "本命ギフト＋引き菓子＋縁起物", "ゲストランク別の贈り分け"],
+    cta: "引き出物予算を計算する →"
+  },
+  {
+    title: "フォトウェディング・前撮り 費用計算機",
+    url: "/ja/photo-wedding-calculator",
+    icon: "📷",
+    badge: "前撮り試算",
+    badgeBg: "#fdf2f8",
+    badgeText: "#9d174d",
+    lead: "スタジオ撮影 vs ロケーション撮影、和装（白無垢・色打掛） vs 洋装（ウェディングドレス）、全データカット数や土日追加料金を含む総費用をシミュレーション。",
+    highlights: ["スタジオ vs ロケ撮影比較", "和装・洋装の組み合わせ", "全データ・アルバム追加料金"],
+    cta: "前撮り費用を計算する →"
+  }
+];
+
+const guestScales = [
+  { scale: "30名（少人数・家族婚）", cost: "約 180 〜 220 万円", goshugi: "約 110 〜 140 万円", jiko: "約 70 〜 90 万円", desc: "親族・親しい友人が中心。料理やギフトにお金をかけやすい規模。" },
+  { scale: "60名（全国平均規模）", cost: "約 320 〜 360 万円", goshugi: "約 200 〜 230 万円", jiko: "約 110 〜 140 万円", desc: "友人・同僚・上司・親族をバランスよく招待する最も標準的なスタイル。" },
+  { scale: "80名（大人数・披露宴）", cost: "約 400 〜 460 万円", goshugi: "約 260 〜 300 万円", jiko: "約 140 〜 170 万円", desc: "会社関係や友人を多数招く華やかな披露宴。演出や装花のボリュームが増加。" }
+];
+
+const jumpItems = [
+  { item: "👗 衣装・ウェディングドレス", avg: "+20万 〜 40万円", reason: "初期見積もりは最安プラン（15万〜20万円）。着たいブランドドレスは30万〜40万円以上。" },
+  { item: "🍽️ 料理・フリードリンク", avg: "+20万 〜 35万円", reason: "初期見積もりは最安コース（1.2万円）。試食会で肉料理やデザートをランクアップ（1.6万〜2万円へ）。" },
+  { item: "📹 撮って出しエンドロール＆記録映像", avg: "+25万 〜 45万円", reason: "初期見積もりに含まれていないことが多い大人気演出。当日撮影・即時編集の高額オプション。" },
+  { item: "💐 装花・テーブルコーディネート", avg: "+15万 〜 30万円", reason: "初期見積もりは最低限のボリューム。高砂メインテーブルやゲスト卓を豪華にすると一気にアップ。" },
+  { item: "📷 写真アルバム・全データ納品", avg: "+10万 〜 20万円", reason: "スナップ写真撮影は含まれていても、アルバム製本や全カットデータは別料金の会場が多数。" }
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+	
+	<!-- Category Hero Section -->
+	<section class="section-paper" style="padding: clamp(2rem, 4vw, 3rem) 1rem; background: #fff; border-bottom: 2px solid var(--fg-pencil);">
+		<div style="max-width: 1100px; margin: 0 auto;">
+			
+			<!-- Breadcrumb Link -->
+			<div style="margin-bottom: 1.25rem; font-size: 0.88rem;">
+				<a href="/ja" style="color: #2563EB; text-decoration: none; font-weight: 600;">ホーム</a>
+				<span style="margin: 0 0.5rem; color: var(--text-secondary);">›</span>
+				<span style="color: var(--text-secondary);">費用・見積もり・自己負担</span>
+			</div>
+
+			<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; align-items: center;">
+				<div>
+					<div style="display: inline-flex; align-items: center; gap: 0.4rem; background: #FEE2E2; border: 1.5px solid #FCA5A5; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; color: #991B1B; margin-bottom: 1rem;">
+						<span>💰</span>
+						<span>CATEGORY 01 • 結婚式のお金と見積もり</span>
+					</div>
+
+					<h1 class="font-heading" style="font-size: clamp(2rem, 4vw, 2.8rem); color: var(--fg-pencil); line-height: 1.25; margin-bottom: 1rem;">
+						結婚式 費用・見積もり・自己負担<br/>
+						<span style="background: linear-gradient(180deg, transparent 65%, #FDE68A 65%);">専門計算ツール一覧</span>
+					</h1>
+
+					<p style="color: var(--text-secondary); font-size: 1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+						「見積もりが初期から100万円以上上がった…」「結局、貯金から持ち出す自己負担額はいくら？」というプレ花嫁の不安を解消。式場契約前の診断から持ち込み料の損益計算まで、全5種類の計算ツールを完全無料でご利用いただけます。
+					</p>
+
+					<!-- Trust Badges -->
+					<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+						<span style="font-size: 0.80rem; font-weight: 700; background: #f0fdf4; border: 1px solid #86efac; color: #166534; padding: 3px 8px; border-radius: 4px;">
+							🔒 完全ローカル保存（データ送信ゼロ）
+						</span>
+						<span style="font-size: 0.80rem; font-weight: 700; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 3px 8px; border-radius: 4px;">
+							⚡ 会員登録・営業電話なし
+						</span>
+						<span style="font-size: 0.80rem; font-weight: 700; background: #fefce8; border: 1px solid #fef08a; color: #854d0e; padding: 3px 8px; border-radius: 4px;">
+							📄 無地・ノーブランドPDF印刷
+						</span>
+					</div>
+				</div>
+
+				<!-- Category Quick Summary Card -->
+				<div class="hand-card" style="background: var(--bg-paper, #fcfaf7); padding: 1.5rem; border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil);">
+					<div style="font-weight: 800; font-size: 0.95rem; color: var(--fg-pencil); border-bottom: 1.5px dashed var(--fg-pencil); padding-bottom: 0.6rem; margin-bottom: 1rem; display: flex; justify-content: space-between;">
+						<span>📊 自己負担額の基本計算ルール</span>
+						<span style="color: #2563EB;">手出し金</span>
+					</div>
+					<div style="font-size: 1.05rem; font-weight: 800; color: #1E40AF; background: #EFF6FF; border: 1px solid #BFDBFE; padding: 10px; border-radius: 6px; text-align: center; margin-bottom: 1rem;">
+						自己負担額 ＝ 式場総費用 − 予想ご祝儀総額
+					</div>
+					<ul style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; padding-left: 1.25rem; margin: 0;">
+						<li><strong>全国平均総額:</strong> 約 330万 〜 350万円（60名）</li>
+						<li><strong>予想ご祝儀:</strong> 友人3万円 / 上司5万円 / 親族7〜10万円</li>
+						<li><strong>自己負担額相場:</strong> 約 100万 〜 140万円</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Interactive Mini Estimator Strip -->
+	<section class="section-paper" style="padding: 2.5rem 1rem; background: #FAF8F5; border-bottom: 2px solid var(--fg-pencil);">
+		<div style="max-width: 1000px; margin: 0 auto;">
+			<div class="hand-card" style="background: #fff; padding: 1.75rem; border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil);">
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+					<div>
+						<h2 style="font-size: 1.25rem; font-weight: 800; color: var(--fg-pencil); margin: 0;">
+							⚡ 【かんたん診断】おふたりの結婚式 自己負担額を即時計算
+						</h2>
+						<p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+							見積もり総額とゲスト人数を入力するだけで、実質手出し額をシミュレーション。
+						</p>
+					</div>
+					<span style="font-size: 0.75rem; font-weight: 700; background: #ECFDF5; color: #065F46; padding: 3px 8px; border-radius: 4px;">
+						完全ローカル計算
+					</span>
+				</div>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+					<div>
+						<label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.35rem;">
+							式場総費用・見積もり額（円）
+						</label>
+						<input 
+							type="number" 
+							id="quick-total-cost" 
+							value="3300000" 
+							step="100000" 
+							style="width: 100%; padding: 8px 12px; font-size: 1rem; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; box-sizing: border-box;"
+						/>
+					</div>
+
+					<div>
+						<label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.35rem;">
+							招待ゲスト人数（名）
+						</label>
+						<input 
+							type="number" 
+							id="quick-guest-count" 
+							value="60" 
+							step="1" 
+							style="width: 100%; padding: 8px 12px; font-size: 1rem; font-weight: 700; border: 1.5px solid var(--fg-pencil); border-radius: 4px; box-sizing: border-box;"
+						/>
+					</div>
+
+					<div>
+						<label style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--fg-pencil); margin-bottom: 0.35rem;">
+							予想ご祝儀総額（概算）
+						</label>
+						<div id="quick-goshugi-display" style="padding: 8px 12px; font-size: 1.1rem; font-weight: 800; color: #059669; background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 4px; text-align: center;">
+							約 2,100,000 円
+						</div>
+					</div>
+
+					<div>
+						<label style="display: block; font-size: 0.82rem; font-weight: 700; color: #1E40AF; margin-bottom: 0.35rem;">
+							実質自己負担額（手出し）
+						</label>
+						<div id="quick-jiko-display" style="padding: 8px 12px; font-size: 1.15rem; font-weight: 900; color: #1E40AF; background: #EFF6FF; border: 2px solid #2563EB; border-radius: 4px; text-align: center;">
+							約 1,200,000 円
+						</div>
+					</div>
+				</div>
+
+				<div style="text-align: right;">
+					<a href="/ja/jiko-futangaku-calculator" class="hand-btn" style="display: inline-block; padding: 6px 18px; font-size: 0.88rem; text-decoration: none;">
+						友人・上司・親族別の詳細シミュレーターを開く →
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Main 5 Tools Showcase Section -->
+	<section class="section-paper" style="padding: clamp(2.5rem, 5vw, 4rem) 1rem; background: var(--bg-paper, #fcfaf7);">
+		<div style="max-width: 1100px; margin: 0 auto;">
+			
+			<div style="text-align: center; margin-bottom: 2.5rem;">
+				<div style="font-size: 0.88rem; font-weight: 800; color: #2563EB; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.35rem;">
+					SPECIALIZED BUDGET CALCULATORS
+				</div>
+				<h2 class="font-heading" style="font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--fg-pencil); margin-bottom: 0.75rem;">
+					費用・見積もり 5大計算ツール
+				</h2>
+				<p style="color: var(--text-secondary); font-size: 0.95rem; max-width: 650px; margin: 0 auto; line-height: 1.7;">
+					目的や準備段階に合わせて最適な計算機をお選びください。すべてのツールでローカル自動保存＆A4印刷に対応しています。
+				</p>
+			</div>
+
+			<!-- 5 Tools Cards -->
+			<div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 4rem;">
+				{tools.map((tool, idx) => (
+					<div class="hand-card" style="background: #fff; padding: 1.75rem; border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; align-items: center;">
+						<div>
+							<div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+								<span style="font-size: 1.8rem;">{tool.icon}</span>
+								<span style={`font-size: 0.75rem; font-weight: 800; background: ${tool.badgeBg}; color: ${tool.badgeText}; padding: 2px 8px; border-radius: 4px; border: 1px solid ${tool.badgeText}40;`}>
+									{tool.badge}
+								</span>
+								<span style="font-size: 0.78rem; font-weight: 700; color: var(--text-secondary);">
+									TOOL 0{idx + 1}
+								</span>
+							</div>
+
+							<h3 style="font-size: 1.3rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.6rem; line-height: 1.35;">
+								<a href={tool.url} style="text-decoration: none; color: inherit;">
+									{tool.title}
+								</a>
+							</h3>
+
+							<p style="font-size: 0.90rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1rem;">
+								{tool.lead}
+							</p>
+
+							<div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+								{tool.highlights.map((h) => (
+									<span style="font-size: 0.75rem; font-weight: 600; padding: 3px 8px; background: #FAF8F5; border: 1px solid #e2e8f0; border-radius: 3px; color: var(--fg-pencil);">
+										✓ {h}
+									</span>
+								))}
+							</div>
+						</div>
+
+						<div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start; md:align-items-flex-end; border-top: 1px dashed #e2e8f0; md:border-top-0 md:border-left md:border-1px md:border-dashed md:border-e2e8f0 pt-4 md:pt-0 md:pl-6;">
+							<a href={tool.url} class="hand-btn" style="display: inline-block; padding: 10px 24px; font-size: 0.95rem; font-weight: 800; text-decoration: none; width: 100%; text-align: center; box-sizing: border-box;">
+								{tool.cta}
+							</a>
+							<span style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.5rem; text-align: center; width: 100%;">
+								登録不要 • 完全無料 • PDF印刷対応
+							</span>
+						</div>
+					</div>
+				))}
+			</div>
+
+			<!-- Realistic Wedding Cost Benchmarks Table -->
+			<div class="hand-card" style="background: #fff; padding: 2rem; border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); margin-bottom: 3.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+					📋 【早見表】ゲスト人数別の総費用・ご祝儀・自己負担額相場
+				</h3>
+				<p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+					全国の結婚式平均データ（ゼクシィ・ブライダル総研調査）を基にしたリアルな予算基準です。
+				</p>
+
+				<div style="overflow-x: auto;">
+					<table style="width: 100%; border-collapse: collapse; font-size: 0.90rem; text-align: left;">
+						<thead>
+							<tr style="border-bottom: 2px solid var(--fg-pencil); background: #FAF8F5;">
+								<th style="padding: 10px 12px; font-weight: 800;">規模（人数）</th>
+								<th style="padding: 10px 12px; font-weight: 800;">式場総費用</th>
+								<th style="padding: 10px 12px; font-weight: 800;">予想ご祝儀総額</th>
+								<th style="padding: 10px 12px; font-weight: 800; color: #1E40AF;">実質自己負担額</th>
+								<th style="padding: 10px 12px; font-weight: 800;">特徴とアドバイス</th>
+							</tr>
+						</thead>
+						<tbody>
+							{guestScales.map((scale) => (
+								<tr style="border-bottom: 1px dashed #e2e8f0;">
+									<td style="padding: 12px; font-weight: 800; color: var(--fg-pencil);">{scale.scale}</td>
+									<td style="padding: 12px; font-weight: 700;">{scale.cost}</td>
+									<td style="padding: 12px; font-weight: 700; color: #059669;">{scale.goshugi}</td>
+									<td style="padding: 12px; font-weight: 800; color: #1E40AF; background: #EFF6FF;">{scale.jiko}</td>
+									<td style="padding: 12px; font-size: 0.82rem; color: var(--text-secondary);">{scale.desc}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<!-- Top 5 Hidden Estimate Jump Items -->
+			<div class="hand-card" style="background: #fff; padding: 2rem; border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); margin-bottom: 3.5rem;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); margin-bottom: 0.5rem;">
+					⚠️ 初期見積もりから跳ね上がる「5大項目」ランキング
+				</h3>
+				<p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+					契約前の見積もりは「最低ランク」で組まれていることがほとんどです。事前に跳ね上がり額を見込んでおきましょう。
+				</p>
+
+				<div style="display: flex; flex-direction: column; gap: 1rem;">
+					{jumpItems.map((item, idx) => (
+						<div style="background: #FAF8F5; border: 1.5px solid var(--fg-pencil); border-radius: 6px; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+							<div style="max-width: 600px;">
+								<div style="font-size: 0.78rem; font-weight: 800; color: #DC2626; margin-bottom: 0.2rem;">
+									RANK {idx + 1}
+								</div>
+								<div style="font-size: 1.05rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.25rem;">
+									{item.item}
+								</div>
+								<div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+									{item.reason}
+								</div>
+							</div>
+							<div style="text-align: right;">
+								<div style="font-size: 0.75rem; color: var(--text-secondary);">平均アップ額</div>
+								<div style="font-size: 1.2rem; font-weight: 900; color: #DC2626;">
+									{item.avg}
+								</div>
+							</div>
+						</div>
+					))}
+				</div>
+
+				<div style="text-align: center; margin-top: 1.5rem;">
+					<a href="/ja/mitsumori-jump-calculator" class="hand-btn" style="display: inline-block; padding: 8px 24px; text-decoration: none; font-size: 0.90rem;">
+						見積もり跳ね上がり予測計算機で診断する →
+					</a>
+				</div>
+			</div>
+
+			<!-- FAQs Section -->
+			<div style="max-width: 850px; margin: 0 auto 3.5rem auto;">
+				<h3 class="font-heading" style="font-size: 1.5rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.25rem;">
+					結婚式費用に関するよくあるご質問（FAQ）
+				</h3>
+
+				<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							結婚式の自己負担額（手出し金額）の平均相場はいくらですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							全国平均（ゲスト60名規模）では、結婚式の総費用約330万〜350万円に対し、ご祝儀総額が約200万〜220万円となるため、新郎新婦の自己負担額（手出し）は約110万〜140万円程度が一般的な相場です。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							式場の初期見積もりから最終見積もりはなぜ100万円以上上がるのですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							初期見積もりは最安の料理コース、最低限の装花、基本ドレスプランで組まれていることが多いためです。衣装のランクアップ（+20〜40万円）、料理・ドリンクのグレードアップ（+20〜30万円）、記録映像・撮って出しエンドロール追加（+25〜40万円）、装花ボリュームアップ（+15〜25万円）などで平均100万〜150万円上がります。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							結婚式の費用支払いはいつ行いますか？ご祝儀で払えますか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							約80%の式場は「挙式の1〜2週間前までの事前銀行振込」を原則としています。当日のご祝儀で後払い精算できる式場は全体の10〜20%にとどまるため、一時的にまとまった貯金やブライダルローンを用意しておく必要があります。
+						</p>
+					</details>
+
+					<details class="hand-card" style="background: #fff; padding: 1.1rem; cursor: pointer; border: 1.5px solid var(--fg-pencil);">
+						<summary style="font-weight: 700; color: var(--fg-pencil); font-size: 0.95rem;">
+							持ち込み料を払ってでも外注した方が安くなるアイテムは何ですか？
+						</summary>
+						<p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+							ペーパーアイテム（招待状・席次表・席札）やプロフィールムービーは持ち込み料が「無料」の式場が多く、自作・外注で15万〜25万円節約できます。ウェディングドレスやカメラマンは持ち込み料（ドレス5万、カメラマン3〜5万）がかかっても、外部ショップが大幅に安い場合はトータルで安くなることがあります。
+						</p>
+					</details>
+				</div>
+			</div>
+
+			<!-- Other Categories Navigation -->
+			<div style="border-top: 2px dashed #e2e8f0; padding-top: 2.5rem;">
+				<h3 class="font-heading" style="font-size: 1.4rem; color: var(--fg-pencil); text-align: center; margin-bottom: 1.25rem;">
+					次の準備ステップへ進む
+				</h3>
+
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+					<a href="/ja/goshugi" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.78rem; font-weight: 800; color: #1E40AF; margin-bottom: 0.25rem;">STEP 02</div>
+						<div style="font-size: 1.1rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">✉️ ご祝儀・お車代・マナー</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">遠方ゲストのお車代計算、ご祝儀袋の漢数字変換 →</div>
+					</a>
+
+					<a href="/ja/schedule" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.78rem; font-weight: 800; color: #166534; margin-bottom: 0.25rem;">STEP 03</div>
+						<div style="font-size: 1.1rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">📅 日程・顔合わせ・準備</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">六曜カレンダー＆大安割引比較、顔合わせ食事会 →</div>
+					</a>
+
+					<a href="/ja/logistics" class="hand-card" style="background: #fff; padding: 1.25rem; text-decoration: none; color: inherit; border: 2px solid var(--fg-pencil); box-shadow: 3px 3px 0px var(--fg-pencil);">
+						<div style="font-size: 0.78rem; font-weight: 800; color: #854D0E; margin-bottom: 0.25rem;">STEP 04</div>
+						<div style="font-size: 1.1rem; font-weight: 800; color: var(--fg-pencil); margin-bottom: 0.35rem;">🪑 席次表・2次会・スピーチ</div>
+						<div style="font-size: 0.82rem; color: var(--text-secondary);">上座下座の席次表配席、二次会会費計算機 →</div>
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<!-- Quick Estimator Client Script -->
+	<script is:inline>
+		const costInput = document.getElementById('quick-total-cost');
+		const guestInput = document.getElementById('quick-guest-count');
+		const goshugiDisplay = document.getElementById('quick-goshugi-display');
+		const jikoDisplay = document.getElementById('quick-jiko-display');
+
+		function recalculateQuickBudget() {
+			if (!costInput || !guestInput || !goshugiDisplay || !jikoDisplay) return;
+			const totalCost = parseFloat(costInput.value) || 0;
+			const guestCount = parseFloat(guestInput.value) || 0;
+
+			// Weighted average Goshugi in Japan ~ ¥35,000 / guest (Friends 30k, Bosses 50k, Relatives 70k+)
+			const estimatedGoshugi = Math.round(guestCount * 35000);
+			const jikoFutan = Math.max(0, totalCost - estimatedGoshugi);
+
+			goshugiDisplay.textContent = `約 ${estimatedGoshugi.toLocaleString('ja-JP')} 円`;
+			jikoDisplay.textContent = `約 ${jikoFutan.toLocaleString('ja-JP')} 円`;
+		}
+
+		if (costInput && guestInput) {
+			costInput.addEventListener('input', recalculateQuickBudget);
+			guestInput.addEventListener('input', recalculateQuickBudget);
+		}
+	</script>
+
+</Layout>
