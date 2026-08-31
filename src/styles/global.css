@@ -642,107 +642,173 @@ details p {
   outline: none !important;
 }
 
-/* Universal Precision Print & Clean Unbranded A4 / PDF Export */
+/* ==========================================================================
+   MASTER A4 PRINT & PDF ENGINE (CLEAN WORKSHEET & ARTICLE EXPORTS)
+   ========================================================================== */
 @media print {
   @page {
     size: A4 portrait;
     margin: 12mm 15mm;
   }
 
-  /* 1. Hide Site-Wide Chrome, Navigation, Headers, Footers & Search */
+  /* 1. Global Paper & Contrast Reset */
+  *, *::before, *::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #0f172a !important;
+    font-size: 10pt !important;
+    line-height: 1.45 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 2. Hide Site-Wide Web Chrome & Interactive Elements */
   nav,
   nav.nav-sketch,
-  header,
-  header.site-header,
+  .nav-sketch,
   footer,
   footer.wedding-footer,
+  .wedding-footer,
   .nav-links-desktop,
   .lang-dropdown-wrapper,
   .hamburger-btn,
   .mobile-menu-drawer,
   .no-print,
   .tape,
-  .search-hero-box,
-  #ja-search-input,
-  #ja-search-results,
+  .ja-share-action-bar,
+  .ja-copy-toast,
   .breadcrumb-nav,
   .breadcrumb-trail,
   .related-tools-section,
   .pro-tip-box,
   .trust-badges,
-  div[style*="f0fdf4"], /* Trust badges container */
-  span[style*="完全ローカル保存"],
-  span[style*="会員登録・営業電話なし"],
-  span[style*="無地・ノーブランドPDF印刷"] {
-    display: none !important;
-  }
-
-  /* 2. Hide Non-Data Heavy Editorial Articles & FAQs to Keep Printout Clean & Focused */
-  article,
-  article.hand-card,
+  #ja-search-input,
+  #ja-search-results,
+  .search-hero-box,
+  .faq-container,
+  .faq-section,
   details,
   details.hand-card,
-  .faq-container,
-  .editorial-guide,
-  section:has(details),
-  div:has(details),
-  div[style*="border-top: 2px dashed"], /* Related tools / cross-category nav */
-  section[style*="border-top: 2px dashed"] {
+  details summary,
+  .author-byline-card button,
+  .author-byline-card a[style*="background: #f8fafc"] {
     display: none !important;
   }
 
-  /* 3. Hide Decorative Photos, Images & Hero Flatlays */
-  img,
-  picture,
-  svg:not(.keep-print-icon),
-  div[style*="transform: rotate(1deg)"], /* Flatlay photo frame */
-  div[style*="transform: rotate(-1deg)"] {
-    display: none !important;
-  }
-
-  /* 4. Hide All Action Buttons */
+  /* 3. Hide Interactive Buttons */
   button,
   .hand-btn,
   input[type="button"],
   input[type="submit"],
   #reset-btn,
   #print-btn,
+  .ja-print-btn,
+  .ja-copy-text-btn,
+  .ja-share-line-btn,
+  .ja-share-x-btn,
   button[id*="btn"],
-  button[id*="reset"],
   button[id*="print"],
-  button[id*="template"],
-  button[id*="clear"] {
+  button[id*="reset"],
+  button[id*="copy"] {
     display: none !important;
   }
 
-  /* 5. Clean White Paper Background & Crisp Typography */
-  html, body {
-    background: #ffffff !important;
-    background-image: none !important;
-    color: #111827 !important;
-    font-size: 11pt !important;
-    line-height: 1.5 !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
+  /* 4. Hide Large Decorative Banner Photos to Save Ink */
+  img[src*="flatlay"],
+  img[src*="sketch"],
+  div[style*="transform: rotate(1deg)"] img,
+  div[style*="transform: rotate(-1deg)"] img,
+  .hero-image-frame {
+    display: none !important;
   }
 
+  /* 5. Main Containers Expand Cleanly */
+  main,
+  .container,
   .section-paper {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
     padding: 0 !important;
     background: transparent !important;
     border: none !important;
   }
 
-  /* 6. Precision Page Split & Slicing Protection */
+  /* Grid Layouts expand cleanly in print */
+  div[style*="display: grid"],
+  .floral-calc-grid,
+  .calc-grid,
+  .dashboard-grid {
+    display: grid !important;
+    gap: 12pt !important;
+  }
+
+  /* 6. Preserve and Format Page Headers & Titles */
+  header,
+  header.section-paper,
+  .article-header {
+    display: block !important;
+    margin: 0 0 10pt 0 !important;
+    padding: 0 0 6pt 0 !important;
+    border-bottom: 2pt solid #0f172a !important;
+  }
+
+  h1 {
+    font-size: 16pt !important;
+    line-height: 1.2 !important;
+    margin: 0 0 4pt 0 !important;
+    color: #0f172a !important;
+  }
+
+  h2 {
+    font-size: 12pt !important;
+    line-height: 1.25 !important;
+    margin: 8pt 0 3pt 0 !important;
+    color: #1e293b !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  h3 {
+    font-size: 10.5pt !important;
+    line-height: 1.25 !important;
+    margin: 6pt 0 2pt 0 !important;
+    color: #1e293b !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* 7. Preserve Full Content for Blog & Long-Form Guides */
+  article,
+  article.hand-card,
+  .font-body {
+    display: block !important;
+    font-size: 9.5pt !important;
+    line-height: 1.5 !important;
+    color: #0f172a !important;
+  }
+
+  /* 8. Precision Page Split & Slicing Protection */
   .hand-card,
   .card,
+  fieldset,
   table,
   tr,
   tbody,
   thead,
-  fieldset,
   .phase-card,
   .checklist-step,
+  .result-card,
   .envelope-preview,
   .nakabukuro-preview,
   div[style*="border: 2px solid"],
@@ -751,58 +817,83 @@ details p {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
     box-shadow: none !important;
-    border-color: #94a3b8 !important;
-  }
-
-  /* 7. Typography Optimization for Print */
-  h1 {
-    font-size: 16pt !important;
-    margin-bottom: 6pt !important;
-    color: #0f172a !important;
-    border-bottom: 1.5pt solid #0f172a !important;
-    padding-bottom: 4pt !important;
-  }
-
-  h2, h3 {
-    font-size: 13pt !important;
-    margin-top: 8pt !important;
-    margin-bottom: 4pt !important;
-    color: #1e293b !important;
-    break-after: avoid !important;
-    page-break-after: avoid !important;
-  }
-
-  /* 8. Crisp Form Inputs & Results */
-  input, select, textarea {
-    border: 1px solid #64748b !important;
-    box-shadow: none !important;
+    border: 1pt solid #cbd5e1 !important;
     background: #ffffff !important;
+    border-radius: 4pt !important;
+    margin-bottom: 8pt !important;
+    padding: 8pt 10pt !important;
+  }
+
+  /* 9. Form Inputs & Selects Formatting in Print */
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select,
+  textarea {
+    border: 1pt solid #94a3b8 !important;
+    background: #f8fafc !important;
     color: #0f172a !important;
     font-weight: 700 !important;
+    font-size: 9pt !important;
+    padding: 2pt 4pt !important;
+    border-radius: 2pt !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
   }
 
-  /* 9. Preserve Checklist Checkmarks */
+  /* Checkboxes */
   input[type="checkbox"] {
     display: inline-block !important;
-    width: 14px !important;
-    height: 14px !important;
-    border: 1.5px solid #000 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+    width: 11pt !important;
+    height: 11pt !important;
+    border: 1.5pt solid #0f172a !important;
+    vertical-align: middle !important;
   }
 
-  /* 10. High-Contrast Summary Numbers */
+  /* 10. Tables Optimization */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 6pt 0 !important;
+  }
+
+  th, td {
+    border: 1pt solid #cbd5e1 !important;
+    padding: 4pt 6pt !important;
+    font-size: 8.5pt !important;
+    text-align: left !important;
+  }
+
+  th {
+    background: #f1f5f9 !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+  }
+
+  /* 11. Calculation Hero Numbers & Results Highlights */
+  .item-value,
+  .hero-number,
   div[id*="res-"],
   div[id*="hero"],
   div[id*="grand-budget"],
-  div[id*="total"] {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  div[id*="total"],
+  span[id*="res-"],
+  span[id*="total"] {
     color: #0f172a !important;
+    font-weight: 800 !important;
   }
 
-  .print-only {
-    display: block !important;
+  /* 12. Print Watermark / Footer */
+  body::after {
+    content: "Manage.Wedding — 100% Free Wedding Planning Worksheet • https://manage.wedding";
+    display: block;
+    text-align: center;
+    font-size: 8pt;
+    color: #64748b;
+    margin-top: 15pt;
+    padding-top: 6pt;
+    border-top: 1pt dashed #cbd5e1;
   }
 }
 
@@ -830,3 +921,4 @@ details p {
   transform: translateY(-2px) !important;
   box-shadow: 3px 3px 0px var(--fg-pencil) !important;
 }
+
