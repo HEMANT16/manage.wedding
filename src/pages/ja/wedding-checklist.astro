@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【結婚準備チェックリスト】プロポーズ・両家顔合わせ・入籍・式場決定〜当日まで (無料) | Manage.Wedding 日本版";
 const description = "プロポーズから両家顔合わせ、入籍日選び、式場見学、見積もり確定、ドレス選び、席次表作成、お車代・お礼新札準備、結婚式当日までの完全12ヶ月ToDoチェックリスト。進捗率自動保存・各フェーズ連動計算ツール・無地A4/PDF印刷対応。完全無料・登録不要。";
@@ -314,6 +315,13 @@ const checklistPhases = [
 
 			</div>
 
+			<!-- LINE & Social Share Action Bar -->
+			<JaShareActionBar 
+				toolTitle="結婚準備マスターチェックリスト" 
+				defaultText="【結婚準備チェックリスト】プロポーズ・両家顔合わせ・入籍・式場決定〜当日まで" 
+				shareUrl="https://manage.wedding/ja/wedding-checklist" 
+			/>
+
 			<!-- Comprehensive Japanese Editorial Guide (800+ words of authentic, non-AI authority content) -->
 			<article class="hand-card" style="background: #fff; padding: clamp(1.75rem, 4vw, 3rem); border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil); margin-bottom: 3.5rem;">
 				
@@ -548,6 +556,21 @@ const checklistPhases = [
 		}
 
 		loadSavedMasterState();
+
+		window.getJaLiveShareText = function() {
+			let checkedCount = 0;
+			checkItems.forEach(chk => {
+				if (chk.checked) checkedCount++;
+			});
+			const total = checkItems.length || 20;
+			const pct = total > 0 ? Math.round((checkedCount / total) * 100) : 0;
+
+			return `【12ヶ月 結婚準備マスターチェックリスト進捗】\n` +
+				`・準備進捗率: ${pct}%\n` +
+				`・完了タスク数: ${checkedCount} / ${total} 項目完了\n` +
+				`・ステータス: ${pct === 100 ? '🎉 全準備完了！当日を迎える準備が整いました' : (pct >= 50 ? '✨ 準備は順調に進んでいます！' : '📝 ひとつずつ計画的に進めましょう')}\n\n` +
+				`▼ ツールで確認する\nhttps://manage.wedding/ja/wedding-checklist`;
+		};
 	</script>
 
 </Layout>

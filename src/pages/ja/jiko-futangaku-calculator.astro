@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【結婚式 自己負担額シミュレーター】ご祝儀相殺とリアル手出し額計算 (無料・登録不要) | Manage.Wedding 日本版";
 const description = "式場総見積もりとゲスト内訳（友人・上司・親族・夫婦）を入力するだけで、予想ご祝儀総額、両親援助、新郎新婦の実質自己負担額（手出し金）、式後の貯金残高を瞬時に自動計算。完全無料・登録不要・ローカル保存・A4/PDF印刷対応。";
@@ -416,20 +417,13 @@ const scaleBenchmarks = [
 
 						</div>
 
-						<!-- Action Buttons -->
-						<div style="display: flex; flex-direction: column; gap: 0.6rem;">
-							<button 
-								id="print-sheet-btn" 
-								type="button" 
-								class="hand-btn" 
-								style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
-							>
-								📄 この計算結果を無地A4/PDFで保存・印刷
-							</button>
-							<div style="font-size: 0.75rem; color: var(--text-secondary); text-align: center;">
-								※ 広告・不要なロゴなしで打ち合わせにそのまま持参できます
-							</div>
-						</div>
+						<!-- Share & Action Bar -->
+						<JaShareActionBar 
+							toolTitle="結婚式 自己負担額シミュレーター"
+							defaultText="【結婚式 自己負担額シミュレーション】総費用と予想ご祝儀から実質自己負担額を計算しました！"
+							shareUrl="https://manage.wedding/ja/jiko-futangaku-calculator"
+							hashtags="結婚式費用,自己負担額,ご祝儀相場,結婚準備,プレ花嫁,ManageWedding"
+						/>
 
 					</div>
 
@@ -853,12 +847,45 @@ const scaleBenchmarks = [
 			});
 		}
 
-		// Print Button
+		// Print Button (Fallback)
 		if (printBtn) {
 			printBtn.addEventListener('click', () => {
 				window.print();
 			});
 		}
+
+		// Dynamic Share Formatter for LINE / Clipboard
+		window.getJaLiveShareText = function() {
+			const totalCost = parseFloat(totalCostRange?.value || '3500000');
+			const savings = parseFloat(savingsInput?.value || '2500000');
+			const aid = parseFloat(parentAidInput?.value || '500000');
+
+			const countFriends = parseInt(friendsInput?.value || '0', 10);
+			const countBosses = parseInt(bossesInput?.value || '0', 10);
+			const countCouples = parseInt(couplesInput?.value || '0', 10);
+			const countRelatives = parseInt(relativesInput?.value || '0', 10);
+			const totalGuests = countFriends + countBosses + (countCouples * 2) + countRelatives;
+
+			const goshugiFriends = countFriends * 30000;
+			const goshugiBosses = countBosses * 50000;
+			const goshugiCouples = countCouples * 60000;
+			const goshugiRelatives = countRelatives * 80000;
+			const totalGoshugi = goshugiFriends + goshugiBosses + goshugiCouples + goshugiRelatives;
+
+			const netSelfPay = Math.max(0, totalCost - totalGoshugi - aid);
+			const remainingSavings = savings - netSelfPay;
+
+			return `【結婚式 自己負担額シミュレーション結果】
+・総費用: 約${totalCost.toLocaleString('ja-JP')}円 (${totalGuests}名)
+・想定ご祝儀: 約${totalGoshugi.toLocaleString('ja-JP')}円
+・親援助: ${aid.toLocaleString('ja-JP')}円
+━━━━━━━━━━━━━━━━
+★ 自己負担額（実質手出し）: 約${netSelfPay.toLocaleString('ja-JP')}円
+★ 式後の貯金残高: 約${remainingSavings.toLocaleString('ja-JP')}円
+
+▼ 見積もり・計算ツールで確認する
+https://manage.wedding/ja/jiko-futangaku-calculator`;
+		};
 
 		// Initial Run
 		calculate();

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【2次会（二次会）会費＆予算計算機】男女別会費・景品予算・赤字ゼロ損益計算 (無料) | Manage.Wedding 日本版";
 const description = "結婚式二次会の幹事・新郎新婦向け会費計算機。参加人数（男性・女性）、飲食プラン料金、会場設備費、ビンゴ景品代から、男女別の適正会費設定とドタキャン10%耐性・損益分岐点を自動計算。幹事マニュアルと当日の進行タイムラインも完全網羅。完全無料・登録不要・A4/PDF印刷対応。";
@@ -368,6 +369,13 @@ const prizeRankings = [
 
 			</div>
 
+			<!-- LINE & Social Share Action Bar -->
+			<JaShareActionBar 
+				toolTitle="2次会（二次会）会費＆予算計算機" 
+				defaultText="【2次会（二次会）会費＆予算計算機】男女別会費・景品予算・赤字ゼロ損益計算" 
+				shareUrl="https://manage.wedding/ja/nijikai-fee-calculator" 
+			/>
+
 			<!-- Prize Ranking Guide Section -->
 			<div class="hand-card" style="background: #fff; padding: clamp(1.5rem, 3vw, 2.5rem); margin-bottom: 3.5rem; border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil);">
 				<div style="font-size: 0.85rem; font-weight: 800; color: #D97706; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.3rem;">
@@ -679,6 +687,27 @@ const prizeRankings = [
 
 		// Initial Run
 		calculateNijikai();
+
+		window.getJaLiveShareText = function() {
+			const nMale = parseInt(countMale?.value || '20', 10);
+			const nFemale = parseInt(countFemale?.value || '20', 10);
+			const totalGuests = nMale + nFemale;
+			const maleFee = resMaleFee?.textContent || '8,000';
+			const femaleFee = resFemaleFee?.textContent || '7,000';
+			const foodPlan = parseInt(costFoodPlan?.value || '5000', 10).toLocaleString('ja-JP');
+			const prizes = parseInt(costPrizes?.value || '50000', 10).toLocaleString('ja-JP');
+			const totalExp = resTotalExpense?.textContent || '285,000 円';
+			const dropGuests = Math.max(1, Math.floor(totalGuests * 0.1));
+
+			return `【結婚式二次会 会費＆予算シミュレーション結果】\n` +
+				`・想定参加人数: 計${totalGuests}名（男性 ${nMale}名 / 女性 ${nFemale}名）\n` +
+				`・おすすめ設定会費: 男性 ${maleFee}円 / 女性 ${femaleFee}円\n` +
+				`・飲食プラン: 1人あたり ¥${foodPlan}\n` +
+				`・ビンゴ景品予算: ¥${prizes}\n` +
+				`・総支出予想: ${totalExp}\n` +
+				`・ドタキャンバッファー: 当日${dropGuests}名（10%）の急な欠席でも赤字ゼロ耐性\n\n` +
+				`▼ ツールで確認する\nhttps://manage.wedding/ja/nijikai-fee-calculator`;
+		};
 	</script>
 
 </Layout>

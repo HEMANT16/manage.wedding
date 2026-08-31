@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【お車代＆宿泊費 計算・封筒準備ツール】遠方ゲストの交通費負担と新札封筒リスト (無料・登録不要) | Manage.Wedding 日本版";
 const description = "新幹線・飛行機代の半額・全額支給ルール、端数1万円切り上げ、宿泊手配の有無を選択して、遠方ゲストへのお車代総額と必要な新札枚数・祝儀袋/ポチ袋の準備リストを自動計算。完全無料・登録不要・A4/PDF印刷対応。";
@@ -375,18 +376,13 @@ const routeNorms = [
 
 						</div>
 
-						<!-- Print Action -->
-						<button 
-							id="print-okuruma-btn" 
-							type="button" 
-							class="hand-btn" 
-							style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
-						>
-							📄 このお車代準備リストを無地A4/PDFで保存・印刷
-						</button>
-						<div style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 0.4rem;">
-							※ 銀行両替や封筒の準備チェックリストとしてそのまま使えます
-						</div>
+						<!-- Action Bar (LINE / Copy / X / Print) -->
+						<JaShareActionBar 
+							toolTitle="お車代＆宿泊費 計算・封筒準備ツール" 
+							defaultText="結婚式のお車代・宿泊費・新札準備リストを計算しました！" 
+							shareUrl="https://manage.wedding/ja/okurumadai-calculator" 
+							printBtnId="print-okuruma-btn"
+						/>
 
 					</div>
 
@@ -741,6 +737,26 @@ const routeNorms = [
 				window.print();
 			});
 		}
+
+		// Dynamic LINE/Clipboard Share Text
+		window.getJaLiveShareText = function() {
+			const grandTotal = document.getElementById('res-grand-total')?.textContent?.trim() || '0 円';
+			const transportTotal = document.getElementById('res-sub-transport')?.textContent?.trim() || '0 円';
+			const hotelTotal = document.getElementById('res-sub-hotel')?.textContent?.trim() || '0 円';
+			const bills10k = document.getElementById('res-bills-10k')?.textContent?.trim() || '0';
+			const bills5k = document.getElementById('res-bills-5k')?.textContent?.trim() || '0';
+			const envShugi = document.getElementById('res-env-shugi')?.textContent?.trim() || '0';
+			const envPochi = document.getElementById('res-env-pochi')?.textContent?.trim() || '0';
+
+			return `【お車代＆宿泊費 計算結果】\n` +
+				`遠方ゲストおもてなし総額: ${grandTotal}\n` +
+				`・お車代総額: ${transportTotal}\n` +
+				`・宿泊費総額: ${hotelTotal}\n\n` +
+				`【準備リスト】\n` +
+				`・必要な新札: 1万円札×${bills10k}枚、5千円札×${bills5k}枚\n` +
+				`・必要な封筒: 祝儀袋(結び切り)×${envShugi}枚、ポチ袋×${envPochi}枚` +
+				`\n\n▼ 計算ツールで確認する\nhttps://manage.wedding/ja/okurumadai-calculator`;
+		};
 
 		// Initial Run
 		calculateOkurumadai();

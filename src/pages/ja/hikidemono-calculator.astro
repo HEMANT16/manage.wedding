@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【引き出物・引き菓子 予算＆個数計算機】10%ルールと贈り分け相場 (無料・登録不要) | Manage.Wedding 日本版";
 const description = "友人（3千〜4千円）、上司（5千〜1万円）、夫婦・親族（7千〜1.5万円）のランク別贈り分けに対応。ご祝儀10%ルールに基づく本命記念品＋引き菓子＋縁起物の総予算と必要セット数を自動計算。完全無料・登録不要・A4/PDF印刷対応。";
@@ -387,18 +388,13 @@ const tierNorms = [
 
 						</div>
 
-						<!-- Print Action -->
-						<button 
-							id="print-hiki-sheet-btn" 
-							type="button" 
-							class="hand-btn" 
-							style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
-						>
-							📄 この引き出物内訳表を無地A4/PDFで保存・印刷
-						</button>
-						<div style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 0.4rem;">
-							※ ギフトショップやプランナーへの発注・確認用リストとして活用できます
-						</div>
+						<!-- Share & Action Bar -->
+						<JaShareActionBar 
+							toolTitle="引き出物・引き菓子 予算＆個数計算機"
+							defaultText="【引き出物・引き菓子 予算シミュレーション】10%ルールと贈り分け相場から総予算を計算しました！"
+							shareUrl="https://manage.wedding/ja/hikidemono-calculator"
+							hashtags="引き出物,引き菓子,贈り分け,結婚式マナー,結婚準備,プレ花嫁,ManageWedding"
+						/>
 
 					</div>
 
@@ -751,12 +747,54 @@ const tierNorms = [
 			});
 		}
 
-		// Print Button
+		// Print Button (Fallback)
 		if (printBtn) {
 			printBtn.addEventListener('click', () => {
 				window.print();
 			});
 		}
+
+		// Dynamic Share Formatter for LINE / Clipboard
+		window.getJaLiveShareText = function() {
+			const hasEngi = includeEngiCheckbox?.checked ?? true;
+
+			const nFriends = parseInt(countFriends?.value || '0', 10);
+			const nBosses = parseInt(countBosses?.value || '0', 10);
+			const nCouples = parseInt(countCouples?.value || '0', 10);
+			const nRelatives = parseInt(countRelatives?.value || '0', 10);
+			const totalSets = nFriends + nBosses + nCouples + nRelatives;
+			const totalGuests = nFriends + nBosses + (nCouples * 2) + nRelatives;
+
+			const subMain = (nFriends * parseFloat(priceMainFriends?.value || '0')) +
+			                (nBosses * parseFloat(priceMainBosses?.value || '0')) +
+			                (nCouples * parseFloat(priceMainCouples?.value || '0')) +
+			                (nRelatives * parseFloat(priceMainRelatives?.value || '0'));
+
+			const subKashi = (nFriends * parseFloat(priceKashiFriends?.value || '0')) +
+			                 (nBosses * parseFloat(priceKashiBosses?.value || '0')) +
+			                 (nCouples * parseFloat(priceKashiCouples?.value || '0')) +
+			                 (nRelatives * parseFloat(priceKashiRelatives?.value || '0'));
+
+			const subEngi = hasEngi ? ((nFriends * parseFloat(priceEngiFriends?.value || '0')) +
+			                           (nBosses * parseFloat(priceEngiBosses?.value || '0')) +
+			                           (nCouples * parseFloat(priceEngiCouples?.value || '0')) +
+			                           (nRelatives * parseFloat(priceEngiRelatives?.value || '0'))) : 0;
+
+			const totalBudget = subMain + subKashi + subEngi;
+			const avgPerGuest = totalGuests > 0 ? Math.round(totalBudget / totalGuests) : 0;
+			const avgPerSet = totalSets > 0 ? Math.round(totalBudget / totalSets) : 0;
+
+			return `【引き出物・引き菓子 予算計算結果】
+・ゲスト人数: ${totalGuests}名 (${totalSets}世帯分)
+・本命記念品: 約${subMain.toLocaleString('ja-JP')}円
+・引き菓子: 約${subKashi.toLocaleString('ja-JP')}円${hasEngi ? `\n・縁起物: 約${subEngi.toLocaleString('ja-JP')}円` : ''}
+━━━━━━━━━━━━━━━━
+★ 引き出物総額（総予算）: 約${totalBudget.toLocaleString('ja-JP')}円
+★ 1人あたり平均: 約${avgPerGuest.toLocaleString('ja-JP')}円 (1世帯あたり約${avgPerSet.toLocaleString('ja-JP')}円)
+
+▼ 見積もり・計算ツールで確認する
+https://manage.wedding/ja/hikidemono-calculator`;
+		};
 
 		// Initial Run
 		calculateHikidemono();

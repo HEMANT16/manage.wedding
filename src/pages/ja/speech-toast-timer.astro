@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【友人代表スピーチ＆乾杯 挨拶タイマー】3分文字数カウント・忌み言葉チェッカー (無料) | Manage.Wedding 日本版";
 const description = "結婚式の友人代表スピーチ・乾杯の挨拶・謝辞専用タイマー＆原稿作成ツール。理想の3分間（約800〜900文字）に合わせたリアルタイム文字数カウント、忌み言葉（別れる・切れる・重ね言葉など）の自動添削、発話ペース判定、ストップウォッチタイマーを完全搭載。完全無料・登録不要・A4/PDF印刷対応。";
@@ -305,6 +306,13 @@ const ngWordsList = [
 				</div>
 
 			</div>
+
+			<!-- LINE & Social Share Action Bar -->
+			<JaShareActionBar 
+				toolTitle="友人代表スピーチ＆乾杯 挨拶タイマー" 
+				defaultText="【友人代表スピーチ＆乾杯 挨拶タイマー】3分文字数カウント・忌み言葉チェッカー" 
+				shareUrl="https://manage.wedding/ja/speech-toast-timer" 
+			/>
 
 			<!-- NG Words Reference Table Section -->
 			<div class="hand-card" style="background: #fff; padding: clamp(1.5rem, 3vw, 2.5rem); margin-bottom: 3.5rem; border: 2px solid var(--fg-pencil); box-shadow: 4px 4px 0px var(--fg-pencil);">
@@ -685,6 +693,26 @@ const ngWordsList = [
 		}
 
 		analyzeSpeech();
+
+		window.getJaLiveShareText = function() {
+			const text = textarea?.value || '';
+			const cleanText = text.replace(/\s+/g, '');
+			const count = cleanText.length;
+			const totalSeconds = Math.round((count / 300) * 60);
+			const mins = Math.floor(totalSeconds / 60);
+			const secs = totalSeconds % 60;
+			const timeEst = `${mins}分${secs}秒`;
+
+			const found = taboos.filter(w => text.includes(w));
+			const tabooResult = found.length > 0 ? `⚠️ 忌み言葉あり (${found.join('・')})` : `✅ 忌み言葉なし（クリア）`;
+
+			return `【結婚式スピーチ原稿・タイマー診断結果】\n` +
+				`・スピーチ計測・推定時間: 約 ${timeEst}（1分300文字換算）\n` +
+				`・目安文字数（3分=900文字）: 現在 ${count}文字\n` +
+				`・忌み言葉チェック結果: ${tabooResult}\n` +
+				`・原稿状況: ${count === 0 ? '原稿未入力' : (count >= 600 && count <= 1000 ? '✨ 理想の3分ペース（黄金比率）' : (count < 600 ? 'やや短め（エピソード追加推奨）' : 'やや長め（3分半以上）'))}\n\n` +
+				`▼ ツールで確認する\nhttps://manage.wedding/ja/speech-toast-timer`;
+		};
 	</script>
 
 </Layout>

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【両家顔合わせ 予算・割り勘＆タイムライン】食事代・手土産・しおり準備 (無料) | Manage.Wedding 日本版";
 const description = "両家顔合わせ食事会の費用計算機。コース料理代（1人1万円〜）・個室料・手土産代の総予算と支払い分担（ふたり全額奢り vs 両家折半）を自動計算。当日の2時間進行タイムテーブル、席次マナー、会話が弾む「しおり」準備リストも完全網羅。完全無料・登録不要・A4/PDF印刷対応。";
@@ -344,15 +345,14 @@ const timelineSamples = [
 
 						</div>
 
-						<!-- Print Action -->
-						<button 
-							id="print-kaoawase-btn" 
-							type="button" 
-							class="hand-btn" 
-							style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
-						>
-							📄 この顔合わせプラン・タイムラインを無地A4/PDFで保存・印刷
-						</button>
+						<!-- Share & Print Action Bar -->
+						<JaShareActionBar 
+							toolTitle="両家顔合わせ 予算・割り勘＆タイムライン" 
+							defaultText="【両家顔合わせ食事会プラン】会食予算・費用分担・当日のタイムスケジュールをまとめました！" 
+							shareUrl="https://manage.wedding/ja/kaoawase-planner"
+							hashtags="両家顔合わせ,顔合わせ食事会,顔合わせしおり,結婚準備,プレ花嫁,ManageWedding"
+							printBtnId="print-kaoawase-btn"
+						/>
 
 					</div>
 
@@ -648,6 +648,45 @@ const timelineSamples = [
 				window.print();
 			});
 		}
+
+		// Dynamic Share Text Formatter for LINE & Clipboard
+		window.getJaLiveShareText = function() {
+			const splitMap = {
+				couple: '新郎新婦が全額負担（親をご招待・現代の主流 約70%）',
+				half: '両家で完全折半（50%ずつ均等）',
+				groom: '新郎側が全額負担（伝統的な結納型）'
+			};
+
+			const splitVal = selectSplit ? selectSplit.value : 'couple';
+			const nGroom = countGroomSide ? countGroomSide.value : '3';
+			const nBride = countBrideSide ? countBrideSide.value : '3';
+			const totalCount = parseInt(nGroom, 10) + parseInt(nBride, 10);
+			const grandTotal = resGrandBudget ? resGrandBudget.textContent.trim() : '0 円';
+			const cCourseVal = parseInt(costCourse?.value || '0', 10);
+			const cDrinkVal = parseInt(costDrink?.value || '0', 10);
+			const perPersonFood = (cCourseVal + cDrinkVal).toLocaleString('ja-JP');
+			const couplePay = resCouplePay ? resCouplePay.textContent.trim() : '';
+
+			return [
+				'【両家顔合わせ食事会 計画＆予算メモ】',
+				'--------------------------------',
+				`■ 出席予定人数: 計 ${totalCount} 名（新郎側 ${nGroom}名 / 新婦側 ${nBride}名）`,
+				`■ 1人あたり会食予算: 約 ¥${perPersonFood}（料理 ¥${cCourseVal.toLocaleString('ja-JP')} ＋ 飲物 ¥${cDrinkVal.toLocaleString('ja-JP')}）`,
+				`■ 会食・諸経費 総合計: ${grandTotal}`,
+				`■ 支払い分担方針: ${splitMap[splitVal] || splitVal}`,
+				`■ 新郎新婦の自己負担: ${couplePay}`,
+				'■ 当日タイムスケジュール概要（2時間）:',
+				'  ・0:00 会場集合・入室（上座・下座確認）',
+				'  ・0:05 始まりの挨拶＆両家家族紹介',
+				'  ・0:15 婚約記念品のお披露目・記念撮影',
+				'  ・0:25 乾杯・会食スタート（歓談）',
+				'  ・1:40 デザート時に新郎がスマート事前決済',
+				'  ・1:50 結びの挨拶・手土産交換＆集合写真',
+				'--------------------------------',
+				'#両家顔合わせ #顔合わせ食事会 #顔合わせしおり #結婚準備 #プレ花嫁 #ManageWedding',
+				'\n▼ ツールで確認する\nhttps://manage.wedding/ja/kaoawase-planner'
+			].join('\n');
+		};
 
 		// Initial Run
 		calculateKaoawase();

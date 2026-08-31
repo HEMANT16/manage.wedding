@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【結婚式 見積もり跳ね上がり予測計算機】値上がり平均+100万円を契約前に完全診断 | Manage.Wedding 日本版";
 const description = "「初期見積もりから100万円以上上がった…」を防ぐ専門シミュレーター。ドレス差額、料理・ドリンクのランクアップ、撮って出しエンドロール、装花ボリュームなど、契約後に跳ね上がるリアルな最終請求金額を瞬時に予測。完全無料・登録不要・A4/PDF印刷対応。";
@@ -429,18 +430,13 @@ const topJumpRankings = [
 
 						</div>
 
-						<!-- Print Action -->
-						<button 
-							id="print-jump-sheet-btn" 
-							type="button" 
-							class="hand-btn" 
-							style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
-						>
-							📄 この値上がり診断結果を無地A4/PDFで保存・印刷
-						</button>
-						<div style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 0.4rem;">
-							※ 式場との価格交渉や打ち合わせ資料としてそのまま活用できます
-						</div>
+						<!-- Share & Action Bar -->
+						<JaShareActionBar 
+							toolTitle="結婚式 見積もり跳ね上がり予測計算機"
+							defaultText="【結婚式 見積もり跳ね上がり診断】初期見積もりからの値上がり額と最終請求を予測しました！"
+							shareUrl="https://manage.wedding/ja/mitsumori-jump-calculator"
+							hashtags="結婚式見積もり,見積もり跳ね上がり,式場契約,結婚準備,プレ花嫁,ManageWedding"
+						/>
 
 					</div>
 
@@ -786,12 +782,46 @@ const topJumpRankings = [
 			});
 		}
 
-		// Print Button
+		// Print Button (Fallback)
 		if (printBtn) {
 			printBtn.addEventListener('click', () => {
 				window.print();
 			});
 		}
+
+		// Dynamic Share Formatter for LINE / Clipboard
+		window.getJaLiveShareText = function() {
+			const initQuote = parseFloat(quoteRange?.value || '2800000');
+			const guests = parseInt(guestInput?.value || '60', 10);
+			const serviceRate = parseFloat(serviceSelect?.value || '0.10');
+			const taxRate = 0.10;
+
+			const dressRaw = parseFloat(dressSelect?.value || '0');
+			const foodPerHead = parseFloat(foodSelect?.value || '0');
+			const drinkPerHead = parseFloat(drinkSelect?.value || '0');
+			const movieRaw = parseFloat(movieSelect?.value || '0');
+			const flowerRaw = parseFloat(flowerSelect?.value || '0');
+			const photoRaw = parseFloat(photoSelect?.value || '0');
+
+			const foodRawTotal = foodPerHead * guests;
+			const drinkRawTotal = drinkPerHead * guests;
+			const totalRawUpgrades = dressRaw + foodRawTotal + drinkRawTotal + movieRaw + flowerRaw + photoRaw;
+
+			const jumpMultiplier = (1 + serviceRate) * (1 + taxRate);
+			const totalJumpWithTax = Math.round(totalRawUpgrades * jumpMultiplier);
+			const finalInvoiceTotal = initQuote + totalJumpWithTax;
+			const jumpPercent = initQuote > 0 ? ((totalJumpWithTax / initQuote) * 100).toFixed(1) : '0.0';
+
+			return `【結婚式 見積もり跳ね上がり予測結果】
+・初期見積もり: 約${initQuote.toLocaleString('ja-JP')}円 (${guests}名)
+・予測値上がり額: +${totalJumpWithTax.toLocaleString('ja-JP')}円 (+${jumpPercent}%)
+━━━━━━━━━━━━━━━━
+★ 最終着地予測（リアル請求見込）: 約${finalInvoiceTotal.toLocaleString('ja-JP')}円
+※ サービス料・消費税を含んだリアルな試算です
+
+▼ 見積もり・計算ツールで確認する
+https://manage.wedding/ja/mitsumori-jump-calculator`;
+		};
 
 		// Initial Run
 		calculateJump();

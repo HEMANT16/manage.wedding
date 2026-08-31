@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【婚姻届・入籍 準備チェックリスト＆開運日】最強開運日と必要書類・名義変更 (無料) | Manage.Wedding 日本版";
 const description = "婚姻届提出と入籍準備の完全チェックリスト。2026/2027年 一粒万倍日・天赦日・大安が重なる「最強開運日」カレンダー、戸籍謄本・証人サインなどの提出前準備から、入籍後の名義変更（免許証・マイナンバー・銀行・パスポート）の手続き手順を自動管理。完全無料・登録不要・A4/PDF印刷対応。";
@@ -313,15 +314,14 @@ const luckyDays2026 = [
 
 				</div>
 
-				<!-- Print Action -->
-				<button 
-					id="print-nyuseki-btn" 
-					type="button" 
-					class="hand-btn" 
-					style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
-				>
-					📄 この入籍・名義変更チェックリストを無地A4/PDFで保存・印刷
-				</button>
+				<!-- Share & Print Action Bar -->
+				<JaShareActionBar 
+					toolTitle="婚姻届・入籍 準備チェックリスト＆開運日" 
+					defaultText="【婚姻届・入籍準備】提出前チェックリストと名義変更の進捗状況をまとめました！" 
+					shareUrl="https://manage.wedding/ja/nyuseki-checklist"
+					hashtags="入籍準備,婚姻届,最強開運日,天赦日,一粒万倍日,名義変更,プレ花嫁,ManageWedding"
+					printBtnId="print-nyuseki-btn"
+				/>
 
 			</div>
 
@@ -609,6 +609,40 @@ const luckyDays2026 = [
 				window.print();
 			});
 		}
+
+		// Dynamic Share Text Formatter for LINE & Clipboard
+		window.getJaLiveShareText = function() {
+			let s1Checked = 0, s2Checked = 0, s3Checked = 0;
+			checkItems.forEach((chk, idx) => {
+				if (chk.checked) {
+					if (idx < 5) s1Checked++;
+					else if (idx < 10) s2Checked++;
+					else s3Checked++;
+				}
+			});
+
+			const totalChecked = s1Checked + s2Checked + s3Checked;
+			const totalItems = checkItems.length || 16;
+			const pct = progressPercent ? progressPercent.textContent.trim() : `${Math.round((totalChecked / totalItems) * 100)}%`;
+
+			return [
+				'【婚姻届・入籍 準備チェック進捗メモ】',
+				'--------------------------------',
+				`■ 全体進捗: ${totalChecked}/${totalItems} 項目完了 (${pct})`,
+				`  ・① 提出前準備: ${s1Checked}/5 完了（婚姻届・戸籍謄本・証人署名）`,
+				`  ・② 当日の持ち物: ${s2Checked}/5 完了（身分証・旧姓認印・受理証明書）`,
+				`  ・③ 名義変更手続: ${s3Checked}/6 完了（免許証・マイナンバー・銀行・クレカ）`,
+				'■ 入籍におすすめの最強開運日メモ:',
+				'  ・2026/3/5(木) 天赦日＋一粒万倍日＋寅の日',
+				'  ・2026/5/20(水) 天赦日＋大安',
+				'  ・2026/7/19(日) 天赦日＋一粒万倍日（週末吉日）',
+				'  ・2026/10/1(木) 天赦日＋一粒万倍日',
+				'  ・2026/11/22(日) いい夫婦の日＋大安',
+				'--------------------------------',
+				'#入籍準備 #婚姻届 #最強開運日 #天赦日 #一粒万倍日 #名義変更 #ManageWedding',
+				'\n▼ ツールで確認する\nhttps://manage.wedding/ja/nyuseki-checklist'
+			].join('\n');
+		};
 
 		loadSavedState();
 	</script>

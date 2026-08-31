@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【結婚式 お礼・心付け 相場計算機】受付・主賓・スピーチ・ヘアメイクへの謝礼と封筒リスト (無料) | Manage.Wedding 日本版";
 const description = "受付（3〜5千円）、主賓（1〜3万円）、スピーチ、ヘアメイク、介添え、カメラマンへの謝礼・心付け相場を自動計算。総合計額、銀行で準備すべき新札枚数（1万円/5千円/千円）、祝儀袋・ポチ袋の必要枚数を瞬時にリストアップ。完全無料・登録不要・A4/PDF印刷対応。";
@@ -409,18 +410,13 @@ const oreiNorms = [
 
 						</div>
 
-						<!-- Print Action -->
-						<button 
-							id="print-orei-btn" 
-							type="button" 
-							class="hand-btn" 
-							style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
-						>
-							📄 このお礼準備リストを無地A4/PDFで保存・印刷
-						</button>
-						<div style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 0.4rem;">
-							※ 銀行両替や封筒の準備チェックリストとしてそのまま使えます
-						</div>
+						<!-- Action Bar (LINE / Copy / X / Print) -->
+						<JaShareActionBar 
+							toolTitle="結婚式 お礼・心付け 相場計算機" 
+							defaultText="結婚式のお礼・心付け総額と新札・封筒リストを計算しました！" 
+							shareUrl="https://manage.wedding/ja/wedding-orei-calculator" 
+							printBtnId="print-orei-btn"
+						/>
 
 					</div>
 
@@ -753,6 +749,47 @@ const oreiNorms = [
 				window.print();
 			});
 		}
+
+		// Dynamic LINE/Clipboard Share Text
+		window.getJaLiveShareText = function() {
+			const total = document.getElementById('res-orei-total')?.textContent?.trim() || '0 円';
+			const bills10k = document.getElementById('res-orei-10k')?.textContent?.trim() || '0';
+			const bills5k = document.getElementById('res-orei-5k')?.textContent?.trim() || '0';
+			const bills1k = document.getElementById('res-orei-1k')?.textContent?.trim() || '0';
+			const envShugi = document.getElementById('res-orei-shugi')?.textContent?.trim() || '0';
+			const envPochi = document.getElementById('res-orei-pochi')?.textContent?.trim() || '0';
+
+			const roleData = [
+				{ label: '主賓・祝辞', chk: 'chk-shuhin', cnt: 'cnt-shuhin', amt: 'amt-shuhin' },
+				{ label: '乾杯', chk: 'chk-kanpai', cnt: 'cnt-kanpai', amt: 'amt-kanpai' },
+				{ label: '受付', chk: 'chk-uketsuke', cnt: 'cnt-uketsuke', amt: 'amt-uketsuke' },
+				{ label: 'スピーチ・余興', chk: 'chk-speech', cnt: 'cnt-speech', amt: 'amt-speech' },
+				{ label: 'ヘアメイク', chk: 'chk-hair', cnt: 'cnt-hair', amt: 'amt-hair' },
+				{ label: '介添え', chk: 'chk-attender', cnt: 'cnt-attender', amt: 'amt-attender' },
+				{ label: 'カメラマン', chk: 'chk-photo', cnt: 'cnt-photo', amt: 'amt-photo' }
+			];
+
+			const activeRoles = [];
+			roleData.forEach(r => {
+				const isChecked = document.getElementById(r.chk)?.checked;
+				const cnt = parseInt(document.getElementById(r.cnt)?.value || '0', 10);
+				const amt = parseFloat(document.getElementById(r.amt)?.value || '0');
+				if (isChecked && cnt > 0 && amt > 0) {
+					activeRoles.push(`・${r.label}: ${amt.toLocaleString('ja-JP')}円 × ${cnt}名`);
+				}
+			});
+
+			const breakdownText = activeRoles.length > 0 ? activeRoles.join('\n') : '・なし';
+
+			return `【結婚式 お礼・心付け 計算結果】\n` +
+				`謝礼・心付け総額: ${total}\n\n` +
+				`【役割別内訳】\n` +
+				`${breakdownText}\n\n` +
+				`【準備リスト】\n` +
+				`・必要な新札: 1万円札×${bills10k}枚、5千円札×${bills5k}枚、千円札×${bills1k}枚\n` +
+				`・必要な封筒: 祝儀袋×${envShugi}枚、ポチ袋×${envPochi}枚` +
+				`\n\n▼ 計算ツールで確認する\nhttps://manage.wedding/ja/wedding-orei-calculator`;
+		};
 
 		// Initial Run
 		calculateOrei();

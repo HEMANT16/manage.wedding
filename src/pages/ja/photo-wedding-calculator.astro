@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【フォトウェディング・前撮り 費用計算機】和装・洋装・ロケ・スタジオ相場診断 (無料・登録不要) | Manage.Wedding 日本版";
 const description = "スタジオ撮影 vs ロケーション撮影、和装（白無垢・色打掛） vs 洋装（ドレス）、全カットデータ納品、土日追加料金を含めたリアルな総費用を瞬時に計算。「1万円〜」の広告から跳ね上がる追加料金を契約前に完全把握。完全無料・登録不要・A4/PDF印刷対応。";
@@ -376,18 +377,13 @@ const photoMatrix = [
 
 						</div>
 
-						<!-- Print Action -->
-						<button 
-							id="print-photo-sheet-btn" 
-							type="button" 
-							class="hand-btn" 
-							style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
-						>
-							📄 この前撮り見積書を無地A4/PDFで保存・印刷
-						</button>
-						<div style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 0.4rem;">
-							※ スタジオ見学や相見積もりの比較資料としてそのまま持参できます
-						</div>
+						<!-- Action Bar (LINE / Copy / X / Print) -->
+						<JaShareActionBar 
+							toolTitle="フォトウェディング・前撮り 費用計算機" 
+							defaultText="フォトウェディング・前撮りのリアルな総費用見積もりを計算しました！" 
+							shareUrl="https://manage.wedding/ja/photo-wedding-calculator" 
+							printBtnId="print-photo-sheet-btn"
+						/>
 
 					</div>
 
@@ -749,6 +745,32 @@ const photoMatrix = [
 				window.print();
 			});
 		}
+
+		// Dynamic LINE/Clipboard Share Text
+		window.getJaLiveShareText = function() {
+			const total = document.getElementById('res-photo-total')?.textContent?.trim() || '0 円';
+			const locText = locSelect?.options[locSelect.selectedIndex]?.text?.split('（')[0]?.replace(/^[🏢🌳✨]\s*/, '') || 'ロケーション撮影';
+			const outfitText = outfitsSelect?.options[outfitsSelect.selectedIndex]?.text?.split('（')[0]?.replace(/^[👗👘✨]+\s*/, '') || '和装1着';
+			const albumText = dataAlbumSelect?.options[dataAlbumSelect.selectedIndex]?.text?.split('（')[0]?.replace(/^[⭐\s]+/, '') || '全カットデータ納品';
+
+			const subBase = document.getElementById('res-sub-base')?.textContent?.trim() || '0 円';
+			const subOutfit = document.getElementById('res-sub-outfit')?.textContent?.trim() || '0 円';
+			const subAlbum = document.getElementById('res-sub-album')?.textContent?.trim() || '0 円';
+			const subOptions = document.getElementById('res-sub-options')?.textContent?.trim() || '0 円';
+
+			return `【フォトウェディング・前撮り 費用シミュレーション結果】\n` +
+				`総費用目安: ${total}\n\n` +
+				`【プラン構成】\n` +
+				`・撮影スタイル: ${locText}\n` +
+				`・衣装タイプ: ${outfitText}\n` +
+				`・データ/アルバム: ${albumText}\n\n` +
+				`【費用内訳】\n` +
+				`・基本撮影料: ${subBase}\n` +
+				`・衣装代（着数+ランク）: ${subOutfit}\n` +
+				`・写真データ・アルバム: ${subAlbum}\n` +
+				`・追加オプション: ${subOptions}` +
+				`\n\n▼ 計算ツールで確認する\nhttps://manage.wedding/ja/photo-wedding-calculator`;
+		};
 
 		// Initial Run
 		calculatePhoto();

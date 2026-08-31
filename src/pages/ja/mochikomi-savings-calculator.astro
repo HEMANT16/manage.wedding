@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【持ち込み料 vs DIY 損益分岐点チェッカー】ドレス・カメラマン・引出物の節約判定 | Manage.Wedding 日本版";
 const description = "ドレス（持ち込み料5万円）、カメラマン、ブーケ、引出物、ペーパーアイテムなど、式場の持ち込み料を支払ってでも外部ショップやDIYで持ち込んだ方が安くなるかを瞬時に判定。完全無料・登録不要・A4/PDF印刷対応。";
@@ -415,18 +416,13 @@ const mochikomiNorms = [
 
 						</div>
 
-						<!-- Print Action -->
-						<button 
-							id="print-mochikomi-sheet-btn" 
-							type="button" 
-							class="hand-btn" 
-							style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
-						>
-							📄 この持ち込み損益表を無地A4/PDFで保存・印刷
-						</button>
-						<div style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 0.4rem;">
-							※ 外部ショップ検討や式場との打ち合わせ資料としてそのまま持参できます
-						</div>
+						<!-- Share & Action Bar -->
+						<JaShareActionBar 
+							toolTitle="持ち込み料 vs DIY 損益分岐点チェッカー"
+							defaultText="【持ち込み料 vs DIY 損益分岐点診断】式場プランと外部手配の差引節約額を計算しました！"
+							shareUrl="https://manage.wedding/ja/mochikomi-savings-calculator"
+							hashtags="結婚式持ち込み料,DIYウェディング,結婚式節約,持ち込みドレス,結婚準備,プレ花嫁,ManageWedding"
+						/>
 
 					</div>
 
@@ -816,12 +812,57 @@ const mochikomiNorms = [
 			});
 		}
 
-		// Print Button
+		// Print Button (Fallback)
 		if (printBtn) {
 			printBtn.addEventListener('click', () => {
 				window.print();
 			});
 		}
+
+		// Dynamic Share Formatter for LINE / Clipboard
+		window.getJaLiveShareText = function() {
+			let totalVenue = 0;
+			let totalExtOnly = 0;
+			let totalFee = 0;
+
+			const itemsList = [
+				{ check: 'check-dress', venue: 'venue-dress', ext: 'ext-dress', fee: 'fee-dress' },
+				{ check: 'check-tuxedo', venue: 'venue-tuxedo', ext: 'ext-tuxedo', fee: 'fee-tuxedo' },
+				{ check: 'check-photo', venue: 'venue-photo', ext: 'ext-photo', fee: 'fee-photo' },
+				{ check: 'check-paper', venue: 'venue-paper', ext: 'ext-paper', fee: 'fee-paper' },
+				{ check: 'check-movie', venue: 'venue-movie', ext: 'ext-movie', fee: 'fee-movie' }
+			];
+
+			itemsList.forEach(item => {
+				const isChecked = document.getElementById(item.check)?.checked;
+				if (isChecked) {
+					const vVal = parseFloat(document.getElementById(item.venue)?.value || '0');
+					const eVal = parseFloat(document.getElementById(item.ext)?.value || '0');
+					const fVal = parseFloat(document.getElementById(item.fee)?.value || '0');
+					totalVenue += vVal;
+					totalExtOnly += eVal;
+					totalFee += fVal;
+				}
+			});
+
+			const totalExtCombined = totalExtOnly + totalFee;
+			const netSavings = totalVenue - totalExtCombined;
+
+			const savingsText = netSavings > 0 
+				? `+約${netSavings.toLocaleString('ja-JP')}円 節約（持ち込みがお得！）`
+				: (netSavings === 0 ? '±0円（同額）' : `式場の方が約${Math.abs(netSavings).toLocaleString('ja-JP')}円お得`);
+
+			return `【持ち込み料 vs DIY 損益分岐診断結果】
+・式場提携プラン総額: 約${totalVenue.toLocaleString('ja-JP')}円
+・DIY購入・手配額: 約${totalExtOnly.toLocaleString('ja-JP')}円
+・持ち込み料合計: 約${totalFee.toLocaleString('ja-JP')}円
+・持ち込み総費用: 約${totalExtCombined.toLocaleString('ja-JP')}円
+━━━━━━━━━━━━━━━━
+★ 差引節約額: ${savingsText}
+
+▼ 見積もり・計算ツールで確認する
+https://manage.wedding/ja/mochikomi-savings-calculator`;
+		};
 
 		// Initial Run
 		calculateMochikomi();

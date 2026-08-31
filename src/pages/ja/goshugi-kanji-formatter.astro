@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【ご祝儀袋・中袋 漢数字（大字）変換ジェネレーター】金額入力で旧字体を即時変換 (無料) | Manage.Wedding 日本版";
 const description = "ご祝儀袋の中袋に書く大字（旧字体）を即時変換。3万円→「金 参萬圓 也」、5万円→「金 伍萬圓 也」など金額を入力するだけで正確な大字表記と中袋（表面・裏面）の縦書き配置プレビューを表示。完全無料・登録不要・A4/PDF印刷対応。";
@@ -304,15 +305,13 @@ const kanjiTable = [
 
 				</div>
 
-				<!-- Print Action -->
-				<button 
-					id="print-kanji-btn" 
-					type="button" 
-					class="hand-btn" 
-					style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
-				>
-					📄 この漢数字・書き方見本を無地A4/PDFで保存・印刷
-				</button>
+				<!-- Action Bar (LINE / Copy / X / Print) -->
+				<JaShareActionBar 
+					toolTitle="ご祝儀袋・中袋 漢数字（大字）変換ジェネレーター" 
+					defaultText="ご祝儀袋の中袋に書く漢数字（大字）と書き方見本を変換しました！" 
+					shareUrl="https://manage.wedding/ja/goshugi-kanji-formatter" 
+					printBtnId="print-kanji-btn"
+				/>
 
 			</div>
 
@@ -615,6 +614,20 @@ const kanjiTable = [
 				window.print();
 			});
 		}
+
+		// Dynamic LINE/Clipboard Share Text
+		window.getJaLiveShareText = function() {
+			const val = parseInt(inputAmount?.value || '0', 10);
+			const daiji = resDaijiText?.textContent?.trim() || '金 参萬圓 也';
+
+			return `【ご祝儀袋 漢数字（大字）変換結果】\n` +
+				`・お祝い金額: ${val.toLocaleString('ja-JP')} 円\n` +
+				`・中袋 表面表記: ${daiji}\n\n` +
+				`【中袋の書き方マナー】\n` +
+				`・表面中央: 濃い黒の筆ペンで縦書き「${daiji}」\n` +
+				`・裏面左下: 縦書きで「郵便番号・住所・氏名」を明記` +
+				`\n\n▼ 計算ツールで確認する\nhttps://manage.wedding/ja/goshugi-kanji-formatter`;
+		};
 
 		// Initial Run
 		updateDisplay();

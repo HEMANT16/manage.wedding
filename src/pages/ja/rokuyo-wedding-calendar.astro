@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import JaShareActionBar from '../../components/ja/JaShareActionBar.astro';
 
 const title = "【六曜カレンダー＆大安・仏滅 割引比較チェッカー】結婚式のお日柄・値引き診断 (無料) | Manage.Wedding 日本版";
 const description = "2026/2027年 六曜（大安・友引・先勝・先負・赤口・仏滅）カレンダー。大安土曜日の人気日程と仏滅・日曜夕方のお得な値引き額（最大100万円OFF）をシミュレーション比較。時間帯別の吉凶判定や親世代への相談マナーも完全網羅。完全無料・登録不要・A4/PDF印刷対応。";
@@ -362,15 +363,14 @@ const rokuyoDetails = [
 
 						</div>
 
-						<!-- Print Action -->
-						<button 
-							id="print-rokuyo-btn" 
-							type="button" 
-							class="hand-btn" 
-							style="width: 100%; padding: 12px; font-size: 0.95rem; font-weight: 800; text-align: center; cursor: pointer;"
-						>
-							📄 この日程診断・割引比較を無地A4/PDFで保存・印刷
-						</button>
+						<!-- Share & Print Action Bar -->
+						<JaShareActionBar 
+							toolTitle="六曜カレンダー＆大安・仏滅 割引比較チェッカー" 
+							defaultText="【六曜・お日柄＆式場割引診断】希望日程のお日柄と割引見込みをシミュレーションしました！" 
+							shareUrl="https://manage.wedding/ja/rokuyo-wedding-calendar"
+							hashtags="六曜,大安,仏滅割,結婚式準備,プレ花嫁,ManageWedding"
+							printBtnId="print-rokuyo-btn"
+						/>
 
 					</div>
 
@@ -699,6 +699,52 @@ const rokuyoDetails = [
 				window.print();
 			});
 		}
+
+		// Dynamic Share Text Formatter for LINE & Clipboard
+		window.getJaLiveShareText = function() {
+			const seasonMap = {
+				high: '春・秋ハイシーズン（3〜5月 / 9〜11月・気候最高・定価）',
+				mid: '初夏・初冬（6月 / 12月・ジューンブライド / 微割）',
+				off: '夏・冬オフシーズン（7〜8月 / 1〜2月・大幅割引期）'
+			};
+			const daytimeMap = {
+				sat_day: '土曜日 昼の部（11〜15時・最も人気・定価）',
+				sat_night: '土曜日 夜の部 / ナイト（16時〜・トワイライト割）',
+				sun_day: '日曜日 昼の部（11〜15時）',
+				sun_night: '日曜日 夜の部（16時〜・大幅割引枠）',
+				weekday: '平日挙式（お得プラン多数）'
+			};
+			const rokuyoMap = {
+				taian: '大安（たいあん・終日大吉）',
+				tomobiki: '友引（ともびき・朝夕吉 / 正午凶）',
+				sensho: '先勝（せんしょう・午前吉 / 午後凶）',
+				senbu: '先負（せんぶ・午前凶 / 午後吉）',
+				shakko: '赤口（しゃっく・正午のみ吉）',
+				butsumetsu: '仏滅（ぶつめつ・最大割引適用日）'
+			};
+
+			const seasonVal = selectSeason ? selectSeason.value : 'high';
+			const daytimeVal = selectDaytime ? selectDaytime.value : 'sat_day';
+			const rokuyoVal = selectRokuyo ? selectRokuyo.value : 'taian';
+			const guests = inputGuestCount ? inputGuestCount.value : '60';
+
+			const discountText = resDiscountHero ? resDiscountHero.textContent.trim() : '0 円';
+			const fortuneText = resFortuneText ? resFortuneText.textContent.trim() : '';
+
+			return [
+				'【結婚式 六曜・お日柄＆式場割引診断メモ】',
+				'--------------------------------',
+				`■ 挙式希望時期: ${seasonMap[seasonVal] || seasonVal}`,
+				`■ 希望曜日・時間帯: ${daytimeMap[daytimeVal] || daytimeVal}`,
+				`■ 六曜（お日柄）: ${rokuyoMap[rokuyoVal] || rokuyoVal}`,
+				`■ 想定規模: ゲスト ${guests} 名`,
+				`■ お日柄評価: ${fortuneText}`,
+				`■ 式場見積もり割引見込み: ${discountText}`,
+				'--------------------------------',
+				'#プレ花嫁 #結婚式準備 #六曜 #大安 #仏滅割 #ManageWedding',
+				'\n▼ ツールで確認する\nhttps://manage.wedding/ja/rokuyo-wedding-calendar'
+			].join('\n');
+		};
 
 		// Initial Run
 		calculateRokuyo();
