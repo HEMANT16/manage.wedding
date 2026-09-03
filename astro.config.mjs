@@ -32,11 +32,6 @@ export default defineConfig({
           '**/scratch/**'
         ]
       }
-    },
-    build: {
-      rollupOptions: {
-        maxParallelFileOps: 50
-      }
     }
   }
 });
